@@ -13,7 +13,7 @@ class buildings
 	class default
 	{
 		containers[] = {"Land_vn_object_trashcan_01"};
-		type = "loot_generic";
+		type = "type_generic";
 		count = 5;
 	};
 	class military
