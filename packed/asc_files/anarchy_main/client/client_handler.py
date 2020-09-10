@@ -65,7 +65,7 @@ def client_init(self):
 	# 	sData.database.player_data_set(i, cData)
 	# send item Data
 	print("SENDING INIT_ITEMDATA...")
-	asc_g_msg.sendMsg("INIT_ITEMDATA", self.sData.itemData, self.con_client)
+	asc_g_msg.sendMsg("INIT_ITEMDATA", self.sData.itemParentData, self.con_client)
 	print("SENDING INIT_ITEMDATA... DONE")
 	# send player Data
 	print("SENDING INIT_CLIENTDATA...")

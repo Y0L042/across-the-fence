@@ -264,6 +264,6 @@ def item_get_parentData(sData, itemName: str = None):
         return {}
     # get the parent-itemData
     try:
-        return sData.itemData[itemName]
+        return sData.itemParentData[itemName]
     except KeyError:
         print(f"ERROR: item_get_parentData: KeyError: itemName: {itemName}")
