@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import vdf
+import winreg
 
 p_drive = Path('P:\\')
 root_directory = Path(path.realpath(__file__)).parent.parent
@@ -26,10 +27,32 @@ extra_setup_links = [
    {"source": "packed\\asc_files", "dest": "asc_files", "is_dir": True}
 ]
 
+# Retrieve steam install path from the registry, if possible.
+def get_steam_path_from_registry():
+    # Try 64 bit registry lookup
+    try:
+        hkey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Wow6432Node\Valve\Steam")
+        return Path(winreg.QueryValueEx(hkey, "InstallPath")[0])
+    except:
+        pass
+
+    # Try 32 bit registry lookup
+    try:
+        hkey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Valve\Steam")
+        return Path(winreg.QueryValueEx(hkey, "InstallPath")[0])
+    except:
+        return None
+
 def find_steam_library_paths():
-    steam_path = Path(os.environ["ProgramFiles(x86)"]) / "Steam"
+    steam_path = get_steam_path_from_registry()
+
+    # Attempt a dumb lookup if we can't pull it from the registry. Bit of a hail mary.
+    if not steam_path:
+        steam_path = Path(os.environ["ProgramFiles(x86)"]) / "Steam"
+
     if not steam_path.exists():
-        return (False, f"Unable to find Steam at {steam_path}")
+        return (False, f"Unable to find Steam using registry or {steam_path}")
+
     library_file_path = steam_path / "steamapps" / "libraryfolders.vdf"
     if not library_file_path.exists():
         return (False, f"Unable to locate Steam libraries ({library_file_path} does not exist)")
@@ -61,15 +84,16 @@ def is_arma_tools_dir(path):
     return (path / "Arma3Tools.exe").exists()
 
 def find_arma_install_dirs():
-    (success, result) = find_steam_library_paths()
-    if not success:
-        return (success, result)
-
     arma_paths = {
         "games": [],
         "servers": [],
         "tools": []
     }
+
+    (success, result) = find_steam_library_paths()
+    if not success:
+        print(f"An error occurred locating Arma 3 - {result}")
+        return arma_paths
 
     steam_library_paths = result
     game_folder_root_paths = list(filter(lambda p: p.exists(), [path / "steamapps" / "common" for path in steam_library_paths]))
