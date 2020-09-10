@@ -11,7 +11,7 @@ def load_files(sData):
 	for filename in json_files:
 		# load the .json file
 		with open(f"{path}\{filename}", "r") as file:
-			# add every Base_ItemData to the sData.itemData
+			# add every Base_ItemData to the sData.itemParentData
 			data = json.load(file)
 			for x in data:
 				# print(f"DEBUG: ItemData: {data[x]}")

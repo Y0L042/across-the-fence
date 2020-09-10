@@ -42,7 +42,7 @@ def inv_data_get(sData, invID):
 def item_create(parent: str = ""):
     """
 
-    :param parent:  STR - Name of parent/base from itemData
+    :param parent:  STR - Name of parent/base from itemParentData
     :return:        ToDo
     """
 

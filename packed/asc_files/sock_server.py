@@ -7,7 +7,7 @@ from asc_client import *
 import time
 import sys
 import os
-from anarchy_main.inventory.itemData import itemData
+from anarchy_main.inventory.itemParentData import itemParentData
 from anarchy_main.inventory.loot_tables import loot_tables
 
 
@@ -61,7 +61,7 @@ def server_start():
     print(f'#### Lootseed:\n#### - "{sData.lootData["globalseed"]}"')
 
     # ####### load all the Items
-    itemData.load_files(sData=sData)
+    itemParentData.load_files(sData=sData)
 
     # ####### load the loot tables
     loot_tables.load_files(sData=sData)
