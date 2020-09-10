@@ -156,6 +156,7 @@ def load_addon_info(folder_path):
             #This does it cross-platform, without errors, even if it has no root.
             prefix_path = PurePath(data["prefix"])
             data["prefix_path"] = prefix_path.relative_to(prefix_path.root)
+            data["use_addon_builder"] = data.get("use_addon_builder", False)
             return data
     except OSError:
         print(f"Error: Unable to open build file: {build_file_path}")
@@ -164,7 +165,7 @@ def load_addon_info(folder_path):
         print(f"Build file not a valid JSON document: {build_file_path}")
         return None
 
-def build(mod_names, overwrite=False):
+def build(mod_names, overwrite=False, use_addon_builder=False):
 
     if not prefix_directory.exists():
         print(f"ERROR: P-Drive is not set up for Anarchy. The P-Drive must be set up before building. ({prefix_directory} does not exist)")
@@ -206,8 +207,6 @@ def build(mod_names, overwrite=False):
         print(f"\n==== BUILDING {mod_name} ADDONS ====")
         #Build addons with makepbo
         exclude_files = ",".join(["thumbs.db","*.txt","*.h","*.dep","*.cpp","*.bak","*.png","*.log","*.pew","*.hpp","source","*.tga"])
-        default_args = ["-PsFW", f"-X={exclude_files}"]
-        base_command = ["MakePbo"]
 
         for addon_input_path in (mod_input_path / "addons").iterdir():
             addon_info = load_addon_info(addon_input_path)
@@ -220,26 +219,41 @@ def build(mod_names, overwrite=False):
             addon_source_path = p_drive / addon_info["prefix_path"];
             addon_output_path = mod_output_path / "addons" / (addon_info["pbo_name"])
 
+            default_args = ["-PsFW", f"-X={exclude_files}"]
+            args = addon_info.get("makepbo_arguments", default_args)
+            base_command = ["MakePbo"]
+            command = base_command + args + [str(addon_source_path), str(addon_output_path)]
+
+            if use_addon_builder or addon_info["use_addon_builder"]:
+                install_dirs = find_arma_install_dirs()
+                if len(install_dirs["tools"]) == 0:
+                    print(f"Cannot use Addon Builder for '{addon_name}', no tools installation found (Should be installed via Steam)")
+                    continue
+                default_args = ["-packonly", "-clear"]
+                args = addon_info.get("addonbuilder_arguments", default_args)
+                base_command = [str(install_dirs["tools"][0] / "AddonBuilder" / "AddonBuilder.exe")]
+                command = base_command + [str(addon_source_path), str(addon_output_path.parent)] + args
+
+
             print(f"Building Addon '{addon_name}'")
             print("    Prefix: {}".format(addon_info["prefix"]))
             print("    Source Path: {}".format(addon_source_path))
             print("    Output Path: {}".format(addon_output_path))
+            print("    Build Command: {}".format(command))
 
             #Check the source exists on the P-Drive
             if not addon_source_path.exists():
                 print(f"    FAILED: {addon_name} cannot be built - the source path does not exist ({addon_source_path})")
                 continue
 
-            command = base_command + addon_info.get("makepbo_arguments", default_args) + [str(addon_source_path), str(addon_output_path)]
-
-            log_file_path = log_directory / f"makepbo_{addon_name}.txt"
+            log_file_path = log_directory / f"build_output_{addon_name}.txt"
             with open(log_file_path, "w") as log_file:
                 result = subprocess.run(command, stdout=log_file, stderr=subprocess.STDOUT)
                 if result.returncode != 0:
                     print(f"    FAILED: {addon_name} build - see ({log_file_path}) for more information")
                     continue
                 else:
-                    print(f"    SUCCEEDED: {addon_name} build - see ({log_file_path}) for MakePBO output")
+                    print(f"    SUCCEEDED: {addon_name} build - see ({log_file_path}) for addon build output")
 
 def pdrive(mods,disable=False):
     symlinks = []
@@ -422,7 +436,7 @@ def subcommand_build(args):
         mods = all_mods
 
     print(f"Building: {mods}")
-    build(mods,overwrite=args.force)
+    build(mods,overwrite=args.force,use_addon_builder=args.addonbuilder)
 
 def subcommand_pdrive(args):
     action = "Disabling" if args.disable else "Enabling"
@@ -467,6 +481,7 @@ if __name__ == "__main__":
     build_parser = subparsers.add_parser('build', help='Build Anarchy addons')
     build_parser.add_argument('-m', '--mod', help=f"Builds only the named mod. May be specified more than once. Valid options are: {all_mods}", nargs="*", default=[])
     build_parser.add_argument('-f', '--force', help="Erases all content in the packed mod folder if it exists", action="store_const", const=True, default=False)
+    build_parser.add_argument('-a', '--addonbuilder', help="Uses AddonBuilder instead of MakePBO, if AddonBuilder is installed (Arma 3 Tools)", action="store_const", const=True, default=False)
     build_parser.set_defaults(func=subcommand_build)
 
     pdrive_parser = subparsers.add_parser('pdrive', help="Sets up Anarchy on the P-Drive")
