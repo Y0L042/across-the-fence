@@ -216,29 +216,32 @@ def build(mod_names, overwrite=False, use_addon_builder=False):
                 continue
 
             addon_name = addon_info["name"]
-            addon_source_path = p_drive / addon_info["prefix_path"];
-            addon_output_path = mod_output_path / "addons" / (addon_info["pbo_name"])
+            addon_source_path = p_drive / addon_info["prefix_path"]
+            addon_output_folder_path = mod_output_path / "addons"
+            addon_output_pbo_path = addon_output_folder_path / addon_info["pbo_name"]
 
             default_args = ["-PsFW", f"-X={exclude_files}"]
             args = addon_info.get("makepbo_arguments", default_args)
             base_command = ["MakePbo"]
-            command = base_command + args + [str(addon_source_path), str(addon_output_path)]
+            #Output it as the same name as the source folder, as that's how AddonBuilder works
+            command = base_command + args + [str(addon_source_path), str(addon_output_folder_path / addon_source_path.name)]
 
             if use_addon_builder or addon_info["use_addon_builder"]:
                 install_dirs = find_arma_install_dirs()
                 if len(install_dirs["tools"]) == 0:
                     print(f"Cannot use Addon Builder for '{addon_name}', no tools installation found (Should be installed via Steam)")
                     continue
-                default_args = ["-packonly", "-clear"]
+                default_args = ["-packonly", "-clear", "-prefix={}".format(addon_info["prefix_path"])]
                 args = addon_info.get("addonbuilder_arguments", default_args)
                 base_command = [str(install_dirs["tools"][0] / "AddonBuilder" / "AddonBuilder.exe")]
-                command = base_command + [str(addon_source_path), str(addon_output_path.parent)] + args
+                # Output to the folder, as AddonBuilder makes pbos with the same name as the input folder.
+                command = base_command + [str(addon_source_path), str(addon_output_folder_path)] + args
 
 
             print(f"Building Addon '{addon_name}'")
             print("    Prefix: {}".format(addon_info["prefix"]))
             print("    Source Path: {}".format(addon_source_path))
-            print("    Output Path: {}".format(addon_output_path))
+            print("    Output Path: {}".format(addon_output_folder_path))
             print("    Build Command: {}".format(command))
 
             #Check the source exists on the P-Drive
@@ -253,6 +256,8 @@ def build(mod_names, overwrite=False, use_addon_builder=False):
                     print(f"    FAILED: {addon_name} build - see ({log_file_path}) for more information")
                     continue
                 else:
+                    #Rename the file
+                    os.rename(addon_output_pbo_path, addon_output_folder_path / addon_info["pbo_name"])
                     print(f"    SUCCEEDED: {addon_name} build - see ({log_file_path}) for addon build output")
 
 def pdrive(mods,disable=False):
