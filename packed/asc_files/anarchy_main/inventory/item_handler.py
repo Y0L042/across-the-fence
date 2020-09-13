@@ -217,20 +217,19 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
         print(f"-------------\nERROR: item_add_list: EXCEPTION:\n{e}\n-------------")
 
 
-def loot_item_generate(sData, x_dict, itemInfo=None):
-    if itemInfo is None:
-        itemInfo = []
+def loot_item_generate(sData, x_dict, DEBUG_itemInfo=None):
+    if DEBUG_itemInfo is None:
+        DEBUG_itemInfo = []
 
     # select random item
-    selected_type = random.choices(list(x_dict.keys()), weights=list(x_dict.values()), k=1)[0]
+    selected_type = random.choices(list(x_dict), weights=list(x_dict.values()), k=1)[0]
     # print(f"DEBUG: loot_item_generate: selected_type: {selected_type}")
-    itemInfo.append(selected_type)
+    DEBUG_itemInfo.append(selected_type)
     # check if selected_type exists other wise return class
     if selected_type in sData.lootData["tables"]:
-        # print(f"DEBUG: initial_seed LG: {initial_seed}")
-        return loot_item_generate(sData, sData.lootData["tables"][selected_type], itemInfo)
+        # print(f"DEBUG: DEBUG_itemInfo: {DEBUG_itemInfo}")
+        return loot_item_generate(sData, sData.lootData["tables"][selected_type], DEBUG_itemInfo)
     else:
-        # return itemInfo
         print(f"DEBUG: loot_item_generate: selected_type: {selected_type}")
         return selected_type
 
