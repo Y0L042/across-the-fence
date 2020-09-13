@@ -15,5 +15,5 @@ def load_files(sData):
 			data = json.load(file)
 			for x in data:
 				# print(f"DEBUG: ItemData: {data[x]}")
-				sData.itemDataSubTypes[x] = data[x]
+				sData.itemSubTypes[x] = data[x]
 	print(f'#### Loading itemData... done')

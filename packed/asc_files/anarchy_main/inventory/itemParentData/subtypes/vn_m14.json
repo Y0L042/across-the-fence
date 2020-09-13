@@ -1,0 +1,29 @@
+
+{
+  "m14": {
+    "parent": "vn_m14",
+    "hp_max": 100,
+    "rarity": 0
+  },
+  "Special_M14_spoffy":
+  {
+    "parent": "vn_m14",
+    "attachments": {"scope": "", "muzzle":  {}, "support":  {}},
+    "hp_max": 140,
+    "rarity": 2
+  },
+  "bla_awol":
+  {
+    "parent": "vn_m14",
+    "attachments": {"scope": "", "muzzle":  {}},
+    "hp_max": 160,
+    "rarity": 3
+  },
+  "dscha_burp":
+  {
+    "parent": "vn_m14",
+    "attachments": {"scope": "", "support":  ""},
+    "hp_max": 180,
+    "rarity": 4
+  }
+}
