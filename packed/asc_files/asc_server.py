@@ -23,6 +23,7 @@ class data_server:
         self.database = None
         self.lootData = {"globalseed": "", "tables": {}}
         self.itemParentData = {}
+        self.itemSubTypes = {}
 
     # ##################################################################################################
 
