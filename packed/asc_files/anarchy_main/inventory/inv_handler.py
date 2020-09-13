@@ -82,6 +82,7 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
     grid_y, grid_x = invGridSize
 
     invData = {
+        "crateID": crateID,
         "model": model,
         "pos": pos,
         "type": lootType,
@@ -115,16 +116,33 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
             print(f"DEBUG: INV_HANDLER: crate_add: loot_count: {loot_count}")
 
             # get the list of Item names
-            items_parent_list = item_handler.loot_item_list_create(sData=sData, crate_id=crateID, loot_count=loot_count, loot_type=lootType)
-            print(f"DEBUG: INV_HANDLER: crate_add: items_list_raw: {items_parent_list}")
+            items_list = item_handler.loot_item_list_create(sData=sData, crate_id=crateID, loot_count=loot_count, loot_type=lootType)
+            print(f"DEBUG: INV_HANDLER: crate_add: items_list_raw: {items_list}")
 
-            for parent in items_parent_list:
-                # create the Item Data structure
-                item = item_handler.item_create(parent=parent)
-                print(f"DEBUG: INV_HANDLER: crate_add: item_new: {item}")
-                # ToDo: Calculate and update the values, depending on the players scavenging Skill
-                #
-                #
+            # cycle through all the parents (parent can either be full itemData or a subType)
+            for parent in items_list:
+                # Check if the "parent" is a subType. If so: Get the parent-name from the subType
+                if parent in sData.itemSubTypes:
+                    # create the Item Data structure
+                    subType_parent = sData.itemSubTypes[parent]["parent"]
+                    print(f"DEBUG: INV_HANDLER: crate_add: subType_class: {parent}")
+                    print(f"DEBUG: INV_HANDLER: crate_add: subType_parent: {subType_parent}")
+
+                    # create and get the Item Data structure
+                    item = item_handler.item_create(parent=subType_parent)
+                    # item = item_handler.item_create(parent=parent)
+                    try:
+                        # get the subTypeData of the desired Item
+                        subType = sData.itemSubTypes[parent]
+                        print(f"DEBUG: INV_HANDLER: crate_add: subType: {subType}")
+                        print(f"DEBUG: INV_HANDLER: crate_add: item: {item}")
+                        # update the parentData with the subTypeData
+                        item.update(subType)
+                        print(f"DEBUG: INV_HANDLER: crate_add -> item_create: item #2: {item}")
+                    except Exception as e:
+                        print(f"DEBUG: INV_HANDLER: crate_add -> item_create: Something went wrong! Error:\n{e}")
+                else:
+                    item = item_handler.item_create(parent=parent)
 
                 # Add item to Inventory and update the invData
                 invData, item = item_handler.item_add_to_inv(sData=sData, invData=invData, isLootcrate=isLootcrate, item=item)
@@ -197,7 +215,7 @@ def inv_slots_used_get(slotsStart=None, sizeItem=None, invGrid=None, isFlipped=0
                 try:
                     slotNum = invGrid[xin+xpos][yin+ypos]
                     if slotNum != unblocked:
-                        print("slots occupied")
+                        # print("slots occupied")
                         return []
                     else:
                         slots_used.append([xin+xpos, yin+ypos])
