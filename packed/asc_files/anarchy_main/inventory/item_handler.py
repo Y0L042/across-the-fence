@@ -152,7 +152,7 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
         inv_itemData = invData["itemData"]
 
         #########################################################
-        # check if the Size is correct (e.g.: values > 0)
+        # check if the DataSize is correct (e.g.: values > 0)
         item_parent_data = item_get_parentData(sData=sData, itemName=item["parent"])
         if len(item_parent_data) == 0:
             print(f"ERROR: item_handler: item_add_to_inv: item_parent_data NOT FOUND - item['parent']: {item['parent']}")
@@ -199,8 +199,10 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
             # ... and add the item to its itemData
             inv_itemData[item["id"]] = item
 
-            # also update the items InventoryPosition. Set the first entry (top left corner) as inventoryPos
+            # also update the items InventoryPosition. Set the first entry (top left corner) as inventoryPos...
             item["invPos"] = slot_usage[0]
+            # ... and set the ID of the "crate"
+            item["curInv"] = invData["crateID"]
         else:
             print(f"ERROR: item_add_list: No free slots found for x_ItemData:\n{item}\n RowCount: {grid_rows}\n-------------")
         #########################################################
@@ -230,7 +232,7 @@ def loot_item_generate(sData, x_dict, DEBUG_itemInfo=None):
         # print(f"DEBUG: DEBUG_itemInfo: {DEBUG_itemInfo}")
         return loot_item_generate(sData, sData.lootData["tables"][selected_type], DEBUG_itemInfo)
     else:
-        print(f"DEBUG: loot_item_generate: selected_type: {selected_type}")
+        # print(f"DEBUG: loot_item_generate: selected_type: {selected_type}")
         return selected_type
 
 
@@ -242,13 +244,17 @@ def loot_item_list_create(sData, crate_id, loot_type, loot_count):
     :param loot_count:  INT - Amount of Items to be created
     :return:            Array with itemNames. Example: ["item1", "item2"]
     """
-    print(f"DEBUG: loot_item_list_create: initial_seed: {initial_seed}")
+
+    # initial_seed = f"{sData.lootData['globalseed']} - {crate_id} - {loot_type}"
+    # print(f"DEBUG: loot_item_list_create: initial_seed: {initial_seed}")
+
     # list of item names
     loot_list = []
     # check if loot_type exists
-    if loot_type in sData.lootData["tables"]:
+    if loot_type in sData.lootData["tables"]["types"]:
         for x in range(loot_count):
-            loot_list.append(loot_item_generate(sData, sData.lootData["tables"][loot_type]))
+            # start with the "type"
+            loot_list.append(loot_item_generate(sData, sData.lootData["tables"]["types"][loot_type]))
 
     # return the loot_list array with the their item-names
     return loot_list
@@ -262,6 +268,9 @@ def item_get_parentData(sData, itemName: str = None):
         return {}
     # get the parent-itemData
     try:
-        return sData.itemParentData[itemName]
-    except KeyError:
-        print(f"ERROR: item_get_parentData: KeyError: itemName: {itemName}")
+        if itemName in sData.itemParentData:
+            return sData.itemParentData[itemName]
+        elif itemName in sData.itemSubTypes:
+            return sData.itemSubTypes[itemName]
+    except Exception as e:
+        print(f"ERROR: item_get_parentData: Exception:\nitemName: {itemName}\nException: {e}")
