@@ -56,11 +56,11 @@ def item_create(parent: str = ""):
         "invPos":       [0, 0],      # TopLeft Position of the Item in the InventoryGrid
         "isFlipped":    0,           # 0/1 - Check if Item was flipped
         "attachments":  {
-            "scope": "",            # TODO: determine what makes more sense: ItemID or full itemData?
-            "magazine": "",         # TODO: determine what makes more sense: ItemID or full itemData?
-            "muzzle": "",           # TODO: determine what makes more sense: ItemID or full itemData?
-            "barrel": "",           # TODO: determine what makes more sense: ItemID or full itemData?
-            "support": "",          # TODO: determine what makes more sense: ItemID or full itemData?
+            # "scope": "",            # TODO: determine what makes more sense: ItemID or full itemData?
+            # "magazine": "",         # TODO: determine what makes more sense: ItemID or full itemData?
+            # "muzzle": "",           # TODO: determine what makes more sense: ItemID or full itemData?
+            # "barrel": "",           # TODO: determine what makes more sense: ItemID or full itemData?
+            # "support": "",          # TODO: determine what makes more sense: ItemID or full itemData?
             },
         }
 
