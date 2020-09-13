@@ -8,6 +8,7 @@ import time
 import sys
 import os
 from anarchy_main.inventory.itemParentData import itemParentData
+from anarchy_main.inventory.itemParentData.subtypes import subtypeData
 from anarchy_main.inventory.loot_tables import loot_tables
 
 
@@ -62,6 +63,8 @@ def server_start():
 
     # ####### load all the Items
     itemParentData.load_files(sData=sData)
+    # ####### load all the Items subTypes
+    subtypeData.load_files(sData=sData)
 
     # ####### load the loot tables
     loot_tables.load_files(sData=sData)
