@@ -242,7 +242,6 @@ def loot_item_list_create(sData, crate_id, loot_type, loot_count):
     :param loot_count:  INT - Amount of Items to be created
     :return:            Array with itemNames. Example: ["item1", "item2"]
     """
-    initial_seed = f"{sData.lootData['globalseed']} - {crate_id} - {loot_type}"
     print(f"DEBUG: loot_item_list_create: initial_seed: {initial_seed}")
     # list of item names
     loot_list = []
