@@ -9,6 +9,7 @@
 		"image": "\\A3\\Weapons_F\\Items\\data\\UI\\gear_gps_CA.paa",
 		"addInvSpace": 0,
 		"hp_max": 100,
+		"tear": 0,
 		"actions": {
 			"action1": ["use Bandage", "an_fnc_bandage_use", 0, []],
 			"actionSomething": ["ShowScriptError", "an_fnc_iDontExist", 0, []]
@@ -23,6 +24,7 @@
 		"image": "\\A3\\Weapons_F\\Items\\data\\UI\\gear_FirstAidKit_CA.paa",
 		"addInvSpace": 0,
 		"hp_max": 100,
+		"tear": 0,
 		"actions": {
 			"action1": ["use FAK", "an_fnc_FAK_use", 0, []]
 		}
@@ -36,6 +38,7 @@
 		"image": "\\A3\\Weapons_F\\Items\\data\\UI\\gear_Medikit_CA.paa",
 		"addInvSpace": 0,
 		"hp_max": 100,
+		"tear": 0,
 		"actions": {
 			"action1": ["use MediKit", "an_fnc_MediKit_use", 0, []]
 		}
