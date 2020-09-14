@@ -139,6 +139,8 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
                         # update the parentData with the subTypeData
                         item.update(subType)
                         print(f"DEBUG: INV_HANDLER: crate_add -> item_create: item #2: {item}")
+                        # ToDo: call a function in item_handler to update/calc stats like hp_cur, depending on... something
+
                     except Exception as e:
                         print(f"DEBUG: INV_HANDLER: crate_add -> item_create: Something went wrong! Error:\n{e}")
                 else:
