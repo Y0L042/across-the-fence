@@ -15,16 +15,23 @@
 	},
 	"bla_awol":
 	{
-		"parent": "vn_m14",
-		"attachments": {"scope": ""},
+		"parent": "vn_m14_lessTearNoScopes",
+		"attachments": {},
 		"hp_max": 160,
 		"rarity": 3
 	},
 	"dscha_burp":
 	{
 		"parent": "vn_m14_alternative",
-		"attachments": {"muzzle":  ""},
+		"attachments": {"scope": ""},
 		"hp_max": 180,
 		"rarity": 4
+	},
+	"megauberm14":
+	{
+		"parent": "dildozer9000",
+		"attachments": {"scope": "", "muzzle":  ""},
+		"hp_max": 9000,
+		"rarity": 9000
 	}
 }
