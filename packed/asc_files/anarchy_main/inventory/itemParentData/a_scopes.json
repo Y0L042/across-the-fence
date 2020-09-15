@@ -4,6 +4,8 @@
 	{
 		"vn_m14": ["vn_o_9x_m14"],
 		"vn_m14_alternative": ["vn_o_9x_m14","vn_o_anpvs2_m14"],
+		"vn_m14_lessTearNoScopes": [],
+		"megauberm14": ["vn_o_9x_m14","vn_o_anpvs2_m14"],
 		"vn_m16": ["vn_o_4x_m16"],
 		"vn_m38": [],
 		"vn_m4956": []
