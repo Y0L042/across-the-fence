@@ -144,16 +144,27 @@ def item_move(client=None, args=()):
 def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
     try:
         if None in [item, invData]:
-            print(f"ERROR: item_add_list: item NOT found.\ninvID: {invData}\nitem: {item}------")
+            print(f"ERROR: item_add_to_inv: item NOT found.\ninvID: {invData}\nitem: {item}------")
             return
 
         invGrid = invData["inv_grid"]
         invGridSize = invData["inv_gridSize"]
         inv_itemData = invData["itemData"]
 
+        # get the parent Data
+        item_parent_data = item_get_parentData(sData=sData, itemName=item["parent"])
+        # check if parent Data is a subclass of a main Item definition
+        try:
+            if "parent" in item_parent_data:
+                mainParentData = sData.itemParentData[item_parent_data["parent"]]
+                mainParentData.update(item_parent_data)
+                item_parent_data = mainParentData
+        except Exception as e:
+            print(f"ERROR: item_add_to_inv: Exception triggered.\ne: {e}\n--------------")
+            return
+
         #########################################################
         # check if the DataSize is correct (e.g.: values > 0)
-        item_parent_data = item_get_parentData(sData=sData, itemName=item["parent"])
         if len(item_parent_data) == 0:
             print(f"ERROR: item_handler: item_add_to_inv: item_parent_data NOT FOUND - item['parent']: {item['parent']}")
             return invData
