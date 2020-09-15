@@ -1,5 +1,4 @@
 {
-	"bandage": 3,
-	"FirstAidKit": 3,
-	"Medikit": 3
+	"firstaidkits": 3,
+	"vn_b_item_medikit_01": 3
 }
