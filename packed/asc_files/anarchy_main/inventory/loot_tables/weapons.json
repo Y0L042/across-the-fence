@@ -1,11 +1,12 @@
 
 {
-	"pistols": 5,
-	"rifles": 3,
+	"pistols": 3,
+	"rifles": 2,
 	"shotguns": 2,
 	"lmg": 3,
 	"machineguns": 1,
 	"submachineguns": 2,
 	"melee": 3,
-	"rocketlaunchers": 1
+	"rocketlaunchers": 1,
+	"sniperrifles" : 1,
 }
