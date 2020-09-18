@@ -38,3 +38,22 @@ private _tKey = call AN_S_fnc_key_create;
 	"asc_extension" callExtension ["init_client",[_ip,_port,_tKey, _uid]];
   }
 ] remoteExecCall ["call", _owner];
+
+
+
+
+/////////////////////////////////////////
+// DEV / TEST STUFF
+
+diag_log "DEBUG: Adding EH 'FIRED' to unit...";
+vn_fnc_s_EH_fired =
+{
+	params ["_unit", "_weapon", "_muzzle", "_mode", "_ammo", "_magazine", "_projectile", "_gunner"];
+	diag_log ["DEBUG: EH: FIRED: Current Wpn : ", currentWeapon _unit];
+	if(_weapon isEqualTo primaryWeapon _unit)exitWith{["user_fired", [getPlayerUID _unit, 0]] call AN_G_fnc_msg_send;};
+	if(_weapon isEqualTo handgunWeapon _unit)exitWith{["user_fired", [getPlayerUID _unit, 1]] call AN_G_fnc_msg_send;};
+	if(_weapon isEqualTo secondaryWeapon _unit)exitWith{["user_fired", [getPlayerUID _unit, 2]] call AN_G_fnc_msg_send;};
+};
+_OwnerPawn addEventHandler ["Fired",{_this call vn_fnc_s_EH_fired}];
+diag_log "DEBUG: Adding EH 'FIRED' to unit... done";
+
