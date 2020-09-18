@@ -112,7 +112,9 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
             print(f"DEBUG: INV_HANDLER: crate_add: skill_scavenging: {skill_scavenging}")
 
             # ToDo: recalculate the loot_count properly, based on the scavenging skill!
-            loot_count = random.randrange(loot_count, int(loot_count+(skill_scavenging * DEFAULT_loot_skill_multiplier)))
+            # check if skill is high enough, otherwise randRange will complain, that the "end"-number isn't high enough... (must be "start < end")
+            if skill_scavenging > 0:
+                loot_count = random.randrange(loot_count, int(loot_count + (skill_scavenging * DEFAULT_loot_skill_multiplier)))
             print(f"DEBUG: INV_HANDLER: crate_add: loot_count: {loot_count}")
 
             # get the list of Item names
