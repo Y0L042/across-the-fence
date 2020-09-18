@@ -10,12 +10,12 @@ def message_handler_c(client=None, code: str = "None", args=()):
 	"""
 
 	if client is None:
-		print("ERROR: MESSAGE_HANDLER: CLIENT DATA NOT PASSED")
+		print("ERROR: MSG_HANDLER_C: CLIENT DATA NOT PASSED")
 		return
-	print(f"DEBUG: ################# MSG_HANDLER ########################")
-	print(f"DEBUG: MSG_HANDLER_C: code       : {code}")
-	print(f"DEBUG: MSG_HANDLER_C: *args      : {args}")
-	print(f"DEBUG: ######################################################")
+	if args is None:
+		args = ()
+
+	print(f"DEBUG: MSG_HANDLER_C: Code: {code} - args: {args}")
 
 	try:
 		if len(args) > 0:
@@ -48,16 +48,12 @@ def message_handler_s(sData=None, code: str = "None", args=None):
 	"""
 	if sData is None:
 		# DEV
-		print("DEBUG: ################# MSG_HANDLER ########################")
-		print("DEBUG: sData NOT PASSED AS ARGUMENT!")
-		print(f"DEBUG: ######################################################")
+		print("ERROR: MSG_HANDLER_S: sData NOT PASSED!")
 		return
 	if args is None:
 		args = ()
-	print(f"DEBUG: ################# MSG_HANDLER ########################")
-	print(f"DEBUG: MSG_HANDLER_S: code       : {code}")
-	print(f"DEBUG: MSG_HANDLER_S: *args      : {args}")
-	print(f"DEBUG: ######################################################")
+
+	print(f"DEBUG: MSG_HANDLER_S: Code: {code} - args: {args}")
 
 	try:
 		if len(args) > 0:
