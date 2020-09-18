@@ -13,11 +13,14 @@ if(_owner == 2)exitWith{};
 Pretty ugly way to wait, to determine if the damn player has finished his initialization, but...
 it's needed... Client EH's need to be set up, to reliably receive all the data...
 */
+private _timeout = diag_tickTime + 20;
+private _ownerPawn = nil;
 waitUntil
 {
-	_getOwnerPawn = {if(owner _x isEqualTo _owner)exitWith{"done"};}forEach allPlayers;
-	!isNil "_getOwnerPawn"
+	_ownerPawn = {if(owner _x isEqualTo _owner)exitWith{_x};}forEach allPlayers;
+	(!isNil "_ownerPawn" || _timeout < diag_tickTime)
 };
+if(_timeout < diag_tickTime)exitWith{diag_log format["DEBUG: PLAYER_CONNECTED: CONNECTION TIMEOUT FOR PLAYERID: %1", _owner]};
 
 // create 32Byte TempKey, so we know which client connection belongs to which PlayerUID
 private _tKey = call AN_S_fnc_key_create;
