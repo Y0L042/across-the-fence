@@ -53,8 +53,8 @@ if (isNil "vn_an_gamestarting") then
 	//["save_time_elapsed", {call vn_mf_fnc_save_time_elapsed}, [], 5] call para_g_fnc_scheduler_add_job;
 
 	// spawn buildables and init vars
-	diag_log "VN Anarchy: Loading buildables";
-	call para_s_fnc_spawn_buildables;
+	diag_log "VN Anarchy: Initialising building system";
+	call para_s_fnc_building_system_init;
 
 
 	diag_log "VN Anarchy: Starting building state tracker";
@@ -72,12 +72,15 @@ if (isNil "vn_an_gamestarting") then
 	//Initialise the AI loadbalancer.
 	[] call para_s_fnc_loadbal_subsystem_init;
 	para_s_fnc_harass_blocked_areas = {
-		vn_mf_markers_blocked_areas + vn_mf_markers_no_harass
+		//vn_mf_markers_blocked_areas + vn_mf_markers_no_harass
+		[]
 	};
 
 	// start ai subsystem. Depends on the load balancer subsystem.
 	[] call para_s_fnc_ai_obj_subsystem_init;
 
+	para_g_enemiesPerPlayer = 2;
+	publicVariable "para_g_enemiesPerPlayer";
 	// Start harassment subsystem. Depends on the AI subsystem.
 	[] call para_s_fnc_harass_subsystem_init;
 
