@@ -16,7 +16,9 @@ cmdList = {
 				# Try to get data from crates/Inventories.
 				"crate_data_get": inv_handler.crate_data_get,
 				# remove crates from the database
-				"crate_rem": inv_handler.crate_rem
+				"crate_rem": inv_handler.crate_rem,
+				# item degradation
+				"user_fired": item_handler.item_degrade
 			},
 		'arma_server': {
 				# "functionTag in Arma": "Function to execute"
@@ -24,7 +26,7 @@ cmdList = {
 				"s_example_return": "ASC_fnc_example",
 				"s_test":           "ASC_fnc_example",
 				"s_abc":            "ASC_fnc_example",
-				# DEV
+				# Inventory
 				"crate_add":        "AN_S_fnc_crate_add"
 			},
 		'client': {

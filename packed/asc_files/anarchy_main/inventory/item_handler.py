@@ -285,3 +285,6 @@ def item_get_parentData(sData, itemName: str = None):
             return sData.itemSubTypes[itemName]
     except Exception as e:
         print(f"ERROR: item_get_parentData: Exception:\nitemName: {itemName}\nException: {e}")
+
+def item_degrade(sData, user, itemID):
+    print(f"Userdata: {sData.database.players[user]}")
