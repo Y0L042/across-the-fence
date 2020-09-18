@@ -286,5 +286,15 @@ def item_get_parentData(sData, itemName: str = None):
     except Exception as e:
         print(f"ERROR: item_get_parentData: Exception:\nitemName: {itemName}\nException: {e}")
 
-def item_degrade(sData, user, itemID):
-    print(f"Userdata: {sData.database.players[user]}")
+def item_degrade(sData, user, itemType, *args):
+    # slotID:
+    # 0 Primary
+    # 1 Handgun
+    # 2 Secondary (launcher)
+    if itemType == "wpn":
+        slotID, ammoType, firemode = args
+        print(f"DEBUG: item_degrade - user: {user} - args: {args}"
+              f"\nslotID   - {slotID}"
+              f"\nfiremode - {firemode}"
+              f"\nammoType - {ammoType}")
+        # print(f"DEBUG: item_degrade - userdata: {sData.database.players[user]}")
