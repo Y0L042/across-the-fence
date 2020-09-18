@@ -117,37 +117,37 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
 
             # get the list of Item names
             items_list = item_handler.loot_item_list_create(sData=sData, crate_id=crateID, loot_count=loot_count, loot_type=lootType)
-            print(f"DEBUG: INV_HANDLER: crate_add: items_list_raw: {items_list}")
+            print(f"DEBUG: INV_HANDLER: crate_add: items_list_raw: {items_list}\n----------------")
 
             # cycle through all the parents (parent can either be full itemData or a subType)
             for parent in items_list:
-                # Check if the "parent" is a subType. If so: Get the parent-name from the subType
-                if parent in sData.itemSubTypes:
-                    # create the Item Data structure
-                    subType_parent = sData.itemSubTypes[parent]["parent"]
-                    print(f"DEBUG: INV_HANDLER: crate_add: subType_class: {parent}")
-                    print(f"DEBUG: INV_HANDLER: crate_add: subType_parent: {subType_parent}")
+                try:
+                    # Check if the "parent" is a subType. If so: Get the parent-name from the subType
+                    if parent in sData.itemSubTypes:
+                        # create the Item Data structure
+                        subType_parent = sData.itemSubTypes[parent]["parent"]
+                        print(f"DEBUG: INV_HANDLER: crate_add: subType_class: {parent} - subType_parent: {subType_parent}")
 
-                    # create and get the Item Data structure
-                    item = item_handler.item_create(parent=subType_parent)
-                    # item = item_handler.item_create(parent=parent)
-                    try:
+                        # create and get the Item Data structure
+                        item = item_handler.item_create(parent=subType_parent)
                         # get the subTypeData of the desired Item
                         subType = sData.itemSubTypes[parent]
-                        print(f"DEBUG: INV_HANDLER: crate_add: subType: {subType}")
-                        print(f"DEBUG: INV_HANDLER: crate_add: item: {item}")
+                        print(f"DEBUG: INV_HANDLER: crate_add: subType: {subType} -  item: {item}")
                         # update the parentData with the subTypeData
                         item.update(subType)
                         print(f"DEBUG: INV_HANDLER: crate_add -> item_create: item #2: {item}")
                         # ToDo: call a function in item_handler to update/calc stats like hp_cur, depending on... something
+                    else:
+                        item = item_handler.item_create(parent=parent)
 
-                    except Exception as e:
-                        print(f"DEBUG: INV_HANDLER: crate_add -> item_create: Something went wrong! Error:\n{e}")
-                else:
-                    item = item_handler.item_create(parent=parent)
+                    # Add item to Inventory and update the invData
+                    invData, item = item_handler.item_add_to_inv(sData=sData, invData=invData, isLootcrate=isLootcrate, item=item)
 
-                # Add item to Inventory and update the invData
-                invData, item = item_handler.item_add_to_inv(sData=sData, invData=invData, isLootcrate=isLootcrate, item=item)
+                # in case the item wasn't defined in parentData -> Create a default/fallback item
+                except Exception as e:
+                    print(f"ERROR: INV_HANDLER: create_add: ITEM DEFINITION NOT FOUND: {parent} - Creating dummy Icon")
+                    item = item_handler.item_create(parent="PLACEHOLDER")
+                    invData, item = item_handler.item_add_to_inv(sData=sData, invData=invData, isLootcrate=isLootcrate, item=item)
             print(f"DEBUG: INV_HANDLER: crate_add: invData: {invData}")
 
         # store in database, under temporary crates

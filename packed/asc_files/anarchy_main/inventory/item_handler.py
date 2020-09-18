@@ -159,8 +159,8 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
                 mainParentData = sData.itemParentData[item_parent_data["parent"]]
                 mainParentData.update(item_parent_data)
                 item_parent_data = mainParentData
-        except Exception as e:
-            print(f"ERROR: item_add_to_inv: Exception triggered.\ne: {e}\n--------------")
+        except TypeError:
+            # Parent definition not found. Exit here and re-add a dummy/fallback Item instead (triggered by returning "none")
             return
 
         #########################################################
@@ -219,13 +219,16 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
         #########################################################
 
         # return the updated invData!
-        print(f"invData:\n{invData}")
+        print(f"DEBUG: item_handler: item_add_to_inv: invData:\nDEBUG: {invData}\n----------------------")
         return [invData, item]
 
         # client.cData["itemData"][newItem["id"]] = newItem
         # print(client.cData["itemData"])
         # # ToDo: TEMP! Saving will be done by an extra Thread from the Server! e.g. every 10 "pushes" OR every 10s -> save data to file
         # client.sData.database.db_save()
+    except TypeError:
+        # print(f'--------------\nERROR: item_add_to_inv: Error while getting parent definition for {item["parent"]} (undefined baseItem?) - Creating Dummy Item\n--------------')
+        return
     except Exception as e:
         print(f"-------------\nERROR: item_add_list: EXCEPTION:\n{e}\n-------------")
 
