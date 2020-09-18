@@ -48,11 +48,22 @@ private _tKey = call AN_S_fnc_key_create;
 diag_log "DEBUG: Adding EH 'FIRED' to unit...";
 vn_fnc_s_EH_fired =
 {
+	/*
+		unit: Object - Object the event handler is assigned to
+		weapon: String - Fired weapon
+		muzzle: String - Muzzle that was used
+		mode: String - Current mode of the fired weapon
+		ammo: String - Ammo used
+		magazine: String - magazine name which was used
+		projectile: Object - Object of the projectile that was shot out
+		Introduced with Arma 3 version 1.651.65 gunner: Object - gunner whose weapons are firing.
+	*/
 	params ["_unit", "_weapon", "_muzzle", "_mode", "_ammo", "_magazine", "_projectile", "_gunner"];
-	diag_log ["DEBUG: EH: FIRED: Current Wpn : ", currentWeapon _unit];
-	if(_weapon isEqualTo primaryWeapon _unit)exitWith{["user_fired", [getPlayerUID _unit, 0]] call AN_G_fnc_msg_send;};
-	if(_weapon isEqualTo handgunWeapon _unit)exitWith{["user_fired", [getPlayerUID _unit, 1]] call AN_G_fnc_msg_send;};
-	if(_weapon isEqualTo secondaryWeapon _unit)exitWith{["user_fired", [getPlayerUID _unit, 2]] call AN_G_fnc_msg_send;};
+	diag_log ["DEBUG: EH: FIRED: _this       : ", _this];
+	// diag_log ["DEBUG: EH: FIRED: Current Wpn : ", currentWeapon _unit];
+	if(_weapon isEqualTo primaryWeapon _unit)exitWith{["user_fired", [getPlayerUID _unit, "wpn", 0, _ammo, _mode]] call AN_G_fnc_msg_send;};
+	if(_weapon isEqualTo handgunWeapon _unit)exitWith{["user_fired", [getPlayerUID _unit, "wpn", 1, _ammo, _mode]] call AN_G_fnc_msg_send;};
+	if(_weapon isEqualTo secondaryWeapon _unit)exitWith{["user_fired", [getPlayerUID _unit, "wpn", 2, _ammo, _mode]] call AN_G_fnc_msg_send;};
 };
 _OwnerPawn addEventHandler ["Fired",{_this call vn_fnc_s_EH_fired}];
 diag_log "DEBUG: Adding EH 'FIRED' to unit... done";
