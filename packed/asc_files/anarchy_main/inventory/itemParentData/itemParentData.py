@@ -22,3 +22,16 @@ def load_files(sData):
 			print(f"ERROR: LOAD_FILES: Could not load filename: {filename} - Error: {e}")
 
 	print(f'#### Loading itemData... done')
+
+	# add a "placeholder" aka fallback Item:
+	sData.itemParentData["PLACEHOLDER"] = {
+				"size":        [1, 1],
+				"slot":        0,
+				"class_name":  "",
+				"name":        "PLACEHOLDER",
+				"image":       "\\vn\\ui_f_vietnam\\data\\logo\\savage_ca.paa",
+				"addInvSpace": 0,
+				"hp_max":      1,
+				"tear":        0,
+				"actions":     {}
+			}
