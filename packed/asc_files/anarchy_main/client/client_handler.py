@@ -1,8 +1,6 @@
 from asc_fnc import *
 from anarchy_main.inventory import *
 
-# from asc_fnc import timestamp_get
-
 def client_add(**kwargs):
 	# Default Values for new Clients
 	cData = {
@@ -33,11 +31,10 @@ def client_add(**kwargs):
 			'uniform': {},
 			'pouch': {},
 			'tool': {},
-			'weapon_main': {},
-			'weapon_main_b': {},
-			'weapon_hand': {},
-			'weapon_secondary': {},
-			'weapon_launcher': {}
+			'w_main': {},
+			'w_main_b': {},
+			'w_hand': {},
+			'w_launcher': {}
 			},
 		'ammo': {
 				"ammoType_a": 0,
@@ -58,17 +55,13 @@ def client_init(self):
 		print(f"ASC: CLIENT HANDLER: PUID NOT FOUND. CREATING NEW ENTRY FOR PUID: {self.puid}")
 		self.cData = client_add(puid=self.puid)
 		self.sData.database.player_data_set(self.puid, self.cData)
-	# DEV
-	# for i in range(1000):
-	# 	if i % 100 == 99:
-	# 		print(i)
-	# 	sData.database.player_data_set(i, cData)
+
 	# send item Data
-	print("SENDING INIT_ITEMDATA...")
+	print(f"SENDING INIT_ITEMDATA TO {self.puid}... ")
 	asc_g_msg.sendMsg("INIT_ITEMDATA", self.sData.itemParentData, self.con_client)
-	print("SENDING INIT_ITEMDATA... DONE")
+	print(f"SENDING INIT_ITEMDATA TO {self.puid}... DONE")
 	# send player Data
-	print("SENDING INIT_CLIENTDATA...")
+	print(f"SENDING INIT_CLIENTDATA TO {self.puid}...")
 	asc_g_msg.sendMsg("INIT_CLIENTDATA", self.cData, self.con_client)
-	print("SENDING INIT_CLIENTDATA... DONE")
+	print(f"SENDING INIT_CLIENTDATA TO {self.puid}... DONE")
 
