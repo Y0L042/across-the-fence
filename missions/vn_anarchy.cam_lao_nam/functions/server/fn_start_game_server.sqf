@@ -82,7 +82,8 @@ if (isNil "vn_an_gamestarting") then
 	para_g_enemiesPerPlayer = 2;
 	publicVariable "para_g_enemiesPerPlayer";
 	// Start harassment subsystem. Depends on the AI subsystem.
-	[] call para_s_fnc_harass_subsystem_init;
+	// Disabled until it's configured for Anarchy
+  //[] call para_s_fnc_harass_subsystem_init;
 
 	// start vehicle asset management subsystem
 	// [] call vn_mf_fnc_veh_asset_subsystem_init;
