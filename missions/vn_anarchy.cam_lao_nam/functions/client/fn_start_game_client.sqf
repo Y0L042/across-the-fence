@@ -17,21 +17,31 @@
 0 spawn {
 	diag_log "VN: Client Init started";
 
-	waitUntil {uiSleep 0.1; !(call BIS_fnc_isLoading)};
-
 	cutText ["", "BLACK IN", 1];
 
-	// start loading screen
-	startLoadingScreen ["Welcome to Anarchy!", "para_loadingScreen"];
+	//We can show the loading screen after the player is pretty much fully initialised in-mission.
+	waitUntil {
+		uiSleep 0.1;
+		//After pre-load is completed (all functions initialised)
+		missionNamespace getVariable ["bis_fnc_preload_init", false]
+		//No loading screens
+		&& !(call BIS_fnc_isLoading)
+		//After briefing
+		&& getClientStateNumber >= 10
+		//Player is loaded into game
+		&& !isNull findDisplay 46
+	};
+
+
+
 
 	// [selectRandom (getArray(missionConfigFile >> "gamemode" >> "loadingScreens" >> "images")),5002] call vn_an_fnc_update_loading_screen;
 
     	player disableConversation true;
 
-	waitUntil {uiSleep 0.1; getClientStateNumber > 8};
+	// start loading screen
+	startLoadingScreen ["Welcome to Anarchy!", "para_loadingScreen"];
 
-	// wait for player to load into game
-	waitUntil {uiSleep 0.1; !isNull findDisplay 46};
 
 	vn_an_loading_started = diag_tickTime;
 
