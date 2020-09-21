@@ -28,7 +28,7 @@ cmdList = {
 				"s_test":                   {"fnc": "ASC_fnc_example", "spawn": 0},
 				"s_abc":                    {"fnc": "ASC_fnc_example", "spawn": 0},
 				# player spawning
-				"player_spawn_setGear":     {"fnc": "AN_S_fnc_player_spawn", "spawn": 1},
+				"loadout_set":            {"fnc": "AN_S_fnc_loadout_set", "spawn": 1},
 				# Inventory
 				"crate_add":                {"fnc": "AN_S_fnc_crate_add", "spawn": 0}
 			},
