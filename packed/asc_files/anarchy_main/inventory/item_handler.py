@@ -295,9 +295,10 @@ def item_degrade(sData, user, itemType, *args):
     # 1 Handgun
     # 2 Secondary (launcher)
     if itemType == "wpn":
-        slotID, ammoType, firemode = args
+        slotID, ammoType, firemode, shots = args
         print(f"DEBUG: item_degrade - user: {user} - args: {args}"
               f"\nslotID   - {slotID}"
               f"\nfiremode - {firemode}"
-              f"\nammoType - {ammoType}")
+              f"\nammoType - {ammoType}"
+              f"\nshots - {shots}")
         # print(f"DEBUG: item_degrade - userdata: {sData.database.players[user]}")
