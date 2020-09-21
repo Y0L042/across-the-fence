@@ -23,11 +23,14 @@ cmdList = {
 		'arma_server': {
 				# "functionTag in Arma": "Function to execute"
 				# NOTE: Make sure, that the Tag is compatible with the Arma 3 Variable logic
-				"s_example_return": "ASC_fnc_example",
-				"s_test":           "ASC_fnc_example",
-				"s_abc":            "ASC_fnc_example",
+				#
+				"s_example_return":         {"fnc": "ASC_fnc_example", "spawn": 0},
+				"s_test":                   {"fnc": "ASC_fnc_example", "spawn": 0},
+				"s_abc":                    {"fnc": "ASC_fnc_example", "spawn": 0},
+				# player spawning
+				"player_spawn_setGear":     {"fnc": "AN_S_fnc_player_spawn", "spawn": 1},
 				# Inventory
-				"crate_add":        "AN_S_fnc_crate_add"
+				"crate_add":                {"fnc": "AN_S_fnc_crate_add", "spawn": 0}
 			},
 		'client': {
 				# ""Tag" send from Arma" : Function in the backend
@@ -39,10 +42,10 @@ cmdList = {
 		'arma_client': {
 				# "functionTag in Arma": "Function to execute"
 				# NOTE: Make sure, that the Tag is compatible with the Arma 3 Variable logic
-				"INIT_CLIENTDATA":      "AN_c_fnc_clientData_init",
-				"INIT_ITEMDATA":        "AN_c_fnc_items_setData",
-				"ret_inv_get_grid":     "DEV_an_fnc_hintGrid",
-				"ret_inv_get_items":    "DEV_an_fnc_hintItemData",
-				"ret_inv_crateData":    "AN_c_fnc_loot_inv_get"
+				"INIT_CLIENTDATA":      {"fnc": "AN_c_fnc_clientData_init", "spawn": 0},
+				"INIT_ITEMDATA":        {"fnc": "AN_c_fnc_items_setData", "spawn": 0},
+				"ret_inv_get_grid":     {"fnc": "DEV_an_fnc_hintGrid", "spawn": 0},
+				"ret_inv_get_items":    {"fnc": "DEV_an_fnc_hintItemData", "spawn": 0},
+				"ret_inv_crateData":    {"fnc": "AN_c_fnc_loot_inv_get", "spawn": 0}
 			}
 		}
