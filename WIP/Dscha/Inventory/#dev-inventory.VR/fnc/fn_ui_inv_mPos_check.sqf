@@ -28,7 +28,7 @@ private _mPos = [_mPos_x,_mPos_y];
 		if(_check)exitWith
 		{
 			_ctrl_grid = uinameSpace getVariable [_var_toPass,controlNull];
-			private _mPos_rel = getMousePositionRelative _ctrl_grid;
+			private _mPos_rel = ctrlMousePosition _ctrl_grid;
 			[_ctrl_grid,_btn,(_mPos_rel#0),(_mPos_rel#1),_btn_shift,_btn_ctrl,_btn_alt] call vn_an_fnc_ui_inv_mpos;
 			// [_ctrl_grid,_btn,(_mPos_x - _p_x),(_mPos_y - _p_y),_btn_shift,_btn_ctrl,_btn_alt] call vn_an_fnc_ui_inv_mpos;
 		};
