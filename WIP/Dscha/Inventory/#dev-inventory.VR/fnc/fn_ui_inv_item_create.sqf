@@ -45,8 +45,8 @@ _tile_H = _grid_h / _inv_size_y;
 _canFlip = if(_parent_size_y == _parent_size_x)then{0}else{1};
 if((_canFlip == 0) && !vn_an_inv_move_placeHorizontal)then{vn_an_inv_move_placeHorizontal = true};
 //get width and height of selected icon
-_ctrlGrp_item_w = if(vn_an_inv_move_placeHorizontal)then{_tile_W*(_parent_size#1)}else{_tile_H*(_parent_size#0)};
-_ctrlGrp_item_h = if(vn_an_inv_move_placeHorizontal)then{_tile_H*(_parent_size#0)}else{_tile_W*(_parent_size#1)};
+_ctrlGrp_item_w = if(vn_an_inv_move_placeHorizontal)then{_tile_W*(_parent_size_x)}else{_tile_H*(_parent_size_y)};
+_ctrlGrp_item_h = if(vn_an_inv_move_placeHorizontal)then{_tile_H*(_parent_size_y)}else{_tile_W*(_parent_size_x)};
 
 
 //if needed -> "rotate" the main ctrlGroup and adjust the values to 4/3 (Arma Base Resolution)
