@@ -15,18 +15,14 @@
 	]
 */
 
+#include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
 params["_ctrl_invGrid","_pos_x","_pos_y","_item_class","_usedSlots"];
 
-//get Item data from config
-(_item_class call vn_an_fnc_ui_inv_item_getData) params
-[
-	 "_item_size"
-	,"_canFlip"
-	,"_cfgBase"
-	,"_class_base"
-];
+//get Item parentData
+private _parent_data = _item_class call vn_an_fnc_ui_inv_item_getData;
+ENTRY_GET("size",_parent_data) params ["_parent_size_y", "_parent_size_x"];
 
 private _disp = uinamespace getvariable ["vn_an_inventory", DisplayNull];
 //create the Icon
@@ -39,16 +35,18 @@ missionNameSpace setVariable ["vn_an_Item_IDC_count",(_item_IDC + 1)];
 
 (missionNameSpace getVariable [format["vn_an_inv_grid_size_%1",(ctrlIDC _ctrl_invGrid)],[-1,-1]]) params["_inv_size_x","_inv_size_y"];
 // _inv_size_x	-	INT - ixed amout of slots
-// _inv_size_y	-	INT - variable amout of slots
+// _inv_size_y	-	INT - variable amout of slots 
+
 if(_inv_size_x < 0 || _inv_size_y < 0)exitWith{systemchat str ["ITEM_CREATE: GRID NOT SET!",[_inv_size_x,_inv_size_y]];};
 _tile_W = _grid_w / _inv_size_x;
 _tile_H = _grid_h / _inv_size_y;
 
 // systemchat str [!_canFlip, !vn_an_inv_move_placeHorizontal];
+_canFlip = if(_parent_size_y == _parent_size_x)then{0}else{1};
 if((_canFlip == 0) && !vn_an_inv_move_placeHorizontal)then{vn_an_inv_move_placeHorizontal = true};
 //get width and height of selected icon
-_ctrlGrp_item_w = if(vn_an_inv_move_placeHorizontal)then{_tile_W*(_item_size#1)}else{_tile_H*(_item_size#0)};
-_ctrlGrp_item_h = if(vn_an_inv_move_placeHorizontal)then{_tile_H*(_item_size#0)}else{_tile_W*(_item_size#1)};
+_ctrlGrp_item_w = if(vn_an_inv_move_placeHorizontal)then{_tile_W*(_parent_size#1)}else{_tile_H*(_parent_size#0)};
+_ctrlGrp_item_h = if(vn_an_inv_move_placeHorizontal)then{_tile_H*(_parent_size#0)}else{_tile_W*(_parent_size#1)};
 
 
 //if needed -> "rotate" the main ctrlGroup and adjust the values to 4/3 (Arma Base Resolution)
@@ -67,7 +65,12 @@ _ctrlGrp_item ctrlCommit 0;
 	_ctrl ctrlCommit 0;
 	if(_x == 200)then
 	{
-		_item_img = getText(configFile >> _cfgBase >> _class_base >> "picture");
+		_item_img = ENTRY_GET("image",_parent_data);
+		if(_item_img isEqualTo "")then
+		{
+			private _cfgBase = [ENTRY_GET("slot",_parent_data)] call vn_an_fnc_item_getCfgClass;
+			_item_img = getText(configFile >> _cfgBase >> _item_class >> "picture");
+		};
 		_ctrl ctrlSetText _item_img;
 	};
 	//if flipped/roated by 90° -> do other stuff

@@ -35,5 +35,5 @@ private _mPos = [_mPos_x,_mPos_y];
 	};
 }forEach[
 			 ["vn_an_inv_player_area","vn_an_inv_player"]
-			,["vn_an_inv_player_b_area","vn_an_inv_player_b"]
+			,["vn_an_inv_crate_area","vn_an_inv_crate"]
 		];

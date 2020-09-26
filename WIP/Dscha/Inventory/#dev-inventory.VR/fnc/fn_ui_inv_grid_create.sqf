@@ -29,7 +29,7 @@ for "_p_y" from 0 to (_size_y-1)do
 {
 	private _curRow = [];
 	private _row = _p_y;
-	for "_p_x" from 0 to (_size_x-1)do	//should always be 5
+	for "_p_x" from 0 to (_size_x-1)do	//should always be 8
 	{
 		_idc = parseNumber (format["%1%2",_p_y,_p_x]);
 		_curRow pushback [_row,_p_x,_idc];
@@ -41,5 +41,8 @@ for "_p_y" from 0 to (_size_y-1)do
 	_grid pushback _curRow;
 };
 
+diag_log ["DEBUG: ui_inv_grid_create: size: ", missionNameSpace getVariable [format["vn_an_inv_grid_size_%1",(ctrlIDC _ctrlGrp)],[]]];
 missionNameSpace setVariable [format["vn_an_inv_grid_size_%1",(ctrlIDC _ctrlGrp)],[_size_x,_size_y]];
+
+diag_log ["DEBUG: ui_inv_grid_create: grid: ", missionNameSpace getVariable [format["vn_an_inv_grid_%1",(ctrlIDC _ctrlGrp)],[]]];
 missionNameSpace setVariable [format["vn_an_inv_grid_%1",(ctrlIDC _ctrlGrp)],_grid];

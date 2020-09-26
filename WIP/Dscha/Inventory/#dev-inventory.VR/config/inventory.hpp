@@ -119,8 +119,8 @@ class vn_an_inventory
 	
 	class Controls
 	{
-		//scrollable
-		class grid_area: vn_RscControlsGroupNoScrollbarH
+		// Inventory: Player
+		class grid_player: vn_RscControlsGroupNoScrollbarH
 		{
 			idc = 1100;
 			
@@ -140,8 +140,7 @@ class vn_an_inventory
 			
 			class controls
 			{
-				//not "scrollable"
-				class grid_personal: vn_RscControlsGroupNoScrollbarHV
+				class grid_area: vn_RscControlsGroupNoScrollbarHV
 				{
 					idc = 1000;
 					
@@ -180,7 +179,8 @@ class vn_an_inventory
 			};
 		};
 		
-		class grid_area_b: vn_RscControlsGroupNoScrollbarH
+		// Inventory: External
+		class grid_crate: vn_RscControlsGroupNoScrollbarH
 		{
 			idc = 1101;
 			
@@ -190,8 +190,8 @@ class vn_an_inventory
 			h = UIH(20);
 			
 			
-			onLoad = "uinamespace setvariable [""vn_an_inv_player_b_area"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""vn_an_inv_player_b_area"", controlNull];";
+			onLoad = "uinamespace setvariable [""vn_an_inv_crate_area"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""vn_an_inv_crate_area"", controlNull];";
 			
 			
 			onMouseButtonDown	= "";
@@ -201,8 +201,7 @@ class vn_an_inventory
 			
 			class controls
 			{
-				//not "scrollable"
-				class grid_personal: vn_RscControlsGroupNoScrollbarHV
+				class grid_area: vn_RscControlsGroupNoScrollbarHV
 				{
 					idc = 1001;
 					
@@ -211,8 +210,8 @@ class vn_an_inventory
 					w = UIW(WIDTH);
 					h = UIH(HEIGHT);
 					
-					onLoad = "uinamespace setvariable [""vn_an_inv_player_b"", (_this#0)];";
-					onUnload = "uinamespace setvariable [""vn_an_inv_player_b"", controlNull];";
+					onLoad = "uinamespace setvariable [""vn_an_inv_crate"", (_this#0)];";
+					onUnload = "uinamespace setvariable [""vn_an_inv_crate"", controlNull];";
 					
 					// onMouseButtonDown	= "_this call vn_an_fnc_ui_inv_mPos;";	//RESERVED: "grab" Item
 					// onMouseButtonUp		= "";
