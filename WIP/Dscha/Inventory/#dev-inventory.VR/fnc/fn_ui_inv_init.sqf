@@ -180,9 +180,24 @@ _DEV_cratedata = [
 ];
 
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
-// get the grid data
-private _crate_grid = ENTRY_GET("inv_grid",_DEV_cratedata);
 
+// create the crate grid
+private _crate_gridSize = ENTRY_GET("inv_gridSize",_DEV_cratedata);
+_crate_gridSize params ["_grid_y","_grid_x"];
+diag_log ["DEBUG: UI_INV_INIT: _crate_gridSize :", _crate_gridSize];
+private _ctrlGrp_cont = uinamespace getvariable ["vn_an_inv_crate", controlNull];
+diag_log ["DEBUG: UI_INV_INIT: setting up grid: crate Inventory...     "];
+[_disp,_ctrlGrp_cont,_grid_x, _grid_y] call vn_an_fnc_ui_inv_grid_create;
+diag_log ["DEBUG: UI_INV_INIT: setting up grid: crate Inventory... done"];
+
+
+/* 
+// STAHP! NOT NEEDED! DO NOT ENABLE THIS FUCKING PART HERE! JUST LEFT IN AS SELF-CHASTISEMENT! (Dscha)
+// The fucking tileUsage is being set automaticaly, when i cycle through the list of the godamn Itemlist...
+// fml...
+
+// get the grid data and populate the data
+private _crate_grid = ENTRY_GET("inv_grid",_DEV_cratedata);
 // get the used tiles and store it for later use
 private _crate_tiles_used = [];
 {
@@ -192,17 +207,10 @@ private _crate_tiles_used = [];
 		if(_x == 1)then{_crate_tiles_used pushback [_row_cur,_forEachIndex]};
 	}forEach _row;
 }forEach _crate_grid;
-private _crate_varName = format["vn_an_inv_tileUsage_%1",1000];	//"crate"-grid
-missionNameSpace setVariable [_crate_varName,_crate_tiles_used];
-
-// create the Grid-UI
-private _crate_gridSize = ENTRY_GET("inv_gridSize",_DEV_cratedata);
-_crate_gridSize params ["_grid_y","_grid_x"];
-private _ctrlGrp_cont = uinamespace getvariable ["vn_an_inv_crate", controlNull];
-diag_log ["setting up grid: Player Inventory...     ", _ctrlGrp_cont];
-[_disp,_ctrlGrp_cont,_grid_x, _grid_y] call vn_an_fnc_ui_inv_grid_create;
-diag_log ["setting up grid: Player Inventory... done"];
-
+// 1000 = player
+// 1001 = crate
+missionNameSpace setVariable [format["vn_an_inv_tileUsage_%1",1001],_crate_tiles_used];
+*/
 
 // -------------------- add the Items:
 vn_an_fnc_ui_inv_grid_gridToPos =
@@ -249,7 +257,8 @@ private _items = ENTRY_GET("itemData",_DEV_cratedata);
 	([_crate_ctrl, _crate_gridSize, _item_pos ]call vn_an_fnc_ui_inv_grid_gridToPos) params["_item_pos_y","_item_pos_x"];
 	
 	//DEBUG
-	{ private _text = ["---", _x]; diag_log _text; systemchat str _text; }forEach [_crate_gridSize, _item_pos];
+	diag_log ["DEBUG: UI_INV_INIT: _item_parent    :", _item_parent];
+	diag_log ["DEBUG: UI_INV_INIT: _item_pos       :", _item_pos];
 	
 	// set the classname, to create the Item
 	missionNameSpace setVariable ["vn_an_inv_itemActive",_item_parent];
