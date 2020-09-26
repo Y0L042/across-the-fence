@@ -25,7 +25,7 @@ def load_files(sData):
 
 	# add a "placeholder" aka fallback Item:
 	sData.itemParentData["PLACEHOLDER"] = {
-				"size":        [1, 1],
+				"size":        [2, 2],
 				"slot":        0,
 				"class_name":  "",
 				"name":        "PLACEHOLDER",
