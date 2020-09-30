@@ -22,23 +22,25 @@
 
 
 //Grid
-an_fnc_ui_inv_grid_getSize = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_getSize.sqf";
-an_fnc_ui_inv_grid_create = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_create.sqf";
-an_fnc_ui_inv_grid_isPosIn = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_isPosIn.sqf";
-an_fnc_ui_inv_grid_getPos = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_getPos.sqf";
-an_fnc_ui_inv_grid_check_freeTiles = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_check_freeTiles.sqf";
-an_fnc_ui_inv_grid_updateTiles = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_updateTiles.sqf";
+an_fnc_ui_inv_grid_check_freeTiles = compile preprocessFileLineNumbers "fnc\ui_inv_grid_check_freeTiles.sqf";
+an_fnc_ui_inv_grid_create = compile preprocessFileLineNumbers "fnc\ui_inv_grid_create.sqf";
+an_fnc_ui_inv_grid_getPos = compile preprocessFileLineNumbers "fnc\ui_inv_grid_getPos.sqf";
+an_fnc_ui_inv_grid_getSize = compile preprocessFileLineNumbers "fnc\ui_inv_grid_getSize.sqf";
+an_fnc_ui_inv_grid_gridToPos = compile preprocessFileLineNumbers "fnc\ui_inv_grid_gridToPos.sqf";
+an_fnc_ui_inv_grid_isPosIn = compile preprocessFileLineNumbers "fnc\ui_inv_grid_isPosIn.sqf";
+/* DEBUG function:*/ an_fnc_ui_inv_grid_resetColor = compile preprocessFileLineNumbers "fnc\ui_inv_grid_resetColor.sqf";
+an_fnc_ui_inv_grid_updateTiles = compile preprocessFileLineNumbers "fnc\ui_inv_grid_updateTiles.sqf";
 
-// DEBUG function:
-an_fnc_ui_inv_grid_resetColor = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_resetColor.sqf";
 
 //handling
-an_fnc_ui_inv_mPos_check = compile preprocessFileLineNumbers "fnc\fn_ui_inv_mPos_check.sqf";
-an_fnc_ui_inv_mpos = compile preprocessFileLineNumbers "fnc\fn_ui_inv_mpos.sqf";
-an_fnc_ui_inv_item_create = compile preprocessFileLineNumbers "fnc\fn_ui_inv_item_create.sqf";
-an_fnc_ui_inv_item_remove_DEV = compile preprocessFileLineNumbers "fnc\fn_ui_inv_item_remove_DEV.sqf";
-an_fnc_ui_inv_item_getData = compile preprocessFileLineNumbers "fnc\fn_ui_inv_item_getData.sqf";
-an_fnc_ui_inv_item_grab = compile preprocessFileLineNumbers "fnc\fn_ui_inv_item_grab.sqf";
+an_fnc_ui_inv_item_create = compile preprocessFileLineNumbers "fnc\ui_inv_item_create.sqf";
+an_fnc_ui_inv_item_getData = compile preprocessFileLineNumbers "fnc\ui_inv_item_getData.sqf";
+an_fnc_ui_inv_item_grab = compile preprocessFileLineNumbers "fnc\ui_inv_item_grab.sqf";
+an_fnc_ui_inv_item_remove_DEV = compile preprocessFileLineNumbers "fnc\ui_inv_item_remove_DEV.sqf";
+an_fnc_ui_inv_mpos = compile preprocessFileLineNumbers "fnc\ui_inv_mpos.sqf";
+an_fnc_ui_inv_mPos_check = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check.sqf";
+an_fnc_ui_inv_mPos_check_inInv = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check_inInv.sqf";
+an_fnc_ui_inv_mPos_check_mouse_z = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check_mouse_z.sqf";
 
 //////////////////////////////
 
@@ -213,35 +215,6 @@ missionNameSpace setVariable [format["an_inv_tileUsage_%1",1001],_crate_tiles_us
 */
 
 // -------------------- add the Items:
-an_fnc_ui_inv_grid_gridToPos =
-{
-	/*
-		control	-	control which has the grid in it
-		[4,8]	-	grid size [rows, colums]
-		[2,1]	-	item size [rows, colums]
-	*/
-	params["_ctrl", ["_grid_size",[],[[]]], ["_item_pos",[],[[]]]];
-	
-	if(_item_pos isEqualTo [])exitWith{private _text = "ERROR: ui_inv_grid_gridToPos: NO POS FOUND"; systemchat _text; diag_log _text;};
-	_item_pos params ["_item_pos_y","_item_pos_x"];
-	
-	//get the width and height of the passed control
-	(ctrlPosition _ctrl) params["","","_ctrl_w","_ctrl_h"];
-
-	_grid_size params ["_grid_y","_grid_x"];
-	//calc the width and height of each slot in the control
-	private _grid_w_tile = _ctrl_w / _grid_x;
-	private _grid_h_tile = _ctrl_h / _grid_y;
-	
-	// calc the pos for given grid position (by adding little offset, we can be sure to find the correct one!):
-	_item_gridPos_y = (_grid_w_tile * _item_pos_x) + 0.001;
-	_item_gridPos_x = (_grid_h_tile * _item_pos_y) + 0.001;
-	diag_log ["_item_pos: ", _item_pos, "_item_gridPos: ", [_item_gridPos_y, _item_gridPos_x]];
-	
-	//return the "UI pos" in the grid
-	[_item_gridPos_y, _item_gridPos_x]
-};
-
 private _crate_ctrl = uinamespace getvariable ["an_inv_crate_grid", controlNull];
 private _items = ENTRY_GET("itemData",_DEV_cratedata);
 
@@ -273,10 +246,17 @@ DEV_ITEMTOPLACE_LIST =
 	,[[1,1],"data\magazine.paa",false]
 	,[[4,4],"data\backpack.paa",false]
 ];
+
+
+// Handle scrolling the Mousewheel (only if an item is currently grabbed)
+_disp displayAddEventhandler ["MouseZChanged","call an_fnc_ui_inv_mPos_check_mouse_z"];
+
+
 //////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
 ///////DEV
 
+/* 
 _disp displayAddEventhandler ["KeyDown",
 {
 	params ["_disp", "_key", "_shift", "_ctrl", "_alt"];
@@ -299,9 +279,10 @@ _disp displayAddEventhandler ["KeyDown",
 	};
 	_buttonDisabled
 }];
+ */
 
 
-
+//ToDo: Refine further and move to proper function creation
 an_DEV_MouseEH =
 {
 	//executed from grabbed Item ctrl
@@ -325,27 +306,3 @@ an_DEV_MouseEH =
 	//NEEDED!
 	true
 };
-
-
-
-
-_disp displayAddEventhandler ["MouseZChanged",
-{
-	params ["_displayorcontrol", "_scroll"];
-	
-	// Main ctrlGroup
-	_inv_player_area = uinamespace getvariable ["an_inv_player_area", controlNull];
-	
-	// ctrlGroup child (the stuff that moves)
-	_inv_player_grid = uinamespace getvariable ["an_inv_player_grid", controlNull];
-	
-	// get the pos of the scrollbar and add x% to it, depending on the size of the child
-	_scrollbar_pos = (ctrlScrollValues _inv_player_area)#0;
-	_scrollbar_pos_new = _scrollbar_pos - (_scroll / 12);
-	_scrollvalue = linearConversion [0, 1, _scrollbar_pos_new, 0, 1, true];
-	
-	// Set the Scrollbar:
-	systemchat str [_scrollvalue];
-	_inv_player_area ctrlSetScrollValues [_scrollvalue, -1];
-	
-}];

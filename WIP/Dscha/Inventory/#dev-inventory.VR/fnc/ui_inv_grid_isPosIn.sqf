@@ -1,6 +1,6 @@
 /*
 	simple check if given vars are within a given range
-	called by "fn_ui_inv_get_GridPos.sqf"
+	called by "ui_inv_get_GridPos.sqf"
 	
 	Input:
 		[

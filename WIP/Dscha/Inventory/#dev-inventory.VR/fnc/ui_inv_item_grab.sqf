@@ -21,7 +21,7 @@ _offset_y = _p_y - _yPos;
 // _ctrlGrp_item ctrlSetPosition[_mPos_x+_offset_x,_mPos_y+_offset_y, _p_w, _p_h];
 _ctrlGrp_item ctrlSetPosition[0,0, _p_w, _p_h];
 _ctrlGrp_item ctrlCommit 0;
-_ctrlGrp_item ctrlAddEventhandler ["MouseButtonUp","_this call an_DEV_MouseEH"];
+_ctrlGrp_item ctrlAddEventhandler ["MouseButtonUp","call an_DEV_MouseEH"];
 
 _ctrl_img_old = _ctrl controlsGroupCtrl 200;
 {
@@ -52,8 +52,11 @@ _ctrlGrp_item setVariable ["item_data_prev",[(ctrlParentControlsGroup _ctrl),_p_
 	while{an_ui_inv_grabActive}do
 	{
 		getMousePosition params["_mPos_x","_mPos_y"];
-		_ctrl ctrlSetPositionX (_mPos_x-0.003); //(_mPos_x+_offset_x);
-		_ctrl ctrlSetPositionY (_mPos_y-0.004); //(_mPos_y+_offset_y);
+		// _ctrl ctrlSetPositionX (_mPos_x-0.003); //(_mPos_x+_offset_x);
+		// _ctrl ctrlSetPositionY (_mPos_y-0.004); //(_mPos_y+_offset_y);
+		private _offset = 0.005;
+		_ctrl ctrlSetPositionX (_mPos_x-_offset);
+		_ctrl ctrlSetPositionY (_mPos_y-(_offset*getResolution#4));
 		_ctrl ctrlCommit 0;
 	};
 	ctrlDelete _ctrl;
