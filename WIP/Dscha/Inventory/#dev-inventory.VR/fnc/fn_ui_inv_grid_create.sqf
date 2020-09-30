@@ -41,8 +41,8 @@ for "_p_y" from 0 to (_size_y-1)do
 	_grid pushback _curRow;
 };
 
-diag_log ["DEBUG: ui_inv_grid_create: size: ", missionNameSpace getVariable [format["vn_an_inv_grid_size_%1",(ctrlIDC _ctrlGrp)],[]]];
-missionNameSpace setVariable [format["vn_an_inv_grid_size_%1",(ctrlIDC _ctrlGrp)],[_size_x,_size_y]];
+diag_log ["DEBUG: ui_inv_grid_create: size: ", missionNameSpace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrp)],[]]];
+missionNameSpace setVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrp)],[_size_x,_size_y]];
 
-diag_log ["DEBUG: ui_inv_grid_create: grid: ", missionNameSpace getVariable [format["vn_an_inv_grid_%1",(ctrlIDC _ctrlGrp)],[]]];
-missionNameSpace setVariable [format["vn_an_inv_grid_%1",(ctrlIDC _ctrlGrp)],_grid];
+diag_log ["DEBUG: ui_inv_grid_create: grid: ", missionNameSpace getVariable [format["an_inv_grid_%1",(ctrlIDC _ctrlGrp)],[]]];
+missionNameSpace setVariable [format["an_inv_grid_%1",(ctrlIDC _ctrlGrp)],_grid];

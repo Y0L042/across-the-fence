@@ -3,8 +3,8 @@
 []spawn 
 { 
 	sleep 1; 
-	vn_an_tiles_usage = [];
-	(findDisplay 46) createDisplay "vn_an_inventory"; 
+	an_tiles_usage = [];
+	(findDisplay 46) createDisplay "an_inventory"; 
 };
 
 	///////////////////////////////////////////////////
@@ -14,7 +14,7 @@
 
 //DEV: reset inv usage Var
 {
-	missionNameSpace setVariable [(format["vn_an_inv_tileUsage_%1",_x]),[]];
+	missionNameSpace setVariable [(format["an_inv_tileUsage_%1",_x]),[]];
 }forEach [1000,1001];
 
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
@@ -22,23 +22,23 @@
 
 
 //Grid
-vn_an_fnc_ui_inv_grid_getSize = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_getSize.sqf";
-vn_an_fnc_ui_inv_grid_create = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_create.sqf";
-vn_an_fnc_ui_inv_grid_isPosIn = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_isPosIn.sqf";
-vn_an_fnc_ui_inv_grid_getPos = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_getPos.sqf";
-vn_an_fnc_ui_inv_grid_check_freeTiles = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_check_freeTiles.sqf";
-vn_an_fnc_ui_inv_grid_updateTiles = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_updateTiles.sqf";
+an_fnc_ui_inv_grid_getSize = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_getSize.sqf";
+an_fnc_ui_inv_grid_create = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_create.sqf";
+an_fnc_ui_inv_grid_isPosIn = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_isPosIn.sqf";
+an_fnc_ui_inv_grid_getPos = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_getPos.sqf";
+an_fnc_ui_inv_grid_check_freeTiles = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_check_freeTiles.sqf";
+an_fnc_ui_inv_grid_updateTiles = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_updateTiles.sqf";
 
 // DEBUG function:
-vn_an_fnc_ui_inv_grid_resetColor = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_resetColor.sqf";
+an_fnc_ui_inv_grid_resetColor = compile preprocessFileLineNumbers "fnc\fn_ui_inv_grid_resetColor.sqf";
 
 //handling
-vn_an_fnc_ui_inv_mPos_check = compile preprocessFileLineNumbers "fnc\fn_ui_inv_mPos_check.sqf";
-vn_an_fnc_ui_inv_mpos = compile preprocessFileLineNumbers "fnc\fn_ui_inv_mpos.sqf";
-vn_an_fnc_ui_inv_item_create = compile preprocessFileLineNumbers "fnc\fn_ui_inv_item_create.sqf";
-vn_an_fnc_ui_inv_item_remove_DEV = compile preprocessFileLineNumbers "fnc\fn_ui_inv_item_remove_DEV.sqf";
-vn_an_fnc_ui_inv_item_getData = compile preprocessFileLineNumbers "fnc\fn_ui_inv_item_getData.sqf";
-vn_an_fnc_ui_inv_item_grab = compile preprocessFileLineNumbers "fnc\fn_ui_inv_item_grab.sqf";
+an_fnc_ui_inv_mPos_check = compile preprocessFileLineNumbers "fnc\fn_ui_inv_mPos_check.sqf";
+an_fnc_ui_inv_mpos = compile preprocessFileLineNumbers "fnc\fn_ui_inv_mpos.sqf";
+an_fnc_ui_inv_item_create = compile preprocessFileLineNumbers "fnc\fn_ui_inv_item_create.sqf";
+an_fnc_ui_inv_item_remove_DEV = compile preprocessFileLineNumbers "fnc\fn_ui_inv_item_remove_DEV.sqf";
+an_fnc_ui_inv_item_getData = compile preprocessFileLineNumbers "fnc\fn_ui_inv_item_getData.sqf";
+an_fnc_ui_inv_item_grab = compile preprocessFileLineNumbers "fnc\fn_ui_inv_item_grab.sqf";
 
 //////////////////////////////
 
@@ -105,7 +105,7 @@ _parentDefinitions =
 }forEach _parentDefinitions;
 
 
-vn_an_fnc_item_getCfgClass =
+an_fnc_item_getCfgClass =
 {
 	params[
 		["_itemClass",-1,[-1]]
@@ -140,18 +140,18 @@ vn_an_fnc_item_getCfgClass =
 
 private _disp = _this#0;
 
-vn_an_inv_size_x = 8;	//0-X (so -1 of the actual ColCount) - FIXED SIZE - ALWAYS 8!
+an_inv_size_x = 8;	//0-X (so -1 of the actual ColCount) - FIXED SIZE - ALWAYS 8!
 // DEV
-vn_an_inv_size_y = call vn_an_fnc_ui_inv_grid_getSize;
+an_inv_size_y = call an_fnc_ui_inv_grid_getSize;
 
-vn_an_inv_move_placeHorizontal = true;
-vn_an_ui_inv_grabActive = false;
+an_inv_move_placeHorizontal = true;
+an_ui_inv_grabActive = false;
 
 ////// Create Inventory for Player and Ground
 //create Player Inventory grid array
-private _ctrlGrp_pers = uinamespace getvariable ["vn_an_inv_player", controlNull];
+private _ctrlGrp_pers = uinamespace getvariable ["an_inv_player_grid", controlNull];
 diag_log ["setting up grid: Player Inventory...     ", _ctrlGrp_pers];
-[_disp,_ctrlGrp_pers,vn_an_inv_size_x, vn_an_inv_size_y] call vn_an_fnc_ui_inv_grid_create;
+[_disp,_ctrlGrp_pers,an_inv_size_x, an_inv_size_y] call an_fnc_ui_inv_grid_create;
 diag_log ["setting up grid: Player Inventory... done"];
 
 diag_log "-----------------------------------------------";
@@ -185,9 +185,9 @@ _DEV_cratedata = [
 private _crate_gridSize = ENTRY_GET("inv_gridSize",_DEV_cratedata);
 _crate_gridSize params ["_grid_y","_grid_x"];
 diag_log ["DEBUG: UI_INV_INIT: _crate_gridSize :", _crate_gridSize];
-private _ctrlGrp_cont = uinamespace getvariable ["vn_an_inv_crate", controlNull];
+private _ctrlGrp_cont = uinamespace getvariable ["an_inv_crate_grid", controlNull];
 diag_log ["DEBUG: UI_INV_INIT: setting up grid: crate Inventory...     "];
-[_disp,_ctrlGrp_cont,_grid_x, _grid_y] call vn_an_fnc_ui_inv_grid_create;
+[_disp,_ctrlGrp_cont,_grid_x, _grid_y] call an_fnc_ui_inv_grid_create;
 diag_log ["DEBUG: UI_INV_INIT: setting up grid: crate Inventory... done"];
 
 
@@ -209,11 +209,11 @@ private _crate_tiles_used = [];
 }forEach _crate_grid;
 // 1000 = player
 // 1001 = crate
-missionNameSpace setVariable [format["vn_an_inv_tileUsage_%1",1001],_crate_tiles_used];
+missionNameSpace setVariable [format["an_inv_tileUsage_%1",1001],_crate_tiles_used];
 */
 
 // -------------------- add the Items:
-vn_an_fnc_ui_inv_grid_gridToPos =
+an_fnc_ui_inv_grid_gridToPos =
 {
 	/*
 		control	-	control which has the grid in it
@@ -242,7 +242,7 @@ vn_an_fnc_ui_inv_grid_gridToPos =
 	[_item_gridPos_y, _item_gridPos_x]
 };
 
-private _crate_ctrl = uinamespace getvariable ["vn_an_inv_crate", controlNull];
+private _crate_ctrl = uinamespace getvariable ["an_inv_crate_grid", controlNull];
 private _items = ENTRY_GET("itemData",_DEV_cratedata);
 
 
@@ -254,15 +254,15 @@ private _items = ENTRY_GET("itemData",_DEV_cratedata);
 	// get the pos, this item was stored in
 	private _item_pos = ENTRY_GET("invPos",_item_data);
 	//convert from gridPos to uiPos
-	([_crate_ctrl, _crate_gridSize, _item_pos ]call vn_an_fnc_ui_inv_grid_gridToPos) params["_item_pos_y","_item_pos_x"];
+	([_crate_ctrl, _crate_gridSize, _item_pos ]call an_fnc_ui_inv_grid_gridToPos) params["_item_pos_y","_item_pos_x"];
 	
 	//DEBUG
 	diag_log ["DEBUG: UI_INV_INIT: _item_parent    :", _item_parent];
 	diag_log ["DEBUG: UI_INV_INIT: _item_pos       :", _item_pos];
 	
 	// set the classname, to create the Item
-	missionNameSpace setVariable ["vn_an_inv_itemActive",_item_parent];
-	[_crate_ctrl,0,_item_pos_y,_item_pos_x] call vn_an_fnc_ui_inv_mPos;
+	missionNameSpace setVariable ["an_inv_itemActive",_item_parent];
+	[_crate_ctrl,0,_item_pos_y,_item_pos_x] call an_fnc_ui_inv_mPos;
 	
 }forEach _items;
 
@@ -285,24 +285,24 @@ _disp displayAddEventhandler ["KeyDown",
 	private _item_sel = [];
 	if(_key in [2,3,4,5,6])then
 	{
-		if(_key isEqualTo 2)exitWith{missionNameSpace setVariable ["vn_an_inv_itemActive",DEV_ITEMTOPLACE_LIST#0]; call _BD;};
-		if(_key isEqualTo 3)exitWith{missionNameSpace setVariable ["vn_an_inv_itemActive",DEV_ITEMTOPLACE_LIST#1]; call _BD;};
-		if(_key isEqualTo 4)exitWith{missionNameSpace setVariable ["vn_an_inv_itemActive",DEV_ITEMTOPLACE_LIST#2]; call _BD;};
+		if(_key isEqualTo 2)exitWith{missionNameSpace setVariable ["an_inv_itemActive",DEV_ITEMTOPLACE_LIST#0]; call _BD;};
+		if(_key isEqualTo 3)exitWith{missionNameSpace setVariable ["an_inv_itemActive",DEV_ITEMTOPLACE_LIST#1]; call _BD;};
+		if(_key isEqualTo 4)exitWith{missionNameSpace setVariable ["an_inv_itemActive",DEV_ITEMTOPLACE_LIST#2]; call _BD;};
 		// if(_key isEqualTo 5)then{DEV_ITEMTOPLACE = 3;};
 		if(_key isEqualTo 6)then
 		{
 			//if RMB -> set Var to request rotate by 90°
-			vn_an_inv_move_placeHorizontal = !vn_an_inv_move_placeHorizontal;
+			an_inv_move_placeHorizontal = !an_inv_move_placeHorizontal;
 			 call _BD;
 		};
-		systemchat str [" DEV_ITEMTOPLACE : ", missionNameSpace getVariable ["vn_an_inv_itemActive",[]], " - Place Horizontal?", vn_an_inv_move_placeHorizontal];
+		systemchat str [" DEV_ITEMTOPLACE : ", missionNameSpace getVariable ["an_inv_itemActive",[]], " - Place Horizontal?", an_inv_move_placeHorizontal];
 	};
 	_buttonDisabled
 }];
 
 
 
-vn_an_DEV_MouseEH =
+an_DEV_MouseEH =
 {
 	//executed from grabbed Item ctrl
 	disableSerialization;
@@ -310,18 +310,42 @@ vn_an_DEV_MouseEH =
 	// systemchat str ["Btn:",_btn];
 	
 	//RMB - Reset to old Pos
-	if(_btn == 1 && vn_an_ui_inv_grabActive)then
+	if(_btn == 1 && an_ui_inv_grabActive)then
 	{
 		private _data_prev = _ctrl getVariable ["item_data_prev",[]];
-		_data_prev spawn vn_an_fnc_ui_inv_item_create;
-		vn_an_ui_inv_grabActive = false;	//triggers the deletion of the temp Item
+		_data_prev spawn an_fnc_ui_inv_item_create;
+		an_ui_inv_grabActive = false;	//triggers the deletion of the temp Item
 	};
 	//LMB - Place Item
 	if(_btn == 0)then
 	{
-		_this call vn_an_fnc_ui_inv_mPos_check;
+		_this call an_fnc_ui_inv_mPos_check;
 	};
 	
 	//NEEDED!
 	true
 };
+
+
+
+
+_disp displayAddEventhandler ["MouseZChanged",
+{
+	params ["_displayorcontrol", "_scroll"];
+	
+	// Main ctrlGroup
+	_inv_player_area = uinamespace getvariable ["an_inv_player_area", controlNull];
+	
+	// ctrlGroup child (the stuff that moves)
+	_inv_player_grid = uinamespace getvariable ["an_inv_player_grid", controlNull];
+	
+	// get the pos of the scrollbar and add x% to it, depending on the size of the child
+	_scrollbar_pos = (ctrlScrollValues _inv_player_area)#0;
+	_scrollbar_pos_new = _scrollbar_pos - (_scroll / 12);
+	_scrollvalue = linearConversion [0, 1, _scrollbar_pos_new, 0, 1, true];
+	
+	// Set the Scrollbar:
+	systemchat str [_scrollvalue];
+	_inv_player_area ctrlSetScrollValues [_scrollvalue, -1];
+	
+}];

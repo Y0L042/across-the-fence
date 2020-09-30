@@ -4,16 +4,16 @@ disableSerialization;
 params ["_ctrl", "_btn", "_xPos", "_yPos", "_btn_shift", "_btn_ctrl", "_btn_alt"];
 if !(_btn in [0])exitWith{};
 
-if(vn_an_ui_inv_grabActive)exitWith{systemchat "vn_an_ui_inv_grabActive already active";};
-vn_an_ui_inv_grabActive = true;
+if(an_ui_inv_grabActive)exitWith{systemchat "an_ui_inv_grabActive already active";};
+an_ui_inv_grabActive = true;
 
 (_ctrl getVariable ["item_data",[]]) params ["_pos_data","_item_usedSlots","_item_class"];
 // systemchat str [(_ctrl getVariable ["item_data",[]])];
 (ctrlPosition _ctrl) params["_p_x","_p_y","_p_w","_p_h"];
-missionNameSpace setVariable ["vn_an_inv_itemActive",_item_class];
+missionNameSpace setVariable ["an_inv_itemActive",_item_class];
 
 getMousePosition params["_mPos_x","_mPos_y"];
-private _disp = uinamespace getvariable ["vn_an_inventory", DisplayNull];
+private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
 private _ctrlGrp_item = _disp ctrlCreate ["inv_icon",32123];
 
 _offset_x = _p_x - _xPos;
@@ -21,7 +21,7 @@ _offset_y = _p_y - _yPos;
 // _ctrlGrp_item ctrlSetPosition[_mPos_x+_offset_x,_mPos_y+_offset_y, _p_w, _p_h];
 _ctrlGrp_item ctrlSetPosition[0,0, _p_w, _p_h];
 _ctrlGrp_item ctrlCommit 0;
-_ctrlGrp_item ctrlAddEventhandler ["MouseButtonUp","_this call vn_an_DEV_MouseEH"];
+_ctrlGrp_item ctrlAddEventhandler ["MouseButtonUp","_this call an_DEV_MouseEH"];
 
 _ctrl_img_old = _ctrl controlsGroupCtrl 200;
 {
@@ -40,7 +40,7 @@ _ctrlGrp_item setVariable ["item_data_prev",[(ctrlParentControlsGroup _ctrl),_p_
 
 
 //hide old one
-[_ctrl] call vn_an_fnc_ui_inv_item_remove_DEV;
+[_ctrl] call an_fnc_ui_inv_item_remove_DEV;
 
 
 //DEV DEV DEV
@@ -48,8 +48,8 @@ _ctrlGrp_item setVariable ["item_data_prev",[(ctrlParentControlsGroup _ctrl),_p_
 {
 	params["_ctrl","_offset_x","_offset_y"];
 	
-	uinamespace setVariable ["vn_an_ctrl_active",_ctrl];
-	while{vn_an_ui_inv_grabActive}do
+	uinamespace setVariable ["an_ctrl_active",_ctrl];
+	while{an_ui_inv_grabActive}do
 	{
 		getMousePosition params["_mPos_x","_mPos_y"];
 		_ctrl ctrlSetPositionX (_mPos_x-0.003); //(_mPos_x+_offset_x);
@@ -57,5 +57,5 @@ _ctrlGrp_item setVariable ["item_data_prev",[(ctrlParentControlsGroup _ctrl),_p_
 		_ctrl ctrlCommit 0;
 	};
 	ctrlDelete _ctrl;
-	uinamespace setVariable ["vn_an_ctrl_active",controlNull];
+	uinamespace setVariable ["an_ctrl_active",controlNull];
 };

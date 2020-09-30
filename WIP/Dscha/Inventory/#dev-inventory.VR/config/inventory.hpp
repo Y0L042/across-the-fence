@@ -38,7 +38,7 @@ class inv_icon: vn_RscControlsGroupNoScrollbarHV
 	h = UIH((HEIGHT*3));
 	
 	// onMouseButtonDown	= "";
-	onMouseButtonUp		= "_this call vn_an_fnc_ui_inv_item_grab;";
+	onMouseButtonUp		= "_this call an_fnc_ui_inv_item_grab;";
 	// onMouseButtonClick = "";	//Delay, not rly usable - Triggers while holding MB
 	// onMouseButtonDblClick	= "";	//triggers immediately after 2nd MB-Down (before UP)
 	
@@ -83,16 +83,16 @@ class inv_icon: vn_RscControlsGroupNoScrollbarHV
 };
 
 
-class vn_an_inventory
+class an_inventory
 {
 	idd = 1074;
-	name = "vn_an_inventory";
+	name = "an_inventory";
 	
 	movingEnable = 0;
 	enableSimulation = 1;
 	
-	onLoad = "[""onLoad"",_this,""vn_an_inventory"",''] call 	(uinamespace getvariable 'BIS_fnc_initDisplay'); vn_an_fnc_ui_inv_init = compile preprocessFileLineNumbers ""fnc\fn_ui_inv_init.sqf""; _this call vn_an_fnc_ui_inv_init;";
-	onUnload = "[""onUnload"",_this,""vn_an_inventory"",''] call 	(uinamespace getvariable 'BIS_fnc_initDisplay');";
+	onLoad = "[""onLoad"",_this,""an_inventory"",''] call 	(uinamespace getvariable 'BIS_fnc_initDisplay'); an_fnc_ui_inv_init = compile preprocessFileLineNumbers ""fnc\fn_ui_inv_init.sqf""; _this call an_fnc_ui_inv_init;";
+	onUnload = "[""onUnload"",_this,""an_inventory"",''] call 	(uinamespace getvariable 'BIS_fnc_initDisplay');";
 	
 	onMouseButtonDown	= "";
 	onMouseButtonUp		= "";
@@ -129,8 +129,8 @@ class vn_an_inventory
 			w = UIW(8.65);
 			h = UIH(20);
 			
-			onLoad = "uinamespace setvariable [""vn_an_inv_player_area"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""vn_an_inv_player_area"", controlNull];";
+			onLoad = "uinamespace setvariable [""an_inv_player_area"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_inv_player_area"", controlNull];";
 			
 			
 			onMouseButtonDown	= "";
@@ -149,8 +149,8 @@ class vn_an_inventory
 					w = UIW(WIDTH);
 					h = UIH(HEIGHT);
 					
-					onLoad = "uinamespace setvariable [""vn_an_inv_player"", (_this#0)];";
-					onUnload = "uinamespace setvariable [""vn_an_inv_player"", controlNull];";
+					onLoad = "uinamespace setvariable [""an_inv_player_grid"", (_this#0)];";
+					onUnload = "uinamespace setvariable [""an_inv_player_grid"", controlNull];";
 					
 					onMouseButtonDown	= "";
 					onMouseButtonUp		= "";
@@ -190,8 +190,8 @@ class vn_an_inventory
 			h = UIH(20);
 			
 			
-			onLoad = "uinamespace setvariable [""vn_an_inv_crate_area"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""vn_an_inv_crate_area"", controlNull];";
+			onLoad = "uinamespace setvariable [""an_inv_crate_area"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_inv_crate_area"", controlNull];";
 			
 			
 			onMouseButtonDown	= "";
@@ -210,10 +210,10 @@ class vn_an_inventory
 					w = UIW(WIDTH);
 					h = UIH(HEIGHT);
 					
-					onLoad = "uinamespace setvariable [""vn_an_inv_crate"", (_this#0)];";
-					onUnload = "uinamespace setvariable [""vn_an_inv_crate"", controlNull];";
+					onLoad = "uinamespace setvariable [""an_inv_crate_grid"", (_this#0)];";
+					onUnload = "uinamespace setvariable [""an_inv_crate_grid"", controlNull];";
 					
-					// onMouseButtonDown	= "_this call vn_an_fnc_ui_inv_mPos;";	//RESERVED: "grab" Item
+					// onMouseButtonDown	= "_this call an_fnc_ui_inv_mPos;";	//RESERVED: "grab" Item
 					// onMouseButtonUp		= "";
 					
 					// onMouseMoving = "systemchat str [""movement"",diag_tickTime, ctrlPosition (_this#0)]";		//BUGGED!

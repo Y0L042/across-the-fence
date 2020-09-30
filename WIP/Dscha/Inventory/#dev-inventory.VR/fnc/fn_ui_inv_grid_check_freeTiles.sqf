@@ -1,7 +1,7 @@
 
 params["_ctrl_gridCur","_grid_size_x","_grid_size_y","_pos_toCheck","_tiles_toCheck"];
 //get grid Data from currently active "Grid ctrl"
-private _grid_data = missionNameSpace getVariable [format["vn_an_inv_grid_%1",(ctrlIDC _ctrl_gridCur)],[]];
+private _grid_data = missionNameSpace getVariable [format["an_inv_grid_%1",(ctrlIDC _ctrl_gridCur)],[]];
 //ToDo: Reload previous tiles_usage
 private _tile_list = [];
 {

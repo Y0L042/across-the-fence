@@ -1,9 +1,9 @@
 /*
 	create an Item at clicked position
 	
-	vn_an_fnc_ui_inv_item_create
+	an_fnc_ui_inv_item_create
 	[
-		CTRL	ctrlGrp to add to	//grid_personal ("vn_an_inv_player")
+		CTRL	ctrlGrp to add to	//grid_personal ("an_inv_player_grid")
 		FLOAT	pos inside ctrlGrp
 		FLOAT	y pos inside ctrlGrp
 		[
@@ -21,19 +21,19 @@
 params["_ctrl_invGrid","_pos_x","_pos_y","_item_class","_usedSlots"];
 
 //get Item parentData
-private _parent_data = _item_class call vn_an_fnc_ui_inv_item_getData;
+private _parent_data = _item_class call an_fnc_ui_inv_item_getData;
 ENTRY_GET("size",_parent_data) params ["_parent_size_y", "_parent_size_x"];
 
-private _disp = uinamespace getvariable ["vn_an_inventory", DisplayNull];
+private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
 //create the Icon
-_item_IDC = missionNameSpace getVariable ["vn_an_Item_IDC_count",107441];
+_item_IDC = missionNameSpace getVariable ["an_Item_IDC_count",107441];
 private _ctrlGrp_item = _disp ctrlCreate ["inv_icon",_item_IDC,_ctrl_invGrid];
-missionNameSpace setVariable ["vn_an_Item_IDC_count",(_item_IDC + 1)];
+missionNameSpace setVariable ["an_Item_IDC_count",(_item_IDC + 1)];
 
 (ctrlPosition _ctrl_invGrid)params["_grid_x","_grid_y","_grid_w","_grid_h"];
 
 
-(missionNameSpace getVariable [format["vn_an_inv_grid_size_%1",(ctrlIDC _ctrl_invGrid)],[-1,-1]]) params["_inv_size_x","_inv_size_y"];
+(missionNameSpace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_invGrid)],[-1,-1]]) params["_inv_size_x","_inv_size_y"];
 // _inv_size_x	-	INT - ixed amout of slots
 // _inv_size_y	-	INT - variable amout of slots 
 
@@ -41,16 +41,16 @@ if(_inv_size_x < 0 || _inv_size_y < 0)exitWith{systemchat str ["ITEM_CREATE: GRI
 _tile_W = _grid_w / _inv_size_x;
 _tile_H = _grid_h / _inv_size_y;
 
-// systemchat str [!_canFlip, !vn_an_inv_move_placeHorizontal];
+// systemchat str [!_canFlip, !an_inv_move_placeHorizontal];
 _canFlip = if(_parent_size_y == _parent_size_x)then{0}else{1};
-if((_canFlip == 0) && !vn_an_inv_move_placeHorizontal)then{vn_an_inv_move_placeHorizontal = true};
+if((_canFlip == 0) && !an_inv_move_placeHorizontal)then{an_inv_move_placeHorizontal = true};
 //get width and height of selected icon
-_ctrlGrp_item_w = if(vn_an_inv_move_placeHorizontal)then{_tile_W*(_parent_size_x)}else{_tile_H*(_parent_size_y)};
-_ctrlGrp_item_h = if(vn_an_inv_move_placeHorizontal)then{_tile_H*(_parent_size_y)}else{_tile_W*(_parent_size_x)};
+_ctrlGrp_item_w = if(an_inv_move_placeHorizontal)then{_tile_W*(_parent_size_x)}else{_tile_H*(_parent_size_y)};
+_ctrlGrp_item_h = if(an_inv_move_placeHorizontal)then{_tile_H*(_parent_size_y)}else{_tile_W*(_parent_size_x)};
 
 
 //if needed -> "rotate" the main ctrlGroup and adjust the values to 4/3 (Arma Base Resolution)
-if(vn_an_inv_move_placeHorizontal)then
+if(an_inv_move_placeHorizontal)then
 {
 	_ctrlGrp_item ctrlSetposition [_pos_x,_pos_y,_ctrlGrp_item_w,_ctrlGrp_item_h];
 }else{
@@ -68,13 +68,13 @@ _ctrlGrp_item ctrlCommit 0;
 		_item_img = ENTRY_GET("image",_parent_data);
 		if(_item_img isEqualTo "")then
 		{
-			private _cfgBase = [ENTRY_GET("slot",_parent_data)] call vn_an_fnc_item_getCfgClass;
+			private _cfgBase = [ENTRY_GET("slot",_parent_data)] call an_fnc_item_getCfgClass;
 			_item_img = getText(configFile >> _cfgBase >> _item_class >> "picture");
 		};
 		_ctrl ctrlSetText _item_img;
 	};
 	//if flipped/roated by 90° -> do other stuff
-	if !(vn_an_inv_move_placeHorizontal)then
+	if !(an_inv_move_placeHorizontal)then
 	{
 		//rotate the img with the current Width and Height
 		_ctrl ctrlSetAngle [90, 0.5, 0.5];
