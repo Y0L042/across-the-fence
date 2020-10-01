@@ -120,7 +120,7 @@ class an_inventory
 	class Controls
 	{
 		// Inventory: Player
-		class grid_player: vn_RscControlsGroupNoScrollbarH
+		class grid_player_area: vn_RscControlsGroupNoScrollbarH
 		{
 			idc = 1100;
 			
@@ -135,12 +135,12 @@ class an_inventory
 			
 			onMouseButtonDown	= "";
 			onMouseButtonUp		= "";
-			// onMouseMoving = "";
-			// onMouseZChanged = "";
+			// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
+			// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
 			
 			class controls
 			{
-				class grid_area: vn_RscControlsGroupNoScrollbarHV
+				class grid: vn_RscControlsGroupNoScrollbarHV
 				{
 					idc = 1000;
 					
@@ -152,10 +152,10 @@ class an_inventory
 					onLoad = "uinamespace setvariable [""an_inv_player_grid"", (_this#0)];";
 					onUnload = "uinamespace setvariable [""an_inv_player_grid"", controlNull];";
 					
-					onMouseButtonDown	= "";
-					onMouseButtonUp		= "";
-					// onMouseMoving = "systemchat str [""movement"",diag_tickTime, ctrlPosition (_this#0)]";		//BUGGED!
-					// onMouseZChanged = "";	//not needed
+					// onMouseButtonDown	= "_this call an_fnc_ui_inv_mPos;";	//RESERVED: "grab" Item
+					// onMouseButtonUp		= "";
+					// onMouseMoving = "systemchat str [""movement"",diag_tickTime, ctrlPosition (_this#0)]";		//DO NOT USE! Buggy (not detecting reliably)
+					// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
 					
 					class controls
 					{
@@ -180,7 +180,7 @@ class an_inventory
 		};
 		
 		// Inventory: External
-		class grid_crate: vn_RscControlsGroupNoScrollbarH
+		class grid_crate_area: vn_RscControlsGroupNoScrollbarH
 		{
 			idc = 1101;
 			
@@ -196,12 +196,12 @@ class an_inventory
 			
 			onMouseButtonDown	= "";
 			onMouseButtonUp		= "";
-			// onMouseMoving = "";
-			// onMouseZChanged = "";
+			// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
+			// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
 			
 			class controls
 			{
-				class grid_area: vn_RscControlsGroupNoScrollbarHV
+				class grid: vn_RscControlsGroupNoScrollbarHV
 				{
 					idc = 1001;
 					
@@ -215,9 +215,8 @@ class an_inventory
 					
 					// onMouseButtonDown	= "_this call an_fnc_ui_inv_mPos;";	//RESERVED: "grab" Item
 					// onMouseButtonUp		= "";
-					
-					// onMouseMoving = "systemchat str [""movement"",diag_tickTime, ctrlPosition (_this#0)]";		//BUGGED!
-					// onMouseZChanged = "";	//not needed
+					// onMouseMoving = "systemchat str [""movement"",diag_tickTime, ctrlPosition (_this#0)]";		//DO NOT USE! Buggy (not detecting reliably)
+					// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
 					
 					class controls
 					{
