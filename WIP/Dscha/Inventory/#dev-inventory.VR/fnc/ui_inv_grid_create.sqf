@@ -14,9 +14,17 @@ private _tile_W = _grid_w/_size_x;
 private _tile_H = _grid_h/_size_y;
 
 
-//adjust height of ctrlGroup (grid)
+// adjust the height of the ctrlGroup (grid)
 _ctrlGrp ctrlSetPositionH _grid_h;
 _ctrlGrp ctrlCommit 0;
+
+// adjust the height of the CtrlGroup-parent of the used grid - unless it exceeds the base value - Info: used in: ui_inv_mPos_check_mouse_z
+_ctrlGrp_area = (ctrlParentControlsGroup _ctrlGrp);
+if(_grid_h < (ctrlPosition _ctrlGrp_area)#3)then
+{
+	_ctrlGrp_area ctrlSetPositionH _grid_h;
+	_ctrlGrp_area ctrlCommit 0;
+};
 
 //also of the Background (DEV IDC)
 _ctrlGrp_bg = _ctrlGrp controlsGroupCtrl 99999;
