@@ -15,7 +15,7 @@ if(_grid_size_x < 0 || _grid_size_y < 0)exitWith
 
 
 //Check if given pos is valid in the Grid. If so -> Return [x,y] pos in Grid
-systemchat str [ _ctrl_grid ,_mPos_x ,_grid_size_x ,_mPos_y ,_grid_size_y ];
+// systemchat str [ _ctrl_grid ,_mPos_x ,_grid_size_x ,_mPos_y ,_grid_size_y ];
 ([_ctrl_grid,_mPos_x,_grid_size_x,_mPos_y,_grid_size_y] call an_fnc_ui_inv_grid_getPos) params["_tile_y","_tile_x"];
 if([_tile_y,_tile_x] isEqualto [-1,-1])exitWith{/* DEV */ systemchat str["gridPos - out of Bounds",[_tile_x, _tile_y]];};
 
