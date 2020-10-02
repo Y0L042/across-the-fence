@@ -13,25 +13,15 @@ if!(_btn in [0])exitWith{};
 uinameSpace setVariable ["an_grid_active",controlNull];
 private _mPos = [_mPos_x,_mPos_y];
 {
-	_x params["_var_toCheck","_var_toPass"];
-	private _ctrl_grid = uinamespace getvariable [_var_toCheck,controlNull];
-	if(!isNull _ctrl_grid)then
+	_x params ["_area","_grid"];
+	private _isIn = [_area] call an_fnc_ui_inv_mPos_check_inInv;
+	
+	if(_isIn)then
 	{
-		(ctrlPosition _ctrl_grid) params["_p_x","_p_y","_p_w","_p_h"];
-		_w_halved = _p_w / 2;
-		_h_halved = _p_h / 2;
-		_x_center = _p_x + _w_halved;
-		_y_center = _p_y + _h_halved;
-		
-		_check = _mPos inArea [[_x_center,_y_center], _w_halved, _h_halved, 0, true];
-		// systemchat str ["_check: ",_check];
-		if(_check)exitWith
-		{
-			_ctrl_grid = uinameSpace getVariable [_var_toPass,controlNull];
-			private _mPos_rel = ctrlMousePosition _ctrl_grid;
-			[_ctrl_grid,_btn,(_mPos_rel#0),(_mPos_rel#1),_btn_shift,_btn_ctrl,_btn_alt] call an_fnc_ui_inv_mpos;
-			// [_ctrl_grid,_btn,(_mPos_x - _p_x),(_mPos_y - _p_y),_btn_shift,_btn_ctrl,_btn_alt] call an_fnc_ui_inv_mpos;
-		};
+		_ctrlGrp_parent = uinamespace getvariable [_area, controlNull];
+		_ctrlGrp = uinamespace getvariable [_grid, controlNull];
+		private _mPos_rel = ctrlMousePosition _ctrlGrp;
+		[_ctrlGrp,_btn,(_mPos_rel#0),(_mPos_rel#1),_btn_shift,_btn_ctrl,_btn_alt] call an_fnc_ui_inv_mpos;
 	};
 }forEach[
 			 ["an_inv_player_area","an_inv_player_grid"]
