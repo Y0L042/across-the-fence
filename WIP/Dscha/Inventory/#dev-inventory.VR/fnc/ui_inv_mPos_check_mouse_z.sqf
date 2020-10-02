@@ -3,43 +3,42 @@ params ["_displayorcontrol", "_scroll"];
 //only check, if an Item is being moved ("is grabbed")
 if(an_ui_inv_grabActive)then
 {
-	private _ctrlGrp = controlNull;
-	private _ctrlGrp_parent = controlNull;
-	// check if: Player Inventory
+	// check if: pos in inside an Inventory
+	private _isIn = false;
+	private _invActive = ["",""];
 	{
-		_x params ["_area","_grid"];
-		private _isIn = [_area] call an_fnc_ui_inv_mPos_check_inInv;
-		if(_isIn)then
-		{
-			_ctrlGrp_parent = uinamespace getvariable [_area, controlNull];
-			_ctrlGrp = uinamespace getvariable [_grid, controlNull];
-		};
+		_isIn = [(_x#0)] call an_fnc_ui_inv_mPos_check_inInv;
+		if(_isIn)exitWith{_invActive = _x;};
 	}forEach [
-				["an_inv_player_area","an_inv_player_grid"],
-				["an_inv_crate_area","an_inv_crate_grid"]
+				 ["an_inv_player_area","an_inv_player_grid"]
+				,["an_inv_crate_area","an_inv_crate_grid"]
 			];
 	
-	if(!isNull _ctrlGrp_parent)then
+	if(_isIn)then
 	{
+		_invActive params ["_area","_grid"];
+		private _ctrlGrp_parent = uinamespace getvariable [_area, controlNull];
+		private _ctrlGrp = uinamespace getvariable [_grid, controlNull];
+		
 		// Get the base size values
-		_ctrl_h_max = (ctrlPosition _ctrlGrp_parent)#3;
-		_ctrl_h_cur = (ctrlPosition _ctrlGrp)#3;
-		_tileSize = _ctrl_h_max / 20;	// 20 = max visible rows per Inventory
-		_diff = parseNumber ((_ctrl_h_cur - _ctrl_h_max) toFixed 2);
+		private _ctrl_h_max = (ctrlPosition _ctrlGrp_parent)#3;
+		private _ctrl_h_cur = (ctrlPosition _ctrlGrp)#3;
+		private _tileSize = _ctrl_h_max / 20;	// 20 = max visible rows per Inventory
+		private _diff = parseNumber ((_ctrl_h_cur - _ctrl_h_max) toFixed 2);
 		
 		// Leave if there is no Scrollbar
 		if(_diff == 0)exitWith{};
 		
 		// calc the scroll step, each "step" is one tile
-		_scrollstep = 1 / (_diff / _tileSize);
+		private _scrollstep = 1 / (_diff / _tileSize);
 		if(_scroll < 0)then{_scrollstep = _scrollstep * -1};
 		
 		// get the current "pos" of the scrollbar
-		_scrollbar_pos = (ctrlScrollValues _ctrlGrp_parent)#0;
+		private _scrollbar_pos = (ctrlScrollValues _ctrlGrp_parent)#0;
 		
 		// Add the new step
-		_scrollbar_pos_new = _scrollbar_pos - _scrollstep;
-		_scrollvalue = linearConversion [0, 1, _scrollbar_pos_new, 0, 1, true];
+		private _scrollbar_pos_new = _scrollbar_pos - _scrollstep;
+		private _scrollvalue = linearConversion [0, 1, _scrollbar_pos_new, 0, 1, true];
 		
 		// Set the Scrollbar:
 		_ctrlGrp_parent ctrlSetScrollValues [_scrollvalue, -1];
