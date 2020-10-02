@@ -105,14 +105,13 @@ class Mission
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={4095.7705,5.0014391,4102.5698};
+						position[]={4095.2085,5.0014391,4102.7881};
 					};
 					side="West";
 					flags=7;
 					class Attributes
 					{
 						skill=1;
-						init="this addAction [""showInventory"", {an_tiles_usage = []; createDialog ""an_inventory""; }];" \n "" \n "this addGoggles ""G_Shades_Black"";";
 						isPlayer=1;
 						class Inventory
 						{
