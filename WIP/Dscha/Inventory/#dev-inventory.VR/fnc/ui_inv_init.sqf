@@ -243,7 +243,10 @@ private _items = ENTRY_GET("itemData",_DEV_cratedata);
 
 
 // Handle scrolling the Mousewheel (only if an item is currently grabbed)
-_disp displayAddEventhandler ["MouseZChanged","call an_fnc_ui_inv_mPos_check_mouse_z"];
+_disp displayAddEventhandler ["MouseZChanged","call an_fnc_ui_inv_EH_mouse_z"];
+
+
+
 
 
 //////////////////////////////////////////////////////////////////////////////////
