@@ -33,6 +33,7 @@ an_fnc_ui_inv_grid_updateTiles = compile preprocessFileLineNumbers "fnc\ui_inv_g
 
 
 //handling
+an_fnc_ui_inv_item_attachToMouse = compile preprocessFileLineNumbers "fnc\ui_inv_item_attachToMouse.sqf";
 an_fnc_ui_inv_item_create = compile preprocessFileLineNumbers "fnc\ui_inv_item_create.sqf";
 an_fnc_ui_inv_item_getData = compile preprocessFileLineNumbers "fnc\ui_inv_item_getData.sqf";
 an_fnc_ui_inv_item_grab = compile preprocessFileLineNumbers "fnc\ui_inv_item_grab.sqf";
