@@ -240,14 +240,6 @@ private _items = ENTRY_GET("itemData",_DEV_cratedata);
 	
 }forEach _items;
 
-// -------------
-DEV_ITEMTOPLACE_LIST =
-[
-	 [[4,8],"data\gun.paa",true]
-	,[[1,1],"data\magazine.paa",false]
-	,[[4,4],"data\backpack.paa",false]
-];
-
 
 // Handle scrolling the Mousewheel (only if an item is currently grabbed)
 _disp displayAddEventhandler ["MouseZChanged","call an_fnc_ui_inv_mPos_check_mouse_z"];
