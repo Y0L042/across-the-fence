@@ -124,7 +124,7 @@ class an_inventory
 		{
 			idc = 1100;
 			
-			x = UIX_RL(30);
+			x = UIX_CR(1);
 			y = UIY_TD(10);
 			w = UIW(8.65);
 			h = UIH(20);
@@ -184,7 +184,7 @@ class an_inventory
 		{
 			idc = 1101;
 			
-			x = UIX_LR(20);
+			x = UIX_CL(9.65);
 			y = UIY_TD(10);
 			w = UIW(8.65);
 			h = UIH(20);
