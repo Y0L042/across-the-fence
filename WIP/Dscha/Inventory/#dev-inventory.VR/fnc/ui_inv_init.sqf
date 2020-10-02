@@ -41,7 +41,7 @@ an_fnc_ui_inv_item_remove_DEV = compile preprocessFileLineNumbers "fnc\ui_inv_it
 an_fnc_ui_inv_mpos = compile preprocessFileLineNumbers "fnc\ui_inv_mpos.sqf";
 an_fnc_ui_inv_mPos_check = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check.sqf";
 an_fnc_ui_inv_mPos_check_inInv = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check_inInv.sqf";
-an_fnc_ui_inv_mPos_check_mouse_z = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check_mouse_z.sqf";
+an_fnc_ui_inv_EH_mouse_z = compile preprocessFileLineNumbers "fnc\ui_inv_EH_mouse_z.sqf";
 an_fnc_ui_inv_EH_mouseBtn = compile preprocessFileLineNumbers "fnc\ui_inv_EH_mouseBtn.sqf";
 
 //////////////////////////////
