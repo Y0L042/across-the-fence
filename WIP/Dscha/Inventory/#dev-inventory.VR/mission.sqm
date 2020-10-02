@@ -26,7 +26,6 @@ addons[]=
 	"A3_Weapons_F_Acc",
 	"A3_Weapons_F",
 	"A3_Weapons_F_Exp_Launchers_RPG7",
-	"cba_jam",
 	"A3_Weapons_F_Exp",
 	"A3_Weapons_F_Pistols_P07",
 	"A3_Weapons_F_Items",
@@ -36,7 +35,7 @@ class AddonsMetaData
 {
 	class List
 	{
-		items=5;
+		items=4;
 		class Item0
 		{
 			className="A3_Characters_F";
@@ -59,13 +58,6 @@ class AddonsMetaData
 			url="https://www.arma3.com";
 		};
 		class Item3
-		{
-			className="cba_jam";
-			name="Community Base Addons - Joint Ammo Magazines";
-			author="CBA Team";
-			url="https://www.github.com/CBATeam/CBA_A3";
-		};
-		class Item4
 		{
 			className="A3_Supplies_F_Heli";
 			name="Arma 3 Helicopters - Ammoboxes and Supplies";
