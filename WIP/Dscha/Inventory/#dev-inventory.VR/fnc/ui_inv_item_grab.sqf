@@ -35,20 +35,22 @@ private _ctrl_img_old = _ctrl controlsGroupCtrl 200;
 }forEach[100,200];
 
 
-_ctrlGrp_item setVariable ["item_data_prev",[(ctrlParentControlsGroup _ctrl),_p_x,_p_y,_item_class,_item_usedSlots]];
+// make a "copy" of the usedSlots array, so it won't be deleted, when removing the ctrl (pointing to it)
+private _item_usedSlots_prev = +_item_usedSlots;
+_ctrlGrp_item setVariable ["item_data_prev",[(ctrlParentControlsGroup _ctrl), _p_x, _p_y, _item_class, _item_usedSlots_prev]];
 
-
-
-//hide old one
+// delete the old one
 [_ctrl] call an_fnc_ui_inv_item_remove_DEV;
 
-
 //DEV DEV DEV
-[_ctrlGrp_item,_offset_x,_offset_y, (ctrlParentControlsGroup _ctrl)]spawn
+// ToDo: Switch to PerFrame EH
+// especially on slower machines, the Item could lag behind the Mouse, which could result in unforseeable consequences
+
+[_ctrlGrp_item,_offset_x,_offset_y]spawn
 {
 	params["_ctrl","_offset_x","_offset_y"];
 	
-	uinamespace setVariable ["an_ctrl_active",_ctrl];
+	uinamespace setVariable ["an_ctrl_active", _ctrl];
 	while{an_ui_inv_grabActive}do
 	{
 		getMousePosition params["_mPos_x","_mPos_y"];
@@ -56,7 +58,7 @@ _ctrlGrp_item setVariable ["item_data_prev",[(ctrlParentControlsGroup _ctrl),_p_
 		// _ctrl ctrlSetPositionY (_mPos_y-0.004); //(_mPos_y+_offset_y);
 		private _offset = 0.005;
 		_ctrl ctrlSetPositionX (_mPos_x-_offset);
-		_ctrl ctrlSetPositionY (_mPos_y-(_offset*getResolution#4));
+		_ctrl ctrlSetPositionY (_mPos_y-(_offset*getResolution#4));	// AspectRatio stuff
 		_ctrl ctrlCommit 0;
 	};
 	ctrlDelete _ctrl;
