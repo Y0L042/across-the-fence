@@ -2,6 +2,8 @@ disableSerialization;
 
 
 params ["_ctrl", "_btn", "_xPos", "_yPos", "_btn_shift", "_btn_ctrl", "_btn_alt"];
+
+// DEV: Block everything, except Left Mousebutton
 if !(_btn in [0])exitWith{};
 
 if(an_ui_inv_grabActive)exitWith{systemchat "an_ui_inv_grabActive already active";};
@@ -42,25 +44,5 @@ _ctrlGrp_item setVariable ["item_data_prev",[(ctrlParentControlsGroup _ctrl), _p
 // delete the old one
 [_ctrl] call an_fnc_ui_inv_item_remove_DEV;
 
-//DEV DEV DEV
-// ToDo: Switch to PerFrame EH
-// especially on slower machines, the Item could lag behind the Mouse, which could result in unforseeable consequences
-
-[_ctrlGrp_item,_offset_x,_offset_y]spawn
-{
-	params["_ctrl","_offset_x","_offset_y"];
-	
-	uinamespace setVariable ["an_ctrl_active", _ctrl];
-	while{an_ui_inv_grabActive}do
-	{
-		getMousePosition params["_mPos_x","_mPos_y"];
-		// _ctrl ctrlSetPositionX (_mPos_x-0.003); //(_mPos_x+_offset_x);
-		// _ctrl ctrlSetPositionY (_mPos_y-0.004); //(_mPos_y+_offset_y);
-		private _offset = 0.005;
-		_ctrl ctrlSetPositionX (_mPos_x-_offset);
-		_ctrl ctrlSetPositionY (_mPos_y-(_offset*getResolution#4));	// AspectRatio stuff
-		_ctrl ctrlCommit 0;
-	};
-	ctrlDelete _ctrl;
-	uinamespace setVariable ["an_ctrl_active",controlNull];
-};
+uinamespace setVariable ["an_ctrl_active", _ctrlGrp_item];
+addMissionEventHandler ["Draw3D",{[] call an_fnc_ui_inv_item_attachToMouse;}];
