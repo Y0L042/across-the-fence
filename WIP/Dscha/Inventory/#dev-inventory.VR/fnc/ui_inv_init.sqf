@@ -42,6 +42,7 @@ an_fnc_ui_inv_mpos = compile preprocessFileLineNumbers "fnc\ui_inv_mpos.sqf";
 an_fnc_ui_inv_mPos_check = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check.sqf";
 an_fnc_ui_inv_mPos_check_inInv = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check_inInv.sqf";
 an_fnc_ui_inv_mPos_check_mouse_z = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check_mouse_z.sqf";
+an_fnc_ui_inv_EH_mouseBtn = compile preprocessFileLineNumbers "fnc\ui_inv_EH_mouseBtn.sqf";
 
 //////////////////////////////
 
@@ -147,8 +148,8 @@ an_inv_size_x = 8;	//0-X (so -1 of the actual ColCount) - FIXED SIZE - ALWAYS 8!
 // DEV
 an_inv_size_y = call an_fnc_ui_inv_grid_getSize;
 
-an_inv_move_placeHorizontal = true;
-an_ui_inv_grabActive = false;
+an_inv_move_placeHorizontal = true;	// init
+an_ui_inv_grabActive = false;		// init
 
 ////// Create Inventory for Player and Ground
 //create Player Inventory grid array
@@ -274,28 +275,3 @@ _disp displayAddEventhandler ["KeyDown",
 }];
  */
 
-
-//ToDo: Refine further and move to proper function creation
-an_DEV_MouseEH =
-{
-	//executed from grabbed Item ctrl
-	disableSerialization;
-	params ["_ctrl", "_btn", "_xPos", "_yPos", "_btn_shift", "_btn_ctrl", "_btn_alt"];
-	// systemchat str ["Btn:",_btn];
-	
-	//RMB - Reset to old Pos
-	if(_btn == 1 && an_ui_inv_grabActive)then
-	{
-		private _data_prev = _ctrl getVariable ["item_data_prev",[]];
-		_data_prev spawn an_fnc_ui_inv_item_create;
-		an_ui_inv_grabActive = false;	//triggers the deletion of the temp Item
-	};
-	//LMB - Place Item
-	if(_btn == 0)then
-	{
-		_this call an_fnc_ui_inv_mPos_check;
-	};
-	
-	//NEEDED!
-	true
-};
