@@ -18,8 +18,8 @@ private _grid_w_tile = _ctrl_w / _grid_x;
 private _grid_h_tile = _ctrl_h / _grid_y;
 
 // calc the pos for given grid position (by adding little offset, we can be sure to find the correct one!):
-_item_gridPos_y = (_grid_w_tile * _item_pos_x) + 0.001;
-_item_gridPos_x = (_grid_h_tile * _item_pos_y) + 0.001;
+private _item_gridPos_y = (_grid_w_tile * _item_pos_x) + 0.001;
+private _item_gridPos_x = (_grid_h_tile * _item_pos_y) + 0.001;
 diag_log ["_item_pos: ", _item_pos, "_item_gridPos: ", [_item_gridPos_y, _item_gridPos_x]];
 
 //return the "UI pos" in the grid

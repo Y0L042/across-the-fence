@@ -16,14 +16,14 @@ getMousePosition params["_mPos_x","_mPos_y"];
 private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
 private _ctrlGrp_item = _disp ctrlCreate ["inv_icon",32123];
 
-_offset_x = _p_x - _xPos;
-_offset_y = _p_y - _yPos;
+private _offset_x = _p_x - _xPos;
+private _offset_y = _p_y - _yPos;
 // _ctrlGrp_item ctrlSetPosition[_mPos_x+_offset_x,_mPos_y+_offset_y, _p_w, _p_h];
 _ctrlGrp_item ctrlSetPosition[0,0, _p_w, _p_h];
 _ctrlGrp_item ctrlCommit 0;
 _ctrlGrp_item ctrlAddEventhandler ["MouseButtonUp","call an_DEV_MouseEH"];
 
-_ctrl_img_old = _ctrl controlsGroupCtrl 200;
+private _ctrl_img_old = _ctrl controlsGroupCtrl 200;
 {
 	private _ctrl_sub = _ctrlGrp_item controlsGroupCtrl _x;
 	_ctrl_sub ctrlSetposition [0,0,_p_w,_p_h];

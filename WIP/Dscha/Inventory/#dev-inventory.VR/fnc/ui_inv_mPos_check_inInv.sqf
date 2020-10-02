@@ -6,7 +6,7 @@ params	[
 			["_ctrl_varName","",[""]]
 		];
 
-_ctrl_toCheck = uinamespace getvariable [_ctrl_varName, controlNull];
+private _ctrl_toCheck = uinamespace getvariable [_ctrl_varName, controlNull];
 if(isNull _ctrl_toCheck)then{systemchat str["ERROR: mPos_check_inAray: ControlVar not found! Varname:", _ctrl_varName];};
 
 (ctrlPosition _ctrl_toCheck) params["_cPos_pInv_x","_cPos_pInv_y","_cPos_pInv_w","_cPos_pInv_h"];

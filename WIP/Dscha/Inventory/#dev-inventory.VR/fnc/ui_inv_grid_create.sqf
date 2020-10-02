@@ -19,7 +19,7 @@ _ctrlGrp ctrlSetPositionH _grid_h;
 _ctrlGrp ctrlCommit 0;
 
 // adjust the height of the CtrlGroup-parent of the used grid - unless it exceeds the base value - Info: used in: ui_inv_mPos_check_mouse_z
-_ctrlGrp_area = (ctrlParentControlsGroup _ctrlGrp);
+private _ctrlGrp_area = (ctrlParentControlsGroup _ctrlGrp);
 if(_grid_h < (ctrlPosition _ctrlGrp_area)#3)then
 {
 	_ctrlGrp_area ctrlSetPositionH _grid_h;
@@ -27,7 +27,7 @@ if(_grid_h < (ctrlPosition _ctrlGrp_area)#3)then
 };
 
 //also of the Background (DEV IDC)
-_ctrlGrp_bg = _ctrlGrp controlsGroupCtrl 99999;
+private _ctrlGrp_bg = _ctrlGrp controlsGroupCtrl 99999;
 _ctrlGrp_bg ctrlSetPositionH _grid_h;
 _ctrlGrp_bg ctrlCommit 0;
 
@@ -39,9 +39,9 @@ for "_p_y" from 0 to (_size_y-1)do
 	private _row = _p_y;
 	for "_p_x" from 0 to (_size_x-1)do	//should always be 8
 	{
-		_idc = parseNumber (format["%1%2",_p_y,_p_x]);
+		private _idc = parseNumber (format["%1%2",_p_y,_p_x]);
 		_curRow pushback [_row,_p_x,_idc];
-		_ctrl = _disp ctrlCreate ["tile_base",_idc,_ctrlGrp];
+		private _ctrl = _disp ctrlCreate ["tile_base",_idc,_ctrlGrp];
 		
 		_ctrl ctrlSetposition [(_tile_W*_p_x),(_tile_H*_p_y),_tile_W,_tile_H];
 		_ctrl ctrlCommit 0;

@@ -16,10 +16,10 @@ private _mPos = [_mPos_x,_mPos_y];
 	_x params ["_area","_grid"];
 	private _isIn = [_area] call an_fnc_ui_inv_mPos_check_inInv;
 	
-	if(_isIn)then
+	if(_isIn)exitWith
 	{
-		_ctrlGrp_parent = uinamespace getvariable [_area, controlNull];
-		_ctrlGrp = uinamespace getvariable [_grid, controlNull];
+		private _ctrlGrp_parent = uinamespace getvariable [_area, controlNull];
+		private _ctrlGrp = uinamespace getvariable [_grid, controlNull];
 		private _mPos_rel = ctrlMousePosition _ctrlGrp;
 		[_ctrlGrp,_btn,(_mPos_rel#0),(_mPos_rel#1),_btn_shift,_btn_ctrl,_btn_alt] call an_fnc_ui_inv_mpos;
 	};

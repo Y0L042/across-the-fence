@@ -26,7 +26,7 @@ ENTRY_GET("size",_parent_data) params ["_parent_size_y", "_parent_size_x"];
 
 private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
 //create the Icon
-_item_IDC = missionNameSpace getVariable ["an_Item_IDC_count",107441];
+private _item_IDC = missionNameSpace getVariable ["an_Item_IDC_count",107441];
 private _ctrlGrp_item = _disp ctrlCreate ["inv_icon",_item_IDC,_ctrl_invGrid];
 missionNameSpace setVariable ["an_Item_IDC_count",(_item_IDC + 1)];
 
@@ -38,15 +38,15 @@ missionNameSpace setVariable ["an_Item_IDC_count",(_item_IDC + 1)];
 // _inv_size_y	-	INT - variable amout of slots 
 
 if(_inv_size_x < 0 || _inv_size_y < 0)exitWith{systemchat str ["ITEM_CREATE: GRID NOT SET!",[_inv_size_x,_inv_size_y]];};
-_tile_W = _grid_w / _inv_size_x;
-_tile_H = _grid_h / _inv_size_y;
+private _tile_W = _grid_w / _inv_size_x;
+private _tile_H = _grid_h / _inv_size_y;
 
 // systemchat str [!_canFlip, !an_inv_move_placeHorizontal];
-_canFlip = if(_parent_size_y == _parent_size_x)then{0}else{1};
+private _canFlip = if(_parent_size_y == _parent_size_x)then{0}else{1};
 if((_canFlip == 0) && !an_inv_move_placeHorizontal)then{an_inv_move_placeHorizontal = true};
 //get width and height of selected icon
-_ctrlGrp_item_w = if(an_inv_move_placeHorizontal)then{_tile_W*(_parent_size_x)}else{_tile_H*(_parent_size_y)};
-_ctrlGrp_item_h = if(an_inv_move_placeHorizontal)then{_tile_H*(_parent_size_y)}else{_tile_W*(_parent_size_x)};
+private _ctrlGrp_item_w = if(an_inv_move_placeHorizontal)then{_tile_W*(_parent_size_x)}else{_tile_H*(_parent_size_y)};
+private _ctrlGrp_item_h = if(an_inv_move_placeHorizontal)then{_tile_H*(_parent_size_y)}else{_tile_W*(_parent_size_x)};
 
 
 //if needed -> "rotate" the main ctrlGroup and adjust the values to 4/3 (Arma Base Resolution)
@@ -65,7 +65,7 @@ _ctrlGrp_item ctrlCommit 0;
 	_ctrl ctrlCommit 0;
 	if(_x == 200)then
 	{
-		_item_img = ENTRY_GET("image",_parent_data);
+		private _item_img = ENTRY_GET("image",_parent_data);
 		if(_item_img isEqualTo "")then
 		{
 			private _cfgBase = [ENTRY_GET("slot",_parent_data)] call an_fnc_item_getCfgClass;
