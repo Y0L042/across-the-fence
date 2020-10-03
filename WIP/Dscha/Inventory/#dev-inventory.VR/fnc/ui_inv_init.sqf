@@ -195,26 +195,6 @@ diag_log ["DEBUG: UI_INV_INIT: setting up grid: crate Inventory...     "];
 diag_log ["DEBUG: UI_INV_INIT: setting up grid: crate Inventory... done"];
 
 
-/* 
-// STAHP! NOT NEEDED! DO NOT ENABLE THIS FUCKING PART HERE! JUST LEFT IN AS SELF-CHASTISEMENT! (Dscha)
-// The fucking tileUsage is being set automaticaly, when i cycle through the list of the godamn Itemlist...
-// fml...
-
-// get the grid data and populate the data
-private _crate_grid = ENTRY_GET("inv_grid",_DEV_cratedata);
-// get the used tiles and store it for later use
-private _crate_tiles_used = [];
-{
-	private _row = _x;
-	private _row_cur = _forEachIndex;
-	{
-		if(_x == 1)then{_crate_tiles_used pushback [_row_cur,_forEachIndex]};
-	}forEach _row;
-}forEach _crate_grid;
-// 1000 = player
-// 1001 = crate
-missionNameSpace setVariable [format["an_inv_tileUsage_%1",1001],_crate_tiles_used];
-*/
 
 // -------------------- add the Items:
 private _crate_ctrl = uinamespace getvariable ["an_inv_crate_grid", controlNull];
