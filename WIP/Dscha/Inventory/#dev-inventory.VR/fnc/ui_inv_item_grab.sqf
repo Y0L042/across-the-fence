@@ -41,8 +41,8 @@ private _ctrl_img_old = _ctrl controlsGroupCtrl 200;
 private _item_usedSlots_prev = +_item_usedSlots;
 _ctrlGrp_item setVariable ["item_data_prev",[(ctrlParentControlsGroup _ctrl), _p_x, _p_y, _item_class, _item_usedSlots_prev]];
 
-// delete the old one
-[_ctrl] call an_fnc_ui_inv_item_remove_DEV;
+// delete the old control
+[_ctrl] call an_fnc_ui_inv_item_remove;
 
 uinamespace setVariable ["an_ctrl_active", _ctrlGrp_item];
 addMissionEventHandler ["Draw3D",{[] call an_fnc_ui_inv_item_attachToMouse;}];
