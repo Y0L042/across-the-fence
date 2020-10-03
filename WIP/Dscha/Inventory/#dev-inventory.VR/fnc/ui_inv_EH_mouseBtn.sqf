@@ -9,8 +9,8 @@ systemchat str ["Btn:",_btn];
 if(_btn == 1 && an_ui_inv_grabActive)then
 {
 	private _data_prev = _ctrl getVariable ["item_data_prev",[]];
-	_data_prev_cur = +_data_prev;
-	_data_prev_cur call an_fnc_ui_inv_item_create;
+	_data_prev params ["_ctrl_parent_prev","_p_x","_p_y","_item_class","_item_usedSlots_prev","_pos_data"];
+	[_ctrl_parent_prev,0,_p_x,_p_y] call an_fnc_ui_inv_mPos;
 	an_ui_inv_grabActive = false;	//triggers the deletion of the temp Item
 };
 
