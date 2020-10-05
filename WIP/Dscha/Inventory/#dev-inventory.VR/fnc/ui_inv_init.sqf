@@ -24,8 +24,8 @@
 //Grid
 an_fnc_ui_inv_grid_check_freeTiles = compile preprocessFileLineNumbers "fnc\ui_inv_grid_check_freeTiles.sqf";
 an_fnc_ui_inv_grid_create = compile preprocessFileLineNumbers "fnc\ui_inv_grid_create.sqf";
-an_fnc_ui_inv_grid_getPos = compile preprocessFileLineNumbers "fnc\ui_inv_grid_getPos.sqf";
 an_fnc_ui_inv_grid_getSize = compile preprocessFileLineNumbers "fnc\ui_inv_grid_getSize.sqf";
+an_fnc_ui_inv_grid_posToGrid = compile preprocessFileLineNumbers "fnc\ui_inv_grid_posToGrid.sqf";
 an_fnc_ui_inv_grid_gridToPos = compile preprocessFileLineNumbers "fnc\ui_inv_grid_gridToPos.sqf";
 an_fnc_ui_inv_grid_isPosIn = compile preprocessFileLineNumbers "fnc\ui_inv_grid_isPosIn.sqf";
 /* DEBUG function:*/ an_fnc_ui_inv_grid_resetColor = compile preprocessFileLineNumbers "fnc\ui_inv_grid_resetColor.sqf";
@@ -135,7 +135,7 @@ an_fnc_item_getCfgClass =
 		case 14: {"CfgWeapons"};	// Pouch (extra inventory, nothing else - atm not visible)
 		default {"CfgMagazines"};
 	};
-	systemchat str["_ret", _ret];
+	// systemchat str["_ret", _ret];
 	_ret
 };
 
@@ -144,34 +144,27 @@ an_fnc_item_getCfgClass =
 
 private _disp = _this#0;
 
-an_inv_size_x = 8;	//0-X (so -1 of the actual ColCount) - FIXED SIZE - ALWAYS 8!
-// DEV
+an_inv_size_col = 8;	//0-X (so -1 of the actual ColCount) - FIXED SIZE - ALWAYS 8!
+// DEV - Will be set by the Backend data
 an_inv_size_y = call an_fnc_ui_inv_grid_getSize;
 
 an_inv_move_placeHorizontal = true;	// init
 an_ui_inv_grabActive = false;		// init
 
 ////// Create Inventory for Player and Ground
-//create Player Inventory grid array
+// create Player Inventory grid array
+diag_log "-----------------------------------------------";
+diag_log ["setting up grid: Player Inventory...     "];
 private _ctrlGrp_pers = uinamespace getvariable ["an_inv_player_grid", controlNull];
-diag_log ["setting up grid: Player Inventory...     ", _ctrlGrp_pers];
-[_disp,_ctrlGrp_pers,an_inv_size_x, an_inv_size_y] call an_fnc_ui_inv_grid_create;
+// set the Var for the PERSONAL grid and show the "grid images"
+[_disp,_ctrlGrp_pers,an_inv_size_y] call an_fnc_ui_inv_grid_create;
 diag_log ["setting up grid: Player Inventory... done"];
 
 diag_log "-----------------------------------------------";
-//create "Ground Inventory" grid array
+// create "Ground Inventory" grid array
 _DEV_cratedata = [
 	["crateID","928316315756323"],
-	["inv_grid",
-		[
-			[1,1,1,1,1,1,1,1],
-			[1,1,1,1,1,1,1,1],
-			[1,1,1,1,1,1,1,1],
-			[1,1,1,1,1,1,1,1],
-			[0,0,0,0,0,0,0,0]
-		]
-	],
-	["inv_gridSize",[5,8]],
+	["inv_rows",5],
 	["itemData",
 		[
 			["MjAyMC0wOS0yMVQwMzo0MTo0MC4wNDEzNjUtMg==",[["attachments",[]],["curInv","928316315756323"],["hp_cur",100],["hp_max",100],["id","MjAyMC0wOS0yMVQwMzo0MTo0MC4wNDEzNjUtMg=="],["invPos",[0,0]],["isFlipped",0],["parent","FirstAidKit"],["rarity",0]]],
@@ -186,21 +179,21 @@ _DEV_cratedata = [
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
 // create the crate grid
-private _crate_gridSize = ENTRY_GET("inv_gridSize",_DEV_cratedata);
-_crate_gridSize params ["_grid_y","_grid_x"];
-diag_log ["DEBUG: UI_INV_INIT: _crate_gridSize :", _crate_gridSize];
-private _ctrlGrp_cont = uinamespace getvariable ["an_inv_crate_grid", controlNull];
+diag_log "-----------------------------------------------";
 diag_log ["DEBUG: UI_INV_INIT: setting up grid: crate Inventory...     "];
-[_disp,_ctrlGrp_cont,_grid_x, _grid_y] call an_fnc_ui_inv_grid_create;
+private _grid_rows = ENTRY_GET("inv_rows",_DEV_cratedata);
+private _ctrlGrp_cont = uinamespace getvariable ["an_inv_crate_grid", controlNull];
+// set the Var for the EXTERNAL grid and show the "grid images"
+[_disp,_ctrlGrp_cont,_grid_rows] call an_fnc_ui_inv_grid_create;
 diag_log ["DEBUG: UI_INV_INIT: setting up grid: crate Inventory... done"];
-
+diag_log "-----------------------------------------------";
 
 
 // -------------------- add the Items:
 private _crate_ctrl = uinamespace getvariable ["an_inv_crate_grid", controlNull];
 private _items = ENTRY_GET("itemData",_DEV_cratedata);
 
-
+diag_log "-----------------------------------------------";
 {
 	_x params ["_itemID","_item_data"];
 	// get the parent
@@ -209,7 +202,7 @@ private _items = ENTRY_GET("itemData",_DEV_cratedata);
 	// get the pos, this item was stored in
 	private _item_pos = ENTRY_GET("invPos",_item_data);
 	//convert from gridPos to uiPos
-	([_crate_ctrl, _crate_gridSize, _item_pos ]call an_fnc_ui_inv_grid_gridToPos) params["_item_pos_y","_item_pos_x"];
+	([_crate_ctrl, _grid_rows, _item_pos ]call an_fnc_ui_inv_grid_gridToPos) params["_item_pos_y","_item_pos_x"];
 	
 	//DEBUG
 	diag_log ["DEBUG: UI_INV_INIT: _item_parent    :", _item_parent];
@@ -218,9 +211,9 @@ private _items = ENTRY_GET("itemData",_DEV_cratedata);
 	// set the classname, to create the Item
 	missionNameSpace setVariable ["an_inv_itemActive",_item_parent];
 	[_crate_ctrl,0,_item_pos_y,_item_pos_x] call an_fnc_ui_inv_mPos;
-	
+	diag_log "-----------------------------------------------";
 }forEach _items;
-
+diag_log "-----------------------------------------------";
 
 // Handle scrolling the Mousewheel (only if an item is currently grabbed)
 _disp displayAddEventhandler ["MouseZChanged","call an_fnc_ui_inv_EH_mouse_z"];

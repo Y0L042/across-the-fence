@@ -1,22 +1,22 @@
 /*
 	simple check if given vars are within a given range
-	called by "ui_inv_get_GridPos.sqf"
+	called by "ui_inv_grid_posToGrid"
 	
 	Input:
 		[
 			 curX	// FLOAT - x Pos to check
-			,maxX	// FLOAT - x max of Grid
 			,curY	// FLOAT - Y Pos to check
 			,maxY	// FLOAT - Y max of Grid
 		]
 */
 
-params["_t_x","_g_x","_t_y","_g_y"];
+// ------------ CHECKED
+params["_t_row","_t_col","_g_y"];
 
 //return negated result (True == False)
 !(
-	_t_x < 0 ||
-	{_t_x > (_g_x-1)} ||
-	{_t_y < 0} ||
-	{_t_y > (_g_y-1)}
+	_t_col < 0 ||
+	{_t_col > (8-1)} ||
+	{_t_row < 0} ||
+	{_t_row > (_g_y-1)}
 )

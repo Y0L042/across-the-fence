@@ -11,6 +11,8 @@ an_ui_inv_grabActive = true;
 
 (_ctrl getVariable ["item_data",[]]) params ["_pos_data","_item_usedSlots","_item_class"];
 // systemchat str [(_ctrl getVariable ["item_data",[]])];
+// systemchat str [_pos_data];
+
 (ctrlPosition _ctrl) params["_p_x","_p_y","_p_w","_p_h"];
 missionNameSpace setVariable ["an_inv_itemActive",_item_class];
 
@@ -20,7 +22,7 @@ private _ctrlGrp_item = _disp ctrlCreate ["inv_icon",32123];
 
 private _offset_x = _p_x - _xPos;
 private _offset_y = _p_y - _yPos;
-// _ctrlGrp_item ctrlSetPosition[_mPos_x+_offset_x,_mPos_y+_offset_y, _p_w, _p_h];
+
 _ctrlGrp_item ctrlSetPosition[0,0, _p_w, _p_h];
 _ctrlGrp_item ctrlCommit 0;
 _ctrlGrp_item ctrlAddEventhandler ["MouseButtonUp","call an_fnc_ui_inv_EH_mouseBtn"];

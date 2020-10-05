@@ -33,20 +33,18 @@ missionNameSpace setVariable ["an_Item_IDC_count",(_item_IDC + 1)];
 (ctrlPosition _ctrl_invGrid)params["_grid_x","_grid_y","_grid_w","_grid_h"];
 
 
-(missionNameSpace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_invGrid)],[-1,-1]]) params["_inv_size_x","_inv_size_y"];
-// _inv_size_x	-	INT - ixed amout of slots
-// _inv_size_y	-	INT - variable amout of slots 
+private _inv_rows = missionNameSpace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_invGrid)], -1];
+if(_inv_rows < 0)exitWith{systemchat str ["ITEM_CREATE: GRID NOT SET!",_inv_rows];};
 
-if(_inv_size_x < 0 || _inv_size_y < 0)exitWith{systemchat str ["ITEM_CREATE: GRID NOT SET!",[_inv_size_x,_inv_size_y]];};
-private _tile_W = _grid_w / _inv_size_x;
-private _tile_H = _grid_h / _inv_size_y;
+private _tile_W = _grid_w / an_inv_size_col;
+private _tile_H = _grid_h / _inv_rows;
 
 // systemchat str [!_canFlip, !an_inv_move_placeHorizontal];
 private _canFlip = if(_parent_size_y == _parent_size_x)then{0}else{1};
 if((_canFlip == 0) && !an_inv_move_placeHorizontal)then{an_inv_move_placeHorizontal = true};
 //get width and height of selected icon
-private _ctrlGrp_item_w = if(an_inv_move_placeHorizontal)then{_tile_W*(_parent_size_x)}else{_tile_H*(_parent_size_y)};
-private _ctrlGrp_item_h = if(an_inv_move_placeHorizontal)then{_tile_H*(_parent_size_y)}else{_tile_W*(_parent_size_x)};
+private _ctrlGrp_item_w = if(an_inv_move_placeHorizontal)then{_tile_W*_parent_size_x}else{_tile_H*_parent_size_y};
+private _ctrlGrp_item_h = if(an_inv_move_placeHorizontal)then{_tile_H*_parent_size_y}else{_tile_W*_parent_size_x};
 
 
 //if needed -> "rotate" the main ctrlGroup and adjust the values to 4/3 (Arma Base Resolution)
@@ -58,7 +56,7 @@ if(an_inv_move_placeHorizontal)then
 };
 _ctrlGrp_item ctrlCommit 0;
 
-//Adjust the image and background
+//Adjust the image and background of the Item
 {
 	private _ctrl = _ctrlGrp_item controlsGroupCtrl _x;
 	_ctrl ctrlSetposition [0,0,_ctrlGrp_item_w,_ctrlGrp_item_h];

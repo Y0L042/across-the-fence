@@ -148,7 +148,7 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
             return
 
         invGrid = invData["inv_grid"]
-        invGridSize = invData["inv_gridSize"]
+        inv_rows = invData["inv_rows"]
         inv_itemData = invData["itemData"]
 
         # get the parent Data
@@ -171,8 +171,6 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
 
         x_size = check_size(item_parent_data["size"])
 
-        # get the invGrid start vars
-        grid_rows, grid_cols = invGridSize
         # keep count of how many rows will be added in the end (IF isLootcrate == 1)
         grid_rows_final = len(invGrid)
 
@@ -184,14 +182,13 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
                 if isLootcrate > 0:
                     print(f"DEBUG: item_handler: item_add_to_inv: It's a lootcrate -> Adding new row. Count: {grid_rows_final}\n-------------")
                     # add a new row to the tempInventory
-                    newRow = [0] * grid_cols
+                    newRow = [0] * 8
                     invGrid.append(newRow)
                     grid_rows_final = len(invGrid)
-                    # grid_cols = len(invGrid[0])
 
                     if grid_rows_final > 75:
                         # seems like, that something went pretty wrong there
-                        grid_rows_final = grid_rows
+                        grid_rows_final = inv_rows
                         break
                 else:
                     break
@@ -204,7 +201,7 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
             # update the Inventory Grid, its gridSize ...
             inv_handler.inv_slots_used_set(slots_used=slot_usage, invGrid=invGrid, isAdd=True)
             invData["inv_grid"] = invGrid
-            invData["inv_gridSize"] = [grid_rows_final, grid_cols]
+            invData["inv_rows"] = grid_rows_final
             invData["itemData"] = inv_itemData
 
             # ... and add the item to its itemData
@@ -215,7 +212,7 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
             # ... and set the ID of the "crate"
             item["curInv"] = invData["crateID"]
         else:
-            print(f"ERROR: item_add_list: No free slots found for x_ItemData:\n{item}\n RowCount: {grid_rows}\n-------------")
+            print(f"ERROR: item_add_list: No free slots found for x_ItemData:\n{item}\n inv_rows: {inv_rows}\n-------------")
         #########################################################
 
         # return the updated invData!

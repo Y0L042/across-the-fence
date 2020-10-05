@@ -1,23 +1,21 @@
 
-params["_ctrl_gridCur","_grid_size_x","_grid_size_y","_pos_toCheck","_tiles_toCheck"];
-//get grid Data from currently active "Grid ctrl"
-private _grid_data = missionNameSpace getVariable [format["an_inv_grid_%1",(ctrlIDC _ctrl_gridCur)],[]];
+// ------------ CHECKED
+params["_ctrl_gridCur","_grid_size_row","_pos_toCheck","_tiles_toCheck"];
 //ToDo: Reload previous tiles_usage
 private _tile_list = [];
 {
-	_x params ["_px","_py"];
-	private _gridPos = [_px,_py];
+	_x params ["_row","_col"];
+	private _gridPos = [_row,_col];
 	//Check if pos is within grid
 	if	(
-				_px > (_grid_size_x-1)
-			||	_px < 0
-			||	_py > (_grid_size_y-1)
-			||	_py < 0
+				_col > (8-1)					// 8 == standard Width, "-1" not rly needed, but left in, in case of changing it (simply searching for 8, if needed)
+			||	_col < 0
+			||	_row > (_grid_size_row-1)		// Reminder: Index starts at 0, row count starts from 1
+			||	_row < 0
 			||	_gridPos in _tiles_toCheck		//if something is already placed there
 		)exitWith{_tile_list = [];};
 	
-	private _tile_idc = _grid_data#_py#_px#2;
-	_tile_list pushback [_tile_idc,_gridPos];
+	_tile_list pushback _gridPos;
 }forEach _pos_toCheck;
-
+_tile_list sort true;
 _tile_list

@@ -10,24 +10,24 @@ from . import item_handler
 DEFAULT_loot_count = 2
 DEFAULT_loot_skill_multiplier = 2
 
-# inventory = []
-def invGrid_create(grid_x, grid_y):
+# inventory = INT
+def invGrid_create(rows):
     ret = []
-    for x in range(grid_y):
-        _line = [0] * grid_x
+    for x in range(rows):
+        _line = [0] * 8
         ret.append(_line)
     return ret
 
 
 # try to get the Crate data. If not found -> Create a new one. We simply assume the Data, coming from the Game-server, is correct/valid.
-def crate_data_get(sData, clientID: str = None, pos: list = None, crateID: str = None, lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, invGridSize: list = None, persistent: int = 0, model: str = "IG_supplyCrate_F"):
+def crate_data_get(sData, clientID: str = None, pos: list = None, crateID: str = None, lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 4, persistent: int = 0, model: str = "IG_supplyCrate_F"):
     print(f"clientID: {clientID}\n"
           f"pos: {pos}\n"
           f"crateID: {crateID}\n"
           f"lootType: {lootType}\n"
           f"isLootcrate: {isLootcrate}\n"
           f"loot_count: {loot_count}\n"
-          f"invGridSize: {invGridSize}\n"
+          f"inv_rows: {inv_rows}\n"
           f"persistent: {persistent}\n"
           f"model: {model}\n")
     try:
@@ -46,12 +46,12 @@ def crate_data_get(sData, clientID: str = None, pos: list = None, crateID: str =
     # No "Error", the crate was just not in the List. So let's create a new crate entry
     except KeyError:
         print(f"DEBUG: INV_HANDLER: crate_data_get: Creating new Crate")
-        crate_add(sData=sData, clientID=clientID, pos=pos, crateID=crateID, lootType=lootType, isLootcrate=isLootcrate, loot_count=loot_count, invGridSize=invGridSize, persistent=persistent)
+        crate_add(sData=sData, clientID=clientID, pos=pos, crateID=crateID, lootType=lootType, isLootcrate=isLootcrate, loot_count=loot_count, inv_rows=inv_rows, persistent=persistent)
     except Exception:
-        print(f"ERROR: INV_HANDLER: crate_data_get: HUGE WOBBLE WOBBLE! Data:\nclientID: {clientID}\npos: {pos}\ncrateID: {crateID}\nlootType: {lootType}\npersistent {persistent}\ninvGridSize {invGridSize}\n---------")
+        print(f"ERROR: INV_HANDLER: crate_data_get: HUGE WOBBLE WOBBLE! Data:\nclientID: {clientID}\npos: {pos}\ncrateID: {crateID}\nlootType: {lootType}\npersistent {persistent}\ninv_rows {inv_rows}\n---------")
 
 # called by Server only!
-def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, invGridSize: list = None, persistent: int = 0, model: str = "IG_supplyCrate_F"):
+def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 4, persistent: int = 0, model: str = "IG_supplyCrate_F"):
     """
     :param sData:       ServerData (auto-passed)
     :param clientID:    A3 playerUID
@@ -60,7 +60,7 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
     :param lootType:    String - type of loot, passed by the gameserver
     :param isLootcrate: is the crate a newly created Loot-crate or not
     :param loot_count:  Int - amount of Items to add (can be altered by Loot-skill of the player)
-    :param invGridSize: list - Inventory grid
+    :param inv_rows:    Int - Rows
     The following arguments are ONLY for creating persistent crates:
     :param persistent:  Save to Database or not (persistent crates only)
     :param model:       A3 typeOf Class (persistent crates only)
@@ -70,8 +70,6 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
     if None in [clientID, pos]:
         print(f"ERROR: INV_HANDLER: create_add: clientID or Pos not transmitted: clientID: {clientID} | pos: {pos}")
         return
-    if invGridSize is None:
-        invGridSize = [4, 8]
 
     if persistent > 0:
         # only persistent Crates store the model
@@ -79,15 +77,13 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
     else:
         model = ""
 
-    grid_y, grid_x = invGridSize
-
     invData = {
         "crateID": crateID,
         "model": model,
         "pos": pos,
         "type": lootType,
-        "inv_grid": invGrid_create(grid_x, grid_y),
-        "inv_gridSize": invGridSize,    # [y, x] / [rows, columns]
+        "inv_grid": invGrid_create(inv_rows),
+        "inv_rows": inv_rows,    # rows
         "itemData": {}
         }
 
@@ -96,8 +92,8 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
           f"Model       : {model}\n"
           f"Pos         : {pos}\n"
           f"type        : {lootType}\n"
-          f"InvGridSize : {invGridSize}\n"
-          f"invData    : {invData}\n")
+          f"inv_rows    : {inv_rows}\n"
+          f"invData     : {invData}\n")
 
     # create the Inventory
     if persistent > 0:

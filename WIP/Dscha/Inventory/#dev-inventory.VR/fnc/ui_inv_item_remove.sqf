@@ -16,9 +16,6 @@ private _ctrl_grid = ctrlParentControlsGroup _ctrl;
 private _ctrl_grid_idc = ctrlIDC _ctrl_grid;
 // systemchat str ["FNC_TEST: ", _ctrl_grid," - _usedSlots = ",_usedSlots];
 
-//get Grid for used IDC
-private _grid = missionNameSpace getVariable [format["an_inv_grid_%1",_ctrl_grid_idc],[]];
-//_grid == [y,x,IDC]
 
 //get used slots from grid
 private _varName_activeCtrl = format["an_inv_tileUsage_%1",_ctrl_grid_idc];

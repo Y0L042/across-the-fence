@@ -6,7 +6,7 @@ class cfgAn_items
 	// rarity = 0;
 		slot = 0;
 		/*
-			Assignable to a slot?
+			Assignable to a slot
 			0 = inventory Items only
 			1 = ??? (placeholder)
 			//"Weapons"
