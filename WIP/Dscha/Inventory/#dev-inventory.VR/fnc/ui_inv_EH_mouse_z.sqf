@@ -17,7 +17,7 @@ if(an_ui_inv_grabActive)then
 	if(_isIn)then
 	{
 		_invActive params ["_area","_grid"];
-		systemchat str ["mouse_Z", _area, diag_tickTime];
+		// systemchat str ["mouse_Z", _area, diag_tickTime];
 		private _ctrlGrp_parent = uinamespace getvariable [_area, controlNull];
 		private _ctrlGrp = uinamespace getvariable [_grid, controlNull];
 		

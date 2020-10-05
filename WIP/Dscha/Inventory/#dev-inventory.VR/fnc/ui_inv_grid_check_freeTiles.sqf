@@ -1,5 +1,5 @@
 
-// ------------ CHECKED
+
 params["_ctrl_gridCur","_grid_size_row","_pos_toCheck","_tiles_toCheck"];
 //ToDo: Reload previous tiles_usage
 private _tile_list = [];

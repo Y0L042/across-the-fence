@@ -7,14 +7,14 @@
 params["_ctrl", ["_grid_rows",-1,[0]], ["_item_pos",[],[[]]]];
 
 if(_item_pos isEqualTo [])exitWith{private _text = "ERROR: ui_inv_grid_gridToPos: NO POS FOUND"; systemchat _text; diag_log _text;};
-if(_grid_rows < 0)then{};
+if(_grid_rows < 0)exitWith{diag_log "ERROR: GRIDTOPOS: _grid_rows < 0";};
 _item_pos params ["_item_pos_row","_item_pos_col"];
 
-//get the width and height of the passed control
+//get the width and height of the passed Inventory
 (ctrlPosition _ctrl) params["","","_ctrl_w","_ctrl_h"];
 
 //calc the width and height of each slot in the control
-private _grid_w_tile = _ctrl_w / 8;
+private _grid_w_tile = _ctrl_w / an_inv_size_col;
 private _grid_h_tile = _ctrl_h / _grid_rows;
 
 // calc the pos for given grid position (by adding little offset, we can be sure to find the correct one!):

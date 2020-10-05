@@ -3,7 +3,7 @@
 
 */
 
-// ------------ CHECKED
+
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
 params["_disp","_ctrlGrp","_size_y"];
@@ -35,7 +35,7 @@ _ctrlGrp_bg ctrlCommit 0;
 // create the "row"-images, inside the given _ctrlGrp
 for "_p_y" from 0 to (_size_y-1)do
 {
-	//use it's Y Coord as IDC
+	// use its Y Coord as IDC
 	private _idc = _p_y;
 	// add it to the "inventory"-area
 	private _ctrl = _disp ctrlCreate ["tile_base",_idc,_ctrlGrp];

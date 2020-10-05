@@ -50,43 +50,44 @@ private _offset_pos = [[_tile_row, _tile_col]];	//store first Pos (needed, since
 		_offset_pos pushbackUnique [ (_tile_row + _pos_col), (_tile_col + _pos_row) ];
 	};
 }forEach _offset_data;
-diag_log ["_offset_data", _offset_data];
-diag_log ["_offset_pos", _offset_pos];
 
 
 //Check if all tiles are free
 private _varName_activeCtrl = format["an_inv_tileUsage_%1",(ctrlIDC _ctrl_grid)];
 private _grid_tiles_used = missionNameSpace getVariable [_varName_activeCtrl,[]];
-diag_log ["_varName_activeCtrl:", _varName_activeCtrl];
-diag_log ["_grid_tiles_used   :", _grid_tiles_used];
+// Check if tiles in the targeted Grid are free. If not -> Return empty Array and trigger a "re-add" to the old position
 private _item_tile_usage = [_ctrl_grid,_grid_size_row,_offset_pos,_grid_tiles_used] call an_fnc_ui_inv_grid_check_freeTiles;
 
-
+// Check if its a failed attemp
 if!(_item_tile_usage isEqualto [])then
 {
-	//add all tiles to the "blocked tiles"-array and store it in the Grid-ctrl itself
+	// add all tiles to the "blocked tiles"-array and store it in the Grid-parent itself
 	[_ctrl_grid,_grid_tiles_used,_item_tile_usage] call an_fnc_ui_inv_grid_updateTiles;
 	
-	//get position of TopLeft grid slot (will always be used)
-	private _ctrl_topLeft = _ctrl_grid controlsGroupCtrl (_item_tile_usage#0#0);
-	diag_log ["(_item_tile_usage#0#0)   :", (_item_tile_usage#0#0)];
-	(ctrlPosition _ctrl_topLeft) params["_px","_py"];
-	diag_log ["_px",_px,"_py",_py];
+	// get the grid pos of the first entry (TopLeft Slot)
+	([_ctrl_grid, _grid_size_row, _item_tile_usage#0] call an_fnc_ui_inv_grid_gridToPos)params["_item_gridPos_row", "_item_gridPos_col"];
 	
-	
-	// (ctrlMousePosition _ctrl_grid) params["_px","_py"];
-	// diag_log ["_px",_px,"_py",_py];
-	
-	//Add icon to this position
-	[_ctrl_grid,_px,_py,_item_class,_offset_pos] call an_fnc_ui_inv_item_create;
+	// add the Item to the passed position
+	[_ctrl_grid,_item_gridPos_row,_item_gridPos_col,_item_class,_offset_pos] call an_fnc_ui_inv_item_create;
 	
 }else{
+	// re add the Item and its used slots in its previously used grid
 	private _ctrl = uinamespace getVariable ["an_ctrl_active",controlNull];
 	if(isNull _ctrl)exitWith{};
+	
 	private _data_prev = _ctrl getVariable ["item_data_prev",[]];
 	if(_data_prev isEqualto [])exitWith{};
+	
+	// Get the previous data
+	_data_prev params ["_ctrl_parent_prev","_p_x","_p_y","_item_class","_item_usedSlots_prev","_pos_data"];
+	private _varName_activeCtrl_prev = format["an_inv_tileUsage_%1",(ctrlIDC _ctrl_parent_prev)];
+	private _grid_tiles_used_cur = missionNameSpace getVariable [_varName_activeCtrl_prev,[]];
+	
+	// add all tiles to the "blocked tiles"-array and store it in the Grid-parent itself
+	[_ctrl_parent_prev,_grid_tiles_used_cur,_item_usedSlots_prev] call an_fnc_ui_inv_grid_updateTiles;
+	
+	// create it again
 	_data_prev call an_fnc_ui_inv_item_create;
 };
-
 
 

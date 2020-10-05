@@ -10,8 +10,6 @@ if(_btn == 1)exitWith{};	//DEV: For now
 //Only allow LMB
 if!(_btn in [0])exitWith{};
 
-uinameSpace setVariable ["an_grid_active",controlNull];
-private _mPos = [_mPos_x,_mPos_y];
 {
 	_x params ["_area","_grid"];
 	private _isIn = [_area] call an_fnc_ui_inv_mPos_check_inInv;
