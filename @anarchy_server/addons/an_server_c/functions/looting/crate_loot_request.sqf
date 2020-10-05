@@ -17,7 +17,7 @@
 	Example(s):
 		call AN_C_fnc_crate_loot_request;
 */
-params ["_pos", "_building"];
+params ["_player","_pos", "_building"];
 
 private _player_ID = getPlayerUID _player;
 private _chance = 0.99;
