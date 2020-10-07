@@ -66,7 +66,7 @@ _ctrlGrp_item ctrlCommit 0;
 		private _item_img = ENTRY_GET("image",_parent_data);
 		if(_item_img isEqualTo "")then
 		{
-			private _cfgBase = [ENTRY_GET("slot",_parent_data)] call an_fnc_item_getCfgClass;
+			private _cfgBase = [ENTRY_GET("slot",_parent_data)] call an_fnc_ui_inv_item_getClass;
 			_item_img = getText(configFile >> _cfgBase >> _item_class >> "picture");
 		};
 		_ctrl ctrlSetText _item_img;
