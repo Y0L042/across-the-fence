@@ -2,9 +2,10 @@
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
-params ["_ctrl_grid", "_btn", "_mPos_x", "_mPos_y", ["_btn_shift",false,[false]], ["_btn_ctrl",false,[false]], ["_btn_alt",false,[false]]];
+// _btn used by mPos_check_inInv
+params ["_ctrl_grid", "_btn", "_mPos", ["_btn_shift",false,[false]], ["_btn_ctrl",false,[false]], ["_btn_alt",false,[false]]];
 
-if!(_btn in [0])exitWith{};
+_mPos params ["_mPos_x", "_mPos_y"];
 
 _grid_size_row = missionNameSpace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_grid)],-1];
 if(_grid_size_row < 0)exitWith
@@ -25,9 +26,9 @@ if(an_ui_inv_grabActive)then{ an_ui_inv_grabActive = false; };
 //////////////////////////////////////////////
 private _item_class = missionNameSpace getVariable ["an_inv_itemActive",[]];
 private _parent_data = [_item_class] call an_fnc_ui_inv_item_getData;
-diag_log ["DEBUG: UI_INV_MPOS: _parent_data: ", _parent_data];
+diag_log ["DEBUG: UI_INV_MPOS: _parent_data   :", _parent_data];
 private _parent_size = ENTRY_GET("size",_parent_data);
-diag_log ["DEBUG: UI_INV_MPOS: _parent_size: ", _parent_size];
+diag_log ["DEBUG: UI_INV_MPOS: _parent_size   :", _parent_size];
 
 
 private _offset_data = [];

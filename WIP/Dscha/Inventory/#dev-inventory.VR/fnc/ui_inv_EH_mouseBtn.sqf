@@ -21,7 +21,7 @@ if(_btn == 1 && an_ui_inv_grabActive)then
 	[_ctrl_parent_prev,_grid_tiles_used,_item_usedSlots_prev] call an_fnc_ui_inv_grid_updateTiles;
 	
 	// create the Item again
-	[_ctrl_parent_prev,0,_p_x,_p_y] call an_fnc_ui_inv_mPos;
+	[_ctrl_parent_prev,0,[_p_x,_p_y]] call an_fnc_ui_inv_mPos;
 	
 	// trigger the deletion of the temp Item, AFTER mPos crated the "final" Item!
 	an_ui_inv_grabActive = false;
