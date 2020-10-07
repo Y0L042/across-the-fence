@@ -43,6 +43,7 @@ an_fnc_ui_inv_item_getClass = compile preprocessFileLineNumbers "fnc\ui_inv_item
 an_fnc_ui_inv_mpos = compile preprocessFileLineNumbers "fnc\ui_inv_mpos.sqf";
 an_fnc_ui_inv_mPos_check = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check.sqf";
 an_fnc_ui_inv_mPos_check_inInv = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check_inInv.sqf";
+an_fnc_ui_inv_mPos_get_inv = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_get_inv.sqf";
 an_fnc_ui_inv_EH_mouse_z = compile preprocessFileLineNumbers "fnc\ui_inv_EH_mouse_z.sqf";
 an_fnc_ui_inv_EH_mouseBtn = compile preprocessFileLineNumbers "fnc\ui_inv_EH_mouseBtn.sqf";
 
@@ -114,6 +115,9 @@ _parentDefinitions =
 //////////////////////////////
 
 private _disp = _this#0;
+
+
+AN_INVENTORY_LIST = [["an_inv_player_area","an_inv_player_grid"],["an_inv_crate_area","an_inv_crate_grid"]];
 
 an_inv_size_col = 8;	//0-X (so -1 of the actual ColCount) - FIXED SIZE - ALWAYS 8!
 // DEV - Will be set by the Backend data
