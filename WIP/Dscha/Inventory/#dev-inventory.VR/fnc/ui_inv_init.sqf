@@ -33,6 +33,7 @@ an_fnc_ui_inv_grid_updateTiles = compile preprocessFileLineNumbers "fnc\ui_inv_g
 
 
 //handling
+an_fnc_ui_inv_load = compile preprocessFileLineNumbers "fnc\ui_inv_load.sqf";
 an_fnc_ui_inv_item_attachToMouse = compile preprocessFileLineNumbers "fnc\ui_inv_item_attachToMouse.sqf";
 an_fnc_ui_inv_item_create = compile preprocessFileLineNumbers "fnc\ui_inv_item_create.sqf";
 an_fnc_ui_inv_item_getData = compile preprocessFileLineNumbers "fnc\ui_inv_item_getData.sqf";
@@ -124,14 +125,27 @@ an_ui_inv_grabActive = false;		// init
 ////// Create Inventory for Player and Ground
 // create Player Inventory grid array
 diag_log "-----------------------------------------------";
-diag_log ["setting up grid: Player Inventory...     "];
-private _ctrlGrp_pers = uinamespace getvariable ["an_inv_player_grid", controlNull];
-// set the Var for the PERSONAL grid and show the "grid images"
-[_disp,_ctrlGrp_pers,an_inv_size_y] call an_fnc_ui_inv_grid_create;
-diag_log ["setting up grid: Player Inventory... done"];
+// DEV VALUES
+private _inv_player =
+[
+	["crateID","76561197960553643"],
+	["inv_rows",8],
+	["itemData",
+		[
+			["MjAyMC0wOS0yMVQwMzo0MTo0MC4wNDEzNjUtMg==",[["attachments",[]],["curInv","76561197960553643"],["hp_cur",100],["hp_max",100],["id","MjAyMC0wOS0yMVQwMzo0MTo0MC4wNDEzNjUtMg=="],["invPos",[0,0]],["isFlipped",0],["parent","FirstAidKit"],["rarity",0]]],
+			["MjAyMC0wOS0yMVQwMzo0MTo0MC4wNDEzNjUtMw==",[["attachments",[]],["curInv","76561197960553643"],["hp_cur",100],["hp_max",100],["id","MjAyMC0wOS0yMVQwMzo0MTo0MC4wNDEzNjUtMw=="],["invPos",[0,2]],["isFlipped",0],["parent","vn_o_helmet_nva_01"],["rarity",0]]],
+			["MjAyMC0wOS0yMVQwMzo0MTo0MC4wNDEzNjUtNQ==",[["attachments",[]],["curInv","76561197960553643"],["hp_cur",100],["hp_max",100],["id","MjAyMC0wOS0yMVQwMzo0MTo0MC4wNDEzNjUtNQ=="],["invPos",[2,0]],["isFlipped",0],["parent","PLACEHOLDER"],["rarity",0]]],
+			["MjAyMC0wOS0yMVQwMzo0MTo0MC4wNDYzNjUtNw==",[["attachments",[]],["curInv","76561197960553643"],["hp_cur",100],["hp_max",100],["id","MjAyMC0wOS0yMVQwMzo0MTo0MC4wNDYzNjUtNw=="],["invPos",[0,6]],["isFlipped",0],["parent","PLACEHOLDER"],["rarity",0]]],
+			["MjAyMC0wOS0yMVQwMzo0MTo0MC4wNDYzNjUtOQ==",[["attachments",[]],["curInv","76561197960553643"],["hp_cur",100],["hp_max",100],["id","MjAyMC0wOS0yMVQwMzo0MTo0MC4wNDYzNjUtOQ=="],["invPos",[2,6]],["isFlipped",0],["parent","PLACEHOLDER"],["rarity",0]]]
+		]
+	]
+];
+[_disp, "an_inv_player_grid", _inv_player] call an_fnc_ui_inv_load;
 
 diag_log "-----------------------------------------------";
+
 // create "Ground Inventory" grid array
+// DEV VALUES
 _DEV_cratedata = [
 	["crateID","928316315756323"],
 	["inv_rows",5],
@@ -145,44 +159,8 @@ _DEV_cratedata = [
 		]
 	]
 ];
+[_disp, "an_inv_crate_grid", _DEV_cratedata] call an_fnc_ui_inv_load;
 
-#include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
-
-// create the crate grid
-diag_log "-----------------------------------------------";
-diag_log ["DEBUG: UI_INV_INIT: setting up grid: crate Inventory...     "];
-private _grid_rows = ENTRY_GET("inv_rows",_DEV_cratedata);
-private _ctrlGrp_cont = uinamespace getvariable ["an_inv_crate_grid", controlNull];
-// set the Var for the EXTERNAL grid and show the "grid images"
-[_disp,_ctrlGrp_cont,_grid_rows] call an_fnc_ui_inv_grid_create;
-diag_log ["DEBUG: UI_INV_INIT: setting up grid: crate Inventory... done"];
-diag_log "-----------------------------------------------";
-
-
-// -------------------- add the Items:
-private _crate_ctrl = uinamespace getvariable ["an_inv_crate_grid", controlNull];
-private _items = ENTRY_GET("itemData",_DEV_cratedata);
-
-diag_log "-----------------------------------------------";
-{
-	_x params ["_itemID","_item_data"];
-	// get the parent
-	private _item_parent = ENTRY_GET("parent",_item_data);
-	
-	// get the pos, this item was stored in
-	private _item_pos = ENTRY_GET("invPos",_item_data);
-	//convert from gridPos to uiPos
-	([_crate_ctrl, _grid_rows, _item_pos ]call an_fnc_ui_inv_grid_gridToPos) params["_item_pos_y","_item_pos_x"];
-	
-	//DEBUG
-	diag_log ["DEBUG: UI_INV_INIT: _item_parent    :", _item_parent];
-	diag_log ["DEBUG: UI_INV_INIT: _item_pos       :", _item_pos];
-	
-	// set the classname, to create the Item
-	missionNameSpace setVariable ["an_inv_itemActive",_item_parent];
-	[_crate_ctrl,0,_item_pos_y,_item_pos_x] call an_fnc_ui_inv_mPos;
-	diag_log "-----------------------------------------------";
-}forEach _items;
 diag_log "-----------------------------------------------";
 
 // Handle scrolling the Mousewheel (only if an item is currently grabbed)
