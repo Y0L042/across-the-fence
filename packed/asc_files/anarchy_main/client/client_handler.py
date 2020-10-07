@@ -21,7 +21,7 @@ def client_add(**kwargs):
 				[0, 0, 0],
 				0,
 			],
-		'inv_grid': inv_handler.invGrid_create(8, 4),
+		'inv_grid': inv_handler.invGrid_create(4),
 		'itemData': {},
 		'gear':     {
 			# 'helmet': item_handler.item_create("vn_c_headband_03"),
