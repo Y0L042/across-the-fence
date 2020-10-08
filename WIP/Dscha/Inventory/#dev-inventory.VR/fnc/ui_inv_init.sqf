@@ -35,6 +35,8 @@ an_fnc_ui_inv_grid_tiles_used_set = compile preprocessFileLineNumbers "fnc\ui_in
 
 //handling
 an_fnc_ui_inv_load = compile preprocessFileLineNumbers "fnc\ui_inv_load.sqf";
+an_fnc_ui_inv_item_active_class_get = compile preprocessFileLineNumbers "fnc\ui_inv_item_active_class_get.sqf";
+an_fnc_ui_inv_item_active_class_set = compile preprocessFileLineNumbers "fnc\ui_inv_item_active_class_set.sqf";
 an_fnc_ui_inv_item_attachToMouse = compile preprocessFileLineNumbers "fnc\ui_inv_item_attachToMouse.sqf";
 an_fnc_ui_inv_item_create = compile preprocessFileLineNumbers "fnc\ui_inv_item_create.sqf";
 an_fnc_ui_inv_item_grab = compile preprocessFileLineNumbers "fnc\ui_inv_item_grab.sqf";
@@ -190,9 +192,9 @@ _disp displayAddEventhandler ["KeyDown",
 	private _item_sel = [];
 	if(_key in [2,3,4,5,6])then
 	{
-		if(_key isEqualTo 2)exitWith{missionNameSpace setVariable ["an_inv_itemActive",DEV_ITEMTOPLACE_LIST#0]; call _BD;};
-		if(_key isEqualTo 3)exitWith{missionNameSpace setVariable ["an_inv_itemActive",DEV_ITEMTOPLACE_LIST#1]; call _BD;};
-		if(_key isEqualTo 4)exitWith{missionNameSpace setVariable ["an_inv_itemActive",DEV_ITEMTOPLACE_LIST#2]; call _BD;};
+		if(_key isEqualTo 2)exitWith{missionNameSpace setVariable ["an_inv_class_item_active",DEV_ITEMTOPLACE_LIST#0]; call _BD;};
+		if(_key isEqualTo 3)exitWith{missionNameSpace setVariable ["an_inv_class_item_active",DEV_ITEMTOPLACE_LIST#1]; call _BD;};
+		if(_key isEqualTo 4)exitWith{missionNameSpace setVariable ["an_inv_class_item_active",DEV_ITEMTOPLACE_LIST#2]; call _BD;};
 		// if(_key isEqualTo 5)then{DEV_ITEMTOPLACE = 3;};
 		if(_key isEqualTo 6)then
 		{
@@ -200,7 +202,7 @@ _disp displayAddEventhandler ["KeyDown",
 			an_inv_move_placeHorizontal = !an_inv_move_placeHorizontal;
 			 call _BD;
 		};
-		systemchat str [" DEV_ITEMTOPLACE : ", missionNameSpace getVariable ["an_inv_itemActive",[]], " - Place Horizontal?", an_inv_move_placeHorizontal];
+		systemchat str [" DEV_ITEMTOPLACE : ", missionNameSpace getVariable ["an_inv_class_item_active",[]], " - Place Horizontal?", an_inv_move_placeHorizontal];
 	};
 	_buttonDisabled
 }];

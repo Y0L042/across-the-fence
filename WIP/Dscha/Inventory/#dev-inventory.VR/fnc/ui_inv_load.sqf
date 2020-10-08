@@ -20,8 +20,8 @@ diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
 {
 	_x params ["_itemID","_item_data"];
 	diag_log ["DEBUG: UI_INV_INIT: _item_data     :",_item_data];
-	// get the parent
-	private _item_parent = ENTRY_GET("parent",_item_data);
+	// get the parent class
+	private _item_class = ENTRY_GET("parent",_item_data);
 	
 	// get the pos, this item was stored in
 	private _item_pos = ENTRY_GET("invPos",_item_data);
@@ -29,11 +29,12 @@ diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
 	([_ctrl_inventory, _grid_rows, _item_pos ]call an_fnc_ui_inv_grid_gridToPos) params["_item_pos_y","_item_pos_x"];
 	
 	//DEBUG
-	diag_log ["DEBUG: UI_INV_INIT: _item_parent   :", _item_parent];
+	diag_log ["DEBUG: UI_INV_INIT: _item_class    :", _item_class];
 	diag_log ["DEBUG: UI_INV_INIT: _item_pos      :", _item_pos];
 	
 	// set the classname, to create the Item
-	missionNameSpace setVariable ["an_inv_itemActive",_item_parent];
+	[_item_class] call an_fnc_ui_inv_item_active_class_set;
+	
 	[_ctrl_inventory,0,[_item_pos_y,_item_pos_x]] call an_fnc_ui_inv_mPos;
 	diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
 }forEach _items;
