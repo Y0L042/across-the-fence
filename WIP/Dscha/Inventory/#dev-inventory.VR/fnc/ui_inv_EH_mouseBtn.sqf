@@ -14,11 +14,10 @@ if(_btn == 1 && an_ui_inv_grabActive)then
 	diag_log ["_data_prev: ",_data_prev];
 	_data_prev params ["_ctrl_parent_prev","_p_x","_p_y","_item_class","_item_usedSlots_prev","_pos_data"];
 	
-	private _varName_activeCtrl = format["an_inv_tileUsage_%1",(ctrlIDC _ctrl_parent_prev)];
-	private _grid_tiles_used = missionNameSpace getVariable [_varName_activeCtrl,[]];
+	private _grid_usedSlots = [(ctrlIDC _ctrl_parent_prev)] call an_fnc_ui_inv_grid_tiles_used_get;
 	
 	// add all tiles to the "blocked tiles"-array and store it in the Grid-parent itself
-	[_ctrl_parent_prev,_grid_tiles_used,_item_usedSlots_prev] call an_fnc_ui_inv_grid_updateTiles;
+	[_ctrl_parent_prev,_grid_usedSlots,_item_usedSlots_prev] call an_fnc_ui_inv_grid_updateTiles;
 	
 	// create the Item again
 	[_ctrl_parent_prev,0,[_p_x,_p_y]] call an_fnc_ui_inv_mPos;

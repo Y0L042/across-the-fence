@@ -1,9 +1,8 @@
 
 
-params["_ctrl_grid","_grid_tiles_used","_item_tiles_used"];
+params["_ctrl_grid","_grid_usedSlots","_item_tiles_used"];
 {
-	_grid_tiles_used pushbackUnique _x;
+	_grid_usedSlots pushbackUnique _x;
 }forEach _item_tiles_used;
 
-private _varName_activeCtrl = format["an_inv_tileUsage_%1",(ctrlIDC _ctrl_grid)];
-missionNameSpace setVariable [_varName_activeCtrl,_grid_tiles_used];
+[(ctrlIDC _ctrl_grid), _grid_usedSlots] call an_fnc_ui_inv_grid_tiles_used_set;

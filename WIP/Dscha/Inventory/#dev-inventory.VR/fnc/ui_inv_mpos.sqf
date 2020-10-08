@@ -54,8 +54,9 @@ private _offset_pos = [[_tile_row, _tile_col]];	//store first Pos (needed, since
 
 
 //Check if all tiles are free
-private _varName_activeCtrl = format["an_inv_tileUsage_%1",(ctrlIDC _ctrl_grid)];
-private _grid_tiles_used = missionNameSpace getVariable [_varName_activeCtrl,[]];
+//get used slots from grid
+private _grid_tiles_used = [(ctrlIDC _ctrl_grid)] call an_fnc_ui_inv_grid_tiles_used_get;
+
 // Check if tiles in the targeted Grid are free. If not -> Return empty Array and trigger a "re-add" to the old position
 private _item_tile_usage = [_ctrl_grid,_grid_size_row,_offset_pos,_grid_tiles_used] call an_fnc_ui_inv_grid_check_freeTiles;
 

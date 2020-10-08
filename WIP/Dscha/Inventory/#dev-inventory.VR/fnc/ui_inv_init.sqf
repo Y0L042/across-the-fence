@@ -30,7 +30,8 @@ an_fnc_ui_inv_grid_gridToPos = compile preprocessFileLineNumbers "fnc\ui_inv_gri
 an_fnc_ui_inv_grid_isPosIn = compile preprocessFileLineNumbers "fnc\ui_inv_grid_isPosIn.sqf";
 /* DEBUG function:*/ an_fnc_ui_inv_grid_resetColor = compile preprocessFileLineNumbers "fnc\ui_inv_grid_resetColor.sqf";
 an_fnc_ui_inv_grid_updateTiles = compile preprocessFileLineNumbers "fnc\ui_inv_grid_updateTiles.sqf";
-
+an_fnc_ui_inv_grid_tiles_used_get = compile preprocessFileLineNumbers "fnc\ui_inv_grid_tiles_used_get.sqf";
+an_fnc_ui_inv_grid_tiles_used_set = compile preprocessFileLineNumbers "fnc\ui_inv_grid_tiles_used_set.sqf";
 
 //handling
 an_fnc_ui_inv_load = compile preprocessFileLineNumbers "fnc\ui_inv_load.sqf";

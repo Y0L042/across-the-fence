@@ -18,8 +18,7 @@ private _ctrl_grid_idc = ctrlIDC _ctrl_grid;
 
 
 //get used slots from grid
-private _varName_activeCtrl = format["an_inv_tileUsage_%1",_ctrl_grid_idc];
-private _grid_usedSlots = missionNameSpace getVariable [_varName_activeCtrl,[]];
+private _grid_usedSlots = [_ctrl_grid_idc] call an_fnc_ui_inv_grid_tiles_used_get;
 
 
 // get the index pos of the used slots and store it temporarely
@@ -46,7 +45,7 @@ _indexList sort false;
 }forEach _indexList;
 // diag_log ["Post:",_grid_usedSlots];
 
-missionNameSpace setVariable [_varName_activeCtrl,_grid_usedSlots];
+[_ctrl_grid_idc, _grid_usedSlots] call an_fnc_ui_inv_grid_tiles_used_set;
 
 //////////// WARNING:
 //NOT SPAWNING the ctrlDelete (executing in the same frame(?)) -> !! ARMA CRASH !!
