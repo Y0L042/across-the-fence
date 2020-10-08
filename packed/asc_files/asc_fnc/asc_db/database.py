@@ -9,7 +9,7 @@ class asc_db:
 		self.dbPath = dbPath
 		self.dbName = dbName
 		self.lastUpdate = timestamp.timestamp_get()
-		self.factions = {"ARVN": {}, "PAVN": {}, "MACV": {}}
+		self.factions = {"WEST": {}, "EAST": {}, "GUER": {}, "CIV": {}}
 		self.players = {}
 		self.guilds = {}
 		self.zones = {}
