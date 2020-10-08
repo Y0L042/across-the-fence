@@ -1,9 +1,10 @@
+import socket
 from asc_fnc import timestamp
 import json
 
 
 class asc_db:
-	def __init__(self, dbPath, dbName):
+	def __init__(self, con_gameServer, dbPath, dbName):
 		self.name = dbName
 		self.dbPath = dbPath
 		self.dbName = dbName
@@ -31,6 +32,8 @@ class asc_db:
 				self.db_save()
 			except FileNotFoundError:
 				print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n#### ASC: DATABASE HAS NOT been found - PATH NOT FOUND!\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n")
+				con_gameServer.shutdown(socket.SHUT_RDWR)
+				con_gameServer.close()
 				self.name = None
 				return
 		except Exception as e:
