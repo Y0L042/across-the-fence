@@ -64,7 +64,7 @@ private _item_tile_usage = [_ctrl_grid,_grid_size_row,_offset_pos,_grid_tiles_us
 if!(_item_tile_usage isEqualto [])then
 {
 	// add all tiles to the "blocked tiles"-array and store it in the Grid-parent itself
-	[_ctrl_grid,_grid_tiles_used,_item_tile_usage] call an_fnc_ui_inv_grid_updateTiles;
+	[_ctrl_grid,_grid_tiles_used,_item_tile_usage] call an_fnc_ui_inv_grid_tiles_used_update;
 	
 	// get the grid pos of the first entry (TopLeft Slot)
 	([_ctrl_grid, _grid_size_row, _item_tile_usage#0] call an_fnc_ui_inv_grid_gridToPos)params["_item_gridPos_row", "_item_gridPos_col"];
@@ -82,11 +82,11 @@ if!(_item_tile_usage isEqualto [])then
 	
 	// Get the previous data
 	_data_prev params ["_ctrl_parent_prev","_p_x","_p_y","_item_class","_item_usedSlots_prev","_pos_data"];
-	private _varName_activeCtrl_prev = format["an_inv_tileUsage_%1",(ctrlIDC _ctrl_parent_prev)];
-	private _grid_tiles_used_cur = missionNameSpace getVariable [_varName_activeCtrl_prev,[]];
+	
+	private _grid_tiles_used_cur = [(ctrlIDC _ctrl_parent_prev)] call an_fnc_ui_inv_grid_tiles_used_get;
 	
 	// add all tiles to the "blocked tiles"-array and store it in the Grid-parent itself
-	[_ctrl_parent_prev,_grid_tiles_used_cur,_item_usedSlots_prev] call an_fnc_ui_inv_grid_updateTiles;
+	[_ctrl_parent_prev,_grid_tiles_used_cur,_item_usedSlots_prev] call an_fnc_ui_inv_grid_tiles_used_update;
 	
 	// create it again
 	_data_prev call an_fnc_ui_inv_item_create;
