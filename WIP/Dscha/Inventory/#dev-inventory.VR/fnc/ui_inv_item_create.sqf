@@ -84,4 +84,4 @@ _ctrlGrp_item ctrlCommit 0;
 }forEach[100,200];
 
 // systemchat str ["ctrlCreate: _item_data: ", _item_data];
-_ctrlGrp_item setVariable ["item_data",[[_pos_x,_pos_y,_ctrlGrp_item_w,_ctrlGrp_item_h],_usedSlots,_item_class]];
+[_ctrlGrp_item, [[_pos_x,_pos_y,_ctrlGrp_item_w,_ctrlGrp_item_h],_usedSlots,_item_class]] call an_fnc_ui_inv_item_data_set;

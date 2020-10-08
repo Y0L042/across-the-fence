@@ -11,7 +11,10 @@ params ["_ctrl", ["_btn",1,[0]]];//, "_xPos", "_yPos", "_btn_shift", "_btn_ctrl"
 if(_btn != 1)exitWith{};
 
 //get the used slots from that Item
-(_ctrl getVariable ["item_data",[]]) params ["_pos_data","_usedSlots_item","_item_class"];
+
+private _item_data = [_ctrl] call an_fnc_ui_inv_item_data_get;
+_item_data params ["_pos_data","_item_usedSlots","_item_class"];
+
 private _ctrl_grid = ctrlParentControlsGroup _ctrl;
 private _ctrl_grid_idc = ctrlIDC _ctrl_grid;
 // systemchat str ["FNC_TEST: ", _ctrl_grid," - _usedSlots = ",_usedSlots];
@@ -33,7 +36,7 @@ private _indexList = [];
 		diag_log ["ERROR: ITEM_REMOVE: INDEX ENTRY NOT FOUND: ", _x];
 	};
 	_indexList pushback _index;
-}forEach _usedSlots_item;
+}forEach _item_usedSlots;
 
 // then sort the list "backwards", to have the highest entry at index 0...
 _indexList sort false;
@@ -53,5 +56,5 @@ _ctrl spawn {ctrlDelete _this;};
 //////////// WARNING:
 
 
-// systemchat str ["_usedSlots_item: ",_usedSlots_item];
+// systemchat str ["_item_usedSlots: ",_item_usedSlots];
 // systemchat str ["_grid_usedSlots: ",_grid_usedSlots];
