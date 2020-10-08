@@ -21,7 +21,7 @@
 
 
 
-//Grid
+// Grid
 an_fnc_ui_inv_grid_check_freeTiles = compile preprocessFileLineNumbers "fnc\ui_inv_grid_check_freeTiles.sqf";
 an_fnc_ui_inv_grid_create = compile preprocessFileLineNumbers "fnc\ui_inv_grid_create.sqf";
 an_fnc_ui_inv_grid_getSize = compile preprocessFileLineNumbers "fnc\ui_inv_grid_getSize.sqf";
@@ -32,8 +32,7 @@ an_fnc_ui_inv_grid_isPosIn = compile preprocessFileLineNumbers "fnc\ui_inv_grid_
 an_fnc_ui_inv_grid_tiles_used_update = compile preprocessFileLineNumbers "fnc\ui_inv_grid_tiles_used_update.sqf";
 an_fnc_ui_inv_grid_tiles_used_get = compile preprocessFileLineNumbers "fnc\ui_inv_grid_tiles_used_get.sqf";
 an_fnc_ui_inv_grid_tiles_used_set = compile preprocessFileLineNumbers "fnc\ui_inv_grid_tiles_used_set.sqf";
-
-//handling
+// Item handling
 an_fnc_ui_inv_load = compile preprocessFileLineNumbers "fnc\ui_inv_load.sqf";
 an_fnc_ui_inv_item_active_class_get = compile preprocessFileLineNumbers "fnc\ui_inv_item_active_class_get.sqf";
 an_fnc_ui_inv_item_active_class_set = compile preprocessFileLineNumbers "fnc\ui_inv_item_active_class_set.sqf";
@@ -46,10 +45,13 @@ an_fnc_ui_inv_item_data_set = compile preprocessFileLineNumbers "fnc\ui_inv_item
 an_fnc_ui_inv_item_data_get = compile preprocessFileLineNumbers "fnc\ui_inv_item_data_get.sqf";
 an_fnc_ui_inv_item_data_parent_set = compile preprocessFileLineNumbers "fnc\ui_inv_item_data_parent_set.sqf";
 an_fnc_ui_inv_item_data_parent_get = compile preprocessFileLineNumbers "fnc\ui_inv_item_data_parent_get.sqf";
+an_fnc_ui_inv_item_slots_usage_get = compile preprocessFileLineNumbers "fnc\ui_inv_item_slots_usage_get.sqf";
+// mousePos commands
 an_fnc_ui_inv_mpos = compile preprocessFileLineNumbers "fnc\ui_inv_mpos.sqf";
 an_fnc_ui_inv_mPos_check = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check.sqf";
 an_fnc_ui_inv_mPos_check_inInv = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check_inInv.sqf";
 an_fnc_ui_inv_mPos_get_inv = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_get_inv.sqf";
+// Eventhandler
 an_fnc_ui_inv_EH_mouse_z = compile preprocessFileLineNumbers "fnc\ui_inv_EH_mouse_z.sqf";
 an_fnc_ui_inv_EH_mouseBtn = compile preprocessFileLineNumbers "fnc\ui_inv_EH_mouseBtn.sqf";
 

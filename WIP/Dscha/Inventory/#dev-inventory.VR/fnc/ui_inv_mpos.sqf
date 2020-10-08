@@ -31,14 +31,7 @@ private _parent_size = ENTRY_GET("size",_parent_data);
 diag_log ["DEBUG: UI_INV_MPOS: _parent_size   :", _parent_size];
 
 
-private _offset_data = [];
-for "_row" from 0 to ((_parent_size#0)-1) do	//Index start 0 == -1 = correct Index Pos
-{
-	for "_col" from 0 to ((_parent_size#1)-1) do	//Index start 0 == -1 = correct Index Pos
-	{
-		_offset_data pushback [_row,_col];	//row: Y | col: X
-	};
-};
+private _item_slot_usage = [_parent_size] call an_fnc_ui_inv_item_slots_usage_get;
 
 //_tiles_used == taken positions in Grid, needed to free up the needed Slots later
 private _offset_pos = [[_tile_row, _tile_col]];	//store first Pos (needed, since the offset will determined from this position)
@@ -50,7 +43,7 @@ private _offset_pos = [[_tile_row, _tile_col]];	//store first Pos (needed, since
 	}else{
 		_offset_pos pushbackUnique [ (_tile_row + _pos_col), (_tile_col + _pos_row) ];
 	};
-}forEach _offset_data;
+}forEach _item_slot_usage;
 
 
 //Check if all tiles are free
