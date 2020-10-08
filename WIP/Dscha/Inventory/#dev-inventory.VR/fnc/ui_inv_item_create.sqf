@@ -21,7 +21,7 @@
 params["_ctrl_invGrid","_pos_x","_pos_y","_item_class","_usedSlots"];
 
 //get Item parentData
-private _parent_data = _item_class call an_fnc_ui_inv_item_getData;
+private _parent_data = _item_class call an_fnc_ui_inv_item_data_parent_get;
 ENTRY_GET("size",_parent_data) params ["_parent_size_y", "_parent_size_x"];
 
 private _disp = uinamespace getvariable ["an_inventory", DisplayNull];

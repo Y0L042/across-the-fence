@@ -37,12 +37,13 @@ an_fnc_ui_inv_grid_tiles_used_set = compile preprocessFileLineNumbers "fnc\ui_in
 an_fnc_ui_inv_load = compile preprocessFileLineNumbers "fnc\ui_inv_load.sqf";
 an_fnc_ui_inv_item_attachToMouse = compile preprocessFileLineNumbers "fnc\ui_inv_item_attachToMouse.sqf";
 an_fnc_ui_inv_item_create = compile preprocessFileLineNumbers "fnc\ui_inv_item_create.sqf";
-an_fnc_ui_inv_item_getData = compile preprocessFileLineNumbers "fnc\ui_inv_item_getData.sqf";
 an_fnc_ui_inv_item_grab = compile preprocessFileLineNumbers "fnc\ui_inv_item_grab.sqf";
 an_fnc_ui_inv_item_remove = compile preprocessFileLineNumbers "fnc\ui_inv_item_remove.sqf";
 an_fnc_ui_inv_item_getClass = compile preprocessFileLineNumbers "fnc\ui_inv_item_getClass.sqf";
-an_fnc_ui_inv_item_data_get = compile preprocessFileLineNumbers "fnc\ui_inv_item_data_get.sqf";
 an_fnc_ui_inv_item_data_set = compile preprocessFileLineNumbers "fnc\ui_inv_item_data_set.sqf";
+an_fnc_ui_inv_item_data_get = compile preprocessFileLineNumbers "fnc\ui_inv_item_data_get.sqf";
+an_fnc_ui_inv_item_data_parent_set = compile preprocessFileLineNumbers "fnc\ui_inv_item_data_parent_set.sqf";
+an_fnc_ui_inv_item_data_parent_get = compile preprocessFileLineNumbers "fnc\ui_inv_item_data_parent_get.sqf";
 an_fnc_ui_inv_mpos = compile preprocessFileLineNumbers "fnc\ui_inv_mpos.sqf";
 an_fnc_ui_inv_mPos_check = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check.sqf";
 an_fnc_ui_inv_mPos_check_inInv = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check_inInv.sqf";
@@ -110,8 +111,7 @@ _parentDefinitions =
 ];
 
 {
-	_x params ["_item_name","_item_data"];
-	missionNamespace setVariable [format["AN_ITEM_%1",_item_name], _item_data];
+	_x call an_fnc_ui_inv_item_data_parent_set;
 }forEach _parentDefinitions;
 
 

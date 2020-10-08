@@ -25,7 +25,7 @@ if(an_ui_inv_grabActive)then{ an_ui_inv_grabActive = false; };
 
 //////////////////////////////////////////////
 private _item_class = missionNameSpace getVariable ["an_inv_itemActive",[]];
-private _parent_data = [_item_class] call an_fnc_ui_inv_item_getData;
+private _parent_data = [_item_class] call an_fnc_ui_inv_item_data_parent_get;
 diag_log ["DEBUG: UI_INV_MPOS: _parent_data   :", _parent_data];
 private _parent_size = ENTRY_GET("size",_parent_data);
 diag_log ["DEBUG: UI_INV_MPOS: _parent_size   :", _parent_size];
