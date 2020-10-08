@@ -30,13 +30,14 @@ class data_server:
     def gameserver_listen(self, dbPath: str = "", dbName: str = ""):
         """
 
+        :param sData:       baseData
         :param dbPath:      Path to the database file
         :param dbName:      filename
         :return:
         """
 
         # Load up the Database:
-        self.database = database.asc_db(dbName=dbName, dbPath=dbPath)
+        self.database = database.asc_db(con_gameServer=self.con_gameServer, dbName=dbName, dbPath=dbPath )
         if self.database.name is None:
             print(f"self.database.name: {self.database.name}")
             self.mainConnection.close()
