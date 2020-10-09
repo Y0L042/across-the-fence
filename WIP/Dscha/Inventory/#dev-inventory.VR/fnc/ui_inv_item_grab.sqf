@@ -6,6 +6,9 @@ params ["_ctrl", "_btn", "_xPos", "_yPos", "_btn_shift", "_btn_ctrl", "_btn_alt"
 // DEV: Block everything, except Left Mousebutton
 if !(_btn in [0])exitWith{};
 
+// Shift = Move to the other Inventory (incl. finding a suitable slot)
+if(_btn_shift)exitWith{_this call an_fnc_ui_inv_item_move_auto};
+
 if(an_ui_inv_grabActive)exitWith{systemchat "an_ui_inv_grabActive already active";};
 an_ui_inv_grabActive = true;
 

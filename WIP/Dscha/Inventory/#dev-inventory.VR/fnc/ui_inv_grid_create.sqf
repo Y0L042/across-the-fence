@@ -10,7 +10,7 @@ params["_disp","_ctrlGrp","_size_y"];
 
 private _grid_w = (ctrlPosition _ctrlGrp)#2;
 private _grid_h = ((_grid_w / 0.75) / an_inv_size_col) * _size_y;	//adjust to 4/3 Value - 8 == fixed grid amout
-diag_log ["GRID_CREATE: ", _grid_h, _grid_w];
+// diag_log ["GRID_CREATE: ", _grid_h, _grid_w];
 private _tile_H = _grid_h/_size_y;
 
 
