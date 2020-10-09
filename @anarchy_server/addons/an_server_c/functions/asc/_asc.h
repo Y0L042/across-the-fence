@@ -1,9 +1,11 @@
 #include "..\fnc_macros_s.h"
 
-
-S_FNC_POSTINIT(asc,asc_init);
-S_FNC(asc,asc_address_set);
-S_FNC(asc,key_create);
-S_FNC(asc,player_connected);
-S_FNC(asc,player_disconnected);
-S_FNC(asc,ext_CE_callback_server);
+class ASC
+{
+    DECLARE_SERVER_FUNC_POSTINIT(asc,asc_init);
+    DECLARE_SERVER_FUNC(asc,asc_address_set);
+    DECLARE_SERVER_FUNC(asc,key_create);
+    DECLARE_SERVER_FUNC(asc,player_connected);
+    DECLARE_SERVER_FUNC(asc,player_disconnected);
+    DECLARE_SERVER_FUNC(asc,ext_CE_callback_server);
+};

@@ -1,4 +1,6 @@
 #include "..\fnc_macros_s.h"
 
-
-S_FNC(gear,loadout_set);
+class gear 
+{
+    DECLARE_SERVER_FUNC(gear,loadout_set);
+};

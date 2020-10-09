@@ -1,4 +1,1 @@
-class global
-{
-	#include "asc\_asc.h"
-};
+#include "asc\_asc.h"

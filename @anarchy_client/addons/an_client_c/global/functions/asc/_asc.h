@@ -1,7 +1,9 @@
 #include "..\fnc_macros_g.h"
 
-
-G_FNC(asc,data_get);
-G_FNC(asc,msg_send);
-G_FNC(asc,tags_set);
-G_FNC(asc,path_adjust);
+class ASC
+{
+    DECLARE_GLOBAL_FUNC(asc,data_get);
+    DECLARE_GLOBAL_FUNC(asc,msg_send);
+    DECLARE_GLOBAL_FUNC(asc,tags_set);
+    DECLARE_GLOBAL_FUNC(asc,path_adjust);
+};

@@ -1,6 +1,3 @@
-class local_server
-{
-	#include "asc\_asc.h"
-	#include "looting\_looting.h"
-	#include "gear\_gear.h"
-};
+#include "asc\_asc.h"
+#include "looting\_looting.h"
+#include "gear\_gear.h"
