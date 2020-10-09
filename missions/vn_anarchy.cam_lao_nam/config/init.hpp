@@ -21,6 +21,8 @@
 #include "sounds.hpp"
 // Artillery module config
 #include "artillery.hpp"
+// Wheel menu actions
+#include "wheel_menu_actions.hpp"
 
 // load profile namespace variables for runtime use
 __EXEC(allProfileNamespaceVars = allVariables profileNamespace);

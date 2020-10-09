@@ -10,13 +10,13 @@ class vn_mf_keydown_escape_action
 	displayName = "";
 	access = 0;
 };
-class vn_mf_keydown_enable_selector
+class para_keydown_open_wheel_menu
 {
 	defaultKey = 7;
 	shift = "false";
 	ctrl = "false";
 	alt = "false";
-	function = "vn_mf_fnc_enable_selector";
+	function = "para_c_fnc_wheel_menu_open";
 	down = 1;
 	displayName = $STR_vn_mf_keybindings_selector;
 	access = 1;
