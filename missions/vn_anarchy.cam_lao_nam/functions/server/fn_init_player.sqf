@@ -40,12 +40,7 @@ _local_vars = [];
 _local_vars pushBack ["para_player_token",_token];
 _player setVariable ["para_player_token",_token];
 
-
-// start player at correct camp for team
-// _player setPos ([_player,_player] call vn_mf_fnc_player_respawn_loc);
-
-// respawn event for respawning player at correct camp for team
-// _player addMPEventHandler ["MPRespawn",{call vn_mf_fnc_player_respawn_loc}];
+_player setPos markerPos "new_player_spawn";
 
 // add event handlers from the harass subsystem.
 // [_player] call para_s_fnc_harass_add_player_event_handlers;

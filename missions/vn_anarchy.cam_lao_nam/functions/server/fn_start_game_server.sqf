@@ -40,10 +40,6 @@ if (isNil "vn_an_gamestarting") then
 	// start the event dispatcher, so anything relying on events can fire.
 	call para_g_fnc_event_subsystem_init;
 
-	// creates and initialize groups and duty officers
-
-	//call vn_mf_fnc_group_init;
-
 
 	// start generic scheduler functions
 	diag_log "VN Anarchy: Starting game time monitor";
@@ -107,9 +103,8 @@ if (isNil "vn_an_gamestarting") then
 		[]
 	]] call para_g_fnc_event_add_handler;
 
-	// load zone progress
-	// diag_log "VN Anarchy: Loading zone progress";
-	// call vn_mf_fnc_zone_init;
+	//Initialise factions
+	call an_s_fnc_factions_init;
 
 	// flag server as ready
 	diag_log "VN Anarchy: Marking server ready";

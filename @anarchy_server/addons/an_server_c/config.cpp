@@ -24,3 +24,6 @@ class CfgFunctions
 		#include "functions\functions_s.h"
 	};
 };
+
+#include "config\anarchy.h"
+#include "config\rehandler.h"

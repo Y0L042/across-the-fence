@@ -423,26 +423,11 @@
       </Key>
     </Container>
     <Container name="interaction_overlay">
-      <Key ID="STR_vn_mf_overlay_duty_officer_name">
-        <Original>Duty Officer</Original>
+      <Key ID="STR_vn_mf_overlay_recruiter_name">
+        <Original>Recruiter</Original>
       </Key>
-      <Key ID="STR_vn_mf_overlay_duty_officer_description">
-        <Original>Change teams or train in a role, such as engineer.</Original>
-      </Key>
-      <Key ID="STR_vn_mf_overlay_fast_travel_name">
-        <Original>Fast Travel</Original>
-      </Key>
-      <Key ID="STR_vn_mf_overlay_fast_travel_description">
-        <Original>Teleport to the bases of each team</Original>
-      </Key>
-      <Key ID="STR_vn_mf_overlay_supply_officer_name">
-        <Original>Supply Officer</Original>
-      </Key>
-      <Key ID="STR_vn_mf_overlay_supply_officer_description">
-        <Original>Request supplies, such as building supplies, food or ammunition.</Original>
-      </Key>
-      <Key ID="STR_vn_mf_overlay_buildable_description">
-        <Original>Percentage Filled: %2%1&lt;br/&gt;Current Supplies: %3&lt;br/&gt;Supplies Until Functional: %4&lt;br/&gt;Supplies Until Full: %5&lt;br/&gt;Functional Lifetime: %6 hours %7 minutes&lt;br/&gt;Total Lifetime: %8 hours %9 minutes</Original>
+      <Key ID="STR_vn_mf_overlay_recruiter_description">
+        <Original>A recruiter from one of the factions.</Original>
       </Key>
     </Container>
     <Container name="notifications">
@@ -787,6 +772,11 @@
       </Key>
       <Key ID="STR_vn_mf_keybindings_cancel">
         <Original>Cancel</Original>
+      </Key>
+    </Container>
+    <Container name="WheelMenuActions">
+      <Key ID="STR_vn_mf_join_faction">
+        <Original>Join Faction</Original>
       </Key>
     </Container>
   </Package>

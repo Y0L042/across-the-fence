@@ -74,6 +74,18 @@ class wheel_menu_actions
 		spawn = 0;
 	};
 
+	//Join a faction
+	class recruiter_join_faction : base_action
+	{
+		visible = "OBJECT";
+		text = $STR_vn_mf_join_faction;
+		icon = "";
+		icon_highlighted = "";
+		arguments = "[_target]"
+		function = "an_c_fnc_factions_recruiter_join_faction"
+		spawn = 0;
+	};
+
 	//Add a sandbag to a building.
 	class add_sandbag : base_action
 	{
