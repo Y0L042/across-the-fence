@@ -39,6 +39,7 @@ an_fnc_ui_inv_item_active_class_set = compile preprocessFileLineNumbers "fnc\ui_
 an_fnc_ui_inv_item_attachToMouse = compile preprocessFileLineNumbers "fnc\ui_inv_item_attachToMouse.sqf";
 an_fnc_ui_inv_item_create = compile preprocessFileLineNumbers "fnc\ui_inv_item_create.sqf";
 an_fnc_ui_inv_item_grab = compile preprocessFileLineNumbers "fnc\ui_inv_item_grab.sqf";
+an_fnc_ui_inv_item_move_auto = compile preprocessFileLineNumbers "fnc\ui_inv_item_move_auto.sqf";
 an_fnc_ui_inv_item_remove = compile preprocessFileLineNumbers "fnc\ui_inv_item_remove.sqf";
 an_fnc_ui_inv_item_getClass = compile preprocessFileLineNumbers "fnc\ui_inv_item_getClass.sqf";
 an_fnc_ui_inv_item_data_set = compile preprocessFileLineNumbers "fnc\ui_inv_item_data_set.sqf";
@@ -183,91 +184,6 @@ diag_log "-----------------------------------------------";
 
 // Handle scrolling the Mousewheel (only if an item is currently grabbed)
 _disp displayAddEventhandler ["MouseZChanged","call an_fnc_ui_inv_EH_mouse_z"];
-
-
-
-
-
-//////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////
-///////DEV
-
-/* 
-_disp displayAddEventhandler ["KeyDown",
-{
-	params ["_disp", "_key", "_shift", "_ctrl", "_alt"];
-	_buttonDisabled = false;
-	_BD = {_buttonDisabled = true};
-	private _item_sel = [];
-	if(_key in [2,3,4,5,6])then
-	{
-		if(_key isEqualTo 2)exitWith{missionNameSpace setVariable ["an_inv_class_item_active",DEV_ITEMTOPLACE_LIST#0]; call _BD;};
-		if(_key isEqualTo 3)exitWith{missionNameSpace setVariable ["an_inv_class_item_active",DEV_ITEMTOPLACE_LIST#1]; call _BD;};
-		if(_key isEqualTo 4)exitWith{missionNameSpace setVariable ["an_inv_class_item_active",DEV_ITEMTOPLACE_LIST#2]; call _BD;};
-		// if(_key isEqualTo 5)then{DEV_ITEMTOPLACE = 3;};
-		if(_key isEqualTo 6)then
-		{
-			//if RMB -> set Var to request rotate by 90°
-			an_inv_move_placeHorizontal = !an_inv_move_placeHorizontal;
-			 call _BD;
-		};
-		systemchat str [" DEV_ITEMTOPLACE : ", missionNameSpace getVariable ["an_inv_class_item_active",[]], " - Place Horizontal?", an_inv_move_placeHorizontal];
-	};
-	_buttonDisabled
-}];
- */
-
-
-an_fnc_ui_inv_item_move_auto =
-{
-	#include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
-	
-	params ["_ctrl", "_btn", "_xPos", "_yPos", "_btn_shift", "_btn_ctrl", "_btn_alt"];
-	
-	// Get the ctrlGroupParent, to determine in which Inventory the selected Item is, then select the opposite Inventory
-	_inv_target = if(ctrlIDC (ctrlParentControlsGroup _ctrl) == 1000)then{AN_INVENTORY_LIST#1}else{AN_INVENTORY_LIST#0};
-	_inv_target params ["_area","_grid"];
-	
-	_ctrl_grid = uinamespace getvariable [_grid,ControlNull];
-	
-	// Get all the blocked Slots of the target Inventory
-	private _grid_usedSlots = [(ctrlIDC _ctrl_grid)] call an_fnc_ui_inv_grid_tiles_used_get;
-	diag_log ["DEBUG: FIND_FREE_SLOT: _grid_usedSlots :", _grid_usedSlots];
-	
-	private _item_data = [_ctrl] call an_fnc_ui_inv_item_data_get;
-	_item_data params ["_pos_data","_item_usedSlots","_item_class"];
-	// _item_usedSlots == slots in current Inventory
-	// diag_log ["DEBUG: FIND_FREE_SLOT: _item_class:", _item_class];
-	
-	
-	private _parent_data = [_item_class] call an_fnc_ui_inv_item_data_parent_get;
-	private _parent_size = ENTRY_GET("size",_parent_data);
-	diag_log ["DEBUG: FIND_FREE_SLOT: _parent_size    :", _parent_size];
-
-	private _inv_size = missionNameSpace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_grid)], 4];
-	
-	private _row_max = _inv_size-(_parent_size#0); 			// Both start at "Index 1", so no -1 needed
-	private _col_max = an_inv_size_col-(_parent_size#0);	// Both start at "Index 1", so no -1 needed
-	diag_log [_row_max, _col_max];
-	
-	
-	// Currently used Slots:
-	private _item_slot_usage = [_parent_size] call an_fnc_ui_inv_item_slots_usage_get;
-	diag_log ["DEBUG: FIND_FREE_SLOT: _item_slot_usage:", _item_slot_usage];
-	
-	
-	_ret = [];
-	diag_log ["Max:", [_row_max, _col_max]];
-	private _time_start = diag_tickTime;
-	_slots = [_row_max, _col_max, _item_slot_usage, _grid_usedSlots] call an_fnc_ui_inv_item_slots_find_free;
-	diag_log (diag_tickTime - _time_start);
-	diag_log ["_slots  : ", _slots];
-	// [_item_class] call an_fnc_ui_inv_item_active_class_set;
-	
-	
-	_ret
-};
-
 
 
 
