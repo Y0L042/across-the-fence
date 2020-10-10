@@ -46,6 +46,7 @@ an_fnc_ui_inv_item_data_get = compile preprocessFileLineNumbers "fnc\ui_inv_item
 an_fnc_ui_inv_item_data_parent_set = compile preprocessFileLineNumbers "fnc\ui_inv_item_data_parent_set.sqf";
 an_fnc_ui_inv_item_data_parent_get = compile preprocessFileLineNumbers "fnc\ui_inv_item_data_parent_get.sqf";
 an_fnc_ui_inv_item_slots_usage_get = compile preprocessFileLineNumbers "fnc\ui_inv_item_slots_usage_get.sqf";
+an_fnc_ui_inv_item_slots_find_free = compile preprocessFileLineNumbers "fnc\ui_inv_item_slots_find_free.sqf";
 // mousePos commands
 an_fnc_ui_inv_mpos = compile preprocessFileLineNumbers "fnc\ui_inv_mpos.sqf";
 an_fnc_ui_inv_mPos_check = compile preprocessFileLineNumbers "fnc\ui_inv_mPos_check.sqf";
@@ -250,98 +251,16 @@ an_fnc_ui_inv_item_move_auto =
 	
 	
 	_ret = [];
+	diag_log ["Max:", [_row_max, _col_max]];
 	private _time_start = diag_tickTime;
-	_slots = [_row_max, _col_max, _item_slot_usage, _grid_usedSlots] call an_fnc_ui_inv_item_slot_find_free;
-	diag_log ["Time    : ", (diag_tickTime - _time_start)];
+	_slots = [_row_max, _col_max, _item_slot_usage, _grid_usedSlots] call an_fnc_ui_inv_item_slots_find_free;
+	diag_log (diag_tickTime - _time_start);
 	diag_log ["_slots  : ", _slots];
 	// [_item_class] call an_fnc_ui_inv_item_active_class_set;
 	
 	
 	_ret
 };
-
-an_fnc_ui_inv_item_slot_find_free =
-{
-	params["_row_max", "_col_max", "_item_slot_usage","_grid_usedSlots", ["_row",0,[0]], ["_col",0,[0]]];
-	diag_log ["Max:", [_row_max, _col_max]];
-	
-	private _start = [_row, _col];
-	// _slotCheck = _start in _grid_usedSlots;
-	// Check if the slot is taken:
-	diag_log ["_start: ", _start];
-	if!(_start in _grid_usedSlots)then
-	{
-		diag_log ["_slotCheck: passed"];
-		private _allFree = true;
-		// Slot was free, check the other slots:
-		diag_log "-----------";
-		private _tmp_slots = [];
-		{
-			_var = _start vectorAdd _x;
-			_var deleteAt 2;
-			diag_log ["checking: _var:", _var];
-			if(_var in _grid_usedSlots)exitWith{_allFree = false;};
-			_tmp_slots pushback _var;
-			// _ret pushback _var;
-		}forEach _item_slot_usage;
-		diag_log "-----------";
-		if(!_allFree)then
-		{
-			diag_log ["_allFree: failed"];
-			// (one of the) slot(s) were occupied, check the next col (or if already at max, switch to next row):
-			_col = _col + 1;
-			if(_col > _col_max)then
-			{
-				_row = _row + 1;
-				_col = 0;
-			};
-			if(_row > _row_max)exitWith{_ret = []; diag_log "EXIT #1";};
-			[_row_max, _col_max, _item_slot_usage, _grid_usedSlots, _row, _col] call an_fnc_ui_inv_item_slot_find_free;
-		}else{
-			// Free slots found, return the slots
-			diag_log ["_allFree: passed"];
-			_ret = +_tmp_slots;
-		};
-	}else{
-		diag_log ["_slotCheck: failed"];
-		// slot was occupied, check the next col (or if already at max, switch to next row):
-		_col = _col + 1;
-		if(_col > _col_max)then
-		{
-			_row = _row + 1;
-			_col = 0;
-		};
-		if(_row > _row_max)exitWith{_ret = []; diag_log "EXIT #1";};
-		[_row_max, _col_max, _item_slot_usage, _grid_usedSlots, _row, _col] call an_fnc_ui_inv_item_slot_find_free;
-	};
-	diag_log "_ret triggered";
-	_ret
-};
-
-
-/*
-
-
-_checkedSlots = []
-get slot
-check if slot -1
-TRUE:
-	use item size as max
-	check following slot
-	_checkedSlots add slot
-	
-FALSE:
-	_checkedSlots add slot
-	check next slot
-
-
-
-*/
-
-
-
-
-
 
 
 
