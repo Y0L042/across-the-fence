@@ -48,6 +48,10 @@ class data_server:
         asc_g_msg.sendMsg("INIT_FUNCTIONS", cmdList["arma_server"], self.con_gameServer)
         print("\nASC SERVER: COMMANDS SEND TO SERVER\n")
 
+        # ################### send all needed variables
+        self.gameserver_init()
+        # ###################
+
         # listening Thread for messages from the game-Server
         while True:
             try:
@@ -134,3 +138,8 @@ class data_server:
 
         print(f"GAME SERVER: Connection closed - closing Socket... done")
         return
+
+    def gameserver_init(self):
+
+        # Do further stuff
+
