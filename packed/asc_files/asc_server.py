@@ -140,6 +140,10 @@ class data_server:
         return
 
     def gameserver_init(self):
+        # Load up the main Data and send it to the Server:
+        print(self.database.factions)
+        factions_data = self.database.factions
+        asc_g_msg.sendMsg("fac_data_load", factions_data, self.con_gameServer)
 
         # Do further stuff
 

@@ -17,12 +17,17 @@ cmdList = {
 				# Factions:
 				# update data
 				"fac_stats_upd": factions_handler.faction_stats_update,
+
+				# Inventory:
 				# Try to get data from crates/Inventories.
 				"crate_data_get": inv_handler.crate_data_get,
 				# remove crates from the database
 				"crate_rem": inv_handler.crate_rem,
-				# item degradation
+
+				# Item Handling:
+				# Degradation (WIP)
 				"user_fired": item_handler.item_degrade
+
 			},
 		'arma_server': {
 				# "functionTag in Arma": "Function to execute"
@@ -31,8 +36,15 @@ cmdList = {
 				"s_example_return":         {"fnc": "ASC_fnc_example", "spawn": 0},
 				"s_test":                   {"fnc": "ASC_fnc_example", "spawn": 0},
 				"s_abc":                    {"fnc": "ASC_fnc_example", "spawn": 0},
+
+				# Factions:
+				# set factions data
+				"fac_data_load":             {"fnc": "AN_S_fnc_factions_data_load", "spawn": 0},
+
+				# Players:
 				# player spawning
 				"loadout_set":            {"fnc": "AN_S_fnc_loadout_set", "spawn": 1},
+
 				# Inventory
 				"crate_add":                {"fnc": "AN_S_fnc_crate_add", "spawn": 0}
 			},
