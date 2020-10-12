@@ -2,6 +2,7 @@ from test_commands import *
 from asc_fnc import *
 from anarchy_main.client import *
 from anarchy_main.inventory import *
+from anarchy_main.factions import *
 
 # Format:
 # "tag" : filename.function
@@ -13,6 +14,9 @@ cmdList = {
 				# Player disconnected
 				"user_rem": asc_s_lst_client.client_active_rem,
 
+				# Factions:
+				# update data
+				"fac_stats_upd": factions_handler.faction_stats_update,
 				# Try to get data from crates/Inventories.
 				"crate_data_get": inv_handler.crate_data_get,
 				# remove crates from the database

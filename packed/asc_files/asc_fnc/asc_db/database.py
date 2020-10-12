@@ -9,7 +9,7 @@ class asc_db:
 		self.dbPath = dbPath
 		self.dbName = dbName
 		self.lastUpdate = timestamp.timestamp_get()
-		self.factions = {"WEST": {}, "EAST": {}, "GUER": {}, "CIV": {}}
+		self.factions = {"WEST": {"INT": 0}, "EAST": {"INT": 0}, "GUER": {"INT": 0}, "CIV": {"INT": 0}}
 		self.players = {}
 		self.guilds = {}
 		self.zones = {}
@@ -82,6 +82,7 @@ class asc_db:
 			# json.dump(_dbData, f)
 			print("saving done")
 
+	# Players:
 	def player_data_get(self, puid):
 		print("player_data_get: puid:", puid)
 		# print(self.players)
@@ -100,4 +101,29 @@ class asc_db:
 			self.db_save()
 		except KeyError:
 			# print(f"ASC_DB: PlayerUID [{puid}] not found!")
+			pass
+
+	# Factions:
+	def faction_data_get(self, faction):
+		print("faction_data_get: faction:", faction)
+		# print(self.factions)
+		try:
+			fData = self.factions[faction]
+		except KeyError:
+			fData = {}
+		return fData
+
+
+	def faction_data_set(self, faction: str = None, data: dict = None):
+		print("faction_data_set: faction:", faction)
+		print("faction_data_set: data:", data)
+		if None in [faction, data]:
+			print(f"ERROR: faction_data_set: NOT FACTION OR DATA GIVEN: {faction} - {data}")
+			return
+		try:
+			self.factions[faction] = data
+			self._db_updTime_()
+			self.db_save()
+		except KeyError:
+			print(f"ASC_DB: faction [{faction}] not found!")
 			pass
