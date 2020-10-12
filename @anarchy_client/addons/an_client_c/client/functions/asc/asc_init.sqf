@@ -1,3 +1,7 @@
+/*
+	ASC_init
+	post init function
+*/
 
 // systemchat str ["ASC - INIT LOADED - CLIENT"];
 diag_log str ["ASC - INIT LOADED - CLIENT"];
@@ -42,7 +46,7 @@ DEV_an_fnc_hintGrid =
 
 
 
-DEV_an_fnc_item_getCfgClass =
+DEV_an_fnc_item_getCfgClass =	// DEV! DEV MISSION ALREADY HAS THE LATEST VERSION
 {
 	params[
 		["_itemClass",-1,[-1]]
@@ -70,29 +74,6 @@ DEV_an_fnc_item_getCfgClass =
 	};
 	systemchat str["_ret", _ret];
 	_ret
-};
-
-DEV_an_fnc_hintItemData =
-{
-	#include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
-	
-	params["_itemData"];
-	
-	private _imgPath = "";
-	private _className = "";
-	{
-		_x params["_itemID","_itemData"];
-		
-		diag_log str _itemData;
-		_className = ENTRY_GET("class_name", _itemData);
-		_type = ENTRY_GET("type", _itemData);
-		_cfgClass = [_type] call DEV_an_fnc_item_getCfgClass;
-		// systemchat str[_type, _cfgClass];
-		_imgPath = getText(configFile >> _cfgClass >> _className >> "picture");
-	}foreach _itemData;
-	
-	_text = format["%1<br/><br/><t size='6.0'><img image='%2'/></t><br/>", _className, _imgPath];
-	hintsilent parseText _text;
 };
 
 
