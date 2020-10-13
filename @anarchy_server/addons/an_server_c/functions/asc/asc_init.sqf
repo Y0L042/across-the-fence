@@ -64,9 +64,9 @@ vn_an_seed = call vn_an_seed_tmp;
 missionNamespace setVariable ["vn_an_seed", vn_an_seed, true];
 
 
-diag_log ["DEBUG: ADDING ASC_S_fnc_update_players TO SCHEDULER... "];
+diag_log ["DEBUG: ADDING AN_S_fnc_update_players TO SCHEDULER... "];
 // ToDo: Set to a reasonable time
 private _DEV_updateTime = 15;
-["update_players", {call ASC_S_fnc_update_players}, [], _DEV_updateTime] call para_g_fnc_scheduler_add_job;
-diag_log ["DEBUG: ADDING ASC_S_fnc_update_players TO SCHEDULER... DONE"];
+["update_players", {call AN_S_fnc_update_players}, [], _DEV_updateTime] call para_g_fnc_scheduler_add_job;
+diag_log ["DEBUG: ADDING AN_S_fnc_update_players TO SCHEDULER... DONE"];
 
