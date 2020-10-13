@@ -62,14 +62,15 @@ def client_init(self):
 		player_data_set(self.sData, self.puid, self.cData)
 
 	# Server:
-	# send gear over to the Server, so it can equip the player:
+	# send Player Dataset over to the Server, so it can set up the player:
 	print(f"SENDING DATASET FROM {self.puid} TO SERVER...")
 	dataset = {
 		"data_puid": self.puid,
-		"data_gear": self.cData["gear"]
+		"data_gear": self.cData["gear"],
+		"data_pos": self.cData["pos"],
+		"data_health": self.cData["health"]
 		}
 	asc_g_msg.sendMsg("loadout_set", dataset, self.sData.con_gameServer)
-	print(f"SENDING DATASET FROM {self.puid} TO SERVER... DONE")
 
 
 	# Client:
@@ -77,6 +78,7 @@ def client_init(self):
 	print(f"SENDING INIT_ITEMDATA TO {self.puid}... ")
 	asc_g_msg.sendMsg("INIT_ITEMDATA", self.sData.itemParentData, self.con_client)
 	print(f"SENDING INIT_ITEMDATA TO {self.puid}... DONE")
+
 	# send player Data
 	print(f"SENDING INIT_CLIENTDATA TO {self.puid}...")
 	asc_g_msg.sendMsg("INIT_CLIENTDATA", self.cData, self.con_client)
