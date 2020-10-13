@@ -1,5 +1,7 @@
 from asc_fnc import *
 from anarchy_main.inventory import *
+from asc_fnc.asc_db import database
+
 
 def client_add(**kwargs):
 	# Default Values for new Clients
@@ -54,13 +56,13 @@ def client_add(**kwargs):
 	# print(item)
 	return cData
 
-
+# Note: called from asc_client
 def client_init(self):
-	self.cData = self.sData.database.player_data_get(self.puid)
+	self.cData = player_data_get(self.sData, self.puid)
 	if len(self.cData) == 0:
 		print(f"ASC: CLIENT HANDLER: PUID NOT FOUND. CREATING NEW ENTRY FOR PUID: {self.puid}")
 		self.cData = client_add(puid=self.puid)
-		self.sData.database.player_data_set(self.puid, self.cData)
+		player_data_set(self.sData, self.puid, self.cData)
 
 	# Server:
 	# send gear over to the Server, so it can equip the player:
@@ -83,3 +85,20 @@ def client_init(self):
 	asc_g_msg.sendMsg("INIT_CLIENTDATA", self.cData, self.con_client)
 	print(f"SENDING INIT_CLIENTDATA TO {self.puid}... DONE")
 
+
+def player_data_get(sData, puid):
+	print("player_data_get: puid:", puid)
+	# print(sData.database.players)
+	try:
+		pData = sData.database.players[puid]
+	except KeyError:
+		pData = {}
+	return pData
+
+def player_data_set(sData, puid, data):
+	try:
+		sData.database.players[puid] = data
+		database.asc_db.db_save(sData.database)
+	except KeyError:
+		# print(f"ASC_DB: PlayerUID [{puid}] not found!")
+		pass

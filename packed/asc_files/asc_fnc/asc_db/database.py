@@ -81,25 +81,3 @@ class asc_db:
 			# 1liner (less file size)
 			# json.dump(_dbData, f)
 			print("saving done")
-
-	# ###########
-	# Players:
-	def player_data_get(self, puid):
-		print("player_data_get: puid:", puid)
-		# print(self.players)
-		try:
-			pData = self.players[puid]
-			self._db_updTime_()
-			# Todo: Save after getting data+time updated? :thonk: Currently disabled
-			# self.db_save()
-		except KeyError:
-			pData = {}
-		return pData
-
-	def player_data_set(self, puid, data):
-		try:
-			self.players[puid] = data
-			self.db_save()
-		except KeyError:
-			# print(f"ASC_DB: PlayerUID [{puid}] not found!")
-			pass
