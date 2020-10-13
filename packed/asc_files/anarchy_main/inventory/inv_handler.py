@@ -32,15 +32,17 @@ def crate_data_get(sData, clientID: str = None, pos: list = None, crateID: str =
           f"model: {model}\n")
     try:
         if persistent > 0:
-            retdata = sData.database.crates[crateID]
+            invData = sData.database.crates[crateID]
         else:
-            retdata = sData.database.sessionCrates[crateID]
+            invData = sData.database.sessionCrates[crateID]
 
         # ToDo: Add an "in use"-check
         # send Inventory data back to the requesting client
         conClient = sData.user_active[clientID]["con"]
         print(f"DEBUG: INV_HANDLER: crate_data_get: Crate found, sending Data to Client.")
-        asc_g_msg.sendMsg("ret_inv_crateData", retdata, conClient)
+
+        # send the invData to the Client
+        inv_send_toClient(invData, conClient)
         return
 
     # No "Error", the crate was just not in the List. So let's create a new crate entry
@@ -155,9 +157,20 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
     try:
         # send Inventory data back to the requesting client
         conClient = sData.user_active[clientID]["con"]
-        asc_g_msg.sendMsg("ret_inv_crateData", invData, conClient)
+
+        # send the invData to the Client
+        inv_send_toClient(invData, conClient)
     except KeyError:
         print(f"ERROR: INV_HANDLER: create_add: clientID NOT FOUND in user_active: {clientID}")
+
+
+def inv_send_toClient(invData, conClient):
+    # remove the inv_grid from the data, since we don't need it on the Client
+    invData_noGrid = dict(invData)
+    del invData_noGrid["inv_grid"]
+    asc_g_msg.sendMsg("ret_inv_crateData", invData_noGrid, conClient)
+
+
 
 # called by Server only!
 def crate_rem(sData, createID, pos):
