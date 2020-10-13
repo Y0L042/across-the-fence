@@ -82,6 +82,7 @@ class asc_db:
 			# json.dump(_dbData, f)
 			print("saving done")
 
+	# ###########
 	# Players:
 	def player_data_get(self, puid):
 		print("player_data_get: puid:", puid)
@@ -101,29 +102,4 @@ class asc_db:
 			self.db_save()
 		except KeyError:
 			# print(f"ASC_DB: PlayerUID [{puid}] not found!")
-			pass
-
-	# Factions:
-	def faction_data_get(self, faction):
-		print("faction_data_get: faction:", faction)
-		# print(self.factions)
-		try:
-			fData = self.factions[faction]
-		except KeyError:
-			fData = {}
-		return fData
-
-
-	def faction_data_set(self, faction: str = None, data: dict = None):
-		print("faction_data_set: faction:", faction)
-		print("faction_data_set: data:", data)
-		if None in [faction, data]:
-			print(f"ERROR: faction_data_set: NOT FACTION OR DATA GIVEN: {faction} - {data}")
-			return
-		try:
-			self.factions[faction] = data
-			self._db_updTime_()
-			self.db_save()
-		except KeyError:
-			print(f"ASC_DB: faction [{faction}] not found!")
 			pass
