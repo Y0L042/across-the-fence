@@ -25,8 +25,8 @@ cmdList = {
 				"crate_rem": inv_handler.crate_rem,
 
 				# Item Handling:
-				# Degradation (WIP)
-				"user_fired": item_handler.item_degrade
+				# # Degradation (WIP)
+				"player_fired": item_handler.item_degrade,
 
 			},
 		'arma_server': {
