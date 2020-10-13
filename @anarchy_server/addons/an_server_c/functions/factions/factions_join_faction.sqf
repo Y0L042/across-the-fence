@@ -1,8 +1,8 @@
 /*
     File: fn_factions_join_faction.sqf
-    Author: Spoffy
+    Author: Spoffy, Dscha
     Date: 2020-10-08
-    Last Update: 2020-10-08
+    Last Update: 2020-10-14
     Public: Yes
     
     Description:
@@ -23,4 +23,9 @@ params ["_player", "_side"];
 
 [_player, _side] call an_s_fnc_factions_set_player_to_faction;
 
-//TODO - Save player via ASC
+
+// Send update to the backend
+private _side_types = [west, east, independent, civilian];
+private _side_name = ["WEST", "EAST", "GUER", "CIV"]#(_side_types find _side);	// sides determined via "side cursorObject"
+// diag_log [_side, _side_name];
+["player_update_faction", [getPlayerUID _player, _side_name]] call AN_G_fnc_msg_send;
