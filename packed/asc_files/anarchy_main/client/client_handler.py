@@ -20,6 +20,7 @@ def client_add(**kwargs):
 				[0, 0, 0],
 				0,
 			],
+		"faction": "CIV",   # Standard start faction
 		'inv_grid': inv_handler.invGrid_create(4),
 		'itemData': {},
 		'gear':     {
@@ -68,7 +69,8 @@ def client_init(self):
 		"data_puid": self.puid,
 		"data_gear": self.cData["gear"],
 		"data_pos": self.cData["pos"],
-		"data_health": self.cData["health"]
+		"data_health": self.cData["health"],
+		"data_faction": self.cData["faction"]
 		}
 	asc_g_msg.sendMsg("loadout_set", dataset, self.sData.con_gameServer)
 
