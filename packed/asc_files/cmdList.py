@@ -31,8 +31,9 @@ cmdList = {
 
 				# Player:
 				# # update stats
-				"update_players": client_handler.players_stats_update
-
+				"update_players": client_handler.players_stats_update,
+				# # Update the faction? Might be, idk
+				"player_update_faction": client_handler.player_update_faction
 			},
 		'arma_server': {
 				# "functionTag in Arma": "Function to execute"

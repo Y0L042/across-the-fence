@@ -120,3 +120,12 @@ def players_stats_update(sData, *datalist):
 			print(f"ERROR: players_stat_update: ERROR: {e}")
 
 	database.asc_db.db_save(sData.database)
+
+
+def player_update_faction(sData, *data):
+	puid, faction = data
+	print(f"DEBUG: player_update_faction: {puid} joined faction {faction} (former: {pData['faction']})")
+	pData = player_data_get(sData, puid)
+	pData["faction"] = faction
+	# save to file
+	database.asc_db.db_save(sData.database)
