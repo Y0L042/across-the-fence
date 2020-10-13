@@ -6,6 +6,8 @@ diag_log ["-------- AN_S_fnc_loadout_set: ---------"];
 
 _data_puid = ENTRY_GET("data_puid",_dataset);
 _data_gear = ENTRY_GET("data_gear",_dataset);
+_data_pos = ENTRY_GET("data_pos",_dataset);
+_data_health = ENTRY_GET("data_health",_dataset);
 
 // Get the pawn, related to PUID:
 private _timeout = diag_tickTime + 20;
@@ -25,6 +27,8 @@ if(_timeout < diag_tickTime)exitWith{diag_log ["ERROR: AN_S_fnc_loadout_set: NO 
 	Get the "class_name" data from the parent! After the Items were finaly added to the itemParentData Definitions, this needs to be adjusted!
 	!!!!! WARNING !!!!!
 */
+// disable any damage to the client, during the init-phase
+_ownerPawn allowDamage false;
 
 {
 	diag_log ["DEBUG: AN_S_fnc_loadout_set: _data_gear", _x];
@@ -71,3 +75,24 @@ _loadout pushback ["vn_m19_binocs_grn","","","",[],[],""];	//It's a "weapon", so
 _loadout pushback ["vn_o_item_map","","","vn_b_item_compass_sog","vn_b_item_watch",""];
 
 _ownerPawn setUnitLoadout _loadout;
+
+
+// set health:
+_data_health = ENTRY_GET("data_health",_dataset);
+_ownerPawn setDamage _data_health;
+
+// set Pos and Dir
+_data_pos = ENTRY_GET("data_pos",_dataset);
+_data_pos params["_pos","_dir"];
+_ownerPawn setDir _dir;
+
+if(_pos isEqualTo [0,0,0])then
+{
+	_ownerPawn setPos markerPos "new_player_spawn";
+}else{
+	_ownerPawn setPosWorld _pos;
+};
+diag_log ["DEBUG curPos: ", getPosWorld _ownerPawn];
+
+// enable damage again
+_ownerPawn allowDamage true;
