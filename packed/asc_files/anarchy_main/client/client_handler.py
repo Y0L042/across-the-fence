@@ -10,11 +10,8 @@ def client_add(**kwargs):
 		'skills': {
 				'scavenging': 0
 			},
-		'health':   [
-				["hitface", "hitneck", "hithead", "hitpelvis", "hitabdomen", "hitdiaphragm", "hitchest", "hitbody", "hitarms", "hithands", "hitlegs", "incapacitated"],
-				["face_hub", "neck", "head", "pelvis", "spine1", "spine2", "spine3", "body", "arms", "hands", "legs", "body"],
-				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			],
+		# 'health':   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],     # currently disabled, A3 issues (updating on/from/to Server...)
+		'health': 0,
 		'stats':    {
 				"hunger": 0,
 				"thirst": 0
@@ -102,3 +99,20 @@ def player_data_set(sData, puid, data):
 	except KeyError:
 		# print(f"ASC_DB: PlayerUID [{puid}] not found!")
 		pass
+
+
+def players_stat_update(sData, *datalist):
+	# print(f"datalist - {datalist}")
+	for data in datalist:
+		try:
+			# print(f"data - {data}")
+			puid, data_stats = data
+			pData = player_data_get(sData, puid)
+			for stat in data_stats:
+				# print(f"stat - {stat}")
+				stat_type, stat_value = stat
+				pData[stat_type] = stat_value
+		except Exception as e:
+			print(f"ERROR: players_stat_update: ERROR: {e}")
+
+	database.asc_db.db_save(sData.database)
