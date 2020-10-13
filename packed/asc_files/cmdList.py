@@ -9,24 +9,29 @@ from anarchy_main.factions import *
 
 cmdList = {
 		'server': {
-				# Add users to the await list (player has connected and waits for the Backend connection)
+				# Server:
+				# # Add users to the await list (player has connected and waits for the Backend connection)
 				"user_add": asc_s_lst_client.client_await_add,
-				# Player disconnected
+				# # Player disconnected
 				"user_rem": asc_s_lst_client.client_active_rem,
 
 				# Factions:
-				# update data
+				# # update data
 				"fac_stats_upd": factions_handler.faction_stats_update,
 
 				# Inventory:
-				# Try to get data from crates/Inventories.
+				# # Try to get data from crates/Inventories.
 				"crate_data_get": inv_handler.crate_data_get,
-				# remove crates from the database
+				# # remove crates from the database
 				"crate_rem": inv_handler.crate_rem,
 
 				# Item Handling:
 				# # Degradation (WIP)
 				"player_fired": item_handler.item_degrade,
+
+				# Player:
+				# # update stats
+				"update_players": client_handler.players_stat_update
 
 			},
 		'arma_server': {
