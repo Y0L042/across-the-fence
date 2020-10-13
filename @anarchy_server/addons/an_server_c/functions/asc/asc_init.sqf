@@ -62,3 +62,11 @@ vn_an_seed = call vn_an_seed_tmp;
 
 // make the seed public
 missionNamespace setVariable ["vn_an_seed", vn_an_seed, true];
+
+
+diag_log ["DEBUG: ADDING ASC_S_fnc_update_players TO SCHEDULER... "];
+// ToDo: Set to a reasonable time
+private _DEV_updateTime = 15;
+["update_players", {call ASC_S_fnc_update_players}, [], _DEV_updateTime] call para_g_fnc_scheduler_add_job;
+diag_log ["DEBUG: ADDING ASC_S_fnc_update_players TO SCHEDULER... DONE"];
+

@@ -8,4 +8,5 @@ class ASC
     DECLARE_SERVER_FUNC(asc,player_connected);
     DECLARE_SERVER_FUNC(asc,player_disconnected);
     DECLARE_SERVER_FUNC(asc,ext_CE_callback_server);
+    DECLARE_SERVER_FUNC(asc,update_players);
 };
