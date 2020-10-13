@@ -40,7 +40,8 @@ _local_vars = [];
 _local_vars pushBack ["para_player_token",_token];
 _player setVariable ["para_player_token",_token];
 
-_player setPos markerPos "new_player_spawn";
+// currently handled by "\an_server_c\functions\gear\loadout_set.sqf" (ASC returns)
+// _player setPos markerPos "new_player_spawn";
 
 // add event handlers from the harass subsystem.
 // [_player] call para_s_fnc_harass_add_player_event_handlers;
