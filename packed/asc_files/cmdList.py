@@ -31,7 +31,7 @@ cmdList = {
 
 				# Player:
 				# # update stats
-				"update_players": client_handler.players_stat_update
+				"update_players": client_handler.players_stats_update
 
 			},
 		'arma_server': {

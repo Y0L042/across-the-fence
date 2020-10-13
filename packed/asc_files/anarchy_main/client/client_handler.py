@@ -101,7 +101,7 @@ def player_data_set(sData, puid, data):
 		pass
 
 
-def players_stat_update(sData, *datalist):
+def players_stats_update(sData, *datalist):
 	# print(f"datalist - {datalist}")
 	for data in datalist:
 		try:
