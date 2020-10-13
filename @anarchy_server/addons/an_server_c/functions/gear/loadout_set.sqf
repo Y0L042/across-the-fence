@@ -8,6 +8,7 @@ _data_puid = ENTRY_GET("data_puid",_dataset);
 _data_gear = ENTRY_GET("data_gear",_dataset);
 _data_pos = ENTRY_GET("data_pos",_dataset);
 _data_health = ENTRY_GET("data_health",_dataset);
+_data_faction = ENTRY_GET("data_faction",_dataset);
 
 // Get the pawn, related to PUID:
 private _timeout = diag_tickTime + 20;
@@ -30,6 +31,13 @@ if(_timeout < diag_tickTime)exitWith{diag_log ["ERROR: AN_S_fnc_loadout_set: NO 
 // disable any damage to the client, during the init-phase
 _ownerPawn allowDamage false;
 
+// rejoin the faction:
+private _sideNames = ["WEST", "EAST", "GUER", "CIV"];	// Determined via "side cursorObject"
+private _side = [west, east, independent, civilian]#(_sideNames find _data_faction);
+[_ownerPawn, _side] call an_s_fnc_factions_set_player_to_faction;
+
+
+// set the the loadout
 {
 	diag_log ["DEBUG: AN_S_fnc_loadout_set: _data_gear", _x];
 }forEach _data_gear;
@@ -70,7 +78,8 @@ private _loadout = [];
 	["goggles",		""]
 ];
 
-//Following is the standard gear for every player (not planed to be put down nor exchanged)
+// Following is the standard gear for every player (not planed to be put down nor exchanged)
+// Note: Might be nice, having different standard loadouts for each faction.
 _loadout pushback ["vn_m19_binocs_grn","","","",[],[],""];	//It's a "weapon", so it needs to be an Array like this...
 _loadout pushback ["vn_o_item_map","","","vn_b_item_compass_sog","vn_b_item_watch",""];
 
@@ -92,7 +101,7 @@ if(_pos isEqualTo [0,0,0])then
 }else{
 	_ownerPawn setPosWorld _pos;
 };
-diag_log ["DEBUG curPos: ", getPosWorld _ownerPawn];
+diag_log ["DEBUG: AN_S_fnc_loadout_set: curPos", getPosWorld _ownerPawn];
 
 // enable damage again
 _ownerPawn allowDamage true;
