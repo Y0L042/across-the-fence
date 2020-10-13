@@ -24,13 +24,14 @@ def client_add(**kwargs):
 		'inv_grid': inv_handler.invGrid_create(4),
 		'itemData': {},
 		'gear':     {
-			# 'helmet': item_handler.item_create("vn_c_headband_03"),
-			'helmet': item_handler.item_create("vn_b_bandana_03"),
+			# 'helmet': {},
+			'helmet': item_handler.item_create("vn_b_bandana_03"),   # DEV
 			'goggles': {},
-			'backpack': item_handler.item_create("vn_c_pack_01"),
+			# 'backpack': {},
+			'backpack': item_handler.item_create("vn_c_pack_01"),   # DEV
 			'vest': {},
-			# 'uniform': item_handler.item_create("vn_o_uniform_vc_01_05"),
-			'uniform': item_handler.item_create("vn_b_uniform_macv_01_06"),
+			# 'uniform': {},
+			'uniform': item_handler.item_create("vn_b_uniform_macv_01_06"),   # DEV
 			'pouch': {},
 			'tool': {},
 			'w_main': {},
