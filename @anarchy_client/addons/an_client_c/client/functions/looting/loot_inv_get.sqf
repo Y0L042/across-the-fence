@@ -6,14 +6,7 @@
 params["_data"];
 
 diag_log [":::: LOOT_INV_GET: DATA:"];
-private _crate_inv_grid	= ENTRY_GET("inv_grid",_data);
 private _crate_itemData	= ENTRY_GET("itemData",_data);
-
-
-diag_log [":::: LOOT_INV_GET: InvGrid:"];
-{
-	diag_log format["%1 %2", _forEachIndex, _x];
-}forEach _crate_inv_grid;
 
 diag_log [":::: LOOT_INV_GET: ItemData:"];
 {

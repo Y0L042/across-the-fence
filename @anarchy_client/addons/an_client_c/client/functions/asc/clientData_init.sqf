@@ -35,14 +35,6 @@ diag_log format["CLD_INIT: Health FULL	: %1", an_cData_health];
 diag_log "------------------";
 
 
-//Inventory Grid
-an_cData_inv_grid = ENTRY_GET("inv_grid", _data);
-{
-	diag_log format["CLD_INIT: Inv_grid		: %1", _x];
-}forEach an_cData_inv_grid;
-diag_log "------------------";
-
-
 //Item data for each Item in the Inventory
 an_cData_item_data = ENTRY_GET("itemData", _data);
 diag_log format["CLD_INIT: Item Data	: %1", an_cData_item_data];
