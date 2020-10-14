@@ -18,14 +18,18 @@
     Example(s):
         [_player, west] call an_s_fnc_factions_join_faction
 */
-
 params ["_player", "_side"];
+
+private _side_types = [west, east, independent, civilian];
+private _side_name = ["WEST", "EAST", "GUER", "CIV"]#(_side_types find _side);	// sides determined via "side cursorObject"
+private _puid = getPlayerUID _player;
+
+diag_log [str(side _player), _side_name];
+if(str(side _player) isEqualTo _side_name)exitWith{diag_log format["DEBUG: join_faction: Player: %1 (%2), tried to rejoin the same faction (%3).", name _player, _puid, _side_name]};
 
 [_player, _side] call an_s_fnc_factions_set_player_to_faction;
 
 
 // Send update to the backend
-private _side_types = [west, east, independent, civilian];
-private _side_name = ["WEST", "EAST", "GUER", "CIV"]#(_side_types find _side);	// sides determined via "side cursorObject"
-// diag_log [_side, _side_name];
-["player_update_faction", [getPlayerUID _player, _side_name]] call AN_G_fnc_msg_send;
+// diag_log ["DEBUG: join_faction: ", _puid," - ", _side, _side_name];
+["player_update_faction", [_puid, _side_name]] call AN_G_fnc_msg_send;
