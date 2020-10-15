@@ -1,24 +1,7 @@
-/*
 
-[]spawn 
-{ 
-	sleep 1; 
-	an_tiles_usage = [];
-	(findDisplay 46) createDisplay "an_inventory"; 
-};
-
-	///////////////////////////////////////////////////
-	///////// ReCompiled at onLoad of Display /////////
-	///////////////////////////////////////////////////
-*/
-
-//DEV: reset inv usage Var
-{
-	localNamespace setVariable [(format["an_inv_tileUsage_%1",_x]),[]];
-}forEach [1000,1001];
-
-#include "\sgd\paradigm\client\configs\ui\ui_def_base.inc"
-
+  /////////////////////////////////////////////////
+ // DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV //
+/////////////////////////////////////////////////
 
 
 // Grid
@@ -58,11 +41,33 @@ an_c_fnc_ui_inv_mPos_get_inv = compile preprocessFileLineNumbers "\sgd\anarchy\a
 an_c_fnc_ui_inv_EH_mouse_z = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_EH_mouse_z.sqf";
 an_c_fnc_ui_inv_EH_mouseBtn = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_EH_mouseBtn.sqf";
 
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
 
-//////////////////////////////
+// #include "\sgd\paradigm\client\configs\ui\ui_def_base.inc"
+#include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
-private _disp = _this#0;
+// Reset the previous tileUsage, it gets rebuild anyway (better safe than sorry)
+{
+	localNamespace setVariable [(format["an_inv_tileUsage_%1",_x]),[]];
+}forEach [1000,1001];
 
+
+params["_dataCrate"];
+
+diag_log [":::: DEBUG: UI_INV_INIT: DATA:"];
+private _crate_itemData	= ENTRY_GET("itemData",_dataCrate);
+
+diag_log [":::: DEBUG: UI_INV_INIT: ItemData:"];
+{
+	diag_log _x;
+}forEach _crate_itemData;
+
+// Check, if inventory is already open. Close it then.
+private _disp_preCheck = uiNamespace getVariable ["an_inventory", displayNull];
+if !(isNull _disp_preCheck)then{_disp_preCheck closeDisplay 1;};
+private _disp = (findDisplay 46) createDisplay "an_inventory";
 
 AN_INVENTORY_LIST = [["an_inv_player_area","an_inv_player_grid"],["an_inv_crate_area","an_inv_crate_grid"]];
 
@@ -80,7 +85,7 @@ diag_log "-----------------------------------------------";
 private _inv_player =
 [
 	["crateID","76561197960553643"],
-	["inv_rows",20],
+	["inv_rows",30],
 	["itemData",
 		[
 			["MjAyMC0wOS0yMVQwMzo0MTo0MC4wNDEzNjUtMg==",[["attachments",[]],["curInv","76561197960553643"],["hp_cur",100],["hp_max",100],["id","MjAyMC0wOS0yMVQwMzo0MTo0MC4wNDEzNjUtMg=="],["invPos",[0,0]],["isFlipped",0],["parent","FirstAidKit"],["rarity",0]]],
@@ -100,10 +105,11 @@ private _inv_player =
 [_disp, "an_inv_player_grid", _inv_player] call an_c_fnc_ui_inv_load;
 
 diag_log "-----------------------------------------------";
+/*
 
 // create "Ground Inventory" grid array
 // DEV VALUES
-_DEV_cratedata = [
+_dataCrate = [
 	["crateID","928316315756323"],
 	["inv_rows",6],
 	["itemData",
@@ -116,7 +122,9 @@ _DEV_cratedata = [
 		]
 	]
 ];
-[_disp, "an_inv_crate_grid", _DEV_cratedata] call an_c_fnc_ui_inv_load;
+*/
+
+[_disp, "an_inv_crate_grid", _dataCrate] call an_c_fnc_ui_inv_load;
 
 diag_log "-----------------------------------------------";
 
