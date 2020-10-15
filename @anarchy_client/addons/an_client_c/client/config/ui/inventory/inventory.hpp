@@ -91,7 +91,7 @@ class an_inventory
 	movingEnable = 0;
 	enableSimulation = 1;
 	
-	onLoad = "[""onLoad"",_this,""an_inventory"",''] call 	(uinamespace getvariable 'BIS_fnc_initDisplay'); an_c_fnc_ui_inv_init = compile preprocessFileLineNumbers ""\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_init.sqf""; _this call an_c_fnc_ui_inv_init;";
+	onLoad = "[""onLoad"",_this,""an_inventory"",''] call 	(uinamespace getvariable 'BIS_fnc_initDisplay');";
 	onUnload = "[""onUnload"",_this,""an_inventory"",''] call 	(uinamespace getvariable 'BIS_fnc_initDisplay');";
 	
 	onMouseButtonDown	= "";
