@@ -58,3 +58,7 @@ class para_RscStatProgressHUD;
 //UI Defines
 #include "\sgd\paradigm\client\configs\ui\ui_def_base.inc"
 
+
+// Inventory
+// Dev Path
+#include "\sgd\anarchy\an_client_c\client\config\ui\inventory\inventory.hpp"
