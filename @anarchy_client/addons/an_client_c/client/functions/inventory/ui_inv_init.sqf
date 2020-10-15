@@ -58,69 +58,6 @@ an_c_fnc_ui_inv_mPos_get_inv = compile preprocessFileLineNumbers "\sgd\anarchy\a
 an_c_fnc_ui_inv_EH_mouse_z = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_EH_mouse_z.sqf";
 an_c_fnc_ui_inv_EH_mouseBtn = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_EH_mouseBtn.sqf";
 
-//////////////////////////////
-/* 
-_parentDefinitions = 
-[
-	 ["FirstAidKit",[["actions",[["action1",["use FAK","an_c_fnc_FAK_use",0,[]]]]],["addInvSpace",0],["class_name",""],["hp_max",100],["image","\A3\Weapons_F\Items\data\UI\gear_FirstAidKit_CA.paa"],["name","STR_FirstAidKit"],["size",[2,2]],["slot",0],["tear",0]]]
-	,["Medikit",[["actions",[["action1",["use MediKit","an_c_fnc_MediKit_use",0,[]]]]],["addInvSpace",0],["class_name",""],["hp_max",100],["image","\A3\Weapons_F\Items\data\UI\gear_Medikit_CA.paa"],["name","STR_MediKit"],["size",[3,3]],["slot",0],["tear",0]]]
-	,["PLACEHOLDER",[["actions",[]],["addInvSpace",0],["class_name",""],["hp_max",1],["image","\vn\ui_f_vietnam\data\logo\savage_ca.paa"],["name","PLACEHOLDER"],["size",[2,2]],["slot",0],["tear",0]]]
-	,["bandage",[["actions",[["action1",["use Bandage","an_c_fnc_bandage_use",0,[]]],["actionSomething",["ShowScriptError","an_c_fnc_iDontExist",0,[]]]]],["addInvSpace",0],["class_name",""],["hp_max",100],["image","\A3\Weapons_F\Items\data\UI\gear_gps_CA.paa"],["name","STR_Bandage"],["size",[1,1]],["slot",0],["tear",0]]]
-	,["boxershorts",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name",""],["hp_max",100],["image","\A3\Weapons_F\Items\data\UI\gear_Toolkit_CA.paa"],["name","STR_boxershorts"],["size",[3,3]],["slot",0],["tear",0]]]
-	,["dildozer9000",[["parent","vn_m14"],["tear",0]]]
-	,["launch_NLAW_F",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","launch_NLAW_F"],["hp_max",100],["image",""],["name",""],["size",[4,8]],["slot",3],["tear",7.5]]]
-	,["launch_RPG32_F",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","launch_RPG32_F"],["hp_max",100],["image",""],["name",""],["size",[4,8]],["slot",3],["tear",7.5]]]
-	,["list_muzzle",[["megauberm14",["vn_s_m14"]],["vn_m14",["vn_s_m14"]],["vn_m14_alternative",["vn_s_m14"]],["vn_m14_lessTearNoScopes",["vn_s_m14"]],["vn_m16",["vn_s_m16"]],["vn_m38",[]],["vn_m4956",[]]]]
-	,["list_scope",[["megauberm14",["vn_o_9x_m14","vn_o_anpvs2_m14"]],["vn_m14",["vn_o_9x_m14"]],["vn_m14_alternative",["vn_o_9x_m14","vn_o_anpvs2_m14"]],["vn_m14_lessTearNoScopes",[]],["vn_m16",["vn_o_4x_m16"]],["vn_m38",[]],["vn_m4956",[]]]]
-	,["oldSock",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name",""],["hp_max",100],["image","\A3\Weapons_F\Items\data\UI\gear_Toolkit_CA.paa"],["name","STR_Old_Socks"],["size",[3,3]],["slot",0],["tear",0]]]
-	,["trashItem2",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name",""],["hp_max",100],["image","\A3\Weapons_F\Items\data\UI\gear_Toolkit_CA.paa"],["name","STR_trashItem2"],["size",[2,2]],["slot",0],["tear",0]]]
-	,["vn_b_helmet_aph6_01_01",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_b_helmet_aph6_01_01"],["hp_max",100],["image",""],["name",""],["size",[4,4]],["slot",10],["tear",0]]]
-	,["vn_b_helmet_m1_01_01",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_b_helmet_m1_01_01"],["hp_max",100],["image",""],["name",""],["size",[4,4]],["slot",10],["tear",0]]]
-	,["vn_b_helmet_t56_01_01",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_b_helmet_t56_01_01"],["hp_max",100],["image",""],["name",""],["size",[4,4]],["slot",10],["tear",0]]]
-	,["vn_b_pack_01",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",10],["class_name","vn_b_pack_01"],["hp_max",100],["image",""],["name",""],["size",[8,8]],["slot",12],["tear",0]]]
-	,["vn_b_pack_02",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",10],["class_name","vn_b_pack_02"],["hp_max",100],["image",""],["name",""],["size",[8,8]],["slot",12],["tear",0]]]
-	,["vn_b_uniform_macv_01_01",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_b_uniform_macv_01_01"],["hp_max",100],["image",""],["name",""],["size",[8,4]],["slot",10],["tear",0]]]
-	,["vn_b_uniform_sog_01_01",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_b_uniform_sog_01_01"],["hp_max",100],["image",""],["name",""],["size",[8,4]],["slot",10],["tear",0]]]
-	,["vn_b_uniform_sog_02_04",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_b_uniform_sog_02_04"],["hp_max",100],["image",""],["name",""],["size",[8,4]],["slot",10],["tear",0]]]
-	,["vn_b_vest_aircrew_01",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_b_vest_aircrew_01"],["hp_max",100],["image",""],["name",""],["size",[4,4]],["slot",11],["tear",0]]]
-	,["vn_b_vest_sog_01",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_b_vest_sog_01"],["hp_max",100],["image",""],["name",""],["size",[4,4]],["slot",11],["tear",0]]]
-	,["vn_b_vest_usarmy_01",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_b_vest_usarmy_01"],["hp_max",100],["image",""],["name",""],["size",[4,4]],["slot",11],["tear",0]]]
-	,["vn_hd",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_hd"],["hp_max",100],["image",""],["name",""],["size",[2,4]],["slot",2],["tear",0.5]]]
-	,["vn_hp",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_hp"],["hp_max",100],["image",""],["name",""],["size",[2,4]],["slot",2],["tear",0.5]]]
-	,["vn_izh54",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_izh54"],["hp_max",100],["image",""],["name",""],["size",[4,8]],["slot",1],["tear",0.5]]]
-	,["vn_izh54_shorty",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_izh54_shorty"],["hp_max",100],["image",""],["name",""],["size",[3,6]],["slot",1],["tear",0.5]]]
-	,["vn_m14",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_m14"],["hp_max",100],["image",""],["name",""],["size",[3,6]],["slot",1],["tear",0.5]]]
-	,["vn_m14_alternative",[["parent","vn_m14"],["tear",0.25]]]
-	,["vn_m14_lessTearNoScopes",[["parent","vn_m14"],["tear",0.1]]]
-	,["vn_m16",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_m16"],["hp_max",100],["image",""],["name",""],["size",[3,6]],["slot",1],["tear",0.5]]]
-	,["vn_m1895",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_m1895"],["hp_max",100],["image",""],["name",""],["size",[2,4]],["slot",2],["tear",0.5]]]
-	,["vn_m1897",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_m1897"],["hp_max",100],["image",""],["name",""],["size",[4,8]],["slot",1],["tear",0.5]]]
-	,["vn_m1911",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_m1911"],["hp_max",100],["image",""],["name",""],["size",[2,4]],["slot",2],["tear",0.5]]]
-	,["vn_m38",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_m38"],["hp_max",100],["image",""],["name",""],["size",[3,6]],["slot",1],["tear",0.5]]]
-	,["vn_m4956",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_m4956"],["hp_max",100],["image",""],["name",""],["size",[3,6]],["slot",1],["tear",0.5]]]
-	,["vn_m60",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_m60"],["hp_max",100],["image",""],["name",""],["size",[4,8]],["slot",1],["tear",0.05]]]
-	,["vn_m60_shorty",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_m60_shorty"],["hp_max",100],["image",""],["name",""],["size",[4,8]],["slot",1],["tear",0.05]]]
-	,["vn_o_4x_m16",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_o_4x_m16"],["hp_max",100],["image",""],["name",""],["size",[1,3]],["slot",30],["tear",0]]]
-	,["vn_o_9x_m14",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_o_9x_m14"],["hp_max",100],["image",""],["name",""],["size",[1,3]],["slot",30],["tear",0]]]
-	,["vn_o_anpvs2_m14",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_o_anpvs2_m14"],["hp_max",100],["image",""],["name",""],["size",[2,4]],["slot",30],["tear",0]]]
-	,["vn_o_helmet_nva_01",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_o_helmet_nva_01"],["hp_max",100],["image",""],["name",""],["size",[4,4]],["slot",10],["tear",0]]]
-	,["vn_o_helmet_vc_01",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_o_helmet_vc_01"],["hp_max",100],["image",""],["name",""],["size",[4,4]],["slot",10],["tear",0]]]
-	,["vn_o_pack_01",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",10],["class_name","vn_o_pack_01"],["hp_max",100],["image",""],["name",""],["size",[8,8]],["slot",12],["tear",0]]]
-	,["vn_o_pack_02",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",10],["class_name","vn_o_pack_02"],["hp_max",100],["image",""],["name",""],["size",[8,8]],["slot",12],["tear",0]]]
-	,["vn_o_uniform_vc_03_02",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_o_uniform_vc_03_02"],["hp_max",100],["image",""],["name",""],["size",[8,4]],["slot",10],["tear",0]]]
-	,["vn_o_uniform_vc_mf_01_07",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_o_uniform_vc_mf_01_07"],["hp_max",100],["image",""],["name",""],["size",[8,4]],["slot",10],["tear",0]]]
-	,["vn_o_vest_04",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_o_vest_04"],["hp_max",100],["image",""],["name",""],["size",[4,4]],["slot",11],["tear",0]]]
-	,["vn_o_vest_vc_01",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",6],["class_name","vn_o_vest_vc_01"],["hp_max",100],["image",""],["name",""],["size",[4,4]],["slot",11],["tear",0]]]
-	,["vn_rpd",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_rpd"],["hp_max",100],["image",""],["name",""],["size",[4,8]],["slot",1],["tear",0.05]]]
-	,["vn_rpd_shorty",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_rpd_shorty"],["hp_max",100],["image",""],["name",""],["size",[4,8]],["slot",1],["tear",0.05]]]
-	,["vn_s_m14",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_s_m14"],["hp_max",100],["image",""],["name",""],["size",[1,3]],["slot",31],["tear",0]]]
-	,["vn_s_m16",[["actions",[["placeholder",["STR_PLACEHOLDER","AN_C_FNC_PLACEHOLDER",0,[]]]]],["addInvSpace",0],["class_name","vn_s_m16"],["hp_max",100],["image",""],["name",""],["size",[1,3]],["slot",31],["tear",0]]]
-];
-
-{
-	_x call an_c_fnc_ui_inv_item_data_parent_set;
-}forEach _parentDefinitions;
- */
 
 //////////////////////////////
 
