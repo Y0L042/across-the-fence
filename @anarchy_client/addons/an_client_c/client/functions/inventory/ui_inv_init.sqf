@@ -14,7 +14,7 @@
 
 //DEV: reset inv usage Var
 {
-	missionNameSpace setVariable [(format["an_inv_tileUsage_%1",_x]),[]];
+	localNamespace setVariable [(format["an_inv_tileUsage_%1",_x]),[]];
 }forEach [1000,1001];
 
 #include "\sgd\paradigm\client\configs\ui\ui_def_base.inc"
