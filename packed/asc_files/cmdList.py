@@ -68,6 +68,6 @@ cmdList = {
 				"INIT_ITEMDATA":        {"fnc": "an_c_fnc_ui_inv_item_data_init", "spawn": 0},
 				"ret_inv_get_grid":     {"fnc": "DEV_an_fnc_hintGrid", "spawn": 0},
 				"ret_inv_get_items":    {"fnc": "DEV_an_fnc_hintItemData", "spawn": 0},
-				"ret_inv_crateData":    {"fnc": "AN_c_fnc_loot_inv_get", "spawn": 0}
+				"ret_inv_crateData":    {"fnc": "an_c_fnc_ui_inv_init", "spawn": 0}
 			}
 		}
