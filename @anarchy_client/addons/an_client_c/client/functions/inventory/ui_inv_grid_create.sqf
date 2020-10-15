@@ -43,5 +43,5 @@ for "_p_y" from 0 to (_size_y-1)do
 	_ctrl ctrlCommit 0;
 };
 
-missionNameSpace setVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrp)], _size_y];
-diag_log ["DEBUG: ui_inv_grid_create: size: ", missionNameSpace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrp)],[]]];
+localNamespace setVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrp)], _size_y];
+diag_log ["DEBUG: ui_inv_grid_create: size: ", localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrp)],[]]];

@@ -33,7 +33,7 @@ missionNameSpace setVariable ["an_Item_IDC_count",(_item_IDC + 1)];
 (ctrlPosition _ctrl_invGrid)params["_grid_x","_grid_y","_grid_w","_grid_h"];
 
 
-private _inv_rows = missionNameSpace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_invGrid)], -1];
+private _inv_rows = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_invGrid)], -1];
 if(_inv_rows < 0)exitWith{systemchat str ["ITEM_CREATE: GRID NOT SET!",_inv_rows];};
 
 private _tile_W = _grid_w / an_inv_size_col;

@@ -26,7 +26,7 @@ private _parent_size = ENTRY_GET("size",_parent_data);
 diag_log ["DEBUG: FIND_FREE_SLOT: _parent_size    :", _parent_size];
 
 // Get the inventory Gridsize (rows only, since width is fixed) of the Inventory target
-private _inv_size = missionNameSpace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_grid)], 4];
+private _inv_size = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_grid)], 4];
 
 // We only need to check those Slots, which would be still inside Grid. e.g.: Column > (GridWidthSlots-ItemWidthSlots) == Don't even check that.
 private _row_max = _inv_size-(_parent_size#0); 			// Both start at "Index 1", so no -1 needed

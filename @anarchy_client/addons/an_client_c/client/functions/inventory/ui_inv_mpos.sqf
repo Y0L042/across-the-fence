@@ -7,7 +7,7 @@ params ["_ctrl_grid", "_btn", "_mPos", ["_btn_shift",false,[false]], ["_btn_ctrl
 
 _mPos params ["_mPos_x", "_mPos_y"];
 
-_grid_size_row = missionNameSpace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_grid)],-1];
+_grid_size_row = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_grid)],-1];
 if(_grid_size_row < 0)exitWith
 {
 	diag_log ["ERROR: UI_INV_MPOS: GRID NOT SET!",(ctrlIDC _ctrl_grid), [_grid_size_row]];
