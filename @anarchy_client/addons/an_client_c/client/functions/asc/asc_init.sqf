@@ -49,15 +49,3 @@ an_fnc_bandage_use = {systemChat str["FUNCTION CALLED: an_fnc_bandage_use"];};
 an_fnc_FAK_use = {systemChat str["FUNCTION CALLED: an_fnc_FAK_use"];};
 an_fnc_MediKit_use = {systemChat str["FUNCTION CALLED: an_fnc_MediKit_use"];};
 
-
-AN_c_fnc_items_setData =
-{
-	{
-		diag_log ["ITEM DATA RECEIVED: Item Data  :", _x];
-		_x params ["_item_name","_item_data"];
-		//DEV
-		missionNamespace setVariable [format["AN_ITEM_%1",_item_name], _item_data];
-	}forEach (_this#0);
-};
-
-//////////////// DEV STUFF ////////////////

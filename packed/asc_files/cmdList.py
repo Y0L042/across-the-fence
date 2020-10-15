@@ -64,8 +64,8 @@ cmdList = {
 		'arma_client': {
 				# "functionTag in Arma": "Function to execute"
 				# NOTE: Make sure, that the Tag is compatible with the Arma 3 Variable logic
-				"INIT_CLIENTDATA":      {"fnc": "AN_c_fnc_clientData_init", "spawn": 0},
-				"INIT_ITEMDATA":        {"fnc": "AN_c_fnc_items_setData", "spawn": 0},
+				"INIT_CLIENTDATA":      {"fnc": "an_c_fnc_clientData_init", "spawn": 0},
+				"INIT_ITEMDATA":        {"fnc": "an_c_fnc_ui_inv_item_data_init", "spawn": 0},
 				"ret_inv_get_grid":     {"fnc": "DEV_an_fnc_hintGrid", "spawn": 0},
 				"ret_inv_get_items":    {"fnc": "DEV_an_fnc_hintItemData", "spawn": 0},
 				"ret_inv_crateData":    {"fnc": "AN_c_fnc_loot_inv_get", "spawn": 0}
