@@ -4,4 +4,4 @@
 */
 
 
-missionNameSpace getVariable ["an_inv_class_item_active",""]
+localNamespace getVariable ["an_inv_class_item_active",""]
