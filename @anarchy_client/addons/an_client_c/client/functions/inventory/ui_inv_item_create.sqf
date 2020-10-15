@@ -26,9 +26,9 @@ ENTRY_GET("size",_parent_data) params ["_parent_size_y", "_parent_size_x"];
 
 private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
 //create the Icon
-private _item_IDC = missionNameSpace getVariable ["an_Item_IDC_count",107441];
+private _item_IDC = localNamespace getVariable ["an_Item_IDC_count",107441];
 private _ctrlGrp_item = _disp ctrlCreate ["inv_icon",_item_IDC,_ctrl_invGrid];
-missionNameSpace setVariable ["an_Item_IDC_count",(_item_IDC + 1)];
+localNamespace setVariable ["an_Item_IDC_count",(_item_IDC + 1)];
 
 (ctrlPosition _ctrl_invGrid)params["_grid_x","_grid_y","_grid_w","_grid_h"];
 
