@@ -1,0 +1,26 @@
+
+{
+  "type_generic": {
+      "weapons" : 4,
+      "medical" : 1,
+      "trash" : 4,
+      "clothes" : 1
+  },
+  "type_medical": {
+    "medical" : 5,
+    "trash" : 4,
+    "clothes" : 1
+  },
+  "type_military": {
+    "weapons" : 4,
+    "medical" : 1,
+    "trash" : 1,
+    "clothes" : 1
+  },
+  "type_residential": {
+    "weapons" : 2,
+    "medical" : 1,
+    "trash" : 4,
+    "clothes" : 5
+  }
+}
