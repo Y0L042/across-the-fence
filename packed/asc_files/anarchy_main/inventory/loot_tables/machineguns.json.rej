@@ -1,6 +1,0 @@
-diff a/packed/asc_files/anarchy_main/inventory/loot_tables/machineguns.json b/packed/asc_files/anarchy_main/inventory/loot_tables/machineguns.json	(rejected hunks)
-@@ -0,0 +1,4 @@
-+{
-+	"vn_dp28": 1,
-+	"vn_pk": 1,
-+}
