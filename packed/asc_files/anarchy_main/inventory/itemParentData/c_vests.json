@@ -3,7 +3,7 @@
 	"vn_b_vest_sog_01":
 	{
 		"size": [4, 4],
-		"slot": 11,
+		"slot": 13,
 		"class_name": "vn_b_vest_sog_01",
 		"name": "",
 		"image": "",
@@ -17,7 +17,7 @@
 	"vn_b_vest_usarmy_01":
 	{
 		"size": [4, 4],
-		"slot": 11,
+		"slot": 13,
 		"class_name": "vn_b_vest_usarmy_01",
 		"name": "",
 		"image": "",
@@ -31,7 +31,7 @@
 	"vn_b_vest_aircrew_01":
 	{
 		"size": [4, 4],
-		"slot": 11,
+		"slot": 13,
 		"class_name": "vn_b_vest_aircrew_01",
 		"name": "",
 		"image": "",
@@ -45,7 +45,7 @@
 	"vn_o_vest_04":
 	{
 		"size": [4, 4],
-		"slot": 11,
+		"slot": 13,
 		"class_name": "vn_o_vest_04",
 		"name": "",
 		"image": "",
@@ -59,7 +59,7 @@
 	"vn_o_vest_vc_01":
 	{
 		"size": [4, 4],
-		"slot": 11,
+		"slot": 13,
 		"class_name": "vn_o_vest_vc_01",
 		"name": "",
 		"image": "",

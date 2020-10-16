@@ -3,7 +3,7 @@
 	"vn_m60":
 	{
 		"size": [4, 8],
-		"slot": 1,
+		"slot": 2,
 		"class_name": "vn_m60",
 		"name": "",
 		"image": "",
@@ -17,7 +17,7 @@
 	"vn_m60_shorty":
 	{
 		"size": [4, 8],
-		"slot": 1,
+		"slot": 2,
 		"class_name": "vn_m60_shorty",
 		"name": "",
 		"image": "",
@@ -31,7 +31,7 @@
 	"vn_rpd":
 	{
 		"size": [4, 8],
-		"slot": 1,
+		"slot": 2,
 		"class_name": "vn_rpd",
 		"name": "",
 		"image": "",
@@ -45,7 +45,7 @@
 	"vn_rpd_shorty":
 	{
 		"size": [4, 8],
-		"slot": 1,
+		"slot": 2,
 		"class_name": "vn_rpd_shorty",
 		"name": "",
 		"image": "",

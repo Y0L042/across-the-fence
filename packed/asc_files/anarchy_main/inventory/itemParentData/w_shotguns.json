@@ -3,7 +3,7 @@
 	"vn_izh54":
 	{
 		"size": [4, 8],
-		"slot": 1,
+		"slot": 2,
 		"class_name": "vn_izh54",
 		"name": "",
 		"image": "",
@@ -17,7 +17,7 @@
 	"vn_izh54_shorty":
 	{
 		"size": [3, 6],
-		"slot": 1,
+		"slot": 2,
 		"class_name": "vn_izh54_shorty",
 		"name": "",
 		"image": "",
@@ -31,7 +31,7 @@
 	"vn_m1897":
 	{
 		"size": [4, 8],
-		"slot": 1,
+		"slot": 2,
 		"class_name": "vn_m1897",
 		"name": "",
 		"image": "",

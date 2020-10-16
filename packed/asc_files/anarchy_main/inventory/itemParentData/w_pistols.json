@@ -3,7 +3,7 @@
 	"vn_hd":
 	{
 		"size": [2, 4],
-		"slot": 2,
+		"slot": 3,
 		"class_name": "vn_hd",
 		"name": "",
 		"image": "",
@@ -17,7 +17,7 @@
 	"vn_hp":
 	{
 		"size": [2, 4],
-		"slot": 2,
+		"slot": 3,
 		"class_name": "vn_hp",
 		"name": "",
 		"image": "",
@@ -31,7 +31,7 @@
 	"vn_m1895":
 	{
 		"size": [2, 4],
-		"slot": 2,
+		"slot": 3,
 		"class_name": "vn_m1895",
 		"name": "",
 		"image": "",
@@ -45,7 +45,7 @@
 	"vn_m1911":
 	{
 		"size": [2, 4],
-		"slot": 2,
+		"slot": 3,
 		"class_name": "vn_m1911",
 		"name": "",
 		"image": "",
