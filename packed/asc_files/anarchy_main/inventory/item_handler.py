@@ -262,10 +262,10 @@ def loot_item_list_create(sData, crate_id, loot_type, loot_count):
     # list of item names
     loot_list = []
     # check if loot_type exists
-    if loot_type in sData.lootData["tables"]["types"]:
+    if loot_type in sData.lootData["tables"]:
         for x in range(loot_count):
             # start with the "type"
-            loot_list.append(loot_item_generate(sData, sData.lootData["tables"]["types"][loot_type]))
+            loot_list.append(loot_item_generate(sData, sData.lootData["tables"][loot_type]))
 
     # return the loot_list array with the their item-names
     return loot_list

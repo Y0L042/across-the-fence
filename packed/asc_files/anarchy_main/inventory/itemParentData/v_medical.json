@@ -2,7 +2,7 @@
 {
 	"bandage":
 	{
-		"size": [1, 1],
+		"size": [1, 2],
 		"slot": 0,
 		"class_name": "",
 		"name": "STR_Bandage",

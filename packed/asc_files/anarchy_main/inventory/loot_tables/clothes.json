@@ -1,0 +1,46 @@
+{
+	"clothes":
+	{
+		"vests": 2,
+		"headgear": 3,
+		"helmets": 3,
+		"uniforms": 5,
+		"backpacks": 2
+	},
+	
+	"vests":
+	{
+		"vn_b_vest_sog_01": 1,
+		"vn_b_vest_usarmy_01": 1,
+		"vn_b_vest_aircrew_01": 1,
+		"vn_o_vest_04": 1
+	},
+	
+	"headgear":
+	{
+		"vn_b_boonie_02_01": 1,
+		"vn_b_bandana_01": 1,
+		"vn_b_beret_01_01": 1
+	},
+	
+	"helmets":
+	{
+		"vn_o_helmet_tsh3_01": 1,
+		"vn_o_helmet_nva_01": 1,
+		"vn_b_helmet_m1_01_01": 1
+	},
+	
+	"uniforms":
+	{
+		"vn_b_uniform_sog_01_01": 1,
+		"vn_b_uniform_macv_01_01": 1,
+		"vn_o_uniform_vc_01_01": 1
+	},
+	
+	"backpacks":
+	{
+		"vn_b_pack_01": 1,
+		"vn_b_pack_lw_01": 1,
+		"vn_o_pack_01": 1
+	}
+}
