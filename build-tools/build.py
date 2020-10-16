@@ -119,7 +119,7 @@ def create_folder_if_not_exists(folder_path, verbose=True):
         if verbose:
             print(f"Directory {folder_path} already exists - not creating")
     else:
-        print(f"Creating folder {folder_path}")
+        # print(f"Creating folder {folder_path}")   # SPOFFY
         folder_path.mkdir(parents=True,exist_ok=True)
 
 def create_symlink(link_path,dest_path,is_directory=False):
@@ -206,7 +206,7 @@ def build(mod_names, overwrite=False, use_addon_builder=False):
         mod_output_path = output_directory / mod_name
         if mod_output_path.exists():
             if overwrite:
-                print(f"Output folder already exists, deleting folder ({mod_output_path})")
+                # print(f"Output folder already exists, deleting folder ({mod_output_path})")   # SPOFFY
                 shutil.rmtree(mod_output_path)
             else:
                 print(f"Output path already exists - aborting build ({mod_output_path})")
@@ -222,10 +222,10 @@ def build(mod_names, overwrite=False, use_addon_builder=False):
                 continue
             dest_path = mod_output_path / child.name
             if child.is_dir():
-                print(f"Copying folder {child} to {dest_path}")
+                # print(f"Copying folder {child} to {dest_path}")   # SPOFFY
                 shutil.copytree(child, dest_path, symlinks=True)
             else:
-                print(f"Copying file {child} to {dest_path}")
+                # print(f"Copying file {child} to {dest_path}") # SPOFFY
                 shutil.copyfile(child, dest_path, follow_symlinks=True)
 
         print(f"\n==== BUILDING {mod_name} ADDONS ====")
@@ -263,10 +263,10 @@ def build(mod_names, overwrite=False, use_addon_builder=False):
 
 
             print(f"Building Addon '{addon_name}'")
-            print("    Prefix: {}".format(addon_info["prefix"]))
-            print("    Source Path: {}".format(addon_source_path))
-            print("    Output Path: {}".format(addon_output_folder_path))
-            print("    Build Command: {}".format(command))
+            # print("    Prefix: {}".format(addon_info["prefix"]))  # SPOFFY
+            # print("    Source Path: {}".format(addon_source_path))    # SPOFFY
+            # print("    Output Path: {}".format(addon_output_folder_path)) # SPOFFY
+            # print("    Build Command: {}".format(command))    # SPOFFY
 
             #Check the source exists on the P-Drive
             if not addon_source_path.exists():
@@ -277,12 +277,12 @@ def build(mod_names, overwrite=False, use_addon_builder=False):
             with open(log_file_path, "w") as log_file:
                 result = subprocess.run(command, stdout=log_file, stderr=subprocess.STDOUT)
                 if result.returncode != 0:
-                    print(f"    FAILED: {addon_name} build - see ({log_file_path}) for more information")
+                    print(f"    FAILED: {addon_name}")# build - see ({log_file_path}) for more information")    # SPOFFY
                     continue
                 else:
                     #Rename the file
                     os.rename(addon_output_pbo_path, addon_output_folder_path / addon_info["pbo_name"])
-                    print(f"    SUCCEEDED: {addon_name} build - see ({log_file_path}) for addon build output")
+                    print(f"    SUCCEEDED: {addon_name}")# build - see ({log_file_path}) for addon build output")   # SPOFFY
 
 def pdrive(mods,disable=False):
     symlinks = []
