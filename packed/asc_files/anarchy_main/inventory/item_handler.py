@@ -49,7 +49,6 @@ def item_create(parent: str = ""):
     item = {
         "id":           id_handler.create_id(),        # Item ID - Will ALWAYS be generated!
         "parent":       parent,           # Base Item Data, the A3 UI can refer to (stored ItemData)
-        "rarity":       0,           # Rarity
         "hp_cur":       100,         # Current HP
         "hp_max":       100,         # Max HP
         "curInv":       "-1",        # ID of Inventory, that the Item is in

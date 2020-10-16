@@ -8,7 +8,7 @@
 		FLOAT	y pos inside ctrlGrp
 		[
 			STRING	item name (Classname) //DEV: Currently STRING path to icon!!
-			ARRAY	Variables (like attachements, status, rarity, etc)
+			ARRAY	Variables (like attachements, status, etc)
 			BOOL	can be flipped 90°?
 		]
 		ARRAY	currently used slots (NOT THE OFFSET of the Item itself!) ( e.g: [[0,1],[0,2],[0,3],...] )

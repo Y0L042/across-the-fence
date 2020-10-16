@@ -44,7 +44,7 @@ class inv_icon: para_RscControlsGroupNoScrollbarHV
 	
 	class controls
 	{
-		class bg: para_RscText	//ToDo: Exchange with Picture + frame + color frame depending on rarity
+		class bg: para_RscText	//ToDo: Exchange with Picture + frame + color frame depending on calculated rarity
 		{
 			idc = 100;
 			
@@ -101,7 +101,7 @@ class an_inventory
 	
 	class controlsBackground
 	{
-		class bg: para_RscText	//ToDo: Exchange with Picture + frame + color frame depending on rarity
+		class bg: para_RscText	//ToDo: Exchange with Picture + frame + color frame depending on calculated rarity
 		{
 			idc = -1;
 			
