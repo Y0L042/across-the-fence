@@ -2,7 +2,7 @@
 {
 	"oldSock":
 	{
-		"size": [3, 3],
+		"size": [2, 2],
 		"slot": 0,
 		"class_name": "",
 		"name": "STR_Old_Socks",
@@ -16,7 +16,7 @@
 	},
 	"trashItem2":
 	{
-		"size": [2, 2],
+		"size": [3, 2],
 		"slot": 0,
 		"class_name": "",
 		"name": "STR_trashItem2",
@@ -30,7 +30,7 @@
 	},
 	"boxershorts":
 	{
-		"size": [3, 3],
+		"size": [2, 2],
 		"slot": 0,
 		"class_name": "",
 		"name": "STR_boxershorts",
