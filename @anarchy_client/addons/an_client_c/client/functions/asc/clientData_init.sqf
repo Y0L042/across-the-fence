@@ -42,8 +42,15 @@ diag_log "------------------";
 an_cData_item_data = ENTRY_GET("itemData", _data);
 diag_log format["CLD_INIT: Item Data	: %1", an_cData_item_data];
 {
-	diag_log format["CLD_INIT: Entry		: %1", _x];
+	_x params["_item_id", "_item_data"];
+	
+	diag_log format["CLD_INIT: Entry 		: %1", _x];
+	// Store the ItemData
+	localNamespace setVariable [_item_id, _item_data];
+	// diag_log ["DEBUG: LNS DATA: ", localNamespace getVariable [_item_id,"NONE"]];
 }forEach an_cData_item_data;
+// save the current Inventory properly defined.
+an_cData_inventory = [["crateID",getPlayerUID player],["inv_rows", count(ENTRY_GET("inv_grid", _data))], ["itemData",an_cData_item_data]];
 diag_log "------------------";
 
 

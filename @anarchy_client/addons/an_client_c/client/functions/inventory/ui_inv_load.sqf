@@ -18,8 +18,12 @@ private _items = ENTRY_GET("itemData",_inv_Data);
 
 diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
 {
-	_x params ["_itemID","_item_data"];
+	_x params ["_item_id","_item_data"];
 	diag_log ["DEBUG: UI_INV_INIT: _item_data     :",_item_data];
+	
+	localNamespace setVariable [_item_id, _item_data];
+	diag_log ["DEBUG: LNS DATA: ", localNamespace getVariable [_item_id,"NONE"]];
+	
 	// get the parent class
 	private _item_class = ENTRY_GET("parent",_item_data);
 	
