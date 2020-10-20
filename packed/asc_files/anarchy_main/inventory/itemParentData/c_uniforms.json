@@ -7,7 +7,7 @@
 		"class_name": "vn_b_uniform_macv_01_01",
 		"name": "",
 		"image": "",
-		"addInvSpace": 6,
+		"addInvSpace": 4,
 		"hp_max": 100,
 		"tear": 0,
 		"actions": {
@@ -35,7 +35,7 @@
 		"class_name": "vn_b_uniform_sog_02_04",
 		"name": "",
 		"image": "",
-		"addInvSpace": 6,
+		"addInvSpace": 8,
 		"hp_max": 100,
 		"tear": 0,
 		"actions": {
@@ -49,7 +49,7 @@
 		"class_name": "vn_o_uniform_vc_03_02",
 		"name": "",
 		"image": "",
-		"addInvSpace": 6,
+		"addInvSpace": 10,
 		"hp_max": 100,
 		"tear": 0,
 		"actions": {
@@ -63,7 +63,7 @@
 		"class_name": "vn_o_uniform_vc_mf_01_07",
 		"name": "",
 		"image": "",
-		"addInvSpace": 6,
+		"addInvSpace": 12,
 		"hp_max": 100,
 		"tear": 0,
 		"actions": {

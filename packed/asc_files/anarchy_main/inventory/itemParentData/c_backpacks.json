@@ -2,12 +2,12 @@
 {
 	"vn_b_pack_01":
 	{
-		"size": [8, 8],
+		"size": [6, 6],
 		"slot": 15,
 		"class_name": "vn_b_pack_01",
 		"name": "",
 		"image": "",
-		"addInvSpace": 10,
+		"addInvSpace": 4,
 		"hp_max": 100,
 		"tear": 0,
 		"actions": {
@@ -16,12 +16,12 @@
 	},
 	"vn_b_pack_02":
 	{
-		"size": [8, 8],
+		"size": [6, 6],
 		"slot": 15,
 		"class_name": "vn_b_pack_02",
 		"name": "",
 		"image": "",
-		"addInvSpace": 10,
+		"addInvSpace": 6,
 		"hp_max": 100,
 		"tear": 0,
 		"actions": {
@@ -30,9 +30,23 @@
 	},
 	"vn_o_pack_01":
 	{
-		"size": [8, 8],
+		"size": [6, 6],
 		"slot": 15,
 		"class_name": "vn_o_pack_01",
+		"name": "",
+		"image": "",
+		"addInvSpace": 8,
+		"hp_max": 100,
+		"tear": 0,
+		"actions": {
+			"placeholder": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []]
+		}
+	},
+	"vn_o_pack_02":
+	{
+		"size": [6, 6],
+		"slot": 15,
+		"class_name": "vn_o_pack_02",
 		"name": "",
 		"image": "",
 		"addInvSpace": 10,
@@ -42,14 +56,14 @@
 			"placeholder": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []]
 		}
 	},
-	"vn_o_pack_02":
+	"vn_c_pack_01":
 	{
-		"size": [8, 8],
+		"size": [6, 6],
 		"slot": 15,
-		"class_name": "vn_o_pack_02",
+		"class_name": "vn_c_pack_01",
 		"name": "",
 		"image": "",
-		"addInvSpace": 10,
+		"addInvSpace": 14,
 		"hp_max": 100,
 		"tear": 0,
 		"actions": {
