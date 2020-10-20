@@ -65,8 +65,6 @@ if!(_item_tile_usage isEqualto [])then
 	
 	// add the Item to the passed position
 	[_ctrl_grid,_item_gridPos_row,_item_gridPos_col,_item_class,_offset_pos] call an_c_fnc_ui_inv_item_create;
-	_invID_new = if(_grid_idc isEqualto 1001)then{localNamespace getVariable ["an_inv_external_active",""]}else{getPlayerUID player};
-	diag_log ["-------------------------------------------------- _grid_idc: ", _grid_idc];
 	
 }else{
 	// re add the Item and its used slots in its previously used grid

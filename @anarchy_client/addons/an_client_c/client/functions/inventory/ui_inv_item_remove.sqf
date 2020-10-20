@@ -13,7 +13,7 @@ if(_btn != 1)exitWith{};
 //get the used slots from that Item
 
 private _item_data = [_ctrl] call an_c_fnc_ui_inv_item_data_get;
-_item_data params ["_pos_data","_item_usedSlots","_item_class"];
+_item_data params ["_pos_data","_item_usedSlots","_item_class","_item_id"];
 
 private _ctrl_grid = ctrlParentControlsGroup _ctrl;
 private _ctrl_grid_idc = ctrlIDC _ctrl_grid;

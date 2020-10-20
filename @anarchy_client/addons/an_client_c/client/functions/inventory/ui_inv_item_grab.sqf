@@ -13,9 +13,10 @@ if(an_ui_inv_grabActive)exitWith{systemchat "an_ui_inv_grabActive already active
 an_ui_inv_grabActive = true;
 
 private _item_data = [_ctrl] call an_c_fnc_ui_inv_item_data_get;
-_item_data params ["_pos_data","_item_usedSlots","_item_class"];
+_item_data params ["_pos_data","_item_usedSlots","_item_class","_item_id"];
 
 [_item_class] call an_c_fnc_ui_inv_item_active_class_set;
+[_item_id] call an_c_fnc_ui_inv_item_active_id_set;
 (ctrlPosition _ctrl) params["_p_x","_p_y","_p_w","_p_h"];
 
 getMousePosition params["_mPos_x","_mPos_y"];

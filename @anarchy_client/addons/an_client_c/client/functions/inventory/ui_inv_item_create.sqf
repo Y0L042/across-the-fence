@@ -27,7 +27,7 @@ ENTRY_GET("size",_parent_data) params ["_parent_size_y", "_parent_size_x"];
 private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
 //create the Icon
 private _item_IDC = localNamespace getVariable ["an_Item_IDC_count",107441];
-private _ctrlGrp_item = _disp ctrlCreate ["inv_icon",_item_IDC,_ctrl_invGrid];
+private _ctrl_item = _disp ctrlCreate ["inv_icon",_item_IDC,_ctrl_invGrid];
 localNamespace setVariable ["an_Item_IDC_count",(_item_IDC + 1)];
 
 (ctrlPosition _ctrl_invGrid)params["_grid_x","_grid_y","_grid_w","_grid_h"];
@@ -43,23 +43,23 @@ private _tile_H = _grid_h / _inv_rows;
 private _canFlip = if(_parent_size_y == _parent_size_x)then{0}else{1};
 if((_canFlip == 0) && !an_inv_move_placeHorizontal)then{an_inv_move_placeHorizontal = true};
 //get width and height of selected icon
-private _ctrlGrp_item_w = if(an_inv_move_placeHorizontal)then{_tile_W*_parent_size_x}else{_tile_H*_parent_size_y};
-private _ctrlGrp_item_h = if(an_inv_move_placeHorizontal)then{_tile_H*_parent_size_y}else{_tile_W*_parent_size_x};
+private _ctrl_item_w = if(an_inv_move_placeHorizontal)then{_tile_W*_parent_size_x}else{_tile_H*_parent_size_y};
+private _ctrl_item_h = if(an_inv_move_placeHorizontal)then{_tile_H*_parent_size_y}else{_tile_W*_parent_size_x};
 
 
 //if needed -> "rotate" the main ctrlGroup and adjust the values to 4/3 (Arma Base Resolution)
 if(an_inv_move_placeHorizontal)then
 {
-	_ctrlGrp_item ctrlSetposition [_pos_x,_pos_y,_ctrlGrp_item_w,_ctrlGrp_item_h];
+	_ctrl_item ctrlSetposition [_pos_x,_pos_y,_ctrl_item_w,_ctrl_item_h];
 }else{
-	_ctrlGrp_item ctrlSetposition [_pos_x,_pos_y,(_ctrlGrp_item_w*0.75),(_ctrlGrp_item_h/0.75)];
+	_ctrl_item ctrlSetposition [_pos_x,_pos_y,(_ctrl_item_w*0.75),(_ctrl_item_h/0.75)];
 };
-_ctrlGrp_item ctrlCommit 0;
+_ctrl_item ctrlCommit 0;
 
 //Adjust the image and background of the Item
 {
-	private _ctrl = _ctrlGrp_item controlsGroupCtrl _x;
-	_ctrl ctrlSetposition [0,0,_ctrlGrp_item_w,_ctrlGrp_item_h];
+	private _ctrl = _ctrl_item controlsGroupCtrl _x;
+	_ctrl ctrlSetposition [0,0,_ctrl_item_w,_ctrl_item_h];
 	_ctrl ctrlCommit 0;
 	if(_x == 200)then
 	{
@@ -81,10 +81,33 @@ _ctrlGrp_item ctrlCommit 0;
 		_ctrl ctrlSetAngle [90, 0.5, 0.5];
 		
 		//Adjust the Width and Height afterwards to the baseRes of 4/3 (Don't ask, ctrlSetAngle is "special"... ...)
-		_ctrl ctrlSetposition [0,0,(_ctrlGrp_item_w*0.75),(_ctrlGrp_item_h/0.75)];
+		_ctrl ctrlSetposition [0,0,(_ctrl_item_w*0.75),(_ctrl_item_h/0.75)];
 		_ctrl ctrlCommit 0;
 	};
 }forEach[100,200];
 
+
+private _item_invID_new = if((ctrlIDC _ctrl_invGrid) isEqualto 1001)then{localNamespace getVariable ["an_inv_external_active",""]}else{getPlayerUID player};
+
+// get Item ID
+private _item_id = [] call an_c_fnc_ui_inv_item_active_id_get;
+// get item data for given ID
+private _item_data = localNamespace getVariable [_item_id,[]];
+// Get current inventory and its position in it
+private _item_pos_old = ENTRY_GET("invPos", _item_data);
+private _item_invID_old = ENTRY_GET("curInv", _item_data);
+
+// Check if the position is the same as before AND if it is in the old Inventory
+if!( (_item_pos_old isEqualTo (_usedSlots#0)) && (_item_invID_old in ["",_item_invID_new]) )then
+{
+	// if not -> Send a message to the backend, that you moved an Item.
+	diag_log ["itemMove", [_item_id, _item_invID_old, _item_invID_new, ENTRY_GET("isFlipped", _item_data), (_usedSlots#0)]];
+	// update local item data
+	//
+	
+	// send command to the backend, to update its data.
+	["itemMove", [_item_id, _item_invID_old, _item_invID_new, ENTRY_GET("isFlipped", _item_data), (_usedSlots#0)]] call AN_G_fnc_msg_send;
+};
+
 // systemchat str ["ctrlCreate: _item_data: ", _item_data];
-[_ctrlGrp_item, [[_pos_x,_pos_y,_ctrlGrp_item_w,_ctrlGrp_item_h],_usedSlots,_item_class]] call an_c_fnc_ui_inv_item_data_set;
+[_ctrl_item, [[_pos_x,_pos_y,_ctrl_item_w,_ctrl_item_h],_usedSlots,_item_class,_item_id]] call an_c_fnc_ui_inv_item_data_set;

@@ -17,7 +17,7 @@ private _grid_usedSlots = [(ctrlIDC _ctrl_grid)] call an_c_fnc_ui_inv_grid_tiles
 diag_log ["DEBUG: FIND_FREE_SLOT: _grid_usedSlots :", _grid_usedSlots];
 
 private _item_data = [_ctrl] call an_c_fnc_ui_inv_item_data_get;
-_item_data params ["_pos_data","_item_usedSlots","_item_class"];
+_item_data params ["_pos_data","_item_usedSlots","_item_class","_item_id"];
 // Note: _item_usedSlots == slots in current Inventory
 
 // Get the Parent Data for the selected Item
@@ -49,5 +49,6 @@ diag_log (diag_tickTime - _time_start);
 diag_log ["_slots  : ", _slots];
 
 // [_item_class] call an_c_fnc_ui_inv_item_active_class_set;
+// [_item_id] call an_c_fnc_ui_inv_item_active_id_set;
 
 _ret

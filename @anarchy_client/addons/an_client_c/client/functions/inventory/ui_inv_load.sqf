@@ -36,8 +36,9 @@ diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
 	diag_log ["DEBUG: UI_INV_INIT: _item_class    :", _item_class];
 	diag_log ["DEBUG: UI_INV_INIT: _item_pos      :", _item_pos];
 	
-	// set the classname, to create the Item
+	// set the ID and Classname, to create the Item
 	[_item_class] call an_c_fnc_ui_inv_item_active_class_set;
+	[_item_id] call an_c_fnc_ui_inv_item_active_id_set;
 	
 	[_ctrl_inventory,0,[_item_pos_y,_item_pos_x]] call an_c_fnc_ui_inv_mPos;
 	diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
