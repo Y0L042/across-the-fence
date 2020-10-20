@@ -254,7 +254,7 @@ class AddonBuildJob:
             self.set_state("FAILED", f"Build failed - build.json does not exist")
             return
 
-        self.source_path = addon_path
+        self.source_path = p_drive / self.addon_info["prefix_path"]
         self.output_folder_path = output_folder_path
         self.output_pbo_path = output_folder_path / self.addon_info["pbo_name"]
         self.use_addon_builder = use_addon_builder
