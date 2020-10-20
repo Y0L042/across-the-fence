@@ -18,3 +18,5 @@
         //In description.ext
         use_paradigm_init = 1;
 */
+
+diag_log "Anarchy server init";

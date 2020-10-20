@@ -1,21 +1,25 @@
 /*
-    File: para_player_postinit_server.sqf
-    Author: Spoffy
-    Date: 2020-10-12
-    Last Update: 2020-10-12
-    Public: No
-    
-    Description:
-        Called on the server after init_client has run on the client.
+	File: para_player_postinit_server.sqf
+	Author: Spoffy
+	Date: 2020-10-12
+	Last Update: 2020-10-12
+	Public: No
+	
+	Description:
+		Called on the server after init_client has run on the client.
 		Used to finalise the player after initialisation.
-    
-    Parameter(s):
+	
+	Parameter(s):
 		_player - Player being initialised [OBJECT]
 		_didJIP - Whether the player JIP'd
-    
-    Returns:
+	
+	Returns:
 		None
 	
-    Example(s):
+	Example(s):
 		None
 */
+
+params ["_player", "_didJIP"];
+
+diag_log format ["Anarchy: Player postinit server - %1", _player];

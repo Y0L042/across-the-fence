@@ -24,3 +24,5 @@
 */
 
 params ["_player", "_didJIP"];
+
+diag_log "Anarchy: Preinit client";
