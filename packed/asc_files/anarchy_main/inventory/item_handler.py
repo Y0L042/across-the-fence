@@ -97,6 +97,10 @@ def item_move(client=None, args=()):
     item = oldInv["itemData"][itemID]
     # print(f"::::: item:\n{item}")
 
+    # get the parent Data
+    item_parent_data = item_get_parentData(sData=client.sData, itemName=item["parent"])
+    sizeItem = item_parent_data["size"]
+
     # also get the new inventory + grid
     newInv = inv_handler.inv_getData(client, invID_new)
     newInv_invGrid = newInv["inv_grid"]
@@ -105,7 +109,7 @@ def item_move(client=None, args=()):
 
     # check if enough space in new Inventory
     # ToDo: Check if it is just moving within the same Inventory and if it is blocked by itself :thonk:
-    slots_used_new = inv_handler.inv_slots_used_get(slotsStart=invPos, invGrid=newInv_invGrid, isFlipped=isFlipped, sizeItem=item["size"], isAdd=True)
+    slots_used_new = inv_handler.inv_slots_used_get(slotsStart=invPos, invGrid=newInv_invGrid, isFlipped=isFlipped, sizeItem=sizeItem, isAdd=True)
     print(f"::::: slots_used: {slots_used_new}")
     if len(slots_used_new) == 0:
         # ToDo: Send both Inventories back to the player, to update his UI (later)
@@ -114,7 +118,7 @@ def item_move(client=None, args=()):
     else:
         # get pos in old invGrid and check if everything is correct there
         isFlipped_cur = item["isFlipped"]
-        slots_used_old = inv_handler.inv_slots_used_get(slotsStart=item["invPos"], invGrid=oldInv_invGrid, isFlipped=isFlipped_cur, sizeItem=item["size"], isAdd=False)
+        slots_used_old = inv_handler.inv_slots_used_get(slotsStart=item["invPos"], invGrid=oldInv_invGrid, isFlipped=isFlipped_cur, sizeItem=sizeItem, isAdd=False)
         if len(slots_used_old) == 0:
             # ToDo: Send both Inventories back to the player, to update his UI (later)
             print("INVENTORY: Something was wrong with the old Item State - no blocked tiles found")
