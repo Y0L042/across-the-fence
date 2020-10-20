@@ -1,4 +1,8 @@
 import argparse
+import asyncio
+import colorama
+from colorama import Fore, Back, Style
+from collections import defaultdict
 import datetime
 import json
 import os
@@ -9,6 +13,25 @@ import subprocess
 import sys
 import vdf
 import winreg
+
+#Initialise colorama, which lets us print with colour on windows!
+colorama.init()
+
+class Logger:
+    def __init__(self, prefix, logfile):
+        self.prefix = prefix
+        self.logfile = logfile
+
+    def info(self, message):
+        self.log("INFO", message)
+
+    def error(self, message):
+        self.log("ERROR", message)
+
+    def log(self, level, message):
+        with self.logfile.open("a") as file:
+            file.write("{} - {}: {}".format(self.prefix, level, message))
+            file.write("\n")
 
 p_drive = Path('P:\\')
 root_directory = Path(path.realpath(__file__)).parent.parent
@@ -26,6 +49,11 @@ all_mods = ["@anarchy_client", "@anarchy_server"]
 extra_setup_links = [
    {"source": "packed\\asc_files", "dest": "asc_files", "is_dir": True}
 ]
+
+# The default async event loop on Windows doesn't let us use subprocesses.
+# We need to use the "ProActor" loop to fix this.
+# Setting the policy means anything using asyncio.run() uses ProActor
+asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 
 # Retrieve steam install path from the registry, if possible.
 def get_steam_path_from_registry():
@@ -189,8 +217,87 @@ def load_addon_info(folder_path):
         print(f"Build file not a valid JSON document: {build_file_path}")
         return None
 
-def build(mod_names, overwrite=False, use_addon_builder=False):
+class AddonBuildJob:
+    def __init__(self,addon_path, output_folder_path, use_addon_builder=False):
+        self.addon_name = addon_path.name
+        self.logger = Logger(self.addon_name, log_directory / "{}_log.txt".format(addon_path.name))
+        self.set_state("INIT", "Initialising build job")
+        self.addon_info = load_addon_info(addon_path)
 
+        if not self.addon_info:
+            self.set_state("FAILED", f"Build failed - build.json does not exist")
+            return
+
+        self.source_path = addon_path
+        self.output_folder_path = output_folder_path
+        self.output_pbo_path = output_folder_path / self.addon_info["pbo_name"]
+        self.use_addon_builder = use_addon_builder
+
+    def get_addon_builder_command(self):
+        install_dirs = find_arma_install_dirs()
+        if len(install_dirs["tools"]) == 0:
+            return (False, f"Cannot use Addon Builder - no tools installation found (Should be installed via Steam)")
+        default_args = ["-packonly", "-clear", "-prefix={}".format(addon_info["prefix_path"])]
+        args = self.addon_info.get("addonbuilder_arguments", default_args)
+        base_command = [str(install_dirs["tools"][0] / "AddonBuilder" / "AddonBuilder.exe")]
+        # Output to the folder, as AddonBuilder makes pbos with the same name as the input folder.
+        return (True, base_command + [str(self.source_path), str(self.output_folder_path)] + args)
+
+    def get_makepbo_command(self):
+        #Build addons with makepbo
+        exclude_files = ",".join(["thumbs.db","*.txt","*.h","*.dep","*.cpp","*.bak","*.png","*.log","*.pew","*.hpp","source","*.tga"])
+        #MakePBO default arguments
+        default_args = ["-PsFW", f"-X={exclude_files}"]
+        args = self.addon_info.get("makepbo_arguments", default_args)
+        base_command = ["MakePbo"]
+        return base_command + args + [str(self.source_path), str(self.output_folder_path / self.source_path.name)]
+
+    def set_state(self, state, reason):
+        self.state = state
+        self.reason = reason
+        if (state == "FAILED"):
+            self.logger.error(f"Build {state} - {reason}")
+        else:
+            self.logger.info(f"Build {state} - {reason}")
+
+    async def build(self):
+        if self.state != "INIT":
+            return self
+
+        command = self.get_makepbo_command()
+        if self.use_addon_builder or self.addon_info["use_addon_builder"]:
+            (command_possible, result) = self.get_addon_builder_command()
+            if not command_possible:
+                self.set_state("FAILED", result)
+                return self
+            command = result
+        
+        if not self.source_path.exists():
+            self.set_state("FAILED", "Source path {} does not exist".format(self.source_path))
+            return self
+        
+        self.logger.info("Beginning build")
+        self.logger.info("Source Path: {}".format(self.source_path))
+        self.logger.info("Path: {}".format(self.output_folder_path))
+        self.logger.info("Command: {}".format(command))
+
+        addon_name = self.addon_name
+        stdout_path = log_directory / f"{addon_name}_build_output.txt"
+        stderr_path = log_directory / f"{addon_name}_build_errors.txt"
+        with stdout_path.open("w") as stdout_file:
+            with stderr_path.open("w") as stderr_file:
+                process = await asyncio.create_subprocess_exec(*command, stdout=stdout_file, stderr=stderr_file)
+                returncode = await process.wait()
+                if returncode != 0:
+                    self.set_state("FAILED", f"Build command failed - See ({stderr_path}) for more information")
+                else:
+                    #Rename the file
+                    #os.rename(output_pbo_path, output_folder_path / addon_info["pbo_name"])
+                    self.set_state("SUCCEEDED", f"Successful build - see ({stdout_path}) for addon build output")
+        
+        return self
+
+async def build(mod_names, overwrite=False, use_addon_builder=False):
     if not prefix_directory.exists():
         print(f"ERROR: P-Drive is not set up for Anarchy. The P-Drive must be set up before building. ({prefix_directory} does not exist)")
         print("You can set this feature up using the 'pdrive' command")
@@ -212,8 +319,11 @@ def build(mod_names, overwrite=False, use_addon_builder=False):
                 print(f"Output path already exists - aborting build ({mod_output_path})")
                 continue
 
+        addon_input_folder_path = mod_input_path / 'addons'
+        addon_output_folder_path = mod_output_path / 'addons'
+
         create_folder_if_not_exists(mod_output_path)
-        create_folder_if_not_exists(mod_output_path / 'addons')
+        create_folder_if_not_exists(addon_output_folder_path)
 
         #Copy over relevant folders
         for child in mod_input_path.iterdir():
@@ -229,60 +339,15 @@ def build(mod_names, overwrite=False, use_addon_builder=False):
                 shutil.copyfile(child, dest_path, follow_symlinks=True)
 
         print(f"\n==== BUILDING {mod_name} ADDONS ====")
-        #Build addons with makepbo
-        exclude_files = ",".join(["thumbs.db","*.txt","*.h","*.dep","*.cpp","*.bak","*.png","*.log","*.pew","*.hpp","source","*.tga"])
+        addon_build_jobs = [AddonBuildJob(addon_source_path, addon_output_folder_path, use_addon_builder) for addon_source_path in addon_input_folder_path.iterdir()]
+        addon_build_tasks = [asyncio.create_task(job.build()) for job in addon_build_jobs]
+        results = await asyncio.gather(*addon_build_tasks)
+        for result in results:
+            state_color_map = defaultdict(lambda: Fore.RESET, {"FAILED": Fore.RED, "SUCCEEDED": Fore.GREEN})
+            color = state_color_map[result.state]
+            state_output = color + result.state + Fore.RESET
+            print(f"{state_output} - {result.addon_name}: {result.reason}")
 
-        for addon_input_path in (mod_input_path / "addons").iterdir():
-            addon_info = load_addon_info(addon_input_path)
-
-            if not addon_info:
-                print(f"Skipping {addon_input_path} - No build info")
-                continue
-
-            addon_name = addon_info["name"]
-            addon_source_path = p_drive / addon_info["prefix_path"]
-            addon_output_folder_path = mod_output_path / "addons"
-            addon_output_pbo_path = addon_output_folder_path / addon_info["pbo_name"]
-
-            default_args = ["-PsFW", f"-X={exclude_files}"]
-            args = addon_info.get("makepbo_arguments", default_args)
-            base_command = ["MakePbo"]
-            #Output it as the same name as the source folder, as that's how AddonBuilder works
-            command = base_command + args + [str(addon_source_path), str(addon_output_folder_path / addon_source_path.name)]
-
-            if use_addon_builder or addon_info["use_addon_builder"]:
-                install_dirs = find_arma_install_dirs()
-                if len(install_dirs["tools"]) == 0:
-                    print(f"Cannot use Addon Builder for '{addon_name}', no tools installation found (Should be installed via Steam)")
-                    continue
-                default_args = ["-packonly", "-clear", "-prefix={}".format(addon_info["prefix_path"])]
-                args = addon_info.get("addonbuilder_arguments", default_args)
-                base_command = [str(install_dirs["tools"][0] / "AddonBuilder" / "AddonBuilder.exe")]
-                # Output to the folder, as AddonBuilder makes pbos with the same name as the input folder.
-                command = base_command + [str(addon_source_path), str(addon_output_folder_path)] + args
-
-
-            print(f"Building Addon '{addon_name}'")
-            # print("    Prefix: {}".format(addon_info["prefix"]))  # SPOFFY
-            # print("    Source Path: {}".format(addon_source_path))    # SPOFFY
-            # print("    Output Path: {}".format(addon_output_folder_path)) # SPOFFY
-            # print("    Build Command: {}".format(command))    # SPOFFY
-
-            #Check the source exists on the P-Drive
-            if not addon_source_path.exists():
-                print(f"    FAILED: {addon_name} cannot be built - the source path does not exist ({addon_source_path})")
-                continue
-
-            log_file_path = log_directory / f"build_output_{addon_name}.txt"
-            with open(log_file_path, "w") as log_file:
-                result = subprocess.run(command, stdout=log_file, stderr=subprocess.STDOUT)
-                if result.returncode != 0:
-                    print(f"    FAILED: {addon_name}")# build - see ({log_file_path}) for more information")    # SPOFFY
-                    continue
-                else:
-                    #Rename the file
-                    os.rename(addon_output_pbo_path, addon_output_folder_path / addon_info["pbo_name"])
-                    print(f"    SUCCEEDED: {addon_name}")# build - see ({log_file_path}) for addon build output")   # SPOFFY
 
 def pdrive(mods,disable=False):
     symlinks = []
@@ -465,7 +530,7 @@ def subcommand_build(args):
         mods = all_mods
 
     print(f"Building: {mods}")
-    build(mods,overwrite=args.force,use_addon_builder=args.addonbuilder)
+    asyncio.run(build(mods,overwrite=args.force,use_addon_builder=args.addonbuilder))
 
 def subcommand_pdrive(args):
     action = "Disabling" if args.disable else "Enabling"
