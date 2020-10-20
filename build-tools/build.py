@@ -4,6 +4,7 @@ import colorama
 from colorama import Fore, Back, Style
 from collections import defaultdict
 import datetime
+from enum import IntEnum
 import json
 import os
 import os.path as path
@@ -17,21 +18,43 @@ import winreg
 #Initialise colorama, which lets us print with colour on windows!
 colorama.init()
 
-class Logger:
-    def __init__(self, prefix, logfile):
-        self.prefix = prefix
-        self.logfile = logfile
+class LogLevel(IntEnum):
+    ERROR = 0
+    WARNING = 1
+    INFO = 2
+    VERBOSE = 3
+    DEBUG = 4
 
-    def info(self, message):
-        self.log("INFO", message)
+class Logger:
+    def __init__(self, prefix, log_file, log_level=LogLevel.INFO):
+        self.prefix = f"{prefix}: " if prefix != "" else ""
+        self.log_file = log_file
+        self.log_level = log_level
 
     def error(self, message):
-        self.log("ERROR", message)
+        self.log(LogLevel.ERROR, message)
+
+    def warning(self, message):
+        self.log(LogLevel.WARNING, message)
+
+    def info(self, message):
+        self.log(LogLevel.INFO, message)
+
+    def verbose(self, message):
+        self.log(LogLevel.VERBOSE, message)
+
+    def debug(self, message):
+        self.log(LogLevel.DEBUG, message)
 
     def log(self, level, message):
-        with self.logfile.open("a") as file:
-            file.write("{} - {}: {}".format(self.prefix, level, message))
+        prefixed_message = f"{self.prefix}{message}"
+        if level <= self.log_level:
+            log_level_prefix = f"{level.name} - " if level <= LogLevel.WARNING else ""
+            print(log_level_prefix + prefixed_message)
+        with self.log_file.open("a") as file:
+            file.write("{} - {}".format(level.name, prefixed_message))
             file.write("\n")
+
 
 p_drive = Path('P:\\')
 root_directory = Path(path.realpath(__file__)).parent.parent
@@ -41,6 +64,10 @@ log_directory = root_directory / 'build_logs' / (datetime.datetime.now().strftim
 prefix_directory = p_drive / addon_prefix
 missions_directory = root_directory / "missions"
 arma_mod_folder_name = "anarchy"
+
+# Set up the logger
+log_directory.mkdir(parents=True,exist_ok=True)
+logger = Logger("", log_directory / "build_log.txt", LogLevel.INFO)
 
 #All mods that are to be built/linked
 all_mods = ["@anarchy_client", "@anarchy_server"]
@@ -120,7 +147,7 @@ def find_arma_install_dirs():
 
     (success, result) = find_steam_library_paths()
     if not success:
-        print(f"An error occurred locating Arma 3 - {result}")
+        logger.error(f"An error occurred locating Arma 3 - {result}")
         return arma_paths
 
     steam_library_paths = result
@@ -142,10 +169,9 @@ def find_arma_install_dirs():
 
     return arma_paths
 
-def create_folder_if_not_exists(folder_path, verbose=True):
+def create_folder_if_not_exists(folder_path):
     if folder_path.exists():
-        if verbose:
-            print(f"Directory {folder_path} already exists - not creating")
+        logger.verbose(f"Directory {folder_path} already exists - not creating")
     else:
         # print(f"Creating folder {folder_path}")   # SPOFFY
         folder_path.mkdir(parents=True,exist_ok=True)
@@ -153,16 +179,16 @@ def create_folder_if_not_exists(folder_path, verbose=True):
 def create_symlink(link_path,dest_path,is_directory=False):
     try:
         if not link_path.exists():
-            print(f"Linking {link_path} to {dest_path}")
+            logger.info(f"Linking {link_path} to {dest_path}")
             link_path.symlink_to(dest_path, target_is_directory=is_directory)
         else:
-            print(f"Skipping {link_path} - file already exists")
+            logger.verbose(f"Skipping {link_path} - file already exists")
     except OSError as e:
         if e.winerror == 183:
-            print("Error: Link/file already exists. This should not happen. Please try again")
+            logger.error("Error: Link/file already exists. This should not happen. Please try again")
         else:
-            print("Error while creating symlinks. Possible fix: This script needs to be run as an administrator.")
-            print("Raw error: ", e)
+            logger.error("Error while creating symlinks. Possible fix: This script needs to be run as an administrator.")
+            logger.error("Raw error: ", e)
 
 def create_symlink_and_parents(link_path,source_path,is_directory=False):
     create_folder_if_not_exists(link_path.parent)
@@ -189,7 +215,7 @@ def remove_if_symlink_to_here(link_path):
         #if our link path begins with the path to our root directory, we consider it a link to inside this repo.
         #Alternatively, it it's a symlink to a non-existant file/folder
         if root_directory.resolve().as_posix() in link_path.resolve().as_posix() or not link_path.exists():
-            print(f"Unlinking {link_path}")
+            logger.info(f"Unlinking {link_path}")
             link_path.unlink()
 
 def load_addon_info(folder_path):
@@ -211,10 +237,10 @@ def load_addon_info(folder_path):
             data["use_addon_builder"] = data.get("use_addon_builder", False)
             return data
     except OSError:
-        print(f"Error: Unable to open build file: {build_file_path}")
+        logger.error(f"Error: Unable to open build file: {build_file_path}")
         return None
     except json.JSONDecodeError:
-        print(f"Build file not a valid JSON document: {build_file_path}")
+        logger.error(f"Build file not a valid JSON document: {build_file_path}")
         return None
 
 class AddonBuildJob:
@@ -258,7 +284,7 @@ class AddonBuildJob:
         if (state == "FAILED"):
             self.logger.error(f"Build {state} - {reason}")
         else:
-            self.logger.info(f"Build {state} - {reason}")
+            self.logger.verbose(f"Build {state} - {reason}")
 
     async def build(self):
         if self.state != "INIT":
@@ -276,10 +302,10 @@ class AddonBuildJob:
             self.set_state("FAILED", "Source path {} does not exist".format(self.source_path))
             return self
         
-        self.logger.info("Beginning build")
-        self.logger.info("Source Path: {}".format(self.source_path))
-        self.logger.info("Path: {}".format(self.output_folder_path))
-        self.logger.info("Command: {}".format(command))
+        self.logger.verbose("Beginning build")
+        self.logger.verbose("Source Path: {}".format(self.source_path))
+        self.logger.verbose("Path: {}".format(self.output_folder_path))
+        self.logger.verbose("Command: {}".format(command))
 
         addon_name = self.addon_name
         stdout_path = log_directory / f"{addon_name}_build_output.txt"
@@ -299,24 +325,23 @@ class AddonBuildJob:
 
 async def build(mod_names, overwrite=False, use_addon_builder=False):
     if not prefix_directory.exists():
-        print(f"ERROR: P-Drive is not set up for Anarchy. The P-Drive must be set up before building. ({prefix_directory} does not exist)")
-        print("You can set this feature up using the 'pdrive' command")
+        logger.error(f"P-Drive is not set up for Anarchy. The P-Drive must be set up before building. ({prefix_directory} does not exist)")
+        logger.error("You can set this feature up using the 'pdrive' command")
         return
 
     create_folder_if_not_exists(output_directory)
-    create_folder_if_not_exists(log_directory)
 
     #Create mod folders
     for mod_name in mod_names:
-        print(f"\n\n==== BUILDING MOD {mod_name} ====")
+        logger.info(f"\n\n==== BUILDING MOD {mod_name} ====")
         mod_input_path = root_directory / mod_name
         mod_output_path = output_directory / mod_name
         if mod_output_path.exists():
             if overwrite:
-                # print(f"Output folder already exists, deleting folder ({mod_output_path})")   # SPOFFY
+                logger.info(f"Output folder already exists, deleting folder ({mod_output_path})")
                 shutil.rmtree(mod_output_path)
             else:
-                print(f"Output path already exists - aborting build ({mod_output_path})")
+                logger.error(f"Output path already exists - aborting build ({mod_output_path})")
                 continue
 
         addon_input_folder_path = mod_input_path / 'addons'
@@ -332,13 +357,13 @@ async def build(mod_names, overwrite=False, use_addon_builder=False):
                 continue
             dest_path = mod_output_path / child.name
             if child.is_dir():
-                # print(f"Copying folder {child} to {dest_path}")   # SPOFFY
+                logger.verbose(f"Copying folder {child} to {dest_path}")
                 shutil.copytree(child, dest_path, symlinks=True)
             else:
-                # print(f"Copying file {child} to {dest_path}") # SPOFFY
+                logger.verbose(f"Copying file {child} to {dest_path}")
                 shutil.copyfile(child, dest_path, follow_symlinks=True)
 
-        print(f"\n==== BUILDING {mod_name} ADDONS ====")
+        logger.info(f"\n==== BUILDING {mod_name} ADDONS ====")
         addon_build_jobs = [AddonBuildJob(addon_source_path, addon_output_folder_path, use_addon_builder) for addon_source_path in addon_input_folder_path.iterdir()]
         addon_build_tasks = [asyncio.create_task(job.build()) for job in addon_build_jobs]
         results = await asyncio.gather(*addon_build_tasks)
@@ -346,7 +371,7 @@ async def build(mod_names, overwrite=False, use_addon_builder=False):
             state_color_map = defaultdict(lambda: Fore.RESET, {"FAILED": Fore.RED, "SUCCEEDED": Fore.GREEN})
             color = state_color_map[result.state]
             state_output = color + result.state + Fore.RESET
-            print(f"{state_output} - {result.addon_name}: {result.reason}")
+            logger.info(f"{state_output} - {result.addon_name}: {result.reason}")
 
 
 def pdrive(mods,disable=False):
@@ -365,7 +390,7 @@ def pdrive(mods,disable=False):
                 })
  
     if not disable:
-        print("Linking files to addon root")
+        logger.info("Linking files to addon root")
         for link in symlinks:
             create_folder_if_not_exists(link["link_path"].parent)
             create_symlink(link["link_path"], link["source_path"], is_directory=True)
@@ -373,22 +398,22 @@ def pdrive(mods,disable=False):
         for link in symlinks:
             try:
                 for deleted_path in remove_file_and_empty_parent_folders(link["link_path"]):
-                    print(f"Deleted: {deleted_path}")
+                    logger.info(f"Deleted: {deleted_path}")
             except OSError as e:
-                print(f"Error removing {link_path}")
-                print("Raw error: ", e)
+                logger.error(f"Error removing {link_path}")
+                logger.error("Raw error: ", e)
 
 def filepatching(raw_path,mods,disable=False):
     path = Path(raw_path)
 
     if not path.exists():
-        print(f"ERROR: {path} does not exist")
+        logger.error(f"{path} does not exist")
         return False
 
     is_server = is_arma_server_dir(path)
     is_client = is_arma_client_dir(path)
     if not (is_server or is_client):
-        print(f"ERROR: {path} is not an Arma root directory")
+        logger.error(f"{path} is not an Arma root directory")
         return False
 
     symlinks = []
@@ -406,14 +431,14 @@ def filepatching(raw_path,mods,disable=False):
                 })
     
     if not disable:
-        print(f"Setting up SGD filepatching at {path}")
+        logger.info(f"Setting up SGD filepatching at {path}")
 
         for link in symlinks:
             addon_name = link["addon_info"]["name"]
-            print(f"Setting up filepatching for {addon_name}")
+            logger.info(f"Setting up filepatching for {addon_name}")
 
             if not link["source_path"].exists():
-                print("ERROR: {} does not exist".format(link["source_path"]))
+                logger.error("{} does not exist".format(link["source_path"]))
                 continue
 
             create_folder_if_not_exists(link["link_path"].parent)
@@ -422,23 +447,23 @@ def filepatching(raw_path,mods,disable=False):
         for link in symlinks:
             try:
                 for deleted_path in remove_file_and_empty_parent_folders(link["link_path"]):
-                    print(f"Deleted: {deleted_path}")
+                    logger.info(f"Deleted: {deleted_path}")
             except OSError as e:
-                print(f"Error removing {link_path}")
-                print("Raw error: ", e)
+                logger.error(f"Error removing {link_path}")
+                logger.error("Raw error: ", e)
 
 def arma_setup(raw_path,link_missions=True,disable=False):
     arma_path = Path(raw_path)
 
     if not arma_path.exists():
-        print(f"ERROR: {arma_path} does not exist")
+        logger.error(f"{arma_path} does not exist")
         return False
 
 
     is_server = is_arma_server_dir(arma_path)
     is_client = is_arma_client_dir(arma_path)
     if not (is_server or is_client):
-        print(f"ERROR: {arma_path} is not an Arma root directory")
+        logger.error(f"{arma_path} is not an Arma root directory")
         return False
 
     arma_link_folder_path = arma_path / arma_mod_folder_name
@@ -447,17 +472,17 @@ def arma_setup(raw_path,link_missions=True,disable=False):
     if not disable:
         create_folder_if_not_exists(arma_link_folder_path)
         
-        print(f"==== Linking packed mods to Arma 3: {mod_names} ====")
+        logger.info(f"==== Linking packed mods to Arma 3: {mod_names} ====")
         for mod_name in mod_names:
             try:
                 mod_path = output_directory / mod_name
                 link_path = arma_link_folder_path / mod_name
                 create_symlink(link_path, mod_path, is_directory = True)
             except FileNotFoundError as e:
-                print(f"WARNING: Mod {mod_name} cannot be linked - path does not exist {e.filename}")
+                logger.warning(f"WARNING: Mod {mod_name} cannot be linked - path does not exist {e.filename}")
 
         if link_missions:
-            print(f"==== Linking missions to Arma 3 ====")
+            logger.info(f"==== Linking missions to Arma 3 ====")
             try:
                 for mission in missions_directory.iterdir():
                     if not mission.is_dir():
@@ -465,24 +490,24 @@ def arma_setup(raw_path,link_missions=True,disable=False):
                     link_path = arma_path / "mpmissions" / mission.name
                     create_symlink(link_path, mission, is_directory = True)
             except FileNotFoundError as e:
-                print(f"WARNING: Cannot link missions, {e.filename} does not exist")
+                logger.warning(f"WARNING: Cannot link missions, {e.filename} does not exist")
 
-        print(f"==== Linking additional folders to Arma 3 ====")
+        logger.info(f"==== Linking additional folders to Arma 3 ====")
         for extra_link in extra_setup_links:
             source = root_directory / extra_link["source"]
             dest = arma_path / extra_link["dest"]
             if not source.exists():
-                print(f"WARNING: Cannot link extra folder, ({source}) does not exist")
+                logger.warning(f"WARNING: Cannot link extra folder, ({source}) does not exist")
                 continue
             create_symlink(dest, source, is_directory=extra_link["is_dir"])
     else:
-        print(f"==== Unlinking mods from Arma 3: {mod_names} ====")
+        logger.info(f"==== Unlinking mods from Arma 3: {mod_names} ====")
         for child_path in arma_link_folder_path.iterdir():
             remove_if_symlink_to_here(child_path)
-        print(f"==== Unlinking missions from Arma 3 ====")
+        logger.info(f"==== Unlinking missions from Arma 3 ====")
         for child_path in (arma_path / "mpmissions").iterdir():
             remove_if_symlink_to_here(child_path)
-        print(f"==== Unlinking additional links from Arma 3 ====")
+        logger.info(f"==== Unlinking additional links from Arma 3 ====")
         for extra_link in extra_setup_links:
             remove_if_symlink_to_here(arma_path / extra_link["dest"])
 
@@ -516,11 +541,11 @@ def choose_arma_paths(permit_dedicated=True):
     return select(usable_paths)
     
 def subcommand_build(args):
-    print("====  BUILDING ANARCHY ====")
+    logger.info("====  BUILDING ANARCHY ====")
 
     for mod in args.mod:
         if not mod in all_mods:
-            print(f"ERROR: Invalid mod specified ({mod}), aborting build")
+            logger.error(f"Invalid mod specified ({mod}), aborting build")
             return
 
     #Deduplicate the mods list
@@ -529,36 +554,36 @@ def subcommand_build(args):
     if len(args.mod) == 0:
         mods = all_mods
 
-    print(f"Building: {mods}")
+    logger.info(f"Building: {mods}")
     asyncio.run(build(mods,overwrite=args.force,use_addon_builder=args.addonbuilder))
 
 def subcommand_pdrive(args):
     action = "Disabling" if args.disable else "Enabling"
-    print(f"==== {action} P-Drive setup for Anarchy ====")
+    logger.info(f"==== {action} P-Drive setup for Anarchy ====")
     pdrive(all_mods,disable=args.disable)
 
 def subcommand_filepatching(args):
     action = "Disabling" if args.disable else "Enabling"
-    print(f"==== {action} filepatching ====")
+    logger.info(f"==== {action} filepatching ====")
     paths = args.paths
     if args.autodetect or len(paths) == 0:
-        print("Autodetecting Arma installations...")
+        logger.info("Autodetecting Arma installations...")
         paths = choose_arma_paths(permit_dedicated=True)
 
     for path in paths:
-        print (f"Configuring filepatching for {path}")
+        logger.info (f"Configuring filepatching for {path}")
         filepatching(path,all_mods,args.disable)
 
 def subcommand_arma_setup(args):
     action = "unlinking" if args.disable else "linking"
-    print(f"==== Setting up Arma for Anarchy development - {action} mods and missions ====")
+    logger.info(f"==== Setting up Arma for Anarchy development - {action} mods and missions ====")
     paths = args.paths
     if args.autodetect or len(paths) == 0:
-        print("Autodetecting Arma installations...")
+        logger.info("Autodetecting Arma installations...")
         paths = choose_arma_paths(permit_dedicated=True)
 
     for path in paths:
-        print(f"\nSetting up Arma instance at path: {path}")
+        logger.info(f"\nSetting up Arma instance at path: {path}")
         arma_setup(path,link_missions=True,disable=args.disable)
 
 if __name__ == "__main__":
@@ -566,7 +591,7 @@ if __name__ == "__main__":
     
     if len(raw_args) == 0:
         default_args = ["build", "--force"]
-        print("No arguments given, using defaults: [{}]".format(" ".join(default_args)))
+        logger.warning("No arguments given, using defaults: [{}]".format(" ".join(default_args)))
         raw_args = default_args
 
     parser = argparse.ArgumentParser(description="Tool for building Anarchy server and client mods")
