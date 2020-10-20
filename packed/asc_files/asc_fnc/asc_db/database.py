@@ -73,7 +73,8 @@ class asc_db:
 				'guilds': self.guilds,
 				'zones': self.zones,
 				'crates': self.crates,
-				'bases': self.bases
+				'bases': self.bases,
+				'TESTINGER': self.sessionCrates
 				}
 			print("preparing data to save... done")
 			# human easily readable format
