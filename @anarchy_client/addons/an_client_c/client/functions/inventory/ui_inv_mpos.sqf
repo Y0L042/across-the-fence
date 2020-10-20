@@ -7,10 +7,11 @@ params ["_ctrl_grid", "_btn", "_mPos", ["_btn_shift",false,[false]], ["_btn_ctrl
 
 _mPos params ["_mPos_x", "_mPos_y"];
 
-_grid_size_row = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_grid)],-1];
+private _grid_idc = ctrlIDC _ctrl_grid;
+_grid_size_row = localNamespace getVariable [format["an_inv_grid_size_%1",_grid_idc],-1];
 if(_grid_size_row < 0)exitWith
 {
-	diag_log ["ERROR: UI_INV_MPOS: GRID NOT SET!",(ctrlIDC _ctrl_grid), [_grid_size_row]];
+	diag_log ["ERROR: UI_INV_MPOS: GRID NOT SET!", _grid_idc, [_grid_size_row]];
 };
 
 
@@ -48,7 +49,7 @@ private _offset_pos = [[_tile_row, _tile_col]];	//store first Pos (needed, since
 
 //Check if all tiles are free
 //get used slots from grid
-private _grid_tiles_used = [(ctrlIDC _ctrl_grid)] call an_c_fnc_ui_inv_grid_tiles_used_get;
+private _grid_tiles_used = [_grid_idc] call an_c_fnc_ui_inv_grid_tiles_used_get;
 
 // Check if tiles in the targeted Grid are free. If not -> Return empty Array and trigger a "re-add" to the old position
 private _item_tile_usage = [_ctrl_grid,_grid_size_row,_offset_pos,_grid_tiles_used] call an_c_fnc_ui_inv_grid_check_freeTiles;
@@ -64,6 +65,8 @@ if!(_item_tile_usage isEqualto [])then
 	
 	// add the Item to the passed position
 	[_ctrl_grid,_item_gridPos_row,_item_gridPos_col,_item_class,_offset_pos] call an_c_fnc_ui_inv_item_create;
+	_invID_new = if(_grid_idc isEqualto 1001)then{localNamespace getVariable ["an_inv_external_active",""]}else{getPlayerUID player};
+	diag_log ["-------------------------------------------------- _grid_idc: ", _grid_idc];
 	
 }else{
 	// re add the Item and its used slots in its previously used grid

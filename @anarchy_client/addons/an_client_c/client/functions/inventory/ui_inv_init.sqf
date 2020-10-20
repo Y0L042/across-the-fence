@@ -87,6 +87,7 @@ diag_log "-----------------------------------------------";
 diag_log "-----------------------------------------------";
 // Load Inventory: External
 [_disp, "an_inv_external_grid", _dataCrate] call an_c_fnc_ui_inv_load;
+localNamespace setVariable ["an_inv_external_active",ENTRY_GET("crateID",_dataCrate)];
 diag_log "-----------------------------------------------";
 
 // Handle scrolling the Mousewheel (only if an item is currently grabbed)
