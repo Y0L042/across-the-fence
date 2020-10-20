@@ -71,7 +71,7 @@ private _disp_preCheck = uiNamespace getVariable ["an_inventory", displayNull];
 if !(isNull _disp_preCheck)then{_disp_preCheck closeDisplay 1;};
 private _disp = (findDisplay 46) createDisplay "an_inventory";
 
-AN_INVENTORY_LIST = [["an_inv_player_area","an_inv_player_grid"],["an_inv_crate_area","an_inv_crate_grid"]];
+AN_INVENTORY_LIST = [["an_inv_player_area","an_inv_player_grid"],["an_inv_external_area","an_inv_external_grid"]];
 
 an_inv_size_col = 8;	//0-X (so -1 of the actual ColCount) - FIXED SIZE - ALWAYS 8!
 // DEV - Will be set by the Backend data

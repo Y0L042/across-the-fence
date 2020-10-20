@@ -190,8 +190,8 @@ class an_inventory
 			h = UIH(20);
 			
 			
-			onLoad = "uinamespace setvariable [""an_inv_crate_area"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""an_inv_crate_area"", controlNull];";
+			onLoad = "uinamespace setvariable [""an_inv_external_area"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_inv_external_area"", controlNull];";
 			
 			
 			onMouseButtonDown	= "";
@@ -210,8 +210,8 @@ class an_inventory
 					w = UIW(WIDTH);
 					h = UIH(HEIGHT);
 					
-					onLoad = "uinamespace setvariable [""an_inv_crate_grid"", (_this#0)];";
-					onUnload = "uinamespace setvariable [""an_inv_crate_grid"", controlNull];";
+					onLoad = "uinamespace setvariable [""an_inv_external_grid"", (_this#0)];";
+					onUnload = "uinamespace setvariable [""an_inv_external_grid"", controlNull];";
 					
 					// onMouseButtonDown	= "_this call an_c_fnc_ui_inv_mPos;";	//RESERVED: "grab" Item
 					// onMouseButtonUp		= "";
