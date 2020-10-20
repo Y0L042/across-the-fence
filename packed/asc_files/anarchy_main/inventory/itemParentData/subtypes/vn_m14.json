@@ -3,35 +3,24 @@
 	"m14":
 	{
 		"parent": "vn_m14",
-		"hp_max": 100,
-		"rarity": 0
+		"hp_max": 100
 	},
 	"Special_M14_spoffy":
 	{
 		"parent": "vn_m14",
 		"attachments": {"scope": "", "muzzle":  ""},
-		"hp_max": 140,
-		"rarity": 2
-	},
-	"bla_awol":
-	{
-		"parent": "vn_m14_lessTearNoScopes",
-		"attachments": {},
-		"hp_max": 160,
-		"rarity": 3
+		"hp_max": 140
 	},
 	"dscha_burp":
 	{
 		"parent": "vn_m14_alternative",
 		"attachments": {"scope": ""},
-		"hp_max": 180,
-		"rarity": 4
+		"hp_max": 180
 	},
 	"megauberm14":
 	{
 		"parent": "dildozer9000",
 		"attachments": {"scope": "", "muzzle":  ""},
-		"hp_max": 9000,
-		"rarity": 9000
+		"hp_max": 9000
 	}
 }
