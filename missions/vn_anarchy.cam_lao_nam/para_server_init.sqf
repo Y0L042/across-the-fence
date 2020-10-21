@@ -33,6 +33,12 @@ diag_log "VN Anarchy: Starting scheduler";
 call para_g_fnc_scheduler_start;
 0 spawn para_g_fnc_scheduler_monitor;
 
+diag_log "VN Anarchy: Loading markers";
+call an_s_fnc_init_markers;
+
+diag_log "VN Anarchy: Setting respawn points";
+call an_s_fnc_init_respawn_points;
+
 // start the event dispatcher, so anything relying on events can fire.
 call para_g_fnc_event_subsystem_init;
 
@@ -40,6 +46,7 @@ call para_g_fnc_event_subsystem_init;
 // start generic scheduler functions
 diag_log "VN Anarchy: Starting game time monitor";
 // broadcast total time elapsed - initial
+//THIS IS NEEDED BY THE BUILDING SYSTEM RIGHT NOW
 //missionNamespace setVariable ["para_g_totalgametime",["GET", "game_time", 0] call para_s_fnc_profile_db select 1,true];
 //diag_log format ["VN Anarchy: Total Game Time - %1", para_g_totalgametime];
 //["save_time_elapsed", {call vn_mf_fnc_save_time_elapsed}, [], 5] call para_g_fnc_scheduler_add_job;
@@ -57,18 +64,19 @@ diag_log "VN Anarchy: Starting player list tracker";
 // do slow allplayers list updates
 ["player_list_tracker", {call para_s_fnc_player_list_tracker}, [], 15] call para_g_fnc_scheduler_add_job;
 
-
 //Set date here - it's as good a place as any. Day is just before a full moon, for good night ops.
 // [vn_mf_dawnLength, vn_mf_dayLength, vn_mf_duskLength, vn_mf_nightLength] call para_s_fnc_day_night_subsystem_init;
 
 //Initialise the AI loadbalancer.
+diag_log "VN Anarchy: Starting AI loadbalancer";
 [] call para_s_fnc_loadbal_subsystem_init;
+
 para_s_fnc_harass_blocked_areas = {
     //vn_mf_markers_blocked_areas + vn_mf_markers_no_harass
     []
 };
 
-// start ai subsystem. Depends on the load balancer subsystem.
+//Start AI objective subsystem.
 [] call para_s_fnc_ai_obj_subsystem_init;
 
 para_g_enemiesPerPlayer = 2;

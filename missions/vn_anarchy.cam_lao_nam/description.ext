@@ -9,6 +9,7 @@ respawnDelay = 20;
 respawnDialog = 0;
 respawnButton = 1;
 respawnOnStart = -1;
+respawnTemplates[] = { "MenuPosition" };
 onPauseScript = "";
 onLoadMission= "Anarchy";
 OnLoadIntro = "Welcome to Anarchy";

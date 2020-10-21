@@ -1,4 +1,5 @@
 #include "asc\_asc.h"
 #include "factions\_factions.h"
 #include "gear\_gear.h"
+#include "init\_init.h"
 #include "looting\_looting.h"
