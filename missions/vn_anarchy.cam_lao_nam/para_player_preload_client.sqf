@@ -34,3 +34,9 @@
 
 //Give the player a black screen while the loading happens.
 cutText ["", "BLACK", -1, false];
+//Disable their sound.
+0 fadeSound 0;
+//Play some intro music
+0 fadeMusic 0;
+playMusic selectRandom ["vn_blues_for_suzy", "vn_kitty_bar_blues", "vn_drafted"];
+4 fadeMusic 1;

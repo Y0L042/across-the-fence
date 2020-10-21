@@ -37,7 +37,6 @@ diag_log "Anarchy: Player init client";
 
 
 // add notes about current build settings
-0 fadeSound 0;
 player createDiaryRecord ["Diary", [localize "STR_vn_mf_howtobuild", localize "STR_vn_mf_howtobuild_long"], taskNull, "", false];
 
 player createDiaryRecord ["Diary", [localize "STR_vn_mf_other_keys", localize "STR_vn_mf_other_keys_long"], taskNull, "", false];
@@ -108,6 +107,10 @@ endLoadingScreen;
 cutText ["", "BLACK IN", 4];
 // Bring sound back to normal
 4 fadeSound 1;
+// Fade out the music
+8 fadeMusic 0;
+// Restore the music volume in the near future.
+[] spawn {sleep 8; playMusic ""; 2 fadeMusic 1};
 // Re-enable simulation
 player enableSimulation true;
 
