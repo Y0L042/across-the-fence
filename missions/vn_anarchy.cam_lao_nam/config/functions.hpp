@@ -15,18 +15,11 @@ class cfgfunctions
 
 		class client
 		{
-			class start_game_client {};
-			class start_game_headless {};
-			class start_game_stage2 {};
 			class update_loading_screen {};
 		};
 
 		class init
 		{
-			class pre_init
-			{
-				preinit = 1;
-			};
 			class post_init
 			{
 				postinit = 1;
@@ -35,8 +28,6 @@ class cfgfunctions
 
 		class server
 		{
-			class init_player {};
-			class start_game_server {};
 		};
 
 	};
