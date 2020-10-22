@@ -6168,7 +6168,7 @@ class Mission
 						disableSimulation=1;
 					};
 					id=1122;
-					type="vn_o_wheeled_z157_01_wreck";
+					type="vn_wheeled_z157_01_wreck";
 					atlOffset=-0.25270081;
 					class CustomAttributes
 					{
