@@ -4,10 +4,6 @@ class ASC
 {
     DECLARE_SERVER_FUNC_POSTINIT(asc,asc_init);
     DECLARE_SERVER_FUNC(asc,asc_address_set);
-    DECLARE_SERVER_FUNC(asc,asc_player_data_create);
-    DECLARE_SERVER_FUNC(asc,asc_player_data_delete);
-    DECLARE_SERVER_FUNC(asc,asc_player_data_get);
-    DECLARE_SERVER_FUNC(asc,asc_player_data_key);
     DECLARE_SERVER_FUNC(asc,key_create);
     DECLARE_SERVER_FUNC(asc,player_connected);
     DECLARE_SERVER_FUNC(asc,player_disconnected);
