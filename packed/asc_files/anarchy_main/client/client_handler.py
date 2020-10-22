@@ -72,7 +72,7 @@ def client_init(self):
 		"data_health": self.cData["health"],
 		"data_faction": self.cData["faction"]
 		}
-	asc_g_msg.sendMsg("loadout_set", dataset, self.sData.con_gameServer)
+	asc_g_msg.sendMsg("player_initial_data", dataset, self.sData.con_gameServer)
 
 
 	# Client:

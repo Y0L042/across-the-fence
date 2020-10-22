@@ -49,7 +49,7 @@ cmdList = {
 
 				# Players:
 				# player spawning
-				"loadout_set":            {"fnc": "AN_S_fnc_loadout_set", "spawn": 1},
+				"player_initial_data":            {"fnc": "AN_S_fnc_asc_player_initial_data", "spawn": 0},
 
 				# Inventory
 				"crate_add":                {"fnc": "AN_S_fnc_crate_add", "spawn": 0}

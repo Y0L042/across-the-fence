@@ -28,6 +28,10 @@ private _tKey = call AN_S_fnc_key_create;
 // register the connecting player in ASC
 "asc_extension" callExtension ["call_function", ["user_add",[_tKey, _uid]]];
 
+//Create the ASC player data object, which ASC can load data into.
+//This object is automatically destroyed when the player disconnects.
+_uid call an_s_fnc_asc_player_data_create;
+
 // Send the Client the command to connect to the backend directly, without calling any function on the Client!
 (call AN_S_ServerData) params["_ip","_port"];
 [
