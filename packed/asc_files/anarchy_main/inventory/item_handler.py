@@ -80,12 +80,12 @@ def item_move(client=None, args=()):
         print(f'ERROR: INV_HANDLER: ITEM_MOVE: Could NOT get Data from args:\n{e}\n')
         return
 
-    print(f"itemID: {itemID}")
-    print(f"invID_old: {invID_old}")
-    print(f"invID_new: {invID_new}")
-    print(f"isFlipped: {isFlipped}")
-    print(f"invPos: {invPos}")
-    print(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+    # print(f"itemID: {itemID}")
+    # print(f"invID_old: {invID_old}")
+    # print(f"invID_new: {invID_new}")
+    # print(f"isFlipped: {isFlipped}")
+    # print(f"invPos: {invPos}")
+    # print(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
 
     # get old Inventory + grid
     oldInv = inv_handler.inv_getData(client, invID_old)
@@ -181,9 +181,9 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
         while True:
             slot_usage = inv_handler.inv_slots_free_get(invGrid=invGrid, item_size=x_size)
             if len(slot_usage) == 0:
-                print(f"DEBUG: item_handler: item_add_to_inv: No free slots found.")
+                # print(f"DEBUG: item_handler: item_add_to_inv: No free slots found.")
                 if isLootcrate > 0:
-                    print(f"DEBUG: item_handler: item_add_to_inv: It's a lootcrate -> Adding new row. Count: {grid_rows_final}\n-------------")
+                    # print(f"DEBUG: item_handler: item_add_to_inv: It's a lootcrate -> Adding new row. Count: {grid_rows_final}\n-------------")
                     # add a new row to the tempInventory
                     newRow = [0] * 8
                     invGrid.append(newRow)
@@ -196,7 +196,7 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
                 else:
                     break
             else:
-                print(f"DEBUG: item_handler: item_add_to_inv: slot_usage: {slot_usage}")
+                # print(f"DEBUG: item_handler: item_add_to_inv: slot_usage: {slot_usage}")
                 break
 
         # check if there were slots found
@@ -219,7 +219,7 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
         #########################################################
 
         # return the updated invData!
-        print(f"DEBUG: item_handler: item_add_to_inv: invData:\nDEBUG: {invData}\n----------------------")
+        # print(f"DEBUG: item_handler: item_add_to_inv: invData:\nDEBUG: {invData}\n----------------------")
         return [invData, item]
 
         # client.cData["itemData"][newItem["id"]] = newItem

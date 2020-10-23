@@ -252,7 +252,7 @@ def inv_slots_used_set(slots_used=None, invGrid=None, isAdd=True):
         usageType = 0
 
     if len(slots_used) > 0:
-        print("free slots found")
+        # print("free slots found")
         for index in range(len(slots_used)):
             x, y = slots_used[index]
             invGrid[x][y] = usageType
