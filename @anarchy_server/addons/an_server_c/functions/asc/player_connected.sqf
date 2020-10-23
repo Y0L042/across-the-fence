@@ -35,6 +35,8 @@ uisleep 0.5;	// Dev - delay it a bit
   [_ip,_port, _tKey, _uid],
   {
 	params["_ip","_port","_tKey","_uid"];
+	// add the Callback EH
+	addMissionEventHandler ["ExtensionCallback", AN_C_fnc_ext_CE_callback_client];
 	// also sending _uid atm - maybe for an additional check later?
 	"asc_extension" callExtension ["init_client",[_ip,_port,_tKey, _uid]];
   }
