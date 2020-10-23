@@ -29,6 +29,7 @@ private _tKey = call AN_S_fnc_key_create;
 "asc_extension" callExtension ["call_function", ["user_add",[_tKey, _uid]]];
 
 // Send the Client the command to connect to the backend directly, without calling any function on the Client!
+uisleep 0.5;	// Dev - delay it a bit
 (call AN_S_ServerData) params["_ip","_port"];
 [
   [_ip,_port, _tKey, _uid],
