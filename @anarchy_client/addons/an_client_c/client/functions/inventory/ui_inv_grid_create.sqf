@@ -6,7 +6,10 @@
 
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
-params["_disp","_ctrlGrp","_size_y"];
+params["_ctrlGrp","_size_y"];
+
+private _disp = uiNamespace getVariable ["an_inventory",displayNull];
+if(isNull _disp)exitWith{};
 
 private _grid_w = (ctrlPosition _ctrlGrp)#2;
 private _grid_h = ((_grid_w / 0.75) / an_inv_size_col) * _size_y;	//adjust to 4/3 Value - 8 == fixed grid amout

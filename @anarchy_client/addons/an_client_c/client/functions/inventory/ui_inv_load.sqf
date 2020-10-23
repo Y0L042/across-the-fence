@@ -1,7 +1,7 @@
 
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
-params["_disp", "_gridName", "_inv_Data"];
+params["_gridName", "_inv_Data"];
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Inventory: ...",_gridName];
 
 // create the grid
@@ -9,7 +9,7 @@ diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: grid: ...",_gridName];
 private _grid_rows = ENTRY_GET("inv_rows",_inv_Data);
 private _ctrl_inventory = uinamespace getvariable [_gridName, controlNull];
 // set the Var for the EXTERNAL grid and show the "grid images"
-[_disp,_ctrl_inventory,_grid_rows] call an_c_fnc_ui_inv_grid_create;
+[_ctrl_inventory,_grid_rows] call an_c_fnc_ui_inv_grid_create;
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: grid : ... done",_gridName];
 
 // add the Items:

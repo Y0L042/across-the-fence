@@ -84,13 +84,13 @@ an_ui_inv_grabActive = false;		// init
 ////// Create Inventory for Player and Ground
 // Load Inventory: Player
 diag_log "-----------------------------------------------";
-[_disp, "an_inv_player_grid", an_cData_inventory] call an_c_fnc_ui_inv_load;
+["an_inv_player_grid", (localNamespace getVariable ["an_cData_invData",[]])] call an_c_fnc_ui_inv_load;
 diag_log "-----------------------------------------------";
 
 // Store the ID of the active external Inventory
 localNamespace setVariable ["an_inv_external_active",ENTRY_GET("crateID",_dataCrate)];
 // Load Inventory: External
-[_disp, "an_inv_external_grid", _dataCrate] call an_c_fnc_ui_inv_load;
+["an_inv_external_grid", _dataCrate] call an_c_fnc_ui_inv_load;
 diag_log "-----------------------------------------------";
 
 // Handle scrolling the Mousewheel (only if an item is currently grabbed)
