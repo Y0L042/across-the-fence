@@ -263,7 +263,7 @@ class AddonBuildJob:
         install_dirs = find_arma_install_dirs()
         if len(install_dirs["tools"]) == 0:
             return (False, f"Cannot use Addon Builder - no tools installation found (Should be installed via Steam)")
-        default_args = ["-packonly", "-clear", "-prefix={}".format(addon_info["prefix_path"])]
+        default_args = ["-packonly", "-clear", "-prefix={}".format(self.addon_info["prefix_path"])]
         args = self.addon_info.get("addonbuilder_arguments", default_args)
         base_command = [str(install_dirs["tools"][0] / "AddonBuilder" / "AddonBuilder.exe")]
         # Output to the folder, as AddonBuilder makes pbos with the same name as the input folder.
