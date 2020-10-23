@@ -50,15 +50,12 @@ diag_log str ["AN_ASC - Setting up Server connection..."];
 
 diag_log str ["AN_ASC - Setting up Server connection... request send..."];
 
+
 /////////////////////////////////////////
+///// EVERYTHING BELOW CAN BE MOVED TO THE ANARCHY INIT FILES:
 
-// Set the seed and make it a finalized MNS-Var
-
-// Silly Arma...
-vn_an_seed_tmp = compileFinal "9283";
-
-// Seed is now locked/finalized and a number again
-vn_an_seed = call vn_an_seed_tmp;
+// Set the seed
+vn_an_seed = 9283;
 
 // make the seed public
 missionNamespace setVariable ["vn_an_seed", vn_an_seed, true];
