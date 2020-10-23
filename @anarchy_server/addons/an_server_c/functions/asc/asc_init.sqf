@@ -9,7 +9,7 @@ addMissionEventHandler ["PlayerConnected", {_this spawn AN_S_fnc_player_connecte
 // remove player on Disconnect from backend
 addMissionEventHandler ["PlayerDisconnected", AN_S_fnc_player_disconnected];
 // Done
-diag_log str ["AN_ASC - Setting up Eventhandler... done"];
+diag_log str ["ASC - Setting up Eventhandler... done"];
 
 /*
 //////////////////////////////////////////////////////////////////////////////////
