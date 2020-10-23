@@ -30,3 +30,6 @@ if (!isPlayer _player || _side isEqualTo sideUnknown) exitWith {};
 if (_player distance2D _recruiter > 10) then {diag_log format ["Anarchy: Warning: Player %1 attempted to join a recruiter, but was too far away.", name _player]};
 
 [_player, _side] call an_s_fnc_factions_join_faction;
+
+//This probably isn't the final mechanism we want to use for this, but for now, it works well enough.
+_player setPos getMarkerPos (format ["an_respawn_%1_home_base", _side]);
