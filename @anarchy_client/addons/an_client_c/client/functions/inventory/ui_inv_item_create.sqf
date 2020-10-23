@@ -93,21 +93,92 @@ private _item_invID_new = if((ctrlIDC _ctrl_invGrid) isEqualto 1001)then{localNa
 private _item_id = [] call an_c_fnc_ui_inv_item_active_id_get;
 // get item data for given ID
 private _item_data = localNamespace getVariable [_item_id,[]];
+
 // Get current inventory and its position in it
 private _item_pos_old = ENTRY_GET("invPos", _item_data);
 private _item_invID_old = ENTRY_GET("curInv", _item_data);
 
-// Check if the position is the same as before AND if it is in the old Inventory
-if!( (_item_pos_old isEqualTo (_usedSlots#0)) && (_item_invID_old in ["",_item_invID_new]) )then
+// Check if the position is the same as before AND if it is in the old Inventory (Short: Check if it was moved, or just added (e.g: inv_load)!)
+private _isSamePos = _item_pos_old isEqualTo (_usedSlots#0);
+private _isSameInv = _item_invID_old in ["",_item_invID_new];
+if!( _isSamePos && _isSameInv)then
 {
 	// if not -> Send a message to the backend, that you moved an Item.
 	diag_log ["itemMove", [_item_id, _item_invID_old, _item_invID_new, ENTRY_GET("isFlipped", _item_data), (_usedSlots#0)]];
-	// update local item data
-	//
+	
+	// update the item data (DEV / NOTE: rebuilding Array faster? Needs to be tested later)
+	private _update_item_vars =
+	{
+		params["_dataset", "_tag", "_var"];
+		{
+			if((_x#0) isEqualTo _tag)exitWith
+			{
+				_dataset set[_forEachIndex,[_tag, _var]];
+			};
+		}forEach _dataset;
+	};
+	[_item_data, "curInv", _item_invID_new] call _update_item_vars;
+	[_item_data, "invPos", (_usedSlots#0)] call _update_item_vars;
+
+	// Store the changes
+	localNamespace setVariable [_item_id, _item_data];
 	
 	// send command to the backend, to update its data.
 	["itemMove", [_item_id, _item_invID_old, _item_invID_new, ENTRY_GET("isFlipped", _item_data), (_usedSlots#0)]] call AN_G_fnc_msg_send;
+	
+	
+	/////////////////////////////////////
+	// ToDo: Move to seperate function!
+	// Update player Inventory
+	// NOTE: The remote Inventory will never be saved localy! So only the player Inventory needs to be updated!:
+	// get Current Inventory data
+	private _cData_inventoryData_cur = localNamespace getVariable ["an_cData_invData",[]];
+	// {diag_log ["CHECK: PRE : ",_x];}forEach _cData_inventoryData_cur;
+	private _itemDataPlayer = ENTRY_GET("itemData", _cData_inventoryData_cur);
+	// {diag_log ["CHECK: PRE : ",_x];}forEach _itemDataPlayer;
+	
+	//check if it needs to be deleted:
+	if(_item_invID_new isEqualTo (getPlayerUID player))then
+	{
+		// update OR add item
+		if(_item_invID_old isEqualTo (getPlayerUID player))then
+		{
+			// diag_log ["!!!!! CREATE: UPDATE ITEM !!!!!"];
+			{
+				if((_x#0) isEqualTo _item_id)exitWith
+				{
+					_itemDataPlayer set [_forEachIndex, [_item_id, _item_data]];
+				};
+			}forEach _itemDataPlayer;
+		}
+		else
+		{
+			// diag_log ["!!!!! CREATE: ADD ITEM !!!!!"];
+			_itemDataPlayer pushback [_item_id, _item_data];
+		};
+	}
+	else
+	{
+		// diag_log ["!!!!! CREATE: DELETE ITEM !!!!!"];
+		{
+			if((_x#0) isEqualTo _item_id)exitWith
+			{
+				_itemDataPlayer deleteAt _forEachIndex;
+			};
+		}forEach _itemDataPlayer;
+	};
+
+	// Update the local Player Inventory Data
+	localNamespace setVariable ["an_cData_invData",
+		[
+			["crateID", ENTRY_GET("crateID", _cData_inventoryData_cur)],
+			["inv_rows", ENTRY_GET("inv_rows", _cData_inventoryData_cur)],
+			["itemData", _itemDataPlayer ]
+		]
+	];
+	/////////////////////////////////////
 };
 
-// systemchat str ["ctrlCreate: _item_data: ", _item_data];
+diag_log ["CREATE _item_data: ", _item_data];
+// Update the ctrl with the updated ItemData
 [_ctrl_item, [[_pos_x,_pos_y,_ctrl_item_w,_ctrl_item_h],_usedSlots,_item_class,_item_id]] call an_c_fnc_ui_inv_item_data_set;
