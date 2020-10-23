@@ -30,7 +30,7 @@ diag_log "------------------";
 an_cData_health = ENTRY_GET("health", _data);
 diag_log format["CLD_INIT: Health FULL	: %1", an_cData_health];
 /*
-// NOTE: getHitPointDamage issue (not updating)
+// NOTE: getHitPointDamage issue (not updating on the Server)
 {
 	diag_log format["CLD_INIT: Entry		: %1", _x];
 }forEach an_cData_health;

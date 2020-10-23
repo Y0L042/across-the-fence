@@ -2,14 +2,10 @@
 
 params ["_extName", "_functionTag", "_data"];
 
-diag_log "-------------------- AN_ASC - EXT_CE_CALLBACK_CLIENT --------------------";
-diag_log format["_this        :  %1", _this];
 if(_extName isEqualTo "asc_extension")then
 {
 	_data = DATA_PARSE(_data);
-	diag_log format["CALLBACK: CLIENT: _functionTag :  %1", _functionTag];
-	diag_log format["CALLBACK: CLIENT: _data        :  %1", _data];
-	diag_log "--------------------------";
+	diag_log format["DEBUG: CALLBACK: CLIENT: %1 - %2", _functionTag, _data];	// DEBUG
 	
 	if(_functionTag isEqualTo "INIT_FUNCTIONS" && isNil "AN_C_INITFUNCTIONS_CLIENT_DONE")then
 	{
