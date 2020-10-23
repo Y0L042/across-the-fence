@@ -28,19 +28,12 @@ private _tKey = call AN_S_fnc_key_create;
 // register the connecting player in ASC
 "asc_extension" callExtension ["call_function", ["user_add",[_tKey, _uid]]];
 
+
+
 // Send the Client the command to connect to the backend directly, without calling any function on the Client!
 uisleep 0.5;	// Dev - delay it a bit
 (call AN_S_ServerData) params["_ip","_port"];
-[
-  [_ip,_port, _tKey, _uid],
-  {
-	params["_ip","_port","_tKey","_uid"];
-	// add the Callback EH
-	addMissionEventHandler ["ExtensionCallback", AN_C_fnc_ext_CE_callback_client];
-	// also sending _uid atm - maybe for an additional check later?
-	"asc_extension" callExtension ["init_client",[_ip,_port,_tKey, _uid]];
-  }
-] remoteExecCall ["call", _owner];
+[_ip,_port, _tKey, _uid] remoteExecCall ["AN_C_fnc_client_connect", _owner];
 
 
 
