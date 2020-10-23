@@ -130,3 +130,7 @@ sleep 4;
 		[] call para_c_fnc_infopanel_handler;
 	};
 };
+
+// Dscha: SPOFFY - HERE - Move me to a proper place please!
+// Placeholder addAction to trigger "looting"
+player addAction["ASC: get crateData", {[] call AN_C_fnc_loot_inv_request;}, nil, 1.5, true, true, "", "cursorObject in vn_an_crates", 5, false];

@@ -1,6 +1,8 @@
 
+    /////////////////////////////////////////////////
+   // DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV //
   /////////////////////////////////////////////////
- // DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV //
+ ///// EVERYTHING IN HERE IS PURE DEV STUFF! /////
 /////////////////////////////////////////////////
 
 // Inventory init file
@@ -44,34 +46,6 @@ an_c_fnc_ui_inv_mPos_get_inv = compile preprocessFileLineNumbers "\sgd\anarchy\a
 an_c_fnc_ui_inv_EH_mouse_z = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_EH_mouse_z.sqf";
 an_c_fnc_ui_inv_EH_mouseBtn = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_EH_mouseBtn.sqf";
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-
-
-/*
-	ASC_init
-	post init function
-*/
-
-diag_log str ["ASC - INIT LOADED - CLIENT"];
-
-// set the Callback Eventhandler - Don't let a Dedicated Server load it
-if(!isDedicated)then
-{
-	addMissionEventHandler ["ExtensionCallback", AN_C_fnc_ext_CE_callback_client];
-};
-
-
-
-
-  /////////////////////////////////////////////////
- // DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV //
-/////////////////////////////////////////////////
-if hasInterface then
-{
-	player addAction["ASC: get crateData", {[] call AN_C_fnc_loot_inv_request;}, nil, 1.5, true, true, "", "cursorObject in vn_an_crates", 5, false];
-};
 
 
 DEV_an_fnc_hintGrid =
@@ -90,7 +64,3 @@ DEV_an_fnc_hintGrid =
 an_fnc_bandage_use = {systemChat str["FUNCTION CALLED: an_fnc_bandage_use"];};
 an_fnc_FAK_use = {systemChat str["FUNCTION CALLED: an_fnc_FAK_use"];};
 an_fnc_MediKit_use = {systemChat str["FUNCTION CALLED: an_fnc_MediKit_use"];};
-
-
- ////////////////////////////////////////////////
-////////////////////////////////////////////////
