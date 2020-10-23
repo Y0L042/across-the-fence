@@ -70,7 +70,7 @@ _ctrl_item ctrlCommit 0;
 			_item_img = getText(configFile >> _cfgBase >> _item_class >> "picture");
 		}else{
 			// DEV / TODO: Workaround until .dll is fixed!
-			_item_img = format["\%1",(_item_img splitString "\\" joinString "\")];
+			// _item_img = format["\%1",(_item_img splitString "\\" joinString "\")];
 		};
 		_ctrl ctrlSetText _item_img;
 	};
