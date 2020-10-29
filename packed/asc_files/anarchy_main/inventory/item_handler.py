@@ -107,23 +107,31 @@ def item_move(client=None, args=()):
     # print(f"::::: NEW INV:\n{newInv}")
     # print(f"::::: NEW INV GRID:\n{newInv_invGrid}")
 
-    # check if enough space in new Inventory
-    # ToDo: Check if it is just moving within the same Inventory and if it is blocked by itself :thonk:
-    slots_used_new = inv_handler.inv_slots_used_get(slotsStart=invPos, invGrid=newInv_invGrid, isFlipped=isFlipped, sizeItem=sizeItem, isAdd=True)
+    isFlipped_cur = item["isFlipped"]
+
+    # get pos in old invGrid and check if everything is correct there
+    slots_used_old = inv_handler.inv_slots_used_get(slotsStart=item["invPos"], invGrid=oldInv_invGrid, isFlipped=isFlipped_cur, sizeItem=sizeItem, isAdd=False)
+    if len(slots_used_old) == 0:
+        # ToDo: Send both Inventories back to the player, to update his UI (later)
+        print("INVENTORY: Something was wrong with the old Item State - no blocked tiles found")
+        return
+
+    # Check if the old Inv is the new Inv (moving Item inside an Inventory) ignore the previously used slots then.
+    if invID_old == invID_new:
+        # get currently used slots, ignoring the previously used slots
+        slots_used_new = inv_handler.inv_slots_used_get(slotsStart=invPos, slots_ignore=slots_used_old, invGrid=newInv_invGrid, isFlipped=isFlipped, sizeItem=sizeItem, isAdd=True)
+    else:
+        # check for free slots
+        slots_used_new = inv_handler.inv_slots_used_get(slotsStart=invPos, invGrid=newInv_invGrid, isFlipped=isFlipped, sizeItem=sizeItem, isAdd=True)
+
     print(f"::::: slots_used: {slots_used_new}")
+
+    # check if there was enough space in the new Inventory
     if len(slots_used_new) == 0:
         # ToDo: Send both Inventories back to the player, to update his UI (later)
         print("INVENTORY: Item can NOT be added")
         return
     else:
-        # get pos in old invGrid and check if everything is correct there
-        isFlipped_cur = item["isFlipped"]
-        slots_used_old = inv_handler.inv_slots_used_get(slotsStart=item["invPos"], invGrid=oldInv_invGrid, isFlipped=isFlipped_cur, sizeItem=sizeItem, isAdd=False)
-        if len(slots_used_old) == 0:
-            # ToDo: Send both Inventories back to the player, to update his UI (later)
-            print("INVENTORY: Something was wrong with the old Item State - no blocked tiles found")
-            return
-
         # and remove it from the old Inventory Grid
         inv_handler.inv_slots_used_set(slots_used=slots_used_old, invGrid=oldInv_invGrid, isAdd=False)
         # also delete from "itemData" dict

@@ -195,24 +195,26 @@ def inv_getData(client, invID):
                 try:
                     return client.sData.database.crates[invID]
                 except KeyError:
-                    print('ERROR: INV_HANDLER: ITEM_MOVE: inv_getData NOT FOUND')
+                    print('ERROR: INV_HANDLER: inv_getData NOT FOUND')
                     return
     except KeyError:
-        print('ERROR: INV_HANDLER: ITEM_MOVE: inv_getData NOT FOUND')
+        print('ERROR: INV_HANDLER: inv_getData NOT FOUND')
         return
     except Exception as e:
-        print(f'ERROR: INV_HANDLER: ITEM_MOVE: inv_getData - UNKNOWN ERROR:\n{e}')
+        print(f'ERROR: INV_HANDLER: inv_getData - UNKNOWN ERROR:\n{e}')
         return
 
 
 # usedSlots = slots occupied by the given Item Size INSIDE the invGrid!
-def inv_slots_used_get(slotsStart=None, sizeItem=None, invGrid=None, isFlipped=0, isAdd=True):
+def inv_slots_used_get(slotsStart=None, slots_ignore=None, sizeItem=None, invGrid=None, isFlipped=0, isAdd=True):
+    if slots_ignore is None:
+        slots_ignore = []
     if None in [slotsStart, sizeItem, invGrid]:
         return []
 
-    unblocked = 0
-    if not isAdd:
-        unblocked = 1
+    slot_state_needed = 1
+    if isAdd:
+        slot_state_needed = 0
 
     xin, yin = slotsStart
     # print(slots)
@@ -226,36 +228,45 @@ def inv_slots_used_get(slotsStart=None, sizeItem=None, invGrid=None, isFlipped=0
         for xpos in range(xit):
             for ypos in range(yit):
                 try:
-                    slotNum = invGrid[xin+xpos][yin+ypos]
-                    if slotNum != unblocked:
-                        # print("slots occupied")
-                        return []
-                    else:
+                    slot_state_cur = invGrid[xin+xpos][yin+ypos]
+                    # check if slot is free (0 = free | 1 = used)
+                    if slot_state_cur == slot_state_needed:
                         slots_used.append([xin+xpos, yin+ypos])
+                    # Slot is taken, check if the Pos is in the ignore list:
+                    elif [(xin+xpos), (yin+ypos)] in slots_ignore:
+                        slots_used.append([xin+xpos, yin+ypos])
+                    else:
+                        print(f"DEBUG: INV_HANDLER: inv_slots_used_get - NO FREE SLOTS FOUND - Slot: {[xin+xpos, yin+ypos]}")
+                        return []
                 except IndexError:
                     print("Parts of the Item are outside the Inventory ")
                     return []
     except Exception as e:
-        print(f'ERROR: INV_HANDLER: ITEM_MOVE: inv_slots_used_get - ERROR:\n{e}')
+        print(f'ERROR: INV_HANDLER: inv_slots_used_get - ERROR:\n{e}')
         return []
-
+    print(f"slots_used: {slots_used}")
     return slots_used
 
 
 def inv_slots_used_set(slots_used=None, invGrid=None, isAdd=True):
     if None in [slots_used, invGrid]:
-        print(f'ERROR: INV_HANDLER: ITEM_MOVE: inv_slots_used_set - ERROR: slots_used: {slots_used} - invGrid: {invGrid}')
+        print(f'ERROR: INV_HANDLER: inv_slots_used_set - ERROR: slots_used: {slots_used} - invGrid: {invGrid}')
         return False
 
-    usageType = 1
-    if not isAdd:
-        usageType = 0
+    # print(f'DEBUG: INV_HANDLER: inv_slots_used_set - {len(slots_used)} - Slots: {slots_used}')
+    if len(slots_used) == 0:
+        return True
 
-    if len(slots_used) > 0:
-        # print("free slots found")
-        for index in range(len(slots_used)):
-            x, y = slots_used[index]
-            invGrid[x][y] = usageType
+    if isAdd:
+        slot_used_state = 1
+    else:
+        slot_used_state = 0
+
+    # print("free slots found")
+    for index in range(len(slots_used)):
+        x, y = slots_used[index]
+        invGrid[x][y] = slot_used_state
+
     return True
 
 
