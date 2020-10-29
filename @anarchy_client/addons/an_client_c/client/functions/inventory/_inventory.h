@@ -29,6 +29,7 @@ class inventory
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_item_move_auto);
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_item_remove);
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_item_slots_find_free);
+    // DECLARE_CLIENT_FUNC(inventory,ui_inv_item_slots_find_free_check);
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_item_slots_usage_get);
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_load);
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_mpos);
