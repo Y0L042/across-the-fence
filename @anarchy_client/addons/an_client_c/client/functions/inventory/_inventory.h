@@ -10,7 +10,6 @@ class inventory
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_gridToPos);
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_isPosIn);
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_posToGrid);
-    // DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_resetColor);
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_tiles_used_set);
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_tiles_used_get);
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_tiles_used_update);
