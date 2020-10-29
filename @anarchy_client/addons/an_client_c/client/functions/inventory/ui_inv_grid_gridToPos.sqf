@@ -6,8 +6,8 @@
 
 params["_ctrl", ["_grid_rows",-1,[0]], ["_item_pos",[],[[]]]];
 
-if(_item_pos isEqualTo [])exitWith{private _text = "ERROR: ui_inv_grid_gridToPos: NO POS FOUND"; systemchat _text; diag_log _text;};
-if(_grid_rows < 0)exitWith{diag_log "ERROR: GRIDTOPOS: _grid_rows < 0";};
+if(_item_pos isEqualTo [])exitWith{private _text = "ERROR: ui_inv_grid_gridToPos: NO POS FOUND"; systemchat _text; diag_log _text; []};
+if(_grid_rows < 0)exitWith{diag_log "ERROR: GRIDTOPOS: _grid_rows < 0"; []};
 _item_pos params ["_item_pos_row","_item_pos_col"];
 
 //get the width and height of the passed Inventory
