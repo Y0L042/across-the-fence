@@ -21,6 +21,7 @@ an_cData_gear = ENTRY_GET("gear", _data);
 diag_log format["CLD_INIT: Gear		: %1", an_cData_gear];
 {
 	_x params["_slot","_itemData"];
+	localNamespace setVariable ["an_"+_slot, _itemData];
 	diag_log format["CLD_INIT: Entry		: Slot: %1 | ItemData: %2", _slot, _itemData];
 }forEach an_cData_gear;
 diag_log "------------------";
