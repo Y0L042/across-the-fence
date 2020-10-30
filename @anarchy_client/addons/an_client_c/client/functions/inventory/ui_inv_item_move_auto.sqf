@@ -4,7 +4,7 @@
 
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
-params ["_ctrl", "_btn", "_xPos", "_yPos", "_btn_shift", "_btn_ctrl", "_btn_alt"];
+params ["_ctrl", "_btn", "_xPos", "_yPos", "_btnShift", "_btnCtrl", "_btnAlt"];
 
 // Get the ctrlGroupParent, to determine in which Inventory the selected Item is, then select the opposite Inventory
 //																		External					Personal
@@ -30,8 +30,8 @@ diag_log ["DEBUG: MOVE_AUTO: _parentSize    :", _parentSize];
 private _invSize = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrid)], 4];
 
 // We only need to check those Slots, which would be still inside Grid. e.g.: Column > (GridWidthSlots-ItemWidthSlots) == Don't even check that.
-private _rowMax = _invSize-(_parentSize#0)+1; 		// Both start at "Index 1", so no -1 needed
-private _colMax = an_inv_size_col-(_parentSize#1)+1;	// Both start at "Index 1", so no -1 needed
+private _rowMax = _invSize-(_parentSize#0)+1;
+private _colMax = an_inv_size_col-(_parentSize#1)+1;
 diag_log [_rowMax, _colMax];
 
 
