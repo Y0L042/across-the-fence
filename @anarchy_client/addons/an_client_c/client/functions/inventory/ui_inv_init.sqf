@@ -73,7 +73,7 @@ private _disp_preCheck = uiNamespace getVariable ["an_inventory", displayNull];
 if !(isNull _disp_preCheck)then{_disp_preCheck closeDisplay 1;};
 private _disp = (findDisplay 46) createDisplay "an_inventory";
 
-AN_INVENTORY_LIST = [["an_inv_player_area","an_inv_player_grid"],["an_inv_external_area","an_inv_external_grid"]];
+AN_INVENTORY_LIST = [["an_inv_player_area","an_inv_player_grid"],["an_inv_external_area","an_inv_external_grid"],["an_wpn_main_area","an_wpn_main_grid"]];
 
 an_inv_move_placeHorizontal = true;	// init
 an_ui_inv_grabActive = false;		// init
@@ -94,4 +94,50 @@ diag_log "-----------------------------------------------";
 _disp displayAddEventhandler ["MouseZChanged","call an_c_fnc_ui_inv_EH_mouse_z"];
 
 
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+// DEV / WIP BELOW
+// Set up Gear Slot(-inventories)
+diag_log ["------------------------ GEAR ------------------------"];
+private _playerGear = [
+	 ["w_main","an_wpn_main_grid",3,6,2]
+	// ,["backpack",""]
+	// ,["goggles",""]
+	// ,["helmet",""]
+	// ,["pouch",""]
+	// ,["tool",""]
+	// ,["uniform",""]
+	// ,["vest",""]
+	// ,["w_hand",""]
+	// ,["w_launch",""]
+	// ,["w_main_b",""]
+];
+
+
+{
+	_x params["_slot","_gridName","_slotsRows","_slotsCols","_slotID"];
+	
+	private _itemData = localNamespace getVariable ["an_"+_slot, []];
+	if !(_itemData isEqualTo [])then
+	{
+		diag_log "DEBUG: GEAR: itemData found";
+		private _itemID = ENTRY_GET("id",_itemData);
+		// build "custom" Inventory Data
+		private _data =
+			[
+				 ["crateID", getPlayerUID player]
+				,["inv_rows", _slotsRows]
+				,["itemData",[[_itemID, _itemData]]]
+			];
+		
+		// diag_log _data;
+		[_gridName, _data, _slotsCols] call an_c_fnc_ui_inv_load;
+	};
+
+}forEach _playerGear;
+diag_log ["------------------------ GEAR ------------------------"];
+
+////////////// DEV
+_ctrl_wpn_area = uinamespace getvariable "an_wpn_main_area";
+_ctrl_wpn_grid = uinamespace getvariable "an_wpn_main_grid";
 
