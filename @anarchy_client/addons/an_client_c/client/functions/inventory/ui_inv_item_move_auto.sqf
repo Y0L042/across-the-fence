@@ -27,12 +27,12 @@ private _parentSize = ENTRY_GET("size",_parentData);
 diag_log ["DEBUG: MOVE_AUTO: _parentSize    :", _parentSize];
 
 // Get the inventory Gridsize (rows only, since width is fixed) of the Inventory target
-private _invSize = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrid)], 4];
+private _gridSize = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrid)], [-1,-1]];
+_gridSize params["_gridRows","_gridCols"];
 
 // We only need to check those Slots, which would be still inside Grid. e.g.: Column > (GridWidthSlots-ItemWidthSlots) == Don't even check that.
-private _invSizeCol = _ctrlGrp getVariable ["an_sizeCol", 8];
-private _rowMax = _invSize-(_parentSize#0)+1;
-private _colMax = _invSizeCol-(_parentSize#1)+1;
+private _rowMax = _gridRows-(_parentSize#0)+1;
+private _colMax = _gridCols-(_parentSize#1)+1;
 diag_log [_rowMax, _colMax];
 
 
@@ -48,7 +48,7 @@ if(_slots isEqualTo [])exitWith{diag_log "No free slots found.";};
 
 
 //convert from gridPos to uiPos
-([_ctrlGrid, _invSize, (_slots#0) ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
+([_ctrlGrid, _gridRows, (_slots#0) ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
 
 // set the ID and Classname, to create the Item
 [_itemClass] call an_c_fnc_ui_inv_item_active_class_set;

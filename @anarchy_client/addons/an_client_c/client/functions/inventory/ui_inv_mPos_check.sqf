@@ -11,7 +11,6 @@ if(_btn == 1)exitWith{};
 // LMB
 if(_btn == 0)exitWith
 {
-	systemchat str ["mPos_check: ",_btn];
 	// determine, if the mousePos is inside an Inventory Area
 	private _invActive = call an_c_fnc_ui_inv_mPos_get_inv;
 	// ToDo: Change to: "isNotEqualTo", when introduced

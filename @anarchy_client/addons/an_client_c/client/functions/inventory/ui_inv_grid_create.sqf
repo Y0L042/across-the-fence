@@ -6,16 +6,16 @@
 
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
-params["_ctrlGrp","_size_y"];
+params["_ctrlGrp","_gridSize"];
+_gridSize params["_gridRows","_gridCols"];
 
 private _disp = uiNamespace getVariable ["an_inventory",displayNull];
 if(isNull _disp)exitWith{};
 
-private _invSizeCol = _ctrlGrp getVariable ["an_sizeCol", 8];
 private _grid_w = (ctrlPosition _ctrlGrp)#2;
-private _grid_h = ((_grid_w / 0.75) / _invSizeCol) * _size_y;	//adjust to 4/3 Value
+private _grid_h = ((_grid_w / 0.75) / _gridCols) * _gridRows;	//adjust to 4/3 Value
 // diag_log ["GRID_CREATE: ", _grid_h, _grid_w];
-private _tile_H = _grid_h/_size_y;
+private _tile_H = _grid_h/_gridRows;
 
 
 // adjust the height of the ctrlGroup (grid)
@@ -37,7 +37,7 @@ _ctrlGrp_bg ctrlCommit 0;
 
 
 // create the "row"-images, inside the given _ctrlGrp
-for "_p_y" from 0 to (_size_y-1)do
+for "_p_y" from 0 to (_gridRows-1)do
 {
 	// use its Y Coord as IDC
 	private _idc = _p_y;
@@ -47,5 +47,5 @@ for "_p_y" from 0 to (_size_y-1)do
 	_ctrl ctrlCommit 0;
 };
 
-localNamespace setVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrp)], _size_y];
-diag_log ["DEBUG: ui_inv_grid_create: size: ", localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrp)],[]]];
+localNamespace setVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrp)], _gridSize];
+diag_log ["DEBUG: ui_inv_grid_create: size: ", localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrp)],[-1,-1]]];

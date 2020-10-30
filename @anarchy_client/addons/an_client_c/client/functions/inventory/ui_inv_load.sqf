@@ -1,21 +1,21 @@
 
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
-params["_gridName", "_inv_Data", ["_invSizeCol",-1]];
-if(_invSizeCol < 0)then{_invSizeCol = 8};	// 8 = standard col count
+params["_gridName", "_inv_Data", ["_gridCols",-1]];
+if(_gridCols < 0)then{_gridCols = 8};	// 8 = standard col count
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Inventory: ...",_gridName];
 
 // create the grid
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: grid: ...",_gridName];
-private _grid_rows = ENTRY_GET("inv_rows",_inv_Data);
+private _InvDataGridRows = ENTRY_GET("inv_rows",_inv_Data);
 private _ctrl_inventory = uinamespace getvariable [_gridName, controlNull];
 
 // set the Col size in the grid itself, so we can request it later again (Slots = different Col count)
 // Must be set BEFORE grid_create is being called.
-_ctrl_inventory setVariable ["an_sizeCol", _invSizeCol];
+// _ctrl_inventory setVariable ["an_sizeCol", _gridCols];
 
 // set the Var for the EXTERNAL grid and show the "grid images"
-[_ctrl_inventory,_grid_rows] call an_c_fnc_ui_inv_grid_create;
+[_ctrl_inventory, [_InvDataGridRows, _gridCols]] call an_c_fnc_ui_inv_grid_create;
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: grid : ... done",_gridName];
 
 // add the Items:
@@ -36,7 +36,7 @@ diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
 	// get the pos, this item was stored in
 	private _item_pos = ENTRY_GET("invPos",_item_data);
 	//convert from gridPos to uiPos
-	([_ctrl_inventory, _grid_rows, _item_pos ]call an_c_fnc_ui_inv_grid_gridToPos) params["_item_pos_y","_item_pos_x"];
+	([_ctrl_inventory, _InvDataGridRows, _item_pos ]call an_c_fnc_ui_inv_grid_gridToPos) params["_item_pos_y","_item_pos_x"];
 	
 	//DEBUG
 	// diag_log ["DEBUG: UI_INV_INIT: _item_class    :", _item_class];

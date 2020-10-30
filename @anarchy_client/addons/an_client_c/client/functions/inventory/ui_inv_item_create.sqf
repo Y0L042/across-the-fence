@@ -33,12 +33,12 @@ localNamespace setVariable ["an_Item_IDC_count",(_item_IDC + 1)];
 (ctrlPosition _ctrl_invGrid)params["_grid_x","_grid_y","_grid_w","_grid_h"];
 
 
-private _inv_rows = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_invGrid)], -1];
-if(_inv_rows < 0)exitWith{systemchat str ["ITEM_CREATE: GRID NOT SET!",_inv_rows];};
+private _gridSize = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_invGrid)], [-1,-1]];
+_gridSize params["_gridRows","_gridCols"];
+if(_gridRows isEqualTo [-1,-1])exitWith{systemchat str ["ITEM_CREATE: GRID NOT SET!", _gridRows];};
 
-private _invSizeCol = _ctrl_invGrid getVariable ["an_sizeCol", 8];
-private _tile_W = _grid_w / _invSizeCol;
-private _tile_H = _grid_h / _inv_rows;
+private _tile_W = _grid_w / _gridCols;
+private _tile_H = _grid_h / _gridRows;
 
 // systemchat str [!_canFlip, !an_inv_move_placeHorizontal];
 private _canFlip = if(_parent_size_y == _parent_size_x)then{0}else{1};
