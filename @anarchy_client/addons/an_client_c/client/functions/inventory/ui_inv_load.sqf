@@ -1,52 +1,54 @@
 
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
-params["_gridName", "_inv_Data", ["_gridCols",-1]];
+params["_gridName", "_invData", ["_gridCols",-1], ["_slotID",0]];
 if(_gridCols < 0)then{_gridCols = 8};	// 8 = standard col count
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Inventory: ...",_gridName];
 
 // create the grid
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: grid: ...",_gridName];
-private _InvDataGridRows = ENTRY_GET("inv_rows",_inv_Data);
-private _ctrl_inventory = uinamespace getvariable [_gridName, controlNull];
+private _InvDataGridRows = ENTRY_GET("inv_rows",_invData);
+private _ctrlGrid = uinamespace getvariable [_gridName, controlNull];
+// Set the slotID (0 = Player and External Inv - everything > 0 == Slot)
+_ctrlGrid setVariable ["slotID", _slotID];
 
 // set the Col size in the grid itself, so we can request it later again (Slots = different Col count)
 // Must be set BEFORE grid_create is being called.
-// _ctrl_inventory setVariable ["an_sizeCol", _gridCols];
+// _ctrlGrid setVariable ["an_sizeCol", _gridCols];
 
 // set the Var for the EXTERNAL grid and show the "grid images"
-[_ctrl_inventory, [_InvDataGridRows, _gridCols]] call an_c_fnc_ui_inv_grid_create;
+[_ctrlGrid, [_InvDataGridRows, _gridCols]] call an_c_fnc_ui_inv_grid_create;
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: grid : ... done",_gridName];
 
 // add the Items:
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Items: ...",_gridName];
-private _items = ENTRY_GET("itemData",_inv_Data);
+private _items = ENTRY_GET("itemData",_invData);
 
 diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
 {
-	_x params ["_item_id","_item_data"];
-	// diag_log ["DEBUG: UI_INV_INIT: _item_data     :",_item_data];
+	_x params ["_itemId","_itemData"];
+	// diag_log ["DEBUG: UI_INV_INIT: _itemData     :",_itemData];
 	
-	localNamespace setVariable [_item_id, _item_data];
-	diag_log ["DEBUG: LNS DATA: ", localNamespace getVariable [_item_id,"NONE"]];
+	localNamespace setVariable [_itemId, _itemData];
+	diag_log ["DEBUG: LNS DATA: ", localNamespace getVariable [_itemId,"NONE"]];
 	
 	// get the parent class
-	private _item_class = ENTRY_GET("parent",_item_data);
+	private _itemClass = ENTRY_GET("parent",_itemData);
 	
 	// get the pos, this item was stored in
-	private _item_pos = ENTRY_GET("invPos",_item_data);
+	private _itemPos = ENTRY_GET("invPos",_itemData);
 	//convert from gridPos to uiPos
-	([_ctrl_inventory, _InvDataGridRows, _item_pos ]call an_c_fnc_ui_inv_grid_gridToPos) params["_item_pos_y","_item_pos_x"];
+	([_ctrlGrid, _InvDataGridRows, _itemPos ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
 	
 	//DEBUG
-	// diag_log ["DEBUG: UI_INV_INIT: _item_class    :", _item_class];
-	// diag_log ["DEBUG: UI_INV_INIT: _item_pos      :", _item_pos];
+	// diag_log ["DEBUG: UI_INV_INIT: _itemClass    :", _itemClass];
+	// diag_log ["DEBUG: UI_INV_INIT: _itemPos      :", _itemPos];
 	
 	// set the ID and Classname, to create the Item
-	[_item_class] call an_c_fnc_ui_inv_item_active_class_set;
-	[_item_id] call an_c_fnc_ui_inv_item_active_id_set;
+	[_itemClass] call an_c_fnc_ui_inv_item_active_class_set;
+	[_itemId] call an_c_fnc_ui_inv_item_active_id_set;
 	
-	[_ctrl_inventory,0,[_item_pos_y,_item_pos_x]] call an_c_fnc_ui_inv_mPos;
+	[_ctrlGrid,0,[_itemPosY,_itemPosX]] call an_c_fnc_ui_inv_mPos;
 	// diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
 }forEach _items;
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Items: ... done",_gridName];
