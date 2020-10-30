@@ -100,6 +100,7 @@ _disp displayAddEventhandler ["MouseZChanged","call an_c_fnc_ui_inv_EH_mouse_z"]
 // Set up Gear Slot(-inventories)
 diag_log ["------------------------ GEAR ------------------------"];
 private _playerGear = [
+//	 [DB_entry, VarName, rows, cols, SlotID]
 	 ["w_main","an_wpn_main_grid",3,6,2]
 	// ,["backpack",""]
 	// ,["goggles",""]
@@ -131,13 +132,9 @@ private _playerGear = [
 			];
 		
 		// diag_log _data;
-		[_gridName, _data, _slotsCols] call an_c_fnc_ui_inv_load;
+		[_gridName, _data, _slotsCols, _slotID] call an_c_fnc_ui_inv_load;
 	};
 
 }forEach _playerGear;
 diag_log ["------------------------ GEAR ------------------------"];
-
-////////////// DEV
-_ctrl_wpn_area = uinamespace getvariable "an_wpn_main_area";
-_ctrl_wpn_grid = uinamespace getvariable "an_wpn_main_grid";
 
