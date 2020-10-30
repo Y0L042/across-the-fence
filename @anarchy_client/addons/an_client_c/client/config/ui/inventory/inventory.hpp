@@ -1,9 +1,16 @@
 #define TILES_X 8	//fixed width of 8
 #define TILES_Y 16
 #define WIDTH 8		//width of complete inventory slots
-#define HEIGHT ((WIDTH / 8) * TILES_Y)
 #define TILE_W (WIDTH/TILES_X)
+#define HEIGHT (TILE_W * TILES_Y)
 #define TILE_H (HEIGHT/TILES_Y)
+
+#define EQUIP_SLOT_X 6
+#define EQUIP_SLOT_Y 3
+#define EQUIP_SLOT_WIDTH 6		//width of complete Weapon slots
+#define EQUIP_SLOT_TILE_W (EQUIP_SLOT_WIDTH/EQUIP_SLOT_X)
+#define EQUIP_SLOT_HEIGHT (EQUIP_SLOT_TILE_W * EQUIP_SLOT_Y)
+#define EQUIP_SLOT_TILE_H (EQUIP_SLOT_HEIGHT/EQUIP_SLOT_Y)
 
 
 class tile_base: para_RscPicture
@@ -125,7 +132,7 @@ class an_inventory
 			idc = 1100;
 			
 			x = UIX_CR(1);
-			y = UIY_TD(10);
+			y = UIY_CU(10);
 			w = UIW(8.65);
 			h = UIH(20);
 			
@@ -152,9 +159,9 @@ class an_inventory
 					onLoad = "uinamespace setvariable [""an_inv_player_grid"", (_this#0)];";
 					onUnload = "uinamespace setvariable [""an_inv_player_grid"", controlNull];";
 					
-					// onMouseButtonDown	= "_this call an_c_fnc_ui_inv_mPos;";	//RESERVED: "grab" Item
+					// onMouseButtonDown	= "";		//RESERVED: "grab" Item
 					// onMouseButtonUp		= "";
-					// onMouseMoving = "systemchat str [""movement"",diag_tickTime, ctrlPosition (_this#0)]";		//DO NOT USE! Buggy (not detecting reliably)
+					// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
 					// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
 					
 					class controls
@@ -185,7 +192,7 @@ class an_inventory
 			idc = 1101;
 			
 			x = UIX_CL(9.65);
-			y = UIY_TD(10);
+			y = UIY_CU(10);
 			w = UIW(8.65);
 			h = UIH(20);
 			
@@ -208,14 +215,14 @@ class an_inventory
 					x = UIW(0);
 					y = UIH(0);
 					w = UIW(WIDTH);
-					h = UIH(HEIGHT);
+					h = UIH(SLOT_H);
 					
 					onLoad = "uinamespace setvariable [""an_inv_external_grid"", (_this#0)];";
 					onUnload = "uinamespace setvariable [""an_inv_external_grid"", controlNull];";
 					
-					// onMouseButtonDown	= "_this call an_c_fnc_ui_inv_mPos;";	//RESERVED: "grab" Item
+					// onMouseButtonDown	= "";		//RESERVED: "grab" Item
 					// onMouseButtonUp		= "";
-					// onMouseMoving = "systemchat str [""movement"",diag_tickTime, ctrlPosition (_this#0)]";		//DO NOT USE! Buggy (not detecting reliably)
+					// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
 					// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
 					
 					class controls
@@ -239,5 +246,80 @@ class an_inventory
 				};
 			};
 		};
+		
+		
+		// Inventory: Slot: Weapon
+		class grid_wpn_main_area: para_RscControlsGroupNoScrollbarHV
+		{
+			idc = 2000;
+			
+			x = UIX_CR(10);
+			y = UIY_CU(10);
+			w = UIW(EQUIP_SLOT_WIDTH);
+			h = UIH(EQUIP_SLOT_HEIGHT);
+			
+			onLoad = "uinamespace setvariable [""an_wpn_main_area"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_wpn_main_area"", controlNull];";
+			
+			
+			onMouseButtonDown	= "";
+			onMouseButtonUp		= "";
+			// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
+			// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
+			
+			
+			/*
+				case 2: {"CfgWeapons"};		// Primary Weapon
+				case 3: {"CfgWeapons"};		// Handgun
+				case 4: {"CfgWeapons"};		// Launcher
+				case 5: {"CfgWeapons"};		// Tool (Pickaxe/Hammer)
+			*/
+			class controls
+			{
+				class grid: para_RscControlsGroupNoScrollbarHV
+				{
+					idc = 2002;
+					
+					x = UIW(0);
+					y = UIH(0);
+					w = UIW(EQUIP_SLOT_WIDTH);
+					h = UIH(EQUIP_SLOT_HEIGHT);
+					
+					onLoad = "uinamespace setvariable [""an_wpn_main_grid"", (_this#0)];";
+					onUnload = "uinamespace setvariable [""an_wpn_main_grid"", controlNull];";
+					
+					// onMouseButtonDown	= "";		//RESERVED: "grab" Item
+					// onMouseButtonUp		= "";
+					// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
+					// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
+					
+					class controls
+					{
+						
+						class bg: para_RscText
+						{
+							idc = 99999;
+							
+							x = 0;
+							y = 0;
+							w = UIW(EQUIP_SLOT_WIDTH);
+							h = UIH(EQUIP_SLOT_HEIGHT);
+							
+							colorText[] = {0.3,0.3,0.3,0.95};
+							colorBackground[] = {0.3,0.3,0.3,0.95};
+							text = "";
+							sizeEx = TXT_M;
+						};
+					};
+				};
+			};
+		};
+		
+		
+		
+		
+		
+		
+		
 	};
 };
