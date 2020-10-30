@@ -11,8 +11,9 @@ params["_ctrlGrp","_size_y"];
 private _disp = uiNamespace getVariable ["an_inventory",displayNull];
 if(isNull _disp)exitWith{};
 
+private _invSizeCol = _ctrlGrp getVariable ["an_sizeCol", 8];
 private _grid_w = (ctrlPosition _ctrlGrp)#2;
-private _grid_h = ((_grid_w / 0.75) / an_inv_size_col) * _size_y;	//adjust to 4/3 Value - 8 == fixed grid amout
+private _grid_h = ((_grid_w / 0.75) / _invSizeCol) * _size_y;	//adjust to 4/3 Value
 // diag_log ["GRID_CREATE: ", _grid_h, _grid_w];
 private _tile_H = _grid_h/_size_y;
 

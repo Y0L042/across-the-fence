@@ -75,10 +75,6 @@ private _disp = (findDisplay 46) createDisplay "an_inventory";
 
 AN_INVENTORY_LIST = [["an_inv_player_area","an_inv_player_grid"],["an_inv_external_area","an_inv_external_grid"]];
 
-an_inv_size_col = 8;	//0-X (so -1 of the actual ColCount) - FIXED SIZE - ALWAYS 8!
-// DEV - Will be set by the Backend data
-// an_inv_size_y = call an_c_fnc_ui_inv_grid_getSize;
-
 an_inv_move_placeHorizontal = true;	// init
 an_ui_inv_grabActive = false;		// init
 

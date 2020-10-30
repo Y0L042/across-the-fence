@@ -30,8 +30,9 @@ diag_log ["DEBUG: MOVE_AUTO: _parentSize    :", _parentSize];
 private _invSize = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrid)], 4];
 
 // We only need to check those Slots, which would be still inside Grid. e.g.: Column > (GridWidthSlots-ItemWidthSlots) == Don't even check that.
+private _invSizeCol = _ctrlGrp getVariable ["an_sizeCol", 8];
 private _rowMax = _invSize-(_parentSize#0)+1;
-private _colMax = an_inv_size_col-(_parentSize#1)+1;
+private _colMax = _invSizeCol-(_parentSize#1)+1;
 diag_log [_rowMax, _colMax];
 
 
