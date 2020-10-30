@@ -7,38 +7,39 @@
 params ["_ctrl", "_btn", "_xPos", "_yPos", "_btn_shift", "_btn_ctrl", "_btn_alt"];
 
 // Get the ctrlGroupParent, to determine in which Inventory the selected Item is, then select the opposite Inventory
-_inv_target = if(ctrlIDC (ctrlParentControlsGroup _ctrl) == 1000)then{AN_INVENTORY_LIST#1}else{AN_INVENTORY_LIST#0};
-_inv_target params ["_area","_grid"];
+//																		External					Personal
+_invTarget = if(ctrlIDC (ctrlParentControlsGroup _ctrl) == 1000)then{AN_INVENTORY_LIST#1}else{AN_INVENTORY_LIST#0};
+_invTarget params ["_areaName","_gridName"];
 
-_ctrl_grid = uinamespace getvariable [_grid,ControlNull];
+_ctrlGrid = uinamespace getvariable [_gridName,ControlNull];
 
 // Get all the blocked Slots of the target Inventory
-private _grid_usedSlots = [(ctrlIDC _ctrl_grid)] call an_c_fnc_ui_inv_grid_tiles_used_get;
-diag_log ["DEBUG: MOVE_AUTO: _grid_usedSlots :", _grid_usedSlots];
+private _gridUsedSlots = [(ctrlIDC _ctrlGrid)] call an_c_fnc_ui_inv_grid_tiles_used_get;
+diag_log ["DEBUG: MOVE_AUTO: _gridUsedSlots :", _gridUsedSlots];
 
-private _item_data = [_ctrl] call an_c_fnc_ui_inv_item_data_get;
-_item_data params ["_pos_data","_item_usedSlots","_item_class","_item_id"];
-// Note: _item_usedSlots == slots in current Inventory
+private _itemData = [_ctrl] call an_c_fnc_ui_inv_item_data_get;
+_itemData params ["_posData","_itemUsedSlots","_itemClass","_itemId"];
+// Note: _itemUsedSlots == slots in current Inventory
 
 // Get the Parent Data for the selected Item
-private _parent_data = [_item_class] call an_c_fnc_ui_inv_item_data_parent_get;
-private _parent_size = ENTRY_GET("size",_parent_data);
-diag_log ["DEBUG: MOVE_AUTO: _parent_size    :", _parent_size];
+private _parentData = [_itemClass] call an_c_fnc_ui_inv_item_data_parent_get;
+private _parentSize = ENTRY_GET("size",_parentData);
+diag_log ["DEBUG: MOVE_AUTO: _parentSize    :", _parentSize];
 
 // Get the inventory Gridsize (rows only, since width is fixed) of the Inventory target
-private _inv_size = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_grid)], 4];
+private _invSize = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrid)], 4];
 
 // We only need to check those Slots, which would be still inside Grid. e.g.: Column > (GridWidthSlots-ItemWidthSlots) == Don't even check that.
-private _row_max = _inv_size-(_parent_size#0)+1; 		// Both start at "Index 1", so no -1 needed
-private _col_max = an_inv_size_col-(_parent_size#1)+1;	// Both start at "Index 1", so no -1 needed
-diag_log [_row_max, _col_max];
+private _rowMax = _invSize-(_parentSize#0)+1; 		// Both start at "Index 1", so no -1 needed
+private _colMax = an_inv_size_col-(_parentSize#1)+1;	// Both start at "Index 1", so no -1 needed
+diag_log [_rowMax, _colMax];
 
 
 // Currently used Slots:
-private _item_slot_usage = [_parent_size] call an_c_fnc_ui_inv_item_slots_usage_get;
-diag_log ["DEBUG: MOVE_AUTO: _item_slot_usage:", _item_slot_usage];
+private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_slots_usage_get;
+diag_log ["DEBUG: MOVE_AUTO: _itemSlotUsage:", _itemSlotUsage];
 
-_slots = [_row_max, _col_max, _item_slot_usage, _grid_usedSlots] call an_c_fnc_ui_inv_item_slots_find_free;
+_slots = [_rowMax, _colMax, _itemSlotUsage, _gridUsedSlots] call an_c_fnc_ui_inv_item_slots_find_free;
 diag_log ["DEBUG: MOVE_AUTO: _slots          : ", _slots];
 
 // No free slots found, exiting.
@@ -46,13 +47,13 @@ if(_slots isEqualTo [])exitWith{diag_log "No free slots found.";};
 
 
 //convert from gridPos to uiPos
-([_ctrl_grid, _inv_size, (_slots#0) ]call an_c_fnc_ui_inv_grid_gridToPos) params["_item_pos_y","_item_pos_x"];
+([_ctrlGrid, _invSize, (_slots#0) ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
 
 // set the ID and Classname, to create the Item
-[_item_class] call an_c_fnc_ui_inv_item_active_class_set;
-[_item_id] call an_c_fnc_ui_inv_item_active_id_set;
+[_itemClass] call an_c_fnc_ui_inv_item_active_class_set;
+[_itemId] call an_c_fnc_ui_inv_item_active_id_set;
 
-[_ctrl_grid, 0, [_item_pos_y,_item_pos_x]] call an_c_fnc_ui_inv_mPos;
+[_ctrlGrid, 0, [_itemPosY,_itemPosX]] call an_c_fnc_ui_inv_mPos;
 
 // delete the old control
 [_ctrl] call an_c_fnc_ui_inv_item_remove;
