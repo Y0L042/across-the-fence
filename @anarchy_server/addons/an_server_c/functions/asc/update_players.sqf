@@ -1,6 +1,6 @@
 
 // update Pos, Health, ...
-private _update_data = [];
+private _updateData = [];
 {
 	if(alive _x)then
 	{
@@ -8,23 +8,22 @@ private _update_data = [];
 		
 		// get current pos and dir (precise positions)
 		toFixed 8;
-		private _data_pos = ["pos", [getPosWorld _x, getDir _x]];
+		private _dataPos = ["pos", [getPosWorld _x, getDir _x, animationState _x]];
 		// get health
 		toFixed 3;
-		private _data_health = ["health", (getDammage _x)];
+		private _dataHealth = ["health", (getDammage _x)];
 		// Reset toFixed back to normal
 		toFixed -1;
-		// get ...
 		
 		// store, so we can send over in one package
-		_update_data pushback [_puid, [_data_pos, _data_health]];
+		_updateData pushback [_puid, [_dataPos, _dataHealth]];
 	};
 }forEach (allPlayers - entities "HeadlessClient_F");
 
 //send the data to the backend
-// diag_log ["DEBUG: update_players: SENDING DATA TO SERVER: ", _update_data];
-if(count _update_data > 0)then
+// diag_log ["DEBUG: update_players: SENDING DATA TO SERVER: ", _updateData];
+if(count _updateData > 0)then
 {
-	["update_players", _update_data] call AN_G_fnc_msg_send;
+	["update_players", _updateData] call AN_G_fnc_msg_send;
 };
 

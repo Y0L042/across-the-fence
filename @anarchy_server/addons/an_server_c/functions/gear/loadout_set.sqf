@@ -4,21 +4,17 @@
 params["_dataset"];
 diag_log ["-------- AN_S_fnc_loadout_set: ---------"];
 
-_data_puid = ENTRY_GET("data_puid",_dataset);
-_data_gear = ENTRY_GET("data_gear",_dataset);
-_data_pos = ENTRY_GET("data_pos",_dataset);
-_data_health = ENTRY_GET("data_health",_dataset);
-_data_faction = ENTRY_GET("data_faction",_dataset);
 
 // Get the pawn, related to PUID:
+_dataPuid = ENTRY_GET("data_puid",_dataset);
 private _timeout = diag_tickTime + 20;
 private _ownerPawn = nil;
 waitUntil
 {
-	_ownerPawn = {if(getPlayerUID _x isEqualTo _data_puid)exitWith{_x};}forEach allPlayers;
+	_ownerPawn = {if(getPlayerUID _x isEqualTo _dataPuid)exitWith{_x};}forEach allPlayers;
 	(!isNil "_ownerPawn" || _timeout < diag_tickTime)
 };
-if(_timeout < diag_tickTime)exitWith{diag_log ["ERROR: AN_S_fnc_loadout_set: NO PAWN FOUND (timeout) - _data_puid: ", _data_puid];};
+if(_timeout < diag_tickTime)exitWith{diag_log ["ERROR: AN_S_fnc_loadout_set: NO PAWN FOUND (timeout) - _dataPuid: ", _dataPuid];};
 /*
 	If found -> Get the classname
 
@@ -29,18 +25,15 @@ if(_timeout < diag_tickTime)exitWith{diag_log ["ERROR: AN_S_fnc_loadout_set: NO 
 	!!!!! WARNING !!!!!
 */
 // disable any damage to the client, during the init-phase
+// diag_log ["DEBUG: AN_S_fnc_loadout_set: curPos", getPosWorld _ownerPawn];
 _ownerPawn allowDamage false;
 
-// rejoin the faction:
-private _sideNames = ["WEST", "EAST", "GUER", "CIV"];	// Determined via "side cursorObject"
-private _side = [west, east, independent, civilian]#(_sideNames find _data_faction);
-[_ownerPawn, _side] call an_s_fnc_factions_set_player_to_faction;
 
-
+_dataGear = ENTRY_GET("data_gear",_dataset);
 // set the the loadout
 {
-	diag_log ["DEBUG: AN_S_fnc_loadout_set: _data_gear", _x];
-}forEach _data_gear;
+	diag_log ["DEBUG: AN_S_fnc_loadout_set: _dataGear", _x];
+}forEach _dataGear;
 
 private _loadout = [];
 // Weapons:
@@ -51,8 +44,8 @@ private _loadout = [];
 	// urgs...
 	{
 		private _slotID = ENTRY_GET("inSlot", _x);
-		if(_slotID == _slot)exitWith{_itemData = _x; _data_gear deleteAt _forEachIndex;};
-	}forEach _data_gear;
+		if(_slotID == _slot)exitWith{_itemData = _x; _dataGear deleteAt _forEachIndex;};
+	}forEach _dataGear;
 	diag_log ["-------------------------------------------", _itemData];
 	
 	//Check if something was found:
@@ -96,13 +89,28 @@ _loadout pushback ["vn_o_item_map","","","vn_b_item_compass_sog","vn_b_item_watc
 _ownerPawn setUnitLoadout _loadout;
 
 
+//////////////////////////////////////////////////////////////////////
+// ToDo: MOVE TO FOLLOWING TO SPECIFIC FUNCTION(S) (ANARCHY INIT PHASE):
+
+// rejoin the faction:
+_dataFaction = ENTRY_GET("data_faction",_dataset);
+private _sideNames = ["WEST", "EAST", "GUER", "CIV"];	// Determined via "side cursorObject"
+private _side = [west, east, independent, civilian]#(_sideNames find _dataFaction);
+[_ownerPawn, _side] call an_s_fnc_factions_set_player_to_faction;
+
+
 // set health:
 _data_health = ENTRY_GET("data_health",_dataset);
 _ownerPawn setDamage _data_health;
 
 // set Pos and Dir
-_data_pos = ENTRY_GET("data_pos",_dataset);
-_data_pos params["_pos","_dir"];
+_dataPos = ENTRY_GET("data_pos",_dataset);
+_dataPos params["_pos","_dir",["_stance","",[""]]];
+
+// switchMove is local, so must be executed on the Client...
+// _stance = ""; -> Unit is standing
+[[_stance], {player switchMove (_this#0);}] remoteExecCall ["call", owner _ownerPawn];
+
 _ownerPawn setDir _dir;
 
 if(_pos isEqualTo [0,0,0])then
@@ -111,7 +119,7 @@ if(_pos isEqualTo [0,0,0])then
 }else{
 	_ownerPawn setPosWorld _pos;
 };
-diag_log ["DEBUG: AN_S_fnc_loadout_set: curPos", getPosWorld _ownerPawn];
+
 
 // enable damage again
 _ownerPawn allowDamage true;
