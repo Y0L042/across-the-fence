@@ -27,13 +27,36 @@ if(an_ui_inv_grabActive)then{ an_ui_inv_grabActive = false; };
 
 //////////////////////////////////////////////
 private _item_class = [] call an_c_fnc_ui_inv_item_active_class_get;
-private _parent_data = [_item_class] call an_c_fnc_ui_inv_item_data_parent_get;
-diag_log ["DEBUG: UI_INV_MPOS: _parent_data   :", _parent_data];
-private _parent_size = ENTRY_GET("size",_parent_data);
-diag_log ["DEBUG: UI_INV_MPOS: _parent_size   :", _parent_size];
+private _parentData = [_item_class] call an_c_fnc_ui_inv_item_data_parent_get;
+// diag_log ["DEBUG: UI_INV_MPOS: _parentData   :", _parentData];
+private _parentSize = ENTRY_GET("size",_parentData);
+// diag_log ["DEBUG: UI_INV_MPOS: _parentSize   :", _parentSize];
+private _parentSlot = ENTRY_GET("slot",_parentData);
+diag_log ["DEBUG: UI_INV_MPOS: _parentSlot   :", _parentSlot];
 
 
-private _item_slot_usage = [_parent_size] call an_c_fnc_ui_inv_item_slots_usage_get;
+// Check if targeted Grid is a Slot and it is allowed to be placed in there
+_slotID = _ctrl_grid getVariable ["slotID", 0];
+systemchat str [_parentSlot, _slotID];
+
+_slotValidCheck = true;
+// Check if it's 
+if(_slotID > 0)then
+{
+	systemchat "IS SLOT: TRUE";
+	if(_parentSlot != _slotID)exitWith{_slotValidCheck = false;};
+	systemchat "SLOT CHECK PASSED - Reseting ROW/COL";
+	// if -> reset the Row/Col to [0,0]
+	_tile_row = 0;
+	_tile_col = 0;
+}
+else
+{
+	systemchat "IS SLOT: FALSE";
+};
+if(!_slotValidCheck)exitWith{systemchat "Can't be placed in that Slot";};
+
+private _item_slot_usage = [_parentSize] call an_c_fnc_ui_inv_item_slots_usage_get;
 
 //_tiles_used == taken positions in Grid, needed to free up the needed Slots later
 private _offset_pos = [[_tile_row, _tile_col]];	//store first Pos (needed, since the offset will determined from this position)
@@ -51,9 +74,12 @@ private _offset_pos = [[_tile_row, _tile_col]];	//store first Pos (needed, since
 //Check if all tiles are free
 //get used slots from grid
 private _grid_tiles_used = [_grid_idc] call an_c_fnc_ui_inv_grid_tiles_used_get;
+// diag_log["------- _grid_tiles_used: ",_grid_tiles_used];
 
 // Check if tiles in the targeted Grid are free. If not -> Return empty Array and trigger a "re-add" to the old position
+// if free -> Return the used Tiles
 private _item_tile_usage = [_ctrl_grid,_gridRows,_offset_pos,_grid_tiles_used] call an_c_fnc_ui_inv_grid_check_freeTiles;
+// diag_log["------- _item_tile_usage: ",_item_tile_usage];
 
 // Check if its a failed attemp
 if!(_item_tile_usage isEqualto [])then
@@ -67,8 +93,10 @@ if!(_item_tile_usage isEqualto [])then
 	// add the Item to the passed position
 	[_ctrl_grid,_item_gridPos_row,_item_gridPos_col,_item_class,_offset_pos] call an_c_fnc_ui_inv_item_create;
 	
-}else{
-	// re add the Item and its used slots in its previously used grid
+}
+else
+{
+	// if failed attemp -> readd the Item and its used slots in its previously used grid
 	private _ctrl = uinamespace getVariable ["an_ctrl_active",controlNull];
 	if(isNull _ctrl)exitWith{};
 	

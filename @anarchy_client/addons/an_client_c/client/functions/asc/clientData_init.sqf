@@ -16,17 +16,6 @@ diag_log ":::::::::::::::::::: CLIENT DATA INIT ::::::::::::::::::::";
 diag_log "------------------";
 
 
-//Current Gear:
-an_cData_gear = ENTRY_GET("gear", _data);
-diag_log format["CLD_INIT: Gear		: %1", an_cData_gear];
-{
-	_x params["_slot","_itemData"];
-	localNamespace setVariable ["an_"+_slot, _itemData];
-	diag_log format["CLD_INIT: Entry		: Slot: %1 | ItemData: %2", _slot, _itemData];
-}forEach an_cData_gear;
-diag_log "------------------";
-
-
 //Health
 an_cData_health = ENTRY_GET("health", _data);
 diag_log format["CLD_INIT: Health FULL	: %1", an_cData_health];
@@ -48,6 +37,11 @@ diag_log format["CLD_INIT: Item Data	: %1", _itemDataPlayer];
 	diag_log format["CLD_INIT: INV Entry	: %1", _x];
 	// Store the ItemData
 	localNamespace setVariable [_item_id, _item_data];
+	private _isSlotted = ENTRY_GET("inSlot", _item_data);
+	if(_isSlotted != 0)then
+	{
+		diag_log ["!!!!!!!!! ITEM IS SLOTTED: ", _item_data];	// DEV
+	};
 	// diag_log ["DEBUG: LNS DATA: ", localNamespace getVariable [_item_id,"NONE"]];
 }forEach _itemDataPlayer;
 

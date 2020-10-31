@@ -55,7 +55,7 @@ an_c_fnc_ui_inv_EH_mouseBtn = compile preprocessFileLineNumbers "\sgd\anarchy\an
 // Reset the previous tileUsage, it gets rebuild anyway (better safe than sorry)
 {
 	localNamespace setVariable [(format["an_inv_tileUsage_%1",_x]),[]];
-}forEach [1000,1001];
+}forEach [1000,1001,2000];
 
 
 params["_dataCrate"];
@@ -92,49 +92,4 @@ diag_log "-----------------------------------------------";
 
 // Handle scrolling the Mousewheel (only if an item is currently grabbed)
 _disp displayAddEventhandler ["MouseZChanged","call an_c_fnc_ui_inv_EH_mouse_z"];
-
-
-//////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////
-// DEV / WIP BELOW
-// Set up Gear Slot(-inventories)
-diag_log ["------------------------ GEAR ------------------------"];
-private _playerGear = [
-//	 [DB_entry, VarName, rows, cols, SlotID]
-	 ["w_main","an_wpn_main_grid",3,6,2]
-	// ,["backpack",""]
-	// ,["goggles",""]
-	// ,["helmet",""]
-	// ,["pouch",""]
-	// ,["tool",""]
-	// ,["uniform",""]
-	// ,["vest",""]
-	// ,["w_hand",""]
-	// ,["w_launch",""]
-	// ,["w_main_b",""]
-];
-
-
-{
-	_x params["_slot","_gridName","_slotsRows","_slotsCols","_slotID"];
-	
-	private _itemData = localNamespace getVariable ["an_"+_slot, []];
-	if !(_itemData isEqualTo [])then
-	{
-		diag_log "DEBUG: GEAR: itemData found";
-		private _itemID = ENTRY_GET("id",_itemData);
-		// build "custom" Inventory Data
-		private _data =
-			[
-				 ["crateID", getPlayerUID player]
-				,["inv_rows", _slotsRows]
-				,["itemData",[[_itemID, _itemData]]]
-			];
-		
-		// diag_log _data;
-		[_gridName, _data, _slotsCols, _slotID] call an_c_fnc_ui_inv_load;
-	};
-
-}forEach _playerGear;
-diag_log ["------------------------ GEAR ------------------------"];
 

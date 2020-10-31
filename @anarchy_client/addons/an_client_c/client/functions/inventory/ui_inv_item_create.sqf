@@ -180,6 +180,6 @@ if!( _isSamePos && _isSameInv)then
 	/////////////////////////////////////
 };
 
-diag_log ["CREATE _item_data: ", _item_data];
+// diag_log ["CREATE _item_data: ", _item_data];
 // Update the ctrl with the updated ItemData
 [_ctrl_item, [[_pos_x,_pos_y,_ctrl_item_w,_ctrl_item_h],_usedSlots,_item_class,_item_id]] call an_c_fnc_ui_inv_item_data_set;

@@ -24,6 +24,6 @@ private _ret = switch(_itemClass)do
 	case 14: {"CfgMagazines"};	// Pouch (extra inventory, nothing else - atm not visible)
 	default {"CfgMagazines"};
 };
-diag_log str["DEBUG: ITEM_GETCFGCLASS: _ret", _ret];
+// diag_log str["DEBUG: ITEM_GETCFGCLASS: _ret", _ret];
 // systemchat str["_ret", _ret];
 _ret

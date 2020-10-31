@@ -14,7 +14,7 @@ _ctrlGrid setVariable ["slotID", _slotID];
 
 // set the Col size in the grid itself, so we can request it later again (Slots = different Col count)
 // Must be set BEFORE grid_create is being called.
-// _ctrlGrid setVariable ["an_sizeCol", _gridCols];
+// _ctrlGrid setVariable ["an_sizeCol", _gridCols];		// ToDo: an_sizeCol - Recheck if needed.
 
 // set the Var for the EXTERNAL grid and show the "grid images"
 [_ctrlGrid, [_InvDataGridRows, _gridCols]] call an_c_fnc_ui_inv_grid_create;
@@ -31,25 +31,29 @@ diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
 	
 	localNamespace setVariable [_itemId, _itemData];
 	diag_log ["DEBUG: LNS DATA: ", localNamespace getVariable [_itemId,"NONE"]];
-	
-	// get the parent class
-	private _itemClass = ENTRY_GET("parent",_itemData);
-	
-	// get the pos, this item was stored in
-	private _itemPos = ENTRY_GET("invPos",_itemData);
-	//convert from gridPos to uiPos
-	([_ctrlGrid, _InvDataGridRows, _itemPos ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
-	
-	//DEBUG
-	// diag_log ["DEBUG: UI_INV_INIT: _itemClass    :", _itemClass];
-	// diag_log ["DEBUG: UI_INV_INIT: _itemPos      :", _itemPos];
-	
-	// set the ID and Classname, to create the Item
-	[_itemClass] call an_c_fnc_ui_inv_item_active_class_set;
-	[_itemId] call an_c_fnc_ui_inv_item_active_id_set;
-	
-	[_ctrlGrid,0,[_itemPosY,_itemPosX]] call an_c_fnc_ui_inv_mPos;
-	// diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
+	private _isSloted = ENTRY_GET("inSlot",_itemData);
+	// check if the Item is in a slot. If so, do NOT add it to the normal Inventory screen (ToDo: Assign to corresponding "slot control")
+	if(_isSloted == 0)then
+	{
+		// get the parent class
+		private _itemClass = ENTRY_GET("parent",_itemData);
+		
+		// get the pos, this item was stored in
+		private _itemPos = ENTRY_GET("invPos",_itemData);
+		//convert from gridPos to uiPos
+		([_ctrlGrid, _InvDataGridRows, _itemPos ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
+		
+		//DEBUG
+		// diag_log ["DEBUG: UI_INV_INIT: _itemClass    :", _itemClass];
+		// diag_log ["DEBUG: UI_INV_INIT: _itemPos      :", _itemPos];
+		
+		// set the ID and Classname, to create the Item
+		[_itemClass] call an_c_fnc_ui_inv_item_active_class_set;
+		[_itemId] call an_c_fnc_ui_inv_item_active_id_set;
+		
+		[_ctrlGrid,0,[_itemPosY,_itemPosX]] call an_c_fnc_ui_inv_mPos;
+		// diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
+	};
 }forEach _items;
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Items: ... done",_gridName];
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Inventory: ... done",_gridName];

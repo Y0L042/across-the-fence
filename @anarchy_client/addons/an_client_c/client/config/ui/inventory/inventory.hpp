@@ -251,7 +251,7 @@ class an_inventory
 		// Inventory: Slot: Weapon
 		class grid_wpn_main_area: para_RscControlsGroupNoScrollbarHV
 		{
-			idc = 2000;
+			idc = 2100;
 			
 			x = UIX_CR(10);
 			y = UIY_CU(10);
@@ -278,7 +278,7 @@ class an_inventory
 			{
 				class grid: para_RscControlsGroupNoScrollbarHV
 				{
-					idc = 2002;
+					idc = 2000;
 					
 					x = UIW(0);
 					y = UIH(0);
