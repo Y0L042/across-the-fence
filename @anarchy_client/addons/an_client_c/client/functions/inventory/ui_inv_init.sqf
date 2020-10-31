@@ -73,7 +73,8 @@ private _disp_preCheck = uiNamespace getVariable ["an_inventory", displayNull];
 if !(isNull _disp_preCheck)then{_disp_preCheck closeDisplay 1;};
 private _disp = (findDisplay 46) createDisplay "an_inventory";
 
-AN_INVENTORY_LIST = [["an_inv_player_area","an_inv_player_grid"],["an_inv_external_area","an_inv_external_grid"],["an_wpn_main_area","an_wpn_main_grid"]];
+AN_INVENTORY_LIST = [["an_inv_player_area","an_inv_player_grid"],["an_inv_external_area","an_inv_external_grid"]];
+AN_SLOTS_LIST = [["an_wpn_main_area","an_wpn_main_grid"]];
 
 an_inv_move_placeHorizontal = true;	// init
 an_ui_inv_grabActive = false;		// init
