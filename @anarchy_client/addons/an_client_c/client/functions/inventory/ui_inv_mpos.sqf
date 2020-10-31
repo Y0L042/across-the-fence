@@ -100,16 +100,16 @@ else
 	private _ctrl = uinamespace getVariable ["an_ctrl_active",controlNull];
 	if(isNull _ctrl)exitWith{};
 	
-	private _dataPrev = _ctrl getVariable ["item_dataPrev",[]];
+	private _dataPrev = _ctrl getVariable ["item_data_prev",[]];
 	if(_dataPrev isEqualto [])exitWith{};
 	
 	// Get the previous data
-	_dataPrev params ["_ctrlParentPrev","_pX","_pY","_itemClass","_itemUsedSlots_prev","_posData"];
+	_dataPrev params ["_ctrlParentPrev","_pX","_pY","_itemClass","_itemUsedSlotsPrev","_posData"];
 	
 	private _gridTilesUsedCur = [(ctrlIDC _ctrlParentPrev)] call an_c_fnc_ui_inv_grid_tiles_used_get;
 	
 	// add all tiles to the "blocked tiles"-array and store it in the Grid-parent itself
-	[_ctrlParentPrev,_gridTilesUsedCur,_itemUsedSlots_prev] call an_c_fnc_ui_inv_grid_tiles_used_update;
+	[_ctrlParentPrev,_gridTilesUsedCur,_itemUsedSlotsPrev] call an_c_fnc_ui_inv_grid_tiles_used_update;
 	
 	// create it again
 	_dataPrev call an_c_fnc_ui_inv_item_create;
