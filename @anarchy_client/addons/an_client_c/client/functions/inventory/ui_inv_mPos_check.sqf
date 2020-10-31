@@ -12,7 +12,7 @@ if(_btn == 1)exitWith{};
 if(_btn == 0)exitWith
 {
 	// determine, if the mousePos is inside an Inventory Area
-	private _invActive = call an_c_fnc_ui_inv_mPos_get_inv;
+	private _invActive = call an_c_fnc_ui_inv_get;
 	// ToDo: Change to: "isNotEqualTo", when introduced
 	if!(_invActive isEqualTo ["",""])exitWith
 	{

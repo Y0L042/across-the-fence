@@ -34,5 +34,5 @@ class inventory
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_mpos);
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_mPos_check);
     // DECLARE_CLIENT_FUNC(inventory,ui_inv_mPos_check_inInv);
-    // DECLARE_CLIENT_FUNC(inventory,ui_inv_mPos_get_inv);
+    // DECLARE_CLIENT_FUNC(inventory,ui_inv_get);
 };
