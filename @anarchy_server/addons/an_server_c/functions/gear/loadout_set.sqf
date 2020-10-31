@@ -45,38 +45,48 @@ private _side = [west, east, independent, civilian]#(_sideNames find _data_facti
 private _loadout = [];
 // Weapons:
 {
-	_x params ["_slot", "_defaulValue"];
-	private _tmpData = ENTRY_GET(_slot,_data_gear);
-	//Check if the Array or string is filled
-	if(count _tmpData > 0)then
+	_x params ["_slot", "_defaultValue"];
+	// check which Slot if there is an Item with the given SlotID is in:
+	private _itemData = [];
+	// urgs...
+	{
+		private _slotID = ENTRY_GET("inSlot", _x);
+		if(_slotID == _slot)exitWith{_itemData = _x; _data_gear deleteAt _forEachIndex;};
+	}forEach _data_gear;
+	diag_log ["-------------------------------------------", _itemData];
+	
+	//Check if something was found:
+	if !(_itemData isEqualTo [])then
 	{
 		//ToDo: checking and adding Attachments
-		_TEMPCLASSNAME = ENTRY_GET("parent",_tmpData);
-		/*
-			!!!!! WARNING !!!!!
-			!! NOT FINAL! WILL USE "CLASS_NAME" FROM PARENT LATER !!
-		*/
-		if(_defaulValue isEqualType "")then
+		_TEMPCLASSNAME = ENTRY_GET("parent",_itemData);
+
+		//	!!!!! WARNING !!!!!
+		//	!! NOT FINAL! WILL USE "CLASS_NAME" FROM PARENT LATER !!
+		
+		if(_defaultValue isEqualType "")then
 		{
-			_defaulValue = _TEMPCLASSNAME;
+			_defaultValue = _TEMPCLASSNAME;
 		}else{
-			_defaulValue set[0,_TEMPCLASSNAME];
+			_defaultValue set[0,_TEMPCLASSNAME];
 		};
-		_loadout pushback _defaulValue;
+		_loadout pushback _defaultValue;
 	}else{
-		_loadout pushback _defaulValue;
+		_loadout pushback _defaultValue;
 	};
 }forEach
 [
-	["w_main",		["","","","",[],[],""] ],
-	["w_launcher",	["","","","",[],[],""] ],
-	["w_hand",		["","","","",[],[],""] ],
-	["uniform",		["",[]] ],
-	["vest",		["",[]] ],
-	["backpack",	["",[]] ],
-	["helmet",		""],
-	["goggles",		""]
+//	 https://community.bistudio.com/wiki/setUnitLoadout
+	 [2,	["","","","",[],[],""] ]
+	,[4,	["","","","",[],[],""] ]
+	,[3,	["","","","",[],[],""] ]
+	,[12,	["",[]] ]
+	,[13,	["",[]] ]
+	,[15,	["",[]] ]
+	,[10,	""]
+	,[11,	""]
 ];
+
 
 // Following is the standard gear for every player (not planed to be put down nor exchanged)
 // Note: Might be nice, having different standard loadouts for each faction.
