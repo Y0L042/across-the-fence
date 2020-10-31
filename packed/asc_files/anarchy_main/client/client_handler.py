@@ -51,6 +51,15 @@ def client_init(self):
 			item["curInv"] = self.cData["puid"]
 			# Add it to the itemData (inventory) - Since those Items are already "equipped", they won't take any slots.
 			self.cData["itemData"][item["id"]] = item
+
+	# filter out all the equipped Gear and send it as a "special" set to the Server, so the Client can be equipped
+	listGear = []
+	for x in self.cData["itemData"]:
+		# noinspection PyTypeChecker
+		slotID = self.cData["itemData"][x]["inSlot"]
+		if slotID > 0:
+			listGear.append(self.cData["itemData"][x])
+
 	# Server:
 	# send Player Dataset over to the Server, so it can set up the player:
 	print(f"SENDING DATASET FROM {self.puid} TO SERVER...")
@@ -58,7 +67,8 @@ def client_init(self):
 		"data_puid": self.puid,
 		"data_pos": self.cData["pos"],
 		"data_health": self.cData["health"],
-		"data_faction": self.cData["faction"]
+		"data_faction": self.cData["faction"],
+		"data_gear": listGear
 		}
 	asc_g_msg.sendMsg("loadout_set", dataset, self.sData.con_gameServer)
 
