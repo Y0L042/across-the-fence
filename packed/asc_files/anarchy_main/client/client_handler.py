@@ -44,6 +44,13 @@ def client_init(self):
 		self.cData = client_add(puid=self.puid)
 		player_data_set(self.sData, self.puid, self.cData)
 
+		# add Starter Gear:
+		startGear = [["vn_b_bandana_03", 10], ["vn_c_pack_01", 15], ["vn_b_uniform_macv_01_06", 12], ["vn_m38", 2]]
+		for itemData in startGear:
+			item = item_handler.item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
+			item["curInv"] = self.cData["puid"]
+			# Add it to the itemData (inventory) - Since those Items are already "equipped", they won't take any slots.
+			self.cData["itemData"][item["id"]] = item
 	# Server:
 	# send Player Dataset over to the Server, so it can set up the player:
 	print(f"SENDING DATASET FROM {self.puid} TO SERVER...")
