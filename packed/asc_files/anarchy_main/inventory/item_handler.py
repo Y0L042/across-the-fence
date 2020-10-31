@@ -39,11 +39,13 @@ def inv_data_get(sData, invID):
         return [False, {}]
 
 
-def item_create(parent: str = ""):
+def item_create(parent: str = "", slot: int = 0, doSlot=False):
     """
 
-    :param parent:  STR - Name of parent/base from itemParentData
-    :return:        ToDo
+    :param parent:
+    :param slot:
+    :param doSlot:
+    :return:
     """
 
     item = {
@@ -54,6 +56,7 @@ def item_create(parent: str = ""):
         "curInv":       "-1",        # ID of Inventory, that the Item is in
         "invPos":       [0, 0],      # TopLeft Position of the Item in the InventoryGrid
         "isFlipped":    0,           # 0/1 - Check if Item was flipped
+        "inSlot":       0,           # 0-N - in which Slot is the Item in? (0 = normal inventory)
         "attachments":  {
             # "scope": "",            # TODO: determine what makes more sense: ItemID or full itemData?
             # "magazine": "",         # TODO: determine what makes more sense: ItemID or full itemData?
@@ -62,6 +65,9 @@ def item_create(parent: str = ""):
             # "support": "",          # TODO: determine what makes more sense: ItemID or full itemData?
             },
         }
+
+    if doSlot:
+        item["inSlot"] = slot
 
     return item
 
@@ -153,6 +159,14 @@ def item_move(client=None, args=()):
     client.sData.database.db_save()
 
 def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
+    """
+
+    :param sData:
+    :param invData:
+    :param isLootcrate:
+    :param item:
+    :return:
+    """
     try:
         if None in [item, invData]:
             print(f"ERROR: item_add_to_inv: item NOT found.\ninvID: {invData}\nitem: {item}------")
