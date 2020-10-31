@@ -19,6 +19,7 @@ def client_add(**kwargs):
 		'pos':      [
 				[0, 0, 0],
 				0,
+				""
 			],
 		"faction": "CIV",   # Standard start faction
 		'inv_grid': inv_handler.invGrid_create(16),
@@ -63,6 +64,7 @@ def client_init(self):
 	# Server:
 	# send Player Dataset over to the Server, so it can set up the player:
 	print(f"SENDING DATASET FROM {self.puid} TO SERVER...")
+
 	dataset = {
 		"data_puid": self.puid,
 		"data_pos": self.cData["pos"],
