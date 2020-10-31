@@ -68,10 +68,16 @@ diag_log [":::: DEBUG: UI_INV_INIT: ItemData:"];
 	diag_log _x;
 }forEach _crate_itemData;
 
-// Check, if inventory is already open. Close it then.
+// Check, if inventory is already open. Close it, then reopen it again.
 private _disp_preCheck = uiNamespace getVariable ["an_inventory", displayNull];
 if !(isNull _disp_preCheck)then{_disp_preCheck closeDisplay 1;};
 private _disp = (findDisplay 46) createDisplay "an_inventory";
+
+// KeyDown: block every button (movement)
+_disp displayAddEventHandler ["keyDown",{if(_this#1 in [1])then{_this#0 closeDisplay 1;}; true}];
+// KeyUp: block every button (movement), except ESC/TAB button to close the Inv
+_disp displayAddEventHandler ["keyUp",{if(_this#1 in [15])then{_this#0 closeDisplay 1;}; true }];
+
 
 AN_INVENTORY_LIST = [["an_inv_player_area","an_inv_player_grid"],["an_inv_external_area","an_inv_external_grid"]];
 AN_SLOTS_LIST = [["an_wpn_main_area","an_wpn_main_grid"]];
