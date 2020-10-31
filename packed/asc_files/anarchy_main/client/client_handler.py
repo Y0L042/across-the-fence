@@ -23,22 +23,6 @@ def client_add(**kwargs):
 		"faction": "CIV",   # Standard start faction
 		'inv_grid': inv_handler.invGrid_create(8),
 		'itemData': {},
-		'gear':     {
-			# 'helmet': {},
-			'helmet': item_handler.item_create("vn_b_bandana_03"),   # DEV
-			'goggles': {},
-			# 'backpack': {},
-			'backpack': item_handler.item_create("vn_c_pack_01"),   # DEV
-			'vest': {},
-			# 'uniform': {},
-			'uniform': item_handler.item_create("vn_b_uniform_macv_01_06"),   # DEV
-			'pouch': {},
-			'tool': {},
-			'w_main': {},
-			'w_main_b': {},
-			'w_hand': {},
-			'w_launcher': {}
-			},
 		'ammo': {
 				"ammoType_a": 0,
 				"ammoType_b": 0,
@@ -48,9 +32,7 @@ def client_add(**kwargs):
 		}
 
 	cData.update(kwargs)
-	cData["gear"]["helmet"]["curInv"] = cData["puid"]
-	cData["gear"]["uniform"]["curInv"] = cData["puid"]
-	cData["gear"]["backpack"]["curInv"] = cData["puid"]
+
 	# print(item)
 	return cData
 
@@ -67,7 +49,6 @@ def client_init(self):
 	print(f"SENDING DATASET FROM {self.puid} TO SERVER...")
 	dataset = {
 		"data_puid": self.puid,
-		"data_gear": self.cData["gear"],
 		"data_pos": self.cData["pos"],
 		"data_health": self.cData["health"],
 		"data_faction": self.cData["faction"]
