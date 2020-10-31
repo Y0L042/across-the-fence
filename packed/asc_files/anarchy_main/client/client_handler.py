@@ -13,15 +13,15 @@ def client_add(**kwargs):
 		# 'health':   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],     # currently disabled, A3 issues (updating on/from/to Server...)
 		'health': 0,
 		'stats':    {
-				"hunger": 0,
-				"thirst": 0
+				"hunger": 100,
+				"thirst": 100
 			},
 		'pos':      [
 				[0, 0, 0],
 				0,
 			],
 		"faction": "CIV",   # Standard start faction
-		'inv_grid': inv_handler.invGrid_create(8),
+		'inv_grid': inv_handler.invGrid_create(16),
 		'itemData': {},
 		'ammo': {
 				"ammoType_a": 0,
