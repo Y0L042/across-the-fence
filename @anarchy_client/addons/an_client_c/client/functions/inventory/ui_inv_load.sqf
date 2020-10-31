@@ -31,28 +31,37 @@ diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
 	
 	localNamespace setVariable [_itemId, _itemData];
 	diag_log ["DEBUG: LNS DATA: ", localNamespace getVariable [_itemId,"NONE"]];
-	private _isSloted = ENTRY_GET("inSlot",_itemData);
+	
+	private _itemSlotID = ENTRY_GET("inSlot",_itemData);
+	// get the parent class
+	private _itemClass = ENTRY_GET("parent",_itemData);
+	
+	// get the pos, this item was stored in
+	private _itemPos = ENTRY_GET("invPos",_itemData);
+	//convert from gridPos to uiPos
+	([_ctrlGrid, _InvDataGridRows, _itemPos ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
+	
+	//DEBUG
+	// diag_log ["DEBUG: UI_INV_INIT: _itemClass    :", _itemClass];
+	// diag_log ["DEBUG: UI_INV_INIT: _itemPos      :", _itemPos];
+		
 	// check if the Item is in a slot. If so, do NOT add it to the normal Inventory screen (ToDo: Assign to corresponding "slot control")
-	if(_isSloted == 0)then
+	if(_itemSlotID == 0)then
 	{
-		// get the parent class
-		private _itemClass = ENTRY_GET("parent",_itemData);
-		
-		// get the pos, this item was stored in
-		private _itemPos = ENTRY_GET("invPos",_itemData);
-		//convert from gridPos to uiPos
-		([_ctrlGrid, _InvDataGridRows, _itemPos ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
-		
-		//DEBUG
-		// diag_log ["DEBUG: UI_INV_INIT: _itemClass    :", _itemClass];
-		// diag_log ["DEBUG: UI_INV_INIT: _itemPos      :", _itemPos];
-		
 		// set the ID and Classname, to create the Item
 		[_itemClass] call an_c_fnc_ui_inv_item_active_class_set;
 		[_itemId] call an_c_fnc_ui_inv_item_active_id_set;
 		
 		[_ctrlGrid,0,[_itemPosY,_itemPosX]] call an_c_fnc_ui_inv_mPos;
 		// diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
+	}
+	else
+	{
+		if(_gridName == "an_inv_player_grid")then
+		{
+			diag_log format["DEBUG: UI_INV_INIT: _gridName == %1",_gridName];
+			diag_log [_itemSlotID, _ctrlGrid, _itemClass, _itemData];
+		};
 	};
 }forEach _items;
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Items: ... done",_gridName];
