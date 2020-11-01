@@ -52,11 +52,6 @@ an_c_fnc_ui_inv_EH_mouseBtn = compile preprocessFileLineNumbers "\sgd\anarchy\an
 // #include "\sgd\paradigm\client\configs\ui\ui_def_base.inc"
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
-// Reset the previous tileUsage, it gets rebuild anyway (better safe than sorry)
-{
-	localNamespace setVariable [(format["an_inv_tileUsage_%1",_x]),[]];
-}forEach [1000,1001,2000];
-
 
 params["_dataCrate"];
 
@@ -78,9 +73,19 @@ _disp displayAddEventHandler ["keyDown",{if(_this#1 in [1])then{_this#0 closeDis
 // KeyUp: block every button (movement), except ESC/TAB button to close the Inv
 _disp displayAddEventHandler ["keyUp",{if(_this#1 in [15])then{_this#0 closeDisplay 1;}; true }];
 
-
+// Set the names for all available Inventories and Slots
 AN_INVENTORY_LIST = [["an_inv_player_area","an_inv_player_grid"],["an_inv_external_area","an_inv_external_grid"]];
 AN_SLOTS_LIST = [["an_slot_wpn_area","an_slot_wpn_grid"],["an_slot_uni_area","an_slot_uni_grid"]];
+// "Reset" the tileUsage Vars
+{
+	private _grid = uiNamespace getVariable [(_x#1),controlNull];
+	if(!isNull _grid)then
+	{
+		private _idc = ctrlIDC _grid;
+		localNamespace setVariable [(format["an_inv_tileUsage_%1",_idc]),[]];
+	};
+}forEach (AN_INVENTORY_LIST + AN_SLOTS_LIST);
+
 
 an_inv_move_placeHorizontal = true;	// init
 an_ui_inv_grabActive = false;		// init
