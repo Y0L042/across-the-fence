@@ -29,6 +29,11 @@ if(an_ui_inv_grabActive)then{ an_ui_inv_grabActive = false; };
 private _itemClass = [] call an_c_fnc_ui_inv_item_active_class_get;
 private _parentData = [_itemClass] call an_c_fnc_ui_inv_item_data_parent_get;
 // diag_log ["DEBUG: UI_INV_MPOS: _parentData   :", _parentData];
+// Check if parentData was found!
+diag_log str ["_parentData", _parentData];
+if(_parentData isEqualto [])exitWith{systemchat str["ERROR: UI_INV_MPOS: _parentData NOT FOUND: Class:", _itemClass];};
+
+// Get all the needed Data from the parent
 private _parentSize = ENTRY_GET("size",_parentData);
 // diag_log ["DEBUG: UI_INV_MPOS: _parentSize   :", _parentSize];
 private _parentSlot = ENTRY_GET("slot",_parentData);
