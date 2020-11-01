@@ -80,7 +80,7 @@ def item_move(client=None, args=()):
     print(f"ARGS: {args}")
     try:
         # invID = either "getPlayerUID" for players OR "randomID" for Crates
-        itemID, invID_old, invID_new, isFlipped, invPos = args
+        itemID, invID_old, invID_new, isFlipped, invPos, inSlot = args
         # print(f"cData: {client.cData}")
     except Exception as e:
         print(f'ERROR: INV_HANDLER: ITEM_MOVE: Could NOT get Data from args:\n{e}\n')
@@ -114,19 +114,27 @@ def item_move(client=None, args=()):
     # print(f"::::: NEW INV GRID:\n{newInv_invGrid}")
 
     isFlipped_cur = item["isFlipped"]
+    inSlot_cur = item["inSlot"]
+
+    # check if the Item is put or set into a Slot:
+    slotChange = False
+    if inSlot_cur != inSlot:
+        slotChange = True
 
     # get pos in old invGrid and check if everything is correct there
     slots_used_old = inv_handler.inv_slots_used_get(slotsStart=item["invPos"], invGrid=oldInv_invGrid, isFlipped=isFlipped_cur, sizeItem=sizeItem, isAdd=False)
-    if len(slots_used_old) == 0:
+    if len(slots_used_old) == 0 and not slotChange:
         # ToDo: Send both Inventories back to the player, to update his UI (later)
         print("INVENTORY: Something was wrong with the old Item State - no blocked tiles found")
         return
 
     # Check if the old Inv is the new Inv (moving Item inside an Inventory) ignore the previously used slots then.
     if invID_old == invID_new:
+        print("----------- ITEM_MOVE: OLD INV OR SLOTCHANGE")
         # get currently used slots, ignoring the previously used slots
         slots_used_new = inv_handler.inv_slots_used_get(slotsStart=invPos, slots_ignore=slots_used_old, invGrid=newInv_invGrid, isFlipped=isFlipped, sizeItem=sizeItem, isAdd=True)
     else:
+        print("----------- ITEM_MOVE: NEW INV AND NO SLOTCHANGE")
         # check for free slots
         slots_used_new = inv_handler.inv_slots_used_get(slotsStart=invPos, invGrid=newInv_invGrid, isFlipped=isFlipped, sizeItem=sizeItem, isAdd=True)
 
@@ -147,6 +155,7 @@ def item_move(client=None, args=()):
         item["invPos"] = invPos
         item["curInv"] = invID_new
         item["isFlipped"] = isFlipped
+        item["inSlot"] = inSlot
 
         # set the used slots in the new Inventory Grid
         inv_handler.inv_slots_used_set(slots_used=slots_used_new, invGrid=newInv_invGrid, isAdd=True)
