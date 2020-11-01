@@ -40,7 +40,10 @@ diag_log format["CLD_INIT: Item Data	: %1", _itemDataPlayer];
 	private _isSlotted = ENTRY_GET("inSlot", _item_data);
 	if(_isSlotted != 0)then
 	{
-		diag_log ["!!!!!!!!! ITEM IS SLOTTED: ", _item_data];	// DEV
+		private _slottedItems = localNamespace getVariable ["an_cData_invData_slotted",[]];
+		_slottedItems pushback [_isSlotted, _item_data];
+		localNamespace setVariable ["an_cData_invData_slotted",_slottedItems];
+		// diag_log ["!!!!!!!!! ITEM IS SLOTTED: ", _item_data];	// DEV
 	};
 	// diag_log ["DEBUG: LNS DATA: ", localNamespace getVariable [_item_id,"NONE"]];
 }forEach _itemDataPlayer;
