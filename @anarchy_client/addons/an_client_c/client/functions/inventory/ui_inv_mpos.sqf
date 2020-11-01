@@ -114,7 +114,7 @@ else
 	([_ctrlGrid, _gridRows, _itemTileUsage#0] call an_c_fnc_ui_inv_grid_gridToPos)params["_itemGridPosRow", "_itemGridPosCol"];
 	
 	// add the Item to the passed position
-	[_ctrlGrid,_itemGridPosRow,_itemGridPosCol,_itemClass,_offsetPos] call an_c_fnc_ui_inv_item_create;
+	[_ctrlGrid,_itemGridPosRow,_itemGridPosCol,_itemClass,_offsetPos, _slotID] call an_c_fnc_ui_inv_item_create;
 };
 
 

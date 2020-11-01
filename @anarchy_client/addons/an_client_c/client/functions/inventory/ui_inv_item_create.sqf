@@ -18,7 +18,7 @@
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
-params["_ctrl_invGrid","_pos_x","_pos_y","_item_class","_usedSlots"];
+params["_ctrl_invGrid","_pos_x","_pos_y","_item_class","_usedSlots","_slotID"];
 
 //get Item parentData
 private _parent_data = _item_class call an_c_fnc_ui_inv_item_data_parent_get;
@@ -65,14 +65,13 @@ _ctrl_item ctrlCommit 0;
 	if(_x == 200)then
 	{
 		private _item_img = ENTRY_GET("image",_parent_data);
+		// If no image is set -> Its most likely an Item, defined in the config. So try to get the image from there.
 		if(_item_img isEqualTo "")then
 		{
 			private _cfgBase = [ENTRY_GET("slot",_parent_data)] call an_c_fnc_ui_inv_item_getClass;
 			_item_img = getText(configFile >> _cfgBase >> _item_class >> "picture");
-		}else{
-			// DEV / TODO: Workaround until .dll is fixed!
-			// _item_img = format["\%1",(_item_img splitString "\\" joinString "\")];
 		};
+		
 		_ctrl ctrlSetText _item_img;
 	};
 	//if flipped/roated by 90° -> do other stuff
@@ -120,12 +119,14 @@ if!( _isSamePos && _isSameInv)then
 	};
 	[_item_data, "curInv", _item_invID_new] call _update_item_vars;
 	[_item_data, "invPos", (_usedSlots#0)] call _update_item_vars;
+	// TODO: Update "inSlot", if put in or taken out of a Slot
+	[_item_data, "inSlot", _slotID] call _update_item_vars;
 
 	// Store the changes
 	localNamespace setVariable [_item_id, _item_data];
 	
 	// send command to the backend, to update its data.
-	["itemMove", [_item_id, _item_invID_old, _item_invID_new, ENTRY_GET("isFlipped", _item_data), (_usedSlots#0)]] call AN_G_fnc_msg_send;
+	["itemMove", [_item_id, _item_invID_old, _item_invID_new, ENTRY_GET("isFlipped", _item_data), (_usedSlots#0), _slotID]] call AN_G_fnc_msg_send;
 	
 	
 	/////////////////////////////////////
