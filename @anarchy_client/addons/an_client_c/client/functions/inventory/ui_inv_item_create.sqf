@@ -18,61 +18,61 @@
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
-params["_ctrl_invGrid","_pos_x","_pos_y","_item_class","_usedSlots","_slotID"];
+params["_ctrlInvGrid","_posX","_posY","_itemClass","_usedSlots","_slotID"];
 
 //get Item parentData
-private _parent_data = _item_class call an_c_fnc_ui_inv_item_data_parent_get;
-ENTRY_GET("size",_parent_data) params ["_parent_size_y", "_parent_size_x"];
+private _parentData = _itemClass call an_c_fnc_ui_inv_item_data_parent_get;
+ENTRY_GET("size",_parentData) params ["_parentSizeY", "_parentSizeX"];
 
 private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
 //create the Icon
-private _item_IDC = localNamespace getVariable ["an_Item_IDC_count",107441];
-private _ctrl_item = _disp ctrlCreate ["inv_icon",_item_IDC,_ctrl_invGrid];
-localNamespace setVariable ["an_Item_IDC_count",(_item_IDC + 1)];
+private _itemIDC = localNamespace getVariable ["an_Item_IDC_count",107441];
+private _ctrlItem = _disp ctrlCreate ["inv_icon",_itemIDC,_ctrlInvGrid];
+localNamespace setVariable ["an_Item_IDC_count",(_itemIDC + 1)];
 
-(ctrlPosition _ctrl_invGrid)params["_grid_x","_grid_y","_grid_w","_grid_h"];
+(ctrlPosition _ctrlInvGrid)params["_gridX","_gridY","_gridW","_gridH"];
 
 
-private _gridSize = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrl_invGrid)], [-1,-1]];
+private _gridSize = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlInvGrid)], [-1,-1]];
 _gridSize params["_gridRows","_gridCols"];
 if(_gridRows isEqualTo [-1,-1])exitWith{systemchat str ["ITEM_CREATE: GRID NOT SET!", _gridRows];};
 
-private _tile_W = _grid_w / _gridCols;
-private _tile_H = _grid_h / _gridRows;
+private _tileW = _gridW / _gridCols;
+private _tileH = _gridH / _gridRows;
 
 // systemchat str [!_canFlip, !an_inv_move_placeHorizontal];
-private _canFlip = if(_parent_size_y == _parent_size_x)then{0}else{1};
+private _canFlip = if(_parentSizeY == _parentSizeX)then{0}else{1};
 if((_canFlip == 0) && !an_inv_move_placeHorizontal)then{an_inv_move_placeHorizontal = true};
 //get width and height of selected icon
-private _ctrl_item_w = if(an_inv_move_placeHorizontal)then{_tile_W*_parent_size_x}else{_tile_H*_parent_size_y};
-private _ctrl_item_h = if(an_inv_move_placeHorizontal)then{_tile_H*_parent_size_y}else{_tile_W*_parent_size_x};
+private _ctrlItemW = if(an_inv_move_placeHorizontal)then{_tileW*_parentSizeX}else{_tileH*_parentSizeY};
+private _ctrlItemH = if(an_inv_move_placeHorizontal)then{_tileH*_parentSizeY}else{_tileW*_parentSizeX};
 
 
 //if needed -> "rotate" the main ctrlGroup and adjust the values to 4/3 (Arma Base Resolution)
 if(an_inv_move_placeHorizontal)then
 {
-	_ctrl_item ctrlSetposition [_pos_x,_pos_y,_ctrl_item_w,_ctrl_item_h];
+	_ctrlItem ctrlSetposition [_posX,_posY,_ctrlItemW,_ctrlItemH];
 }else{
-	_ctrl_item ctrlSetposition [_pos_x,_pos_y,(_ctrl_item_w*0.75),(_ctrl_item_h/0.75)];
+	_ctrlItem ctrlSetposition [_posX,_posY,(_ctrlItemW*0.75),(_ctrlItemH/0.75)];
 };
-_ctrl_item ctrlCommit 0;
+_ctrlItem ctrlCommit 0;
 
 //Adjust the image and background of the Item
 {
-	private _ctrl = _ctrl_item controlsGroupCtrl _x;
-	_ctrl ctrlSetposition [0,0,_ctrl_item_w,_ctrl_item_h];
+	private _ctrl = _ctrlItem controlsGroupCtrl _x;
+	_ctrl ctrlSetposition [0,0,_ctrlItemW,_ctrlItemH];
 	_ctrl ctrlCommit 0;
 	if(_x == 200)then
 	{
-		private _item_img = ENTRY_GET("image",_parent_data);
+		private _itemImg = ENTRY_GET("image",_parentData);
 		// If no image is set -> Its most likely an Item, defined in the config. So try to get the image from there.
-		if(_item_img isEqualTo "")then
+		if(_itemImg isEqualTo "")then
 		{
-			private _cfgBase = [ENTRY_GET("slot",_parent_data)] call an_c_fnc_ui_inv_item_getClass;
-			_item_img = getText(configFile >> _cfgBase >> _item_class >> "picture");
+			private _cfgBase = [ENTRY_GET("slot",_parentData)] call an_c_fnc_ui_inv_item_getClass;
+			_itemImg = getText(configFile >> _cfgBase >> _itemClass >> "picture");
 		};
 		
-		_ctrl ctrlSetText _item_img;
+		_ctrl ctrlSetText _itemImg;
 	};
 	//if flipped/roated by 90° -> do other stuff
 	if !(an_inv_move_placeHorizontal)then
@@ -81,36 +81,36 @@ _ctrl_item ctrlCommit 0;
 		_ctrl ctrlSetAngle [90, 0.5, 0.5];
 		
 		//Adjust the Width and Height afterwards to the baseRes of 4/3 (Don't ask, ctrlSetAngle is "special"... ...)
-		_ctrl ctrlSetposition [0,0,(_ctrl_item_w*0.75),(_ctrl_item_h/0.75)];
+		_ctrl ctrlSetposition [0,0,(_ctrlItemW*0.75),(_ctrlItemH/0.75)];
 		_ctrl ctrlCommit 0;
 	};
 }forEach[100,200];
 
 
-private _item_invID_new = if((ctrlIDC _ctrl_invGrid) isEqualto 1001)then{localNamespace getVariable ["an_inv_external_active",""]}else{getPlayerUID player};
+private _itemInvIDNew = if((ctrlIDC _ctrlInvGrid) isEqualto 1001)then{localNamespace getVariable ["an_inv_external_active",""]}else{getPlayerUID player};
 
 // get Item ID
-private _item_id = [] call an_c_fnc_ui_inv_item_active_id_get;
+private _itemID = [] call an_c_fnc_ui_inv_item_active_id_get;
 // get item data for given ID
-private _item_data = localNamespace getVariable [_item_id,[]];
+private _itemData = localNamespace getVariable [_itemID,[]];
 
 // Get the current Inventory...
-private _item_pos_old = ENTRY_GET("invPos", _item_data);
-private _isSamePos = _item_pos_old isEqualTo (_usedSlots#0);
+private _itemPosCur = ENTRY_GET("invPos", _itemData);
+private _isSamePos = _itemPosCur isEqualTo (_usedSlots#0);
 // ... its Position ...
-private _item_invID_old = ENTRY_GET("curInv", _item_data);
-private _isSameInv = _item_invID_old in ["",_item_invID_new];
+private _itemInvIDCur = ENTRY_GET("curInv", _itemData);
+private _isSameInv = _itemInvIDCur in ["",_itemInvIDNew];
 // ... and Slot
-private _item_inSlot_old = ENTRY_GET("inSlot", _item_data);
-private _isSlotChange = _item_inSlot_old == _slotID;
+private _itemInSlotCur = ENTRY_GET("inSlot", _itemData);
+private _isSameSlot = _itemInSlotCur == _slotID;
 
 // Check if the position is the same as before AND if it is in the old Inventory (Short: Check if it was moved, or just added (e.g: inv_load)!)
-if !(_isSamePos && _isSameInv && _isSlotChange)then
+if !(_isSamePos && _isSameInv && _isSameSlot)then
 {
 	// if not -> Send a message to the backend, that you moved an Item.
 	
-	// update the item data (DEV / NOTE: rebuilding Array faster? Needs to be tested later)
-	private _update_item_vars =
+	// update the item data (DEV / NOTE: rebuilding the Array faster? Needs to be tested later)
+	private _updateItemVars =
 	{
 		params["_dataset", "_tag", "_var"];
 		{
@@ -120,17 +120,45 @@ if !(_isSamePos && _isSameInv && _isSlotChange)then
 			};
 		}forEach _dataset;
 	};
-	[_item_data, "curInv", _item_invID_new] call _update_item_vars;
-	[_item_data, "invPos", (_usedSlots#0)] call _update_item_vars;
+	[_itemData, "curInv", _itemInvIDNew] call _updateItemVars;
+	[_itemData, "invPos", (_usedSlots#0)] call _updateItemVars;
 	// TODO: Update "inSlot", if put in or taken out of a Slot
-	[_item_data, "inSlot", _slotID] call _update_item_vars;
-
+	[_itemData, "inSlot", _slotID] call _updateItemVars;
+	
 	// Store the changes
-	localNamespace setVariable [_item_id, _item_data];
+	localNamespace setVariable [_itemID, _itemData];
+	
+	// If needed: Update the slotted Items:
+	// systemchat str ["_isSameSlot", _isSameSlot];
+	if(!_isSameSlot)then
+	{
+		// If moving FROM Slot TO Inventory -> Remove from "slotted list"
+		if(_itemInSlotCur != 0)then
+		{
+			private _removedFromSlot = [_itemInSlotCur] call an_c_fnc_ui_inv_item_slotted_remove;
+			// systemchat str ["_itemInSlotCur != 0", _removedFromSlot, _itemInSlotCur != 0];
+			if(!_removedFromSlot)then
+			{
+				systemchat format["ERROR: ITEM_CREATE: ITEM NOT REMOVED FROM SLOT! : Slot: %1 - ItemData: %2", _slotID, _itemData];
+				diag_log format["ERROR: ITEM_CREATE: ITEM NOT REMOVED FROM SLOT! : Slot: %1 - ItemData: %2", _slotID, _itemData];
+			};
+		};
+		// If moving FROM Inventory TO Slot -> Add to slotted List!
+		if(_slotID != 0)then
+		{
+			private _addToSlot = [_slotID, _itemData] call an_c_fnc_ui_inv_item_slotted_add;
+			// systemchat str ["_slotID != 0", _addToSlot, _slotID != 0];
+			if(!_addToSlot)then
+			{
+				systemchat format["ERROR: ITEM_CREATE: ITEM NOT ADDED TO SLOT! : Slot: %1 - ItemData: %2", _slotID, _itemData];
+				diag_log format["ERROR: ITEM_CREATE: ITEM NOT ADDED TO SLOT! : Slot: %1 - ItemData: %2", _slotID, _itemData];
+			};
+		};
+	};
 	
 	// send command to the backend, to update its data.
-	diag_log ["DEBUG: item_create: MSG SEND Data:", ["itemMove", [_item_id, _item_invID_old, _item_invID_new, ENTRY_GET("isFlipped", _item_data), (_usedSlots#0), _slotID]]];
-	["itemMove", [_item_id, _item_invID_old, _item_invID_new, ENTRY_GET("isFlipped", _item_data), (_usedSlots#0), _slotID]] call AN_G_fnc_msg_send;
+	diag_log ["DEBUG: item_create: MSG SEND Data:", ["itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID]]];
+	["itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID]] call AN_G_fnc_msg_send;
 	
 	
 	/////////////////////////////////////
@@ -138,36 +166,36 @@ if !(_isSamePos && _isSameInv && _isSlotChange)then
 	// Update player Inventory
 	// NOTE: The remote Inventory will never be saved localy! So only the player Inventory needs to be updated!:
 	// get Current Inventory data
-	private _cData_inventoryData_cur = localNamespace getVariable ["an_cData_invData",[]];
-	// {diag_log ["CHECK: PRE : ",_x];}forEach _cData_inventoryData_cur;
-	private _itemDataPlayer = ENTRY_GET("itemData", _cData_inventoryData_cur);
+	private _invDataCur = localNamespace getVariable ["an_cData_invData",[]];
+	// {diag_log ["CHECK: PRE : ",_x];}forEach _invDataCur;
+	private _itemDataPlayer = ENTRY_GET("itemData", _invDataCur);
 	// {diag_log ["CHECK: PRE : ",_x];}forEach _itemDataPlayer;
 	
 	//check if it needs to be deleted:
-	if(_item_invID_new isEqualTo (getPlayerUID player))then
+	if(_itemInvIDNew isEqualTo (getPlayerUID player))then
 	{
 		// update OR add item
-		if(_item_invID_old isEqualTo (getPlayerUID player))then
+		if(_itemInvIDCur isEqualTo (getPlayerUID player))then
 		{
 			// diag_log ["!!!!! CREATE: UPDATE ITEM !!!!!"];
 			{
-				if((_x#0) isEqualTo _item_id)exitWith
+				if((_x#0) isEqualTo _itemID)exitWith
 				{
-					_itemDataPlayer set [_forEachIndex, [_item_id, _item_data]];
+					_itemDataPlayer set [_forEachIndex, [_itemID, _itemData]];
 				};
 			}forEach _itemDataPlayer;
 		}
 		else
 		{
 			// diag_log ["!!!!! CREATE: ADD ITEM !!!!!"];
-			_itemDataPlayer pushback [_item_id, _item_data];
+			_itemDataPlayer pushback [_itemID, _itemData];
 		};
 	}
 	else
 	{
 		// diag_log ["!!!!! CREATE: DELETE ITEM !!!!!"];
 		{
-			if((_x#0) isEqualTo _item_id)exitWith
+			if((_x#0) isEqualTo _itemID)exitWith
 			{
 				_itemDataPlayer deleteAt _forEachIndex;
 			};
@@ -177,14 +205,14 @@ if !(_isSamePos && _isSameInv && _isSlotChange)then
 	// Update the local Player Inventory Data
 	localNamespace setVariable ["an_cData_invData",
 		[
-			["crateID", ENTRY_GET("crateID", _cData_inventoryData_cur)],
-			["inv_rows", ENTRY_GET("inv_rows", _cData_inventoryData_cur)],
+			["crateID", ENTRY_GET("crateID", _invDataCur)],
+			["inv_rows", ENTRY_GET("inv_rows", _invDataCur)],
 			["itemData", _itemDataPlayer ]
 		]
 	];
 	/////////////////////////////////////
 };
 
-// diag_log ["CREATE _item_data: ", _item_data];
+// diag_log ["CREATE _itemData: ", _itemData];
 // Update the ctrl with the updated ItemData
-[_ctrl_item, [[_pos_x,_pos_y,_ctrl_item_w,_ctrl_item_h],_usedSlots,_item_class,_item_id]] call an_c_fnc_ui_inv_item_data_set;
+[_ctrlItem, [[_posX,_posY,_ctrlItemW,_ctrlItemH],_usedSlots,_itemClass,_itemID]] call an_c_fnc_ui_inv_item_data_set;
