@@ -31,8 +31,8 @@ private _gridSize = localNamespace getVariable [format["an_inv_grid_size_%1",(ct
 _gridSize params["_gridRows","_gridCols"];
 
 // We only need to check those Slots, which would be still inside Grid. e.g.: Column > (GridWidthSlots-ItemWidthSlots) == Don't even check that.
-private _rowMax = _gridRows-(_parentSize#0)+1;
-private _colMax = _gridCols-(_parentSize#1)+1;
+private _rowMax = _gridRows-(_parentSize#0);
+private _colMax = _gridCols-(_parentSize#1);
 diag_log [_rowMax, _colMax];
 
 
