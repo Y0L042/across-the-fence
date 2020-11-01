@@ -7,7 +7,7 @@ if(an_ui_inv_grabActive)then
 	(call an_c_fnc_ui_inv_get) params ["_area","_grid","_isSlot"];
 	
 	// either nothing was found or it's a slot. Since Slots can't be scrolled in, exit too (for now at least, unless we find another use for it).
-	if(_isSlot || (_area isEqualTo ""))exitWith{};
+	if(_isSlot || (_area isEqualTo ""))exitWith{systemchat "ERROR: EH_mouse_z: (_isSlot || (_area isEqualTo ""))";};
 	
 	// systemchat str ["mouse_Z", _area, diag_tickTime];
 	private _ctrlGrp_parent = uinamespace getvariable [_area, controlNull];
@@ -20,7 +20,7 @@ if(an_ui_inv_grabActive)then
 	private _diff = parseNumber ((_ctrl_h_cur - _ctrl_h_max) toFixed 2);
 	
 	// Leave if there is no Scrollbar
-	if(_diff == 0)exitWith{};
+	if(_diff == 0)exitWith{systemchat "ERROR: EH_mouse_z: (_diff == 0)";};
 	
 	// calc the scroll step, each "step" is one tile
 	private _scrollstep = 1 / (_diff / _tileSize);

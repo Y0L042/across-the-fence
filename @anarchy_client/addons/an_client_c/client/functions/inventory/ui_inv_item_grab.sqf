@@ -4,7 +4,7 @@ disableSerialization;
 params ["_ctrl", "_btn", "_xPos", "_yPos", "_btn_shift", "_btn_ctrl", "_btn_alt"];
 
 // DEV: Block everything, except Left Mousebutton
-if !(_btn in [0])exitWith{};
+if !(_btn in [0])exitWith{systemchat "ERROR: item_grab: !(_btn in [0])";};
 
 // Shift = Move to the other Inventory (incl. finding a suitable slot)
 if(_btn_shift)exitWith{_this call an_c_fnc_ui_inv_item_move_auto};

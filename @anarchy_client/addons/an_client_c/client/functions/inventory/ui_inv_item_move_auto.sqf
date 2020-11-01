@@ -39,12 +39,14 @@ diag_log [_rowMax, _colMax];
 // Currently used Slots:
 private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_slots_usage_get;
 diag_log ["DEBUG: MOVE_AUTO: _itemSlotUsage:", _itemSlotUsage];
+// systemchat str ["DEBUG: MOVE_AUTO: _itemSlotUsage:", _itemSlotUsage];
 
 _slots = [_rowMax, _colMax, _itemSlotUsage, _gridUsedSlots] call an_c_fnc_ui_inv_item_slots_find_free;
 diag_log ["DEBUG: MOVE_AUTO: _slots          : ", _slots];
+systemchat str ["DEBUG: MOVE_AUTO: _slots          : ", _slots];
 
 // No free slots found, exiting.
-if(_slots isEqualTo [])exitWith{diag_log "No free slots found.";};
+if(_slots isEqualTo [])exitWith{systemchat "ERROR: item_move_auto: No free slots found.";};
 
 
 //convert from gridPos to uiPos

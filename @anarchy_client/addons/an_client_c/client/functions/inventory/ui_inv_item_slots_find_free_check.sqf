@@ -40,9 +40,9 @@ if(_ret isEqualTo [])then
 		_col = 0;
 	};
 	// Check if we reached the last Row to check
-	diag_log ["_col", _col_max, _col];
-	diag_log ["_row", _row_max, _row];
-	if(_row > _row_max)exitWith{};
+	diag_log ["_col: ", _col_max, _col," - _row: ", _row_max, _row];
+	
+	if(_row > _row_max)exitWith{systemchat "ERROR: item_slots_find_free_check: (_row > _row_max)";};
 	[_row_max, _col_max, _item_slot_usage, _grid_usedSlots, _row, _col] call an_c_fnc_ui_inv_item_slots_find_free;
 };
 

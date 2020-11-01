@@ -8,7 +8,7 @@ disableSerialization;
 
 params ["_ctrl", ["_btn",1,[0]]];//, "_xPos", "_yPos", "_btn_shift", "_btn_ctrl", "_btn_alt"];
 // _xPos,_yPos = pos relative to GridPos
-if(_btn != 1)exitWith{};
+if(_btn != 1)exitWith{systemchat "DEBUG: item_remove: (_btn != 1)";};
 
 //get the used slots from that Item
 
@@ -19,12 +19,13 @@ _item_data params ["_pos_data","_item_usedSlots","_item_class","_item_id"];
 private _ctrl_grid = ctrlParentControlsGroup _ctrl;
 private _ctrl_grid_idc = ctrlIDC _ctrl_grid;
 // diag_log ["------- ITEM REMOVE: _ctrl_grid_idc : ", _ctrl_grid_idc];
-// systemchat str ["FNC_TEST: ", _ctrl_grid," - _usedSlots = ",_usedSlots];
+systemchat str ["ITEM REMOVE: _ctrl_grid_idc : ", _ctrl_grid_idc];
 
 
 //get used slots from grid
 private _grid_usedSlots = [_ctrl_grid_idc] call an_c_fnc_ui_inv_grid_tiles_used_get;
 // diag_log ["------- ITEM REMOVE: _grid_usedSlots: ", _grid_usedSlots];
+systemchat str ["ITEM REMOVE: _grid_usedSlots: ", _grid_usedSlots];
 
 
 // get the index pos of the used slots and store it temporarely

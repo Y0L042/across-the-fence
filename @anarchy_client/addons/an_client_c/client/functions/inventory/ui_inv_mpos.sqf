@@ -31,7 +31,7 @@ private _parentData = [_itemClass] call an_c_fnc_ui_inv_item_data_parent_get;
 // diag_log ["DEBUG: UI_INV_MPOS: _parentData   :", _parentData];
 // Check if parentData was found!
 diag_log str ["_parentData", _parentData];
-if(_parentData isEqualto [])exitWith{systemchat str["ERROR: UI_INV_MPOS: _parentData NOT FOUND: Class:", _itemClass];};
+if(_parentData isEqualto [])exitWith{private _text = ["ERROR: UI_INV_MPOS: _parentData NOT FOUND: Class:", _itemClass]; diag_log _text; systemchat str _text;};
 
 // Get all the needed Data from the parent
 private _parentSize = ENTRY_GET("size",_parentData);
@@ -42,7 +42,7 @@ diag_log ["DEBUG: UI_INV_MPOS: _parentSlot   :", _parentSlot];
 
 // Check if targeted Grid is a Slot and it is allowed to be placed in there
 _slotID = _ctrlGrid getVariable ["slotID", 0];
-systemchat str [_parentSlot, _slotID];
+// systemchat str [_parentSlot, _slotID];
 
 _slotValidCheck = true;
 // Check if it's 
@@ -50,7 +50,7 @@ if(_slotID > 0)then
 {
 	// Check if Item can be placed in this Slot
 	if(_parentSlot != _slotID)exitWith{_slotValidCheck = false;};
-	systemchat str["SLOT CHECK PASSED - Reseting ROW/COL - _itemClass: ", _itemClass];
+	// systemchat str["SLOT CHECK PASSED - Reseting ROW/COL - _itemClass: ", _itemClass];
 	// if -> reset the Row/Col to [0,0]
 	_tileRow = 0;
 	_tileCol = 0;
@@ -100,10 +100,10 @@ else
 {
 	// if failed attemp -> readd the Item and its used slots in its previously used grid
 	private _ctrl = uinamespace getVariable ["an_ctrl_active",controlNull];
-	if(isNull _ctrl)exitWith{};
+	if(isNull _ctrl)exitWith{systemchat "ERROR: mPos: (isNull _ctrl)";};
 	
 	private _dataPrev = _ctrl getVariable ["item_data_prev",[]];
-	if(_dataPrev isEqualto [])exitWith{};
+	if(_dataPrev isEqualto [])exitWith{systemchat "ERROR: mPos: (_dataPrev isEqualto [])";};
 	
 	// Get the previous data
 	_dataPrev params ["_ctrlParentPrev","_pX","_pY","_itemClass","_itemUsedSlotsPrev","_posData"];

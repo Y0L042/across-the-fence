@@ -10,7 +10,7 @@ params["_ctrlGrid","_gridSize","_gridName","_slotID"];
 _gridSize params["_gridRows","_gridCols"];
 
 private _disp = uiNamespace getVariable ["an_inventory",displayNull];
-if(isNull _disp)exitWith{};
+if(isNull _disp)exitWith{systemchat "ERROR: grid_create: isNull _disp";};
 
 private _gridW = (ctrlPosition _ctrlGrid)#2;
 private _gridH = ((_gridW / 0.75) / _gridCols) * _gridRows;	//adjust to 4/3 Value

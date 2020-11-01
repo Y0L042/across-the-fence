@@ -15,7 +15,7 @@ if(_btn == 0)exitWith
 	(call an_c_fnc_ui_inv_get) params ["_area","_grid","_isSlot"];
 	
 	// either nothing was found or it's a slot. Since Slots can't be scrolled in, exit too (for now at least, unless we find another use for it).
-	if(_area isEqualTo "")exitWith{};
+	if(_area isEqualTo "")exitWith{systemchat "ERROR: mPos_check: (_area isEqualTo "")";};
 	
 	// private _ctrlArea = uinamespace getvariable [_area, controlNull];
 	private _ctrlGrid = uinamespace getvariable [_grid, controlNull];
