@@ -6,7 +6,7 @@
 
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
-params["_ctrlGrid","_gridSize"];
+params["_ctrlGrid","_gridSize","_gridName","_slotID"];
 _gridSize params["_gridRows","_gridCols"];
 
 private _disp = uiNamespace getVariable ["an_inventory",displayNull];
@@ -14,6 +14,11 @@ if(isNull _disp)exitWith{};
 
 private _gridW = (ctrlPosition _ctrlGrid)#2;
 private _gridH = ((_gridW / 0.75) / _gridCols) * _gridRows;	//adjust to 4/3 Value
+
+if(_slotID != 0)then
+{
+	_gridRows = 1;
+};
 // diag_log ["GRID_CREATE: ", _gridH, _gridW];
 private _tileH = _gridH/_gridRows;
 
@@ -36,13 +41,14 @@ _ctrlGridBg ctrlSetPositionH _gridH;
 _ctrlGridBg ctrlCommit 0;
 
 
+
 // create the "row"-images, inside the given _ctrlGrid
 for "_pY" from 0 to (_gridRows-1)do
 {
 	// use its Y Coord as IDC
 	private _idc = _pY;
 	// add it to the "inventory"-area
-	private _ctrl = _disp ctrlCreate ["tile_base",_idc,_ctrlGrid];
+	private _ctrl = _disp ctrlCreate [format["tile_bg_%1",_gridName],_idc,_ctrlGrid];
 	_ctrl ctrlSetposition [0,(_tileH*_pY),_gridW,_tileH];
 	_ctrl ctrlCommit 0;
 };
