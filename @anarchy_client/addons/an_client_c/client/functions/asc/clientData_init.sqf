@@ -32,18 +32,19 @@ diag_log "------------------";
 _itemDataPlayer = ENTRY_GET("itemData", _data);
 diag_log format["CLD_INIT: Item Data	: %1", _itemDataPlayer];
 {
-	_x params["_item_id", "_item_data"];
+	_x params["_item_id", "_itemData"];
 	
 	diag_log format["CLD_INIT: INV Entry	: %1", _x];
 	// Store the ItemData
-	localNamespace setVariable [_item_id, _item_data];
-	private _isSlotted = ENTRY_GET("inSlot", _item_data);
-	if(_isSlotted != 0)then
+	localNamespace setVariable [_item_id, _itemData];
+	private _inSlot = ENTRY_GET("inSlot", _itemData);
+	if(_inSlot != 0)then
 	{
-		private _slottedItems = localNamespace getVariable ["an_cData_invData_slotted",[]];
-		_slottedItems pushback [_isSlotted, _item_data];
-		localNamespace setVariable ["an_cData_invData_slotted",_slottedItems];
-		// diag_log ["!!!!!!!!! ITEM IS SLOTTED: ", _item_data];	// DEV
+		_addToSlot = [_inSlot, _itemData] call an_c_fnc_ui_inv_item_slotted_add;
+		if(!_addToSlot)then
+		{
+			diag_log format["ERROR: CLD_INIT: ITEM NOT ADDED TO SLOT! : Slot: %1 - ItemData: %2", _inSlot, _itemData];
+		};
 	};
 	// diag_log ["DEBUG: LNS DATA: ", localNamespace getVariable [_item_id,"NONE"]];
 }forEach _itemDataPlayer;
