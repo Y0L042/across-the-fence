@@ -1,8 +1,7 @@
 
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
-params["_gridName", "_invData", ["_gridCols",-1], ["_slotID",0]];
-if(_gridCols < 0)then{_gridCols = 8};	// 8 = standard col count
+params["_gridName", "_invData", ["_gridCols",8], ["_slotID",0]];
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Inventory: ...",_gridName];
 
 // create the grid
@@ -17,7 +16,7 @@ _ctrlGrid setVariable ["slotID", _slotID];
 // _ctrlGrid setVariable ["an_sizeCol", _gridCols];		// ToDo: an_sizeCol - Recheck if needed.
 
 // set the Var for the EXTERNAL grid and show the "grid images"
-[_ctrlGrid, [_InvDataGridRows, _gridCols]] call an_c_fnc_ui_inv_grid_create;
+[_ctrlGrid, [_InvDataGridRows, _gridCols], _gridName, _slotID] call an_c_fnc_ui_inv_grid_create;
 diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: grid : ... done",_gridName];
 
 // add the Items:
@@ -53,14 +52,22 @@ diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
 		[_itemId] call an_c_fnc_ui_inv_item_active_id_set;
 		
 		[_ctrlGrid,0,[_itemPosY,_itemPosX]] call an_c_fnc_ui_inv_mPos;
-		// diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
+		diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
 	}
 	else
 	{
-		if(_gridName == "an_inv_player_grid")then
+		// ToDo: check if the Slot is already in use!
+		// Only add the slotted Item, when the correct grid (the corresponding Slot-grid, related to the SlotID) is passed
+		if !(_gridName in ["an_inv_player_grid","an_inv_external_grid"])then
 		{
-			diag_log format["DEBUG: UI_INV_INIT: _gridName == %1",_gridName];
-			diag_log [_itemSlotID, _ctrlGrid, _itemClass, _itemData];
+			// diag_log format["DEBUG: UI_INV_INIT: _gridName == %1",_gridName];
+			// diag_log [_itemSlotID, _ctrlGrid, _itemClass, _itemData];
+			
+			// set the ID and Classname, to create the Item
+			[_itemClass] call an_c_fnc_ui_inv_item_active_class_set;
+			[_itemId] call an_c_fnc_ui_inv_item_active_id_set;
+			
+			[_ctrlGrid,0,[_itemPosY,_itemPosX]] call an_c_fnc_ui_inv_mPos;
 		};
 	};
 }forEach _items;

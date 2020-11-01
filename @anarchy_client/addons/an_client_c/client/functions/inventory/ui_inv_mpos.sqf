@@ -48,7 +48,6 @@ _slotValidCheck = true;
 // Check if it's 
 if(_slotID > 0)then
 {
-	// systemchat str["IS SLOTTED", _itemClass];
 	// Check if Item can be placed in this Slot
 	if(_parentSlot != _slotID)exitWith{_slotValidCheck = false;};
 	systemchat str["SLOT CHECK PASSED - Reseting ROW/COL - _itemClass: ", _itemClass];
