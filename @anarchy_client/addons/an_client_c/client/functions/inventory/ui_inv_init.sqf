@@ -134,25 +134,26 @@ private _slottedItems = localNamespace getVariable ["an_cData_invData_slotted",[
 {
     _x params["_gridName","_slotsRows","_slotsCols","_slotID"];
 	
-	private _itemData = [];
-	private _itemID = "";
+	private _data =
+		[
+			 ["crateID", getPlayerUID player]
+			,["inv_rows", _slotsRows]
+		];
+	
 	private _slotItem = _slottedItems findIf {(_x#0) isEqualTo _slotID};	// Todo: Making getting and setting a seperate function
 	if(_slotItem != -1)then
 	{
-		_itemData = (_slottedItems#_slotItem)#1;
-		_itemID = ENTRY_GET("id",_itemData);
-		diag_log ["_itemData", _itemID, _itemData];
-	
-		private _data =
-			[
-				 ["crateID", getPlayerUID player]
-				,["inv_rows", _slotsRows]
-				,["itemData",[[_itemID, _itemData]]]
-			];
+		private _itemData = (_slottedItems#_slotItem)#1;
+		private _itemID = ENTRY_GET("id",_itemData);
 		
-		// diag_log _data;
-		[_gridName, _data, _slotsCols, _slotID] call an_c_fnc_ui_inv_load;
+		_data pushback ["itemData",[[_itemID, _itemData]]];
+	}
+	else
+	{
+		_data pushback ["itemData",[]];
 	};
+	
+	[_gridName, _data, _slotsCols, _slotID] call an_c_fnc_ui_inv_load;
 	
 }forEach _slotList;
 diag_log ["------------------------ GEAR ------------------------"];
