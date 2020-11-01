@@ -48,17 +48,15 @@ _slotValidCheck = true;
 // Check if it's 
 if(_slotID > 0)then
 {
-	systemchat "IS SLOT: TRUE";
+	// systemchat str["IS SLOTTED", _itemClass];
+	// Check if Item can be placed in this Slot
 	if(_parentSlot != _slotID)exitWith{_slotValidCheck = false;};
-	systemchat "SLOT CHECK PASSED - Reseting ROW/COL";
+	systemchat str["SLOT CHECK PASSED - Reseting ROW/COL - _itemClass: ", _itemClass];
 	// if -> reset the Row/Col to [0,0]
 	_tileRow = 0;
 	_tileCol = 0;
-}
-else
-{
-	systemchat "IS SLOT: FALSE";
 };
+
 if(!_slotValidCheck)exitWith{systemchat "Can't be placed in that Slot";};
 
 private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_slots_usage_get;
