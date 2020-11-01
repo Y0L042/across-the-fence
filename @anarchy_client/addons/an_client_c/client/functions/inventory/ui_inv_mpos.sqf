@@ -76,27 +76,15 @@ private _offsetPos = [[_tileRow, _tileCol]];	//store first Pos (needed, since th
 //Check if all tiles are free
 //get used slots from grid
 private _gridTilesUsed = [_gridIDC] call an_c_fnc_ui_inv_grid_tiles_used_get;
-// diag_log["------- _gridTilesUsed: ",_gridTilesUsed];
+// diag_log ["DEBUG: UI_INV_MPOS: _gridTilesUsed: ",_gridTilesUsed];
 
 // Check if tiles in the targeted Grid are free. If not -> Return empty Array and trigger a "re-add" to the old position
 // if free -> Return the used Tiles
 private _itemTileUsage = [_ctrlGrid,_gridRows,_offsetPos,_gridTilesUsed] call an_c_fnc_ui_inv_grid_check_freeTiles;
-// diag_log["------- _itemTileUsage: ",_itemTileUsage];
+// diag_log ["DEBUG: UI_INV_MPOS: _itemTileUsage: ",_itemTileUsage];
 
 // Check if its a failed attemp
-if!(_itemTileUsage isEqualto [])then
-{
-	// add all tiles to the "blocked tiles"-array and store it in the Grid-parent itself
-	[_ctrlGrid,_gridTilesUsed,_itemTileUsage] call an_c_fnc_ui_inv_grid_tiles_used_update;
-	
-	// get the grid pos of the first entry (TopLeft Slot)
-	([_ctrlGrid, _gridRows, _itemTileUsage#0] call an_c_fnc_ui_inv_grid_gridToPos)params["_itemGridPosRow", "_itemGridPosCol"];
-	
-	// add the Item to the passed position
-	[_ctrlGrid,_itemGridPosRow,_itemGridPosCol,_itemClass,_offsetPos] call an_c_fnc_ui_inv_item_create;
-	
-}
-else
+if(_itemTileUsage isEqualto [])then
 {
 	// if failed attemp -> readd the Item and its used slots in its previously used grid
 	private _ctrl = uinamespace getVariable ["an_ctrl_active",controlNull];
@@ -115,6 +103,18 @@ else
 	
 	// create it again
 	_dataPrev call an_c_fnc_ui_inv_item_create;
+}
+else
+{
+	// If everything was fine, add the Item to the selected grid
+	// add all tiles to the "blocked tiles"-array and store it in the Grid-parent itself
+	[_ctrlGrid,_gridTilesUsed,_itemTileUsage] call an_c_fnc_ui_inv_grid_tiles_used_update;
+	
+	// get the grid pos of the first entry (TopLeft Slot)
+	([_ctrlGrid, _gridRows, _itemTileUsage#0] call an_c_fnc_ui_inv_grid_gridToPos)params["_itemGridPosRow", "_itemGridPosCol"];
+	
+	// add the Item to the passed position
+	[_ctrlGrid,_itemGridPosRow,_itemGridPosCol,_itemClass,_offsetPos] call an_c_fnc_ui_inv_item_create;
 };
 
 
