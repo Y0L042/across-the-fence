@@ -116,38 +116,50 @@ def item_move(client=None, args=()):
     isFlipped_cur = item["isFlipped"]
     inSlot_cur = item["inSlot"]
 
-    # check if the Item is put or set into a Slot:
-    slotChange = False
+    # Prep vars, to check if an (un)equip request was send
+    isEquip = False     # Inventory TO Slot?
+    isUnEquip = False   # Slot TO Inventory?
+    # check if the Items Slot has changed:
     if inSlot_cur != inSlot:
-        slotChange = True
+        if inSlot_cur == 0:
+            # remove from Inv       = NO
+            # set new used Slots    = Yes
+            isEquip = True
+        # Slot TO Inventory?
+        if inSlot_cur != 0:
+            # remove from Inv       = Yes
+            # set new used Slots    = NO
+            isUnEquip = True
 
     # get pos in old invGrid and check if everything is correct there
     slots_used_old = inv_handler.inv_slots_used_get(slotsStart=item["invPos"], invGrid=oldInv_invGrid, isFlipped=isFlipped_cur, sizeItem=sizeItem, isAdd=False)
-    if len(slots_used_old) == 0 and not slotChange:
+
+    # Check if the item used slots. In case of unequipping -> Ignore
+    if len(slots_used_old) == 0 and not isUnEquip:
         # ToDo: Send both Inventories back to the player, to update his UI (later)
         print("INVENTORY: Something was wrong with the old Item State - no blocked tiles found")
         return
 
+    print(f"--------------------\n  EQUIP REQUEST: {isEquip}\nUNEQUIP REQUEST: {isUnEquip}\n--------------------")
     # Check if the old Inv is the new Inv (moving Item inside an Inventory) ignore the previously used slots then.
     if invID_old == invID_new:
-        print("----------- ITEM_MOVE: OLD INV OR SLOTCHANGE")
         # get currently used slots, ignoring the previously used slots
         slots_used_new = inv_handler.inv_slots_used_get(slotsStart=invPos, slots_ignore=slots_used_old, invGrid=newInv_invGrid, isFlipped=isFlipped, sizeItem=sizeItem, isAdd=True)
     else:
-        print("----------- ITEM_MOVE: NEW INV AND NO SLOTCHANGE")
         # check for free slots
         slots_used_new = inv_handler.inv_slots_used_get(slotsStart=invPos, invGrid=newInv_invGrid, isFlipped=isFlipped, sizeItem=sizeItem, isAdd=True)
 
     print(f"::::: slots_used: {slots_used_new}")
 
-    # check if there was enough space in the new Inventory
-    if len(slots_used_new) == 0:
+    # check if there was enough space in the new Inventory. In case of Equip: Ignore
+    if len(slots_used_new) == 0 and not isEquip:
         # ToDo: Send both Inventories back to the player, to update his UI (later)
         print("INVENTORY: Item can NOT be added")
         return
     else:
-        # and remove it from the old Inventory Grid
-        inv_handler.inv_slots_used_set(slots_used=slots_used_old, invGrid=oldInv_invGrid, isAdd=False)
+        # and remove it from the old Inventory Grid, if its not coming from a Slot
+        if not isUnEquip:
+            inv_handler.inv_slots_used_set(slots_used=slots_used_old, invGrid=oldInv_invGrid, isAdd=False)
         # also delete from "itemData" dict
         del oldInv["itemData"][itemID]
 
@@ -157,8 +169,9 @@ def item_move(client=None, args=()):
         item["isFlipped"] = isFlipped
         item["inSlot"] = inSlot
 
-        # set the used slots in the new Inventory Grid
-        inv_handler.inv_slots_used_set(slots_used=slots_used_new, invGrid=newInv_invGrid, isAdd=True)
+        # set the used slots in the new Inventory Grid, if it is NOT an "Equip"-request!
+        if not isEquip:
+            inv_handler.inv_slots_used_set(slots_used=slots_used_new, invGrid=newInv_invGrid, isAdd=True)
 
         # and add it to the new Inventory itemData
         newInv["itemData"][item["id"]] = item
