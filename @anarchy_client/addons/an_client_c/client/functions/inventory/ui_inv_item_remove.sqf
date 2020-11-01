@@ -18,14 +18,14 @@ _item_data params ["_pos_data","_item_usedSlots","_item_class","_item_id"];
 
 private _ctrl_grid = ctrlParentControlsGroup _ctrl;
 private _ctrl_grid_idc = ctrlIDC _ctrl_grid;
-// diag_log ["------- ITEM REMOVE: _ctrl_grid_idc : ", _ctrl_grid_idc];
-systemchat str ["ITEM REMOVE: _ctrl_grid_idc : ", _ctrl_grid_idc];
+diag_log ["DEBUG: ITEM_REMOVE: _ctrl_grid_idc : ", _ctrl_grid_idc];
+// systemchat str ["ITEM_REMOVE: _ctrl_grid_idc : ", _ctrl_grid_idc];
 
 
 //get used slots from grid
 private _grid_usedSlots = [_ctrl_grid_idc] call an_c_fnc_ui_inv_grid_tiles_used_get;
-// diag_log ["------- ITEM REMOVE: _grid_usedSlots: ", _grid_usedSlots];
-systemchat str ["ITEM REMOVE: _grid_usedSlots: ", _grid_usedSlots];
+diag_log ["DEBUG: ITEM_REMOVE: _grid_usedSlots: ", _grid_usedSlots];
+// systemchat str ["ITEM_REMOVE: _grid_usedSlots: ", _grid_usedSlots];
 
 
 // get the index pos of the used slots and store it temporarely
