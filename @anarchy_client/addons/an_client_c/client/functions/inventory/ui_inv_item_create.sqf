@@ -94,17 +94,20 @@ private _item_id = [] call an_c_fnc_ui_inv_item_active_id_get;
 // get item data for given ID
 private _item_data = localNamespace getVariable [_item_id,[]];
 
-// Get current inventory and its position in it
+// Get the current Inventory...
 private _item_pos_old = ENTRY_GET("invPos", _item_data);
+private _isSamePos = _item_pos_old isEqualTo (_usedSlots#0);
+// ... its Position ...
 private _item_invID_old = ENTRY_GET("curInv", _item_data);
+private _isSameInv = _item_invID_old in ["",_item_invID_new];
+// ... and Slot
+private _item_inSlot_old = ENTRY_GET("inSlot", _item_data);
+private _isSlotChange = _item_inSlot_old == _slotID;
 
 // Check if the position is the same as before AND if it is in the old Inventory (Short: Check if it was moved, or just added (e.g: inv_load)!)
-private _isSamePos = _item_pos_old isEqualTo (_usedSlots#0);
-private _isSameInv = _item_invID_old in ["",_item_invID_new];
-if!( _isSamePos && _isSameInv)then
+if !(_isSamePos && _isSameInv && _isSlotChange)then
 {
 	// if not -> Send a message to the backend, that you moved an Item.
-	diag_log ["itemMove", [_item_id, _item_invID_old, _item_invID_new, ENTRY_GET("isFlipped", _item_data), (_usedSlots#0)]];
 	
 	// update the item data (DEV / NOTE: rebuilding Array faster? Needs to be tested later)
 	private _update_item_vars =
@@ -126,6 +129,7 @@ if!( _isSamePos && _isSameInv)then
 	localNamespace setVariable [_item_id, _item_data];
 	
 	// send command to the backend, to update its data.
+	diag_log ["DEBUG: item_create: MSG SEND Data:", ["itemMove", [_item_id, _item_invID_old, _item_invID_new, ENTRY_GET("isFlipped", _item_data), (_usedSlots#0), _slotID]]];
 	["itemMove", [_item_id, _item_invID_old, _item_invID_new, ENTRY_GET("isFlipped", _item_data), (_usedSlots#0), _slotID]] call AN_G_fnc_msg_send;
 	
 	
