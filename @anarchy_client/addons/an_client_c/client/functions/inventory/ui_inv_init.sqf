@@ -87,8 +87,9 @@ an_ui_inv_grabActive = false;		// init
 
 ////// Create Inventory for Player and Ground
 // Load Inventory: Player
+_invItemData = localNamespace getVariable ["an_cData_invData",[]];
 diag_log "-----------------------------------------------";
-["an_inv_player_grid", (localNamespace getVariable ["an_cData_invData",[]])] call an_c_fnc_ui_inv_load;
+["an_inv_player_grid", _invItemData] call an_c_fnc_ui_inv_load;
 diag_log "-----------------------------------------------";
 
 // Store the ID of the active external Inventory
@@ -100,3 +101,53 @@ diag_log "-----------------------------------------------";
 // Handle scrolling the Mousewheel (only if an item is currently grabbed)
 _disp displayAddEventhandler ["MouseZChanged","call an_c_fnc_ui_inv_EH_mouse_z"];
 
+
+
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+// DEV / WIP BELOW
+// Set up Gear Slot(-inventories)
+diag_log ["------------------------ GEAR ------------------------"];
+private _slotList = [
+//     [DB_entry, VarName, rows, cols, SlotID]
+     ["an_slot_wpn_grid",3,6,2]
+    ,["an_slot_uni_grid",6,4,12]
+    // ,["backpack",""]
+    // ,["goggles",""]
+    // ,["helmet",""]
+    // ,["pouch",""]
+    // ,["tool",""]
+    // ,["uniform",""]
+    // ,["vest",""]
+    // ,["w_hand",""]
+    // ,["w_launch",""]
+    // ,["w_main_b",""]
+];
+private _slottedItems = localNamespace getVariable ["an_cData_invData_slotted",[]];
+
+{
+    _x params["_gridName","_slotsRows","_slotsCols","_slotID"];
+	
+	private _itemData = [];
+	private _itemID = "";
+	private _slotItem = _slottedItems findIf {(_x#0) isEqualTo _slotID};	// Todo: Making getting and setting a seperate function
+	if(_slotItem != -1)then
+	{
+		_itemData = (_slottedItems#_slotItem)#1;
+		_itemID = ENTRY_GET("id",_itemData);
+		diag_log ["_itemData", _itemID, _itemData];
+	
+		private _data =
+			[
+				 ["crateID", getPlayerUID player]
+				,["inv_rows", _slotsRows]
+				,["itemData",[[_itemID, _itemData]]]
+			];
+		
+		// diag_log _data;
+		[_gridName, _data, _slotsCols, _slotID] call an_c_fnc_ui_inv_load;
+	};
+	
+}forEach _slotList;
+diag_log ["------------------------ GEAR ------------------------"];
