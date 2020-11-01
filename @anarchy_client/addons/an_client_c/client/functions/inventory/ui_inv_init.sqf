@@ -80,7 +80,7 @@ _disp displayAddEventHandler ["keyUp",{if(_this#1 in [15])then{_this#0 closeDisp
 
 
 AN_INVENTORY_LIST = [["an_inv_player_area","an_inv_player_grid"],["an_inv_external_area","an_inv_external_grid"]];
-AN_SLOTS_LIST = [["an_wpn_main_area","an_wpn_main_grid"]];
+AN_SLOTS_LIST = [["an_slot_wpn_area","an_slot_wpn_grid"],["an_slot_uni_area","an_slot_uni_grid"]];
 
 an_inv_move_placeHorizontal = true;	// init
 an_ui_inv_grabActive = false;		// init
