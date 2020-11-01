@@ -5,15 +5,15 @@
 #define HEIGHT (TILE_W * TILES_Y)
 #define TILE_H (HEIGHT/TILES_Y)
 
-#define EQUIP_SLOT_X 6
-#define EQUIP_SLOT_Y 3
-#define EQUIP_SLOT_WIDTH 6		//width of complete Weapon slots
-#define EQUIP_SLOT_TILE_W (EQUIP_SLOT_WIDTH/EQUIP_SLOT_X)
-#define EQUIP_SLOT_HEIGHT (EQUIP_SLOT_TILE_W * EQUIP_SLOT_Y)
-#define EQUIP_SLOT_TILE_H (EQUIP_SLOT_HEIGHT/EQUIP_SLOT_Y)
+#define EQUIP_SLOT_WPN_COLS 6
+#define EQUIP_SLOT_WPN_ROWS 3
+#define EQUIP_SLOT_UNI_COLS 4
+#define EQUIP_SLOT_UNI_ROWS 6
 
-
-class tile_base: para_RscPicture
+// Backgrounds:
+// Player
+// class tile_bg_an_inv_player_grid: para_RscPicture
+class tile_bg_an_inv_player_grid: para_RscPictureKeepAspect
 {
 	idc = -1;
 	type = 0;
@@ -34,6 +34,31 @@ class tile_base: para_RscPicture
 	
 	text = "sgd\anarchy\an_client_c\client\config\ui\inventory\data\box.paa";
 };
+// External
+class tile_bg_an_inv_external_grid: tile_bg_an_inv_player_grid
+{
+	// in case of chaning to a different Background image or color scheme
+	text = "sgd\anarchy\an_client_c\client\config\ui\inventory\data\box.paa";
+};
+
+// Slots:
+// P:\a3\ui_f\data\GUI\Rsc\RscDisplayGear
+// Weapon Main
+class tile_bg_an_slot_wpn_grid: tile_bg_an_inv_player_grid
+{
+	w = UIW(EQUIP_SLOT_WPN_COLS);
+	h = UIH(EQUIP_SLOT_WPN_ROWS);
+	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_gun_gs.paa";
+};
+// Uniform
+class tile_bg_an_slot_uni_grid: tile_bg_an_inv_player_grid
+{
+	w = UIW(EQUIP_SLOT_UNI_COLS);
+	h = UIH(EQUIP_SLOT_UNI_ROWS);
+	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_uniform_gs.paa";
+};
+
+
 
 class inv_icon: para_RscControlsGroupNoScrollbarHV
 {
@@ -249,44 +274,37 @@ class an_inventory
 		
 		
 		// Inventory: Slot: Weapon
-		class grid_wpn_main_area: para_RscControlsGroupNoScrollbarHV
+		class grid_wpn_area: para_RscControlsGroupNoScrollbarHV
 		{
-			idc = 2100;
+			idc = 2102;
 			
 			x = UIX_CR(10);
 			y = UIY_CU(10);
-			w = UIW(EQUIP_SLOT_WIDTH);
-			h = UIH(EQUIP_SLOT_HEIGHT);
+			// w = UIW(EQUIP_SLOT_WPN_WIDTH);
+			// h = UIH(EQUIP_SLOT_WPN_HEIGHT);
+			w = UIW(EQUIP_SLOT_WPN_COLS);
+			h = UIH(EQUIP_SLOT_WPN_ROWS);
 			
-			onLoad = "uinamespace setvariable [""an_wpn_main_area"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""an_wpn_main_area"", controlNull];";
-			
+			onLoad = "uinamespace setvariable [""an_slot_wpn_area"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_slot_wpn_area"", controlNull];";
 			
 			onMouseButtonDown	= "";
 			onMouseButtonUp		= "";
 			// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
 			// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
-			
-			
-			/*
-				case 2: {"CfgWeapons"};		// Primary Weapon
-				case 3: {"CfgWeapons"};		// Handgun
-				case 4: {"CfgWeapons"};		// Launcher
-				case 5: {"CfgWeapons"};		// Tool (Pickaxe/Hammer)
-			*/
 			class controls
 			{
 				class grid: para_RscControlsGroupNoScrollbarHV
 				{
-					idc = 2000;
+					idc = 2002;
 					
 					x = UIW(0);
 					y = UIH(0);
-					w = UIW(EQUIP_SLOT_WIDTH);
-					h = UIH(EQUIP_SLOT_HEIGHT);
+					w = UIW(EQUIP_SLOT_WPN_COLS);
+					h = UIH(EQUIP_SLOT_WPN_ROWS);
 					
-					onLoad = "uinamespace setvariable [""an_wpn_main_grid"", (_this#0)];";
-					onUnload = "uinamespace setvariable [""an_wpn_main_grid"", controlNull];";
+					onLoad = "uinamespace setvariable [""an_slot_wpn_grid"", (_this#0)];";
+					onUnload = "uinamespace setvariable [""an_slot_wpn_grid"", controlNull];";
 					
 					// onMouseButtonDown	= "";		//RESERVED: "grab" Item
 					// onMouseButtonUp		= "";
@@ -302,8 +320,8 @@ class an_inventory
 							
 							x = 0;
 							y = 0;
-							w = UIW(EQUIP_SLOT_WIDTH);
-							h = UIH(EQUIP_SLOT_HEIGHT);
+							w = UIW(EQUIP_SLOT_WPN_COLS);
+							h = UIH(EQUIP_SLOT_WPN_ROWS);
 							
 							colorText[] = {0.3,0.3,0.3,0.95};
 							colorBackground[] = {0.3,0.3,0.3,0.95};
@@ -316,10 +334,53 @@ class an_inventory
 		};
 		
 		
-		
-		
-		
-		
-		
+		// Inventory: Slot: Uniform
+		class grid_uni_area: para_RscControlsGroupNoScrollbarHV
+		{
+			idc = 2112;
+			
+			x = UIX_CR(10);
+			y = UIY_CU(6);
+			w = UIW(EQUIP_SLOT_UNI_COLS);
+			h = UIH(EQUIP_SLOT_UNI_ROWS);
+			
+			onLoad = "uinamespace setvariable [""an_slot_uni_area"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_slot_uni_area"", controlNull];";
+			
+			class controls
+			{
+				class grid: para_RscControlsGroupNoScrollbarHV
+				{
+					idc = 2012;
+					
+					x = UIW(0);
+					y = UIH(0);
+					w = UIW(EQUIP_SLOT_UNI_COLS);
+					h = UIH(EQUIP_SLOT_UNI_ROWS);
+					
+					onLoad = "uinamespace setvariable [""an_slot_uni_grid"", (_this#0)];";
+					onUnload = "uinamespace setvariable [""an_slot_uni_grid"", controlNull];";
+					
+					class controls
+					{
+						
+						class bg: para_RscText
+						{
+							idc = 99999;
+							
+							x = 0;
+							y = 0;
+							w = UIW(EQUIP_SLOT_UNI_COLS);
+							h = UIH(EQUIP_SLOT_UNI_ROWS);
+							
+							colorText[] = {0.3,0.3,0.3,0.95};
+							colorBackground[] = {0.3,0.3,0.3,0.95};
+							text = "";
+							sizeEx = TXT_M;
+						};
+					};
+				};
+			};
+		};
 	};
 };
