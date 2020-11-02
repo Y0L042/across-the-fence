@@ -1,5 +1,7 @@
 //Use paradigm's init script to handle server and client initialisation.
 use_paradigm_init = 1;
+//Include paradigm-specific config
+#include "paradigm.hpp"
 
 // Defines
 #include "defines.hpp"

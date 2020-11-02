@@ -71,11 +71,6 @@ diag_log "VN Anarchy: Starting player list tracker";
 diag_log "VN Anarchy: Starting AI loadbalancer";
 [] call para_s_fnc_loadbal_subsystem_init;
 
-para_s_fnc_harass_blocked_areas = {
-    //vn_mf_markers_blocked_areas + vn_mf_markers_no_harass
-    []
-};
-
 //Start AI objective subsystem.
 [] call para_s_fnc_ai_obj_subsystem_init;
 
@@ -83,10 +78,7 @@ para_g_enemiesPerPlayer = 2;
 publicVariable "para_g_enemiesPerPlayer";
 // Start harassment subsystem. Depends on the AI subsystem.
 // Disabled until it's configured for Anarchy
-//[] call para_s_fnc_harass_subsystem_init;
-
-// start vehicle asset management subsystem
-// [] call vn_mf_fnc_veh_asset_subsystem_init;
+[] call para_s_fnc_harass_subsystem_init;
 
 // start cleanup subsystem
 [] call para_s_fnc_cleanup_subsystem_init;

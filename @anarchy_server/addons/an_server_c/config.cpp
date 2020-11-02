@@ -12,8 +12,6 @@ class CfgPatches
 	};
 };
 
-// #define PARA_PATH \paradigm
-
 class CfgFunctions
 {
 	class AN_S

@@ -1,15 +1,5 @@
 class cfgfunctions
 {
-	//Function definitions for mission-specific paradigm features.
-	/*
-	class para_interop {
-		class interop {
-			file = "functions\paradigm_interop";
-			class get_squad_composition {};
-			class valid_attack_angles {};
-		};
-	};
-	*/
 	class vn_an
 	{
 
@@ -26,9 +16,12 @@ class cfgfunctions
 			};
 		};
 
-		class server
+		class paradigm_interop
 		{
+			class get_squad_composition {};
+			class harass_filter_target_players {};
+			class harass_get_enemy_side {};
+			class valid_attack_angles {};
 		};
-
 	};
 };

@@ -101,4 +101,6 @@ class gamemode
 	{
 		#include "subconfigs\buildings.hpp"
 	};
+
+	#include "subconfigs\units.hpp"
 };
