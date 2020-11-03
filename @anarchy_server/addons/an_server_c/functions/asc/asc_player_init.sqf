@@ -1,6 +1,6 @@
 /*
     File: asc_player_init.sqf
-    Author: Spoffy
+    Author: Spoffy, Dscha
     Date: 2020-11-03
     Last Update: 2020-11-03
     Public: No
@@ -10,9 +10,13 @@
 		Sets "asc_initialised_on_server" on player when done.
 
 		Player pawn *must exist when this function is called*
+		
+		Function call type: unscheduled (call)
     
     Parameter(s):
-		_playerUID - UID of the relevant player
+		_dataset = [
+				 ["data_puid",123456]
+			]
     
     Returns:
 		None
@@ -21,13 +25,12 @@
 		N/A - Called from ASC
 */
 
-params ["_playerUID"]
+#include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
+params["_dataset"];
 
-private _players = allPlayers;
-private _playerIndex = _players findIf { getPlayerUID _x == _playerUID };
-if (_playerIndex == -1) exitWith {diag_log format ["ERROR Anarchy: Player with UID %1 could not be found", _playerUID];};
-
-private _player = _players select _playerIndex;
+private _playerUID = ENTRY_GET("data_puid",_dataset);
+private _player = [_playerUID] call AN_S_fnc_player_get_by_puid;
+if(isNull _player)exitWith{};
 
 //======================
 //==== DO INIT HERE ====
