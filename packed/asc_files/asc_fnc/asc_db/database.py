@@ -75,9 +75,11 @@ class asc_db:
 				'crates': self.crates,
 				'bases': self.bases
 				}
-			print("preparing data to save... done")
+			# print("preparing data to save... done")
+
 			# human easily readable format
 			json.dump(_dbData, f, indent=4)
 			# 1liner (less file size)
 			# json.dump(_dbData, f)
-			print("saving done")
+
+			# print("saving done")

@@ -103,7 +103,7 @@ class data_client:
                 try:
                     # check if multiple messages received at once and handle them separately
                     if b"}{" in msg:
-                        print("ASC_CLIENT: GET MESSAGE: MULTI MESSAGE RECEIVED")
+                        # print("ASC_CLIENT: GET MESSAGE: MULTI MESSAGE RECEIVED")
                         for i in range(msg.count(b"}{") + 1):
                             splitPos = msg.find(b"}{") + 1
                             if splitPos == 0:
@@ -126,7 +126,7 @@ class data_client:
                             msg = msg[splitPos::]
                     else:
                         try:
-                            print("ASC_CLIENT: GET MESSAGE: SINGLE MESSAGE RECEIVED")
+                            # print("ASC_CLIENT: GET MESSAGE: SINGLE MESSAGE RECEIVED")
                             # load as json and decode it
                             msg_d = json.loads(msg.decode('ascii'))
                             # get the codeTag for the functions cmdList
