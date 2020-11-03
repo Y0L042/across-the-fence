@@ -63,19 +63,39 @@ def client_init(self):
 
 	# Server:
 	# send Player Dataset over to the Server, so it can set up the player:
-	print(f"SENDING DATASET FROM {self.puid} TO SERVER...")
+	print(f"SENDING DATASET FROM {self.puid} TO GAMESERVER...")
 
+	# submit: faction
 	dataset = {
 		"data_puid": self.puid,
-		"data_pos": self.cData["pos"],
-		"data_health": self.cData["health"],
-		"data_faction": self.cData["faction"],
+		"data_faction": self.cData["faction"]
+		}
+	asc_g_msg.sendMsg("player_faction_set", dataset, self.sData.con_gameServer)
+
+	# submit: loadout
+	dataset = {
+		"data_puid": self.puid,
 		"data_gear": listGear
 		}
-	asc_g_msg.sendMsg("loadout_set", dataset, self.sData.con_gameServer)
+	asc_g_msg.sendMsg("player_loadout_set", dataset, self.sData.con_gameServer)
+
+	# submit: pos/dir/stance
+	dataset = {
+		"data_puid": self.puid,
+		"data_pos": self.cData["pos"]
+		}
+	asc_g_msg.sendMsg("player_pos_set", dataset, self.sData.con_gameServer)
+
+	# submit: health
+	dataset = {
+		"data_puid": self.puid,
+		"data_health": self.cData["health"]
+		}
+	asc_g_msg.sendMsg("player_health_set", dataset, self.sData.con_gameServer)
+
+	print(f"SENDING DATASET FROM {self.puid} TO GAMESERVER... Done")
 
 	# Client:
-
 	# send item Data
 	print(f"SENDING INIT_ITEMDATA TO {self.puid}... ")
 	# asc_g_msg.sendMsg("INIT_ITEMDATA", self.sData.itemParentData, self.con_client)
