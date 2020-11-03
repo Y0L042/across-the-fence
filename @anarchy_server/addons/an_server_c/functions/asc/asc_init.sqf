@@ -46,6 +46,7 @@ diag_log str ["ASC - Setting up Eventhandler... done"];
 diag_log str ["AN_ASC - Setting up Server connection..."];
 
 // Send the stuff
+// "asc_extension" callExtension ["init_server",["F:\anarchy\asc_files\config.cfg"]];	// SGD DEV SERVER SETTING
 "asc_extension" callExtension ["init_server",[]];
 
 diag_log str ["AN_ASC - Setting up Server connection... request send..."];
