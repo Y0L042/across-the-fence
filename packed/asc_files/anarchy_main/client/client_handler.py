@@ -111,9 +111,10 @@ def client_init(self):
 	asc_g_msg.sendMsg("INIT_CLIENTDATA", self.cData, self.con_client)
 	print(f"SENDING INIT_CLIENTDATA TO {self.puid}... DONE")
 
-	# send the "Client is passed ASC init" message to the Server
-	# ToDo: Make seperate function, using the setVariable stuff in loadout_set
-	# asc_g_msg.sendMsg("INIT_CLIENT_DONE", self.puid, self.sData.con_gameServer)
+	# send the "Client has passed the ASC init phase" message to the Server
+	print(f'PLAYER INIT DONE FOR {self.puid} - SENDING "PLAYER READY" TO THE GAMESERVER')
+	asc_g_msg.sendMsg("INIT_PLAYER_DONE", {"data_puid": self.puid}, self.sData.con_gameServer)
+
 
 
 def player_data_get(sData, puid):
