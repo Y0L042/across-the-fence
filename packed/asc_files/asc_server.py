@@ -66,13 +66,14 @@ class data_server:
                     break
                 else:
                     # check if multiple messages received at once and handle them separately
-                    if b"}{" in msg:
-                        for i in range(msg.count(b"}{") + 1):
-                            splitPos = msg.find(b"}{") + 1
+                    # if b"}{" in msg:
+                    if b"$$" in msg:
+                        for i in range(msg.count(b"$$")):
+                            splitPos = msg.find(b"$$") + 2
                             if splitPos == 0:
                                 msg_tmp = msg
                             else:
-                                msg_tmp = msg[:splitPos:]
+                                msg_tmp = msg[:splitPos - 2:]
 
                             try:
                                 msg_d = json.loads(msg_tmp.decode('ascii'))
@@ -96,7 +97,7 @@ class data_server:
                             data = msg_d["data"]
 
                             message_handler_s(sData=self, code=code, args=data)
-                        except Exception:
+                        except Exception as e:
                             # something went wrong, terribly...
                             print(f"FAULTY MESSAGE RECEIVED! ABORTING! MESSAGE: Exception: {e}")
                             continue

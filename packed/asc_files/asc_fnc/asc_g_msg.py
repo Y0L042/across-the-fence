@@ -13,7 +13,7 @@ def sendMsg(fncName: str, data: dict, con: socket.socket):
 	"""
 	try:
 		msg_data = {"fnc": fncName, "data": data}
-		msg = bytes(json.dumps(msg_data), "ascii")
+		msg = bytes(f"{json.dumps(msg_data)}$$", "ascii")
 		con.sendall(msg)
 	except Exception as e:
 		print(f"ERROR: SendMSG: EXCEPTION TRIGGERED: {e}")

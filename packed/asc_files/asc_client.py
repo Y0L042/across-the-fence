@@ -102,14 +102,13 @@ class data_client:
                     break
                 try:
                     # check if multiple messages received at once and handle them separately
-                    if b"}{" in msg:
-                        # print("ASC_CLIENT: GET MESSAGE: MULTI MESSAGE RECEIVED")
-                        for i in range(msg.count(b"}{") + 1):
-                            splitPos = msg.find(b"}{") + 1
+                    if b"$$" in msg:
+                        for i in range(msg.count(b"$$")):
+                            splitPos = msg.find(b"$$") + 2
                             if splitPos == 0:
                                 msg_tmp = msg
                             else:
-                                msg_tmp = msg[:splitPos:]
+                                msg_tmp = msg[:splitPos - 2:]
 
                             try:
                                 msg_d = json.loads(msg_tmp.decode('ascii'))
