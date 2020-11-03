@@ -48,8 +48,14 @@ cmdList = {
 				"fac_data_load":             {"fnc": "AN_S_fnc_factions_data_load", "spawn": 0},
 
 				# Players:
-				# player spawning
-				"loadout_set":            {"fnc": "AN_S_fnc_loadout_set", "spawn": 1},
+				# player: ASC Init finalized
+				"INIT_PLAYER_DONE":         {"fnc": "AN_S_fnc_asc_player_init", "spawn": 0},
+				# set the loadout:
+				"player_loadout_set":       {"fnc": "AN_S_fnc_player_loadout_set", "spawn": 0},
+				"player_faction_set":       {"fnc": "AN_S_fnc_player_faction_set", "spawn": 0},
+				"player_pos_set":           {"fnc": "AN_S_fnc_player_pos_set", "spawn": 0},
+				"player_health_set":        {"fnc": "AN_S_fnc_player_health_set", "spawn": 0},
+
 
 				# Inventory
 				"crate_add":                {"fnc": "AN_S_fnc_crate_add", "spawn": 0}
