@@ -46,6 +46,12 @@ _local_vars = [];
 _local_vars pushBack ["para_player_token",_token];
 _player setVariable ["para_player_token",_token];
 
+//Wait for ASC serverside callback to have initialised the player.
+//Abort if initialised, or is player has disconnected.
+diag_log format ["Anarchy Player Init: Waiting for ASC to initialise player - %1", getPlayerUID _player];
+waitUntil {uiSleep 0.2; !isPlayer _player || _player getVariable ["asc_initialised_on_server", false]};
+diag_log format ["Anarchy Player Init: Finished waiting for ASC to initialise player %1. Connected: %2", getPlayerUID _player, isPlayer _player];
+
 // currently handled by "\an_server_c\functions\gear\loadout_set.sqf" (ASC returns)
 // _player setPos markerPos "new_player_spawn";
 

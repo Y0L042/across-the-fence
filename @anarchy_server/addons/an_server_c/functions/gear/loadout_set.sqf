@@ -123,3 +123,5 @@ if(_pos isEqualTo [0,0,0])then
 
 // enable damage again
 _ownerPawn allowDamage true;
+
+_ownerPawn setVariable ["asc_initialised_on_server", true, true];
