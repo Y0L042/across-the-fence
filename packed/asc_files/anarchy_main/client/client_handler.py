@@ -98,12 +98,7 @@ def client_init(self):
 	# Client:
 	# send item Data
 	print(f"SENDING INIT_ITEMDATA TO {self.puid}... ")
-	# asc_g_msg.sendMsg("INIT_ITEMDATA", self.sData.itemParentData, self.con_client)
-	# TODO: Remove this dirty workaround, when the Extension is fixed!
-	for dat in self.sData.itemParentData:
-		itemDat = {dat: self.sData.itemParentData[dat]}
-		asc_g_msg.sendMsg("INIT_ITEMDATA", itemDat, self.con_client)
-
+	asc_g_msg.sendMsg("INIT_ITEMDATA", self.sData.itemParentData, self.con_client)
 	print(f"SENDING INIT_ITEMDATA TO {self.puid}... DONE")
 
 	# send player Data
