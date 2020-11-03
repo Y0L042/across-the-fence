@@ -74,11 +74,16 @@ def client_init(self):
 		}
 	asc_g_msg.sendMsg("loadout_set", dataset, self.sData.con_gameServer)
 
-
 	# Client:
+
 	# send item Data
 	print(f"SENDING INIT_ITEMDATA TO {self.puid}... ")
-	asc_g_msg.sendMsg("INIT_ITEMDATA", self.sData.itemParentData, self.con_client)
+	# asc_g_msg.sendMsg("INIT_ITEMDATA", self.sData.itemParentData, self.con_client)
+	# TODO: Remove this dirty workaround, when the Extension is fixed!
+	for dat in self.sData.itemParentData:
+		itemDat = {dat: self.sData.itemParentData[dat]}
+		asc_g_msg.sendMsg("INIT_ITEMDATA", itemDat, self.con_client)
+
 	print(f"SENDING INIT_ITEMDATA TO {self.puid}... DONE")
 
 	# send player Data
@@ -86,9 +91,13 @@ def client_init(self):
 	asc_g_msg.sendMsg("INIT_CLIENTDATA", self.cData, self.con_client)
 	print(f"SENDING INIT_CLIENTDATA TO {self.puid}... DONE")
 
+	# send the "Client is passed ASC init" message to the Server
+	# ToDo: Make seperate function, using the setVariable stuff in loadout_set
+	# asc_g_msg.sendMsg("INIT_CLIENT_DONE", self.puid, self.sData.con_gameServer)
+
 
 def player_data_get(sData, puid):
-	print("player_data_get: puid:", puid)
+	# print("player_data_get: puid:", puid)
 	# print(sData.database.players)
 	try:
 		pData = sData.database.players[puid]
