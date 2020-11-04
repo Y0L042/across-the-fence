@@ -63,7 +63,7 @@ def client_init(self):
 
 	# Server:
 	# send Player Dataset over to the Server, so it can set up the player:
-	print(f"SENDING DATASET FROM {self.puid} TO GAMESERVER...")
+	print(f"SENDING: DATASET FROM {self.puid} TO GAMESERVER...")
 
 	# submit: faction
 	dataset = {
@@ -93,22 +93,41 @@ def client_init(self):
 		}
 	asc_g_msg.sendMsg("player_health_set", dataset, self.sData.con_gameServer)
 
-	print(f"SENDING DATASET FROM {self.puid} TO GAMESERVER... Done")
+	print(f"SENDING: DATASET FROM {self.puid} TO GAMESERVER... Done")
+	# All Data was send to the Server.
+	#################################
+	# Now send the data to the client:
 
-	# Client:
-	# send item Data
-	print(f"SENDING INIT_ITEMDATA TO {self.puid}... ")
+	# send itemParent Definitions
+	print(f"SENDING: INIT_ITEMDATA TO {self.puid}... ")
 	asc_g_msg.sendMsg("INIT_ITEMDATA", self.sData.itemParentData, self.con_client)
-	print(f"SENDING INIT_ITEMDATA TO {self.puid}... DONE")
+	print(f"SENDING: INIT_ITEMDATA TO {self.puid}... DONE")
 
 	# send player Data
-	print(f"SENDING INIT_CLIENTDATA TO {self.puid}...")
-	asc_g_msg.sendMsg("INIT_CLIENTDATA", self.cData, self.con_client)
-	print(f"SENDING INIT_CLIENTDATA TO {self.puid}... DONE")
+	print(f"SENDING: INIT_CLIENTDATA TO {self.puid}...")
+	# asc_g_msg.sendMsg("INIT_CLIENTDATA", self.cData, self.con_client)
+
+	# Gear:
+	print(f"SENDING: INVENTORY ITEMDATA TO {self.puid}...")
+	dataset = {
+			"itemData": self.cData["itemData"],
+			"inv_grid": self.cData["inv_grid"]
+		}
+	# remove the grid from the data, passed to the client.
+	asc_g_msg.sendMsg("player_gear_set", dataset, self.con_client)
+	print(f"SENDING: INVENTORY ITEMDATA TO {self.puid}... DONE")
+
+	# Skills
+	print(f"SENDING: SKILLS TO {self.puid}...")
+	dataset = {
+		"skills": self.cData["skills"]
+		}
+	asc_g_msg.sendMsg("player_skills_set", dataset, self.con_client)
+	print(f"SENDING: SKILLS TO {self.puid}... DONE")
 
 	# send the "Client has passed the ASC init phase" message to the Server
 	print(f'PLAYER INIT DONE FOR {self.puid} - SENDING "PLAYER READY" TO THE GAMESERVER')
-	asc_g_msg.sendMsg("INIT_PLAYER_DONE", {"data_puid": self.puid}, self.sData.con_gameServer)
+	asc_g_msg.sendMsg("INIT_PLAYER_DONE", {"data_puid": self.puid}, self.con_server)
 
 
 
