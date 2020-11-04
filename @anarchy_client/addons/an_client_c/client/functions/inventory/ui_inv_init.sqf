@@ -75,6 +75,8 @@ private _disp = (findDisplay 46) createDisplay "an_inventory";
 _disp displayAddEventHandler ["keyDown",{if(_this#1 in [1])then{_this#0 closeDisplay 1;}; true}];
 // KeyUp: block every button (movement), except ESC/TAB button to close the Inv
 _disp displayAddEventHandler ["keyUp",{if(_this#1 in [15])then{_this#0 closeDisplay 1;}; true }];
+// Handle scrolling the Mousewheel (only if an item is currently grabbed)
+_disp displayAddEventhandler ["MouseZChanged","call an_c_fnc_ui_inv_EH_mouse_z"];
 
 // Set the names for all available Inventories and Slots
 AN_INVENTORY_LIST = [["an_inv_player_area","an_inv_player_grid"],["an_inv_external_area","an_inv_external_grid"]];
@@ -94,9 +96,9 @@ an_inv_move_placeHorizontal = true;	// init
 an_ui_inv_grabActive = false;		// init
 
 ////// Create Inventory for Player and Ground
-// Load Inventory: Player
-_invItemData = localNamespace getVariable ["an_cData_invData",[]];
 diag_log "-----------------------------------------------";
+// Load Inventory: Player
+private _invItemData = localNamespace getVariable ["an_cData_invData",[]];
 ["an_inv_player_grid", _invItemData] call an_c_fnc_ui_inv_load;
 diag_log "-----------------------------------------------";
 
@@ -105,9 +107,6 @@ localNamespace setVariable ["an_inv_external_active",ENTRY_GET("crateID",_dataCr
 // Load Inventory: External
 ["an_inv_external_grid", _dataCrate] call an_c_fnc_ui_inv_load;
 diag_log "-----------------------------------------------";
-
-// Handle scrolling the Mousewheel (only if an item is currently grabbed)
-_disp displayAddEventhandler ["MouseZChanged","call an_c_fnc_ui_inv_EH_mouse_z"];
 
 
 
