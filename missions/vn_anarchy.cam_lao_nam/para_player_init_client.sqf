@@ -87,6 +87,18 @@ uiSleep 0.4;
 progressLoadingScreen 0.9;
 [parseText format["<t font='tt2020base_vn' color='#F5F2D0'>%1</t>",localize "STR_vn_mf_loading9"]] call vn_an_fnc_update_loading_screen;
 
+// Spawn and start the Loot-bubble-thingy-function-stuff
+vn_an_crates = [];
+[] spawn
+{
+    systemChat "DEBUG: Starting loot bubble check";
+    // make loot spawn
+    while {true} do
+    {
+        call AN_C_fnc_loot_bubble;
+        uiSleep 0.02;
+    };
+};
 uiSleep 0.4;
 progressLoadingScreen 1.0;
 
