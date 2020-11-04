@@ -1,4 +1,6 @@
 import random
+
+from asc_fnc import asc_g_msg
 from . import inv_handler, id_handler
 
 ############
@@ -98,9 +100,26 @@ def item_move(client=None, args=()):
     oldInv_invGrid = oldInv["inv_grid"]
     # print(f"::::: OLD INV:\n{oldInv}")
     # print(f"::::: OLD INV GRID:\n{oldInv_invGrid}")
-
+    item = None
     # and the item data
-    item = oldInv["itemData"][itemID]
+    if itemID in oldInv["itemData"]:
+        item = oldInv["itemData"][itemID]
+    else:
+        print(f"ERROR: ITEM_MOVE: Key not found: {itemID}\nERROR: Resending Inventory update back to the player")
+        # resending it, triggers a force-reopen of the Inventory (instantly)
+        dataset = {
+            "itemData": client.cData["itemData"],
+            "inv_grid": client.cData["inv_grid"]
+            }
+        asc_g_msg.sendMsg("player_gear_set", dataset, client.sData.con_gameServer)
+        # send Inventory back to the player and trigger the Inventory UI to be reopen, so it loads the new data
+        inv_handler.inv_send_toClient(oldInv, client.con_client)
+
+
+    # exit if item couldn't be added
+    if item is None:
+        return
+
     # print(f"::::: item:\n{item}")
 
     # get the parent Data
@@ -149,7 +168,7 @@ def item_move(client=None, args=()):
         # check for free slots
         slots_used_new = inv_handler.inv_slots_used_get(slotsStart=invPos, invGrid=newInv_invGrid, isFlipped=isFlipped, sizeItem=sizeItem, isAdd=True)
 
-    print(f"::::: slots_used: {slots_used_new}")
+    # print(f"::::: slots_used: {slots_used_new}")
 
     # check if there was enough space in the new Inventory. In case of Equip: Ignore
     if len(slots_used_new) == 0 and not isEquip:
