@@ -189,6 +189,23 @@ def item_move(client=None, args=()):
         newInv["itemData"][item["id"]] = item
         # print(newInv["itemData"])
 
+        # To finalize it: Check if its an (un)equip request and update the player, if needed.
+        if isEquip or isUnEquip:
+            # filter out all the equipped Gear and send it as a "special" set to the Server, so the Client can be equipped
+            listGear = []
+            for x in client.cData["itemData"]:
+                # noinspection PyTypeChecker
+                slotID = client.cData["itemData"][x]["inSlot"]
+                if slotID > 0:
+                    listGear.append(client.cData["itemData"][x])
+            # submit: loadout
+            dataset = {
+                "data_puid": client.puid,
+                "data_gear": listGear
+                }
+            asc_g_msg.sendMsg("player_loadout_set", dataset, client.sData.con_gameServer)
+
+
     # ToDo: TEMP! Saving will be done by an extra Thread from the Server!
     client.sData.database.db_save()
 
