@@ -8,7 +8,7 @@ class CfgPatches
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 0.1;
-		requiredAddons[] = {"sgd_paradigm"};
+		requiredAddons[] = {"sgd_paradigm","A3_Ui_F"};
 	};
 };
 
@@ -62,3 +62,5 @@ class para_RscStatProgressHUD;
 // Inventory
 // Dev Path
 #include "\sgd\anarchy\an_client_c\client\config\ui\inventory\inventory.hpp"
+
+#include "global\config\cfgActions.h"
