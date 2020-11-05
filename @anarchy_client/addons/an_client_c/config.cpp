@@ -60,7 +60,7 @@ class para_RscStatProgressHUD;
 
 
 // Inventory
-// Dev Path
-#include "\sgd\anarchy\an_client_c\client\config\ui\inventory\inventory.hpp"
+#include "client\config\ui\inventory\inventory.hpp"
 
-#include "global\config\cfgActions.h"
+// ScrollWheel edits/removals
+#include "client\config\cfgActions.hpp"
