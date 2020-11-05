@@ -61,6 +61,7 @@ class para_RscStatProgressHUD;
 
 // Inventory
 #include "client\config\ui\inventory\inventory.hpp"
+#include "client\config\ui\inventory\inventory_vanilla.hpp"
 
 // ScrollWheel edits/removals
 #include "client\config\cfgActions.hpp"
