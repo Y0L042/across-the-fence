@@ -170,6 +170,27 @@ def inv_send_toClient(invData, conClient):
     del invData_noGrid["inv_grid"]
     asc_g_msg.sendMsg("ret_inv_crateData", invData_noGrid, conClient)
 
+def inv_update_force(client, invID_old, invID_new):
+    """
+    cData       client Data
+    invID_old   "" - ID #1
+    invID_new:  "" - ID #2
+    """
+
+    # Since we want to send over the remote Inventory -> Check if invID_old is NOT the player Inv.
+    if invID_old != client.puid:
+        inv_remote = inv_getData(client, invID_old)
+    else:
+        inv_remote = inv_getData(client, invID_new)
+    # resending it, triggers a force-reopen of the Inventory (instantly)
+    dataset = {
+        "itemData": client.cData["itemData"],
+        "inv_grid": client.cData["inv_grid"]
+        }
+    # update the player Gear
+    asc_g_msg.sendMsg("player_gear_set", dataset, client.con_client)
+    # send Remote Inventory back to the player and trigger the Inventory UI to be reopen, so it loads the new data
+    inv_send_toClient(inv_remote, client.con_client)
 
 
 # called by Server only!
@@ -236,7 +257,7 @@ def inv_slots_used_get(slotsStart=None, slots_ignore=None, sizeItem=None, invGri
                     elif [(xin+xpos), (yin+ypos)] in slots_ignore:
                         slots_used.append([xin+xpos, yin+ypos])
                     else:
-                        print(f"DEBUG: INV_HANDLER: inv_slots_used_get - NO FREE SLOTS FOUND - Slot: {[xin+xpos, yin+ypos]}")
+                        print(f"DEBUG: INV_HANDLER: inv_slots_used_get - NO FREE SLOTS FOUND - Slot: {[xin+xpos, yin+ypos]} (If EQUIP REQUEST -> All is fine!)")
                         return []
                 except IndexError:
                     print("Parts of the Item are outside the Inventory ")
