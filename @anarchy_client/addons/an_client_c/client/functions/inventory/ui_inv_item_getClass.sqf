@@ -16,10 +16,10 @@ private _ret = switch(_itemClass)do
 	case 4: {"CfgWeapons"};		// Launcher
 	case 5: {"CfgWeapons"};		// Tool (Pickaxe/Hammer)
 	
-	case 10: {"CfgVehicles"};	// Helmet
+	case 10: {"CfgWeapons"};	// Helmet
 	case 11: {"CfgWeapons"};	// Glasses TODO: Check class
 	case 12: {"CfgWeapons"};	// Uniform
-	case 13: {"CfgVehicles"};	// Vest
+	case 13: {"CfgWeapons"};	// Vest
 	case 15: {"CfgVehicles"};	// Backpack
 	case 14: {"CfgMagazines"};	// Pouch (extra inventory, nothing else - atm not visible)
 	default {"CfgMagazines"};
