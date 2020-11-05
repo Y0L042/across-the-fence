@@ -23,5 +23,13 @@ class cfgfunctions
 			class harass_get_enemy_side {};
 			class valid_attack_angles {};
 		};
+
+		class placeholder
+		{
+			class action_supplies {};
+			class client_request_supplies {};
+			class create_supply_officer {};
+			class supplyrequest {};
+		};
 	};
 };

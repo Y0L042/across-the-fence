@@ -8,22 +8,22 @@ class EditorData
 	toggles=521;
 	class ItemIDProvider
 	{
-		nextID=7648;
+		nextID=7655;
 	};
 	class MarkerIDProvider
 	{
-		nextID=26;
+		nextID=28;
 	};
 	class LayerIndexProvider
 	{
-		nextID=245;
+		nextID=307;
 	};
 	class Camera
 	{
-		pos[]={11418.327,381.62396,9598.2295};
-		dir[]={-0.55480838,-0.57211745,-0.6040644};
-		up[]={-0.38700539,0.82017189,-0.42136404};
-		aside[]={-0.73650497,-5.0745439e-007,0.67644793};
+		pos[]={7568.814,116.71082,14665.09};
+		dir[]={0.6702612,-0.52080292,-0.52873319};
+		up[]={0.40890241,0.85367364,-0.32256117};
+		aside[]={-0.61935592,3.7718564e-008,-0.78513986};
 	};
 };
 binarizationWanted=0;
@@ -345,7 +345,7 @@ class Mission
 	};
 	class Entities
 	{
-		items=260;
+		items=261;
 		class Item0
 		{
 			dataType="Marker";
@@ -39764,7 +39764,7 @@ class Mission
 									"BOOL"
 								};
 							};
-							value=1;
+							value=0;
 						};
 					};
 				};
@@ -39859,7 +39859,7 @@ class Mission
 									"SCALAR"
 								};
 							};
-							value=30;
+							value=5;
 						};
 					};
 				};
@@ -40336,6 +40336,80 @@ class Mission
 			id=7647;
 			type="vn_i_air_ch34_02_02";
 			atlOffset=0.25218201;
+		};
+		class Item260
+		{
+			dataType="Layer";
+			name="Temporary Supply Officers";
+			class Entities
+			{
+				items=6;
+				class Item0
+				{
+					dataType="Marker";
+					position[]={7636.2168,88.818001,7842.3828};
+					name="supply_officer_us";
+					text="US Supply Officer";
+					type="Empty";
+					angle=120.73796;
+					id=7650;
+					atlOffset=-0.0019989014;
+				};
+				class Item1
+				{
+					dataType="Marker";
+					position[]={7645.2568,88.816002,7835.103};
+					name="supply_drop_us";
+					text="Supply Drop US";
+					type="Empty";
+					id=7651;
+					atlOffset=-0.0039978027;
+				};
+				class Item2
+				{
+					dataType="Marker";
+					position[]={7433.4209,112.725,14689.368};
+					name="supply_drop_NV";
+					text="Supply Drop NV";
+					type="Empty";
+					id=7652;
+					atlOffset=-0.0044174194;
+				};
+				class Item3
+				{
+					dataType="Marker";
+					position[]={11177.857,244.532,9485.332};
+					name="supply_drop_arvn";
+					text="Supply Drop ARVN";
+					type="Empty";
+					id=7649;
+					atlOffset=-1.5258789e-005;
+				};
+				class Item4
+				{
+					dataType="Marker";
+					position[]={11182.175,243.382,9487.5605};
+					name="supply_officer_arvn";
+					text="ARVN Supply Officer";
+					type="Empty";
+					angle=89.102974;
+					id=7648;
+					atlOffset=-0.0022735596;
+				};
+				class Item5
+				{
+					dataType="Marker";
+					position[]={7425.8271,115.584,14696.33};
+					name="supply_officer_nv";
+					text="NV Supply Officer";
+					type="Empty";
+					angle=120.73796;
+					id=7653;
+					atlOffset=-0.0022506714;
+				};
+			};
+			id=7654;
+			atlOffset=-36.387894;
 		};
 	};
 	class Connections

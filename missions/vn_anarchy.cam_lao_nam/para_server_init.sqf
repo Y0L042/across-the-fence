@@ -99,5 +99,11 @@ publicVariable "para_g_enemiesPerPlayer";
     []
 ]] call para_g_fnc_event_add_handler;
 
+//Initialise supply officers 
+//TEMPORARY - To be removed when we have other supply methods in.
+{
+    [_x] call vn_an_fnc_create_supply_officer;
+} forEach (allMapMarkers select {_x find "supply_officer" == 0});
+
 //Initialise factions
 call an_s_fnc_factions_init;
