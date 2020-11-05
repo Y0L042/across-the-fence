@@ -9,6 +9,12 @@
 #define EQUIP_SLOT_WPN_ROWS 3
 #define EQUIP_SLOT_UNI_COLS 4
 #define EQUIP_SLOT_UNI_ROWS 6
+#define EQUIP_SLOT_VST_COLS 4
+#define EQUIP_SLOT_VST_ROWS 4
+#define EQUIP_SLOT_HEL_COLS 3
+#define EQUIP_SLOT_HEL_ROWS 3
+#define EQUIP_SLOT_BKP_COLS 4
+#define EQUIP_SLOT_BKP_ROWS 4
 
 // Backgrounds:
 // Player
@@ -57,7 +63,27 @@ class tile_bg_an_slot_uni_grid: tile_bg_an_inv_player_grid
 	h = UIH(EQUIP_SLOT_UNI_ROWS);
 	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_uniform_gs.paa";
 };
-
+// Vest
+class tile_bg_an_slot_vst_grid: tile_bg_an_inv_player_grid
+{
+	w = UIW(EQUIP_SLOT_VST_COLS);
+	h = UIH(EQUIP_SLOT_VST_ROWS);
+	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_vest_gs.paa";
+};
+// Helmet
+class tile_bg_an_slot_hel_grid: tile_bg_an_inv_player_grid
+{
+	w = UIW(EQUIP_SLOT_HEL_COLS);
+	h = UIH(EQUIP_SLOT_HEL_ROWS);
+	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_helmet_gs.paa";
+};
+// Backpack
+class tile_bg_an_slot_bkp_grid: tile_bg_an_inv_player_grid
+{
+	w = UIW(EQUIP_SLOT_BKP_COLS);
+	h = UIH(EQUIP_SLOT_BKP_ROWS);
+	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_backpack_gs.paa";
+};
 
 
 class inv_icon: para_RscControlsGroupNoScrollbarHV
@@ -372,6 +398,155 @@ class an_inventory
 							y = 0;
 							w = UIW(EQUIP_SLOT_UNI_COLS);
 							h = UIH(EQUIP_SLOT_UNI_ROWS);
+							
+							colorText[] = {0.3,0.3,0.3,0.95};
+							colorBackground[] = {0.3,0.3,0.3,0.95};
+							text = "";
+							sizeEx = TXT_M;
+						};
+					};
+				};
+			};
+		};
+		
+		
+		// Inventory: Slot: Vest
+		class grid_vst_area: para_RscControlsGroupNoScrollbarHV
+		{
+			idc = 2113;
+			
+			x = UIX_CR(10);
+			y = UIY_CD(1);
+			w = UIW(EQUIP_SLOT_VST_COLS);
+			h = UIH(EQUIP_SLOT_VST_ROWS);
+			
+			onLoad = "uinamespace setvariable [""an_slot_vst_area"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_slot_vst_area"", controlNull];";
+			
+			class controls
+			{
+				class grid: para_RscControlsGroupNoScrollbarHV
+				{
+					idc = 2013;
+					
+					x = UIW(0);
+					y = UIH(0);
+					w = UIW(EQUIP_SLOT_VST_COLS);
+					h = UIH(EQUIP_SLOT_VST_ROWS);
+					
+					onLoad = "uinamespace setvariable [""an_slot_vst_grid"", (_this#0)];";
+					onUnload = "uinamespace setvariable [""an_slot_vst_grid"", controlNull];";
+					
+					class controls
+					{
+						
+						class bg: para_RscText
+						{
+							idc = 99999;
+							
+							x = 0;
+							y = 0;
+							w = UIW(EQUIP_SLOT_VST_COLS);
+							h = UIH(EQUIP_SLOT_VST_ROWS);
+							
+							colorText[] = {0.3,0.3,0.3,0.95};
+							colorBackground[] = {0.3,0.3,0.3,0.95};
+							text = "";
+							sizeEx = TXT_M;
+						};
+					};
+				};
+			};
+		};
+		
+		// Inventory: Slot: Helmet
+		class grid_hel_area: para_RscControlsGroupNoScrollbarHV
+		{
+			idc = 2110;
+			
+			x = UIX_CR(15);
+			y = UIY_CU(6);
+			w = UIW(EQUIP_SLOT_HEL_COLS);
+			h = UIH(EQUIP_SLOT_HEL_ROWS);
+			
+			onLoad = "uinamespace setvariable [""an_slot_hel_area"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_slot_hel_area"", controlNull];";
+			
+			class controls
+			{
+				class grid: para_RscControlsGroupNoScrollbarHV
+				{
+					idc = 2010;
+					
+					x = UIW(0);
+					y = UIH(0);
+					w = UIW(EQUIP_SLOT_HEL_COLS);
+					h = UIH(EQUIP_SLOT_HEL_ROWS);
+					
+					onLoad = "uinamespace setvariable [""an_slot_hel_grid"", (_this#0)];";
+					onUnload = "uinamespace setvariable [""an_slot_hel_grid"", controlNull];";
+					
+					class controls
+					{
+						
+						class bg: para_RscText
+						{
+							idc = 99999;
+							
+							x = 0;
+							y = 0;
+							w = UIW(EQUIP_SLOT_HEL_COLS);
+							h = UIH(EQUIP_SLOT_HEL_ROWS);
+							
+							colorText[] = {0.3,0.3,0.3,0.95};
+							colorBackground[] = {0.3,0.3,0.3,0.95};
+							text = "";
+							sizeEx = TXT_M;
+						};
+					};
+				};
+			};
+		};
+		
+		
+		// Inventory: Slot: Backpack
+		class grid_bkp_area: para_RscControlsGroupNoScrollbarHV
+		{
+			idc = 2115;
+			
+			x = UIX_CR(15);
+			y = UIY_CU(2);
+			w = UIW(EQUIP_SLOT_BKP_COLS);
+			h = UIH(EQUIP_SLOT_BKP_ROWS);
+			
+			onLoad = "uinamespace setvariable [""an_slot_bkp_area"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_slot_bkp_area"", controlNull];";
+			
+			class controls
+			{
+				class grid: para_RscControlsGroupNoScrollbarHV
+				{
+					idc = 2015;
+					
+					x = UIW(0);
+					y = UIH(0);
+					w = UIW(EQUIP_SLOT_BKP_COLS);
+					h = UIH(EQUIP_SLOT_BKP_ROWS);
+					
+					onLoad = "uinamespace setvariable [""an_slot_bkp_grid"", (_this#0)];";
+					onUnload = "uinamespace setvariable [""an_slot_bkp_grid"", controlNull];";
+					
+					class controls
+					{
+						
+						class bg: para_RscText
+						{
+							idc = 99999;
+							
+							x = 0;
+							y = 0;
+							w = UIW(EQUIP_SLOT_BKP_COLS);
+							h = UIH(EQUIP_SLOT_BKP_ROWS);
 							
 							colorText[] = {0.3,0.3,0.3,0.95};
 							colorBackground[] = {0.3,0.3,0.3,0.95};

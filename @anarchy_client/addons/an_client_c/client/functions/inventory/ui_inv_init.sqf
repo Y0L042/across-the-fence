@@ -78,9 +78,21 @@ _disp displayAddEventHandler ["keyUp",{if(_this#1 in [15])then{_this#0 closeDisp
 // Handle scrolling the Mousewheel (only if an item is currently grabbed)
 _disp displayAddEventhandler ["MouseZChanged","call an_c_fnc_ui_inv_EH_mouse_z"];
 
-// Set the names for all available Inventories and Slots
-AN_INVENTORY_LIST = [["an_inv_player_area","an_inv_player_grid"],["an_inv_external_area","an_inv_external_grid"]];
-AN_SLOTS_LIST = [["an_slot_wpn_area","an_slot_wpn_grid"],["an_slot_uni_area","an_slot_uni_grid"]];
+// Set the names for all available Inventories... 
+AN_INVENTORY_LIST =
+[
+	 ["an_inv_player_area","an_inv_player_grid"]
+	,["an_inv_external_area","an_inv_external_grid"]
+];
+// ...and Slots
+AN_SLOTS_LIST =
+[
+	 ["an_slot_wpn_area","an_slot_wpn_grid"]
+	,["an_slot_uni_area","an_slot_uni_grid"]
+	,["an_slot_vst_area","an_slot_vst_grid"]
+	,["an_slot_hel_area","an_slot_hel_grid"]
+	,["an_slot_bkp_area","an_slot_bkp_grid"]
+];
 // "Reset" the tileUsage Vars
 {
 	private _grid = uiNamespace getVariable [(_x#1),controlNull];
@@ -117,16 +129,15 @@ diag_log "-----------------------------------------------";
 // Set up Gear Slot(-inventories)
 diag_log ["------------------------ GEAR ------------------------"];
 private _slotList = [
-//     [DB_entry, VarName, rows, cols, SlotID]
+//   [		VarName, rows, cols, SlotID]
      ["an_slot_wpn_grid",3,6,2]
     ,["an_slot_uni_grid",6,4,12]
-    // ,["backpack",""]
+    ,["an_slot_vst_grid",4,4,13]
+    ,["an_slot_hel_grid",3,3,10]
+    ,["an_slot_bkp_grid",4,4,15]
     // ,["goggles",""]
-    // ,["helmet",""]
     // ,["pouch",""]
     // ,["tool",""]
-    // ,["uniform",""]
-    // ,["vest",""]
     // ,["w_hand",""]
     // ,["w_launch",""]
     // ,["w_main_b",""]
