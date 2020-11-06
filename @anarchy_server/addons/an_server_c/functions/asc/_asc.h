@@ -2,7 +2,7 @@
 
 class ASC
 {
-    DECLARE_SERVER_FUNC_INIT(asc,asc_init);
+    DECLARE_SERVER_FUNC_POSTINIT(asc,asc_init);
     DECLARE_SERVER_FUNC(asc,asc_address_set);
     DECLARE_SERVER_FUNC(asc,asc_player_init);
     DECLARE_SERVER_FUNC(asc,key_create);
