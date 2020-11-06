@@ -50,21 +50,3 @@ diag_log str ["AN_ASC - Setting up Server connection..."];
 "asc_extension" callExtension ["init_server",[]];
 
 diag_log str ["AN_ASC - Setting up Server connection... request send..."];
-
-
-/////////////////////////////////////////
-///// EVERYTHING BELOW CAN BE MOVED TO THE ANARCHY INIT FILES:
-
-// Set the seed
-vn_an_seed = 9283;
-
-// make the seed public
-missionNamespace setVariable ["vn_an_seed", vn_an_seed, true];
-
-
-diag_log ["DEBUG: ADDING AN_S_fnc_update_players TO SCHEDULER... "];
-// ToDo: Set to a reasonable time
-private _DEV_updateTime = 15;
-["update_players", {call AN_S_fnc_update_players}, [], _DEV_updateTime] call para_g_fnc_scheduler_add_job;
-diag_log ["DEBUG: ADDING AN_S_fnc_update_players TO SCHEDULER... DONE"];
-
