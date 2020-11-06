@@ -1,8 +1,8 @@
 /*
-    File: player_health_set.sqf
+    File: player_loadout_set.sqf
     Author: Dscha
     Date: 2020-11-03
-    Last Update: 2020-11-03
+    Last Update: 2020-11-06
     Public: No
     
     Description:
@@ -30,7 +30,7 @@ params["_dataset"];
 
 private _playerUID = ENTRY_GET("data_puid",_dataset);
 private _player = [_playerUID] call AN_S_fnc_player_get_by_puid;
-if(isNull _player)exitWith{};
+if(isNull _player)exitWith{diag_log "LOADOUT SET: NO PLAYER FOUND!";};
 
 /*
 private _timeout = diag_tickTime + 20;
@@ -60,6 +60,8 @@ _dataGear = ENTRY_GET("data_gear",_dataset);
 
 // set the the loadout
 private _loadout = [];
+_DEV_MAGAZINES = ["","",""];
+_DEV_MAGAZINES_AMMO = [0,0,0];
 // Weapons:
 {
 	_x params ["_slot", "_defaultValue"];
@@ -85,18 +87,47 @@ private _loadout = [];
 		if(_defaultValue isEqualType "")then
 		{
 			_defaultValue = _TEMPCLASSNAME;
-		}else{
+		}
+		else
+		{
 			_defaultValue set[0,_TEMPCLASSNAME];
+			/////////////////////////////////////////////////////////////////////////////////
+			// DEV: Add some Magazines, each time the Weapon is changed
+			if(_slot in [2,3,4])then
+			{
+				private _magazineList = getArray(configfile >> "CfgWeapons" >> _TEMPCLASSNAME >> "magazines");
+				private _magazine = selectRandom _magazineList;
+				if(_magazine isEqualTo [])then
+				{
+					private _MagWellName = getArray(configfile >> "CfgWeapons" >> _TEMPCLASSNAME >> "magazineWell");
+					private _MagWellList = getArray(configfile >> "CfgMagazineWells" >> _MagWellName >> "BI_Magazines");
+					if !(_MagWellList isEqualTo [])then
+					{
+						_magazine = selectRandom _magazineList;
+					};
+				};
+				
+				if !(_magazine isEqualTo "")then
+				{
+					private _magAmmoCount = getNumber(configfile >> "CfgMagazines" >> _magazine >> "count");
+					_DEV_MAGAZINES_AMMO set[(_slot - 2),_magAmmoCount];
+				};
+				
+				_DEV_MAGAZINES set[(_slot - 2), _magazine];
+				/////////////////////////////////////////////////////////////////////////////////
+			};
 		};
 		_loadout pushback _defaultValue;
-	}else{
+	}
+	else
+	{
 		_loadout pushback _defaultValue;
 	};
 }forEach
 [
 //	 https://community.bistudio.com/wiki/setUnitLoadout
 	 [2,	["","","","",[],[],""] ]	// ["arifle_MX_ACO_pointer_F","","acc_pointer_IR","optic_Aco",[],[],""],
-	,[4,	["","","","",[],[],""] ]	// [],
+	,[4,	["","","","",[],[],""] ]	// [],	// Launcher
 	,[3,	["","","","",[],[],""] ]	// ["hgun_P07_F","","","",["16Rnd_9x21_Mag",16],[],""],
 	,[12,	["",[]] ]					// ["U_B_CombatUniform_mcam",[ ["30Rnd_65x39_caseless_mag",2,1] ]],
 	,[13,	["",[]] ]					// ["V_PlateCarrier1_rgr",[]],
@@ -113,4 +144,20 @@ _loadout pushback ["vn_o_item_map","","","vn_b_item_compass_sog","vn_b_item_watc
 
 _player setUnitLoadout _loadout;
 
+[_player, _DEV_MAGAZINES] spawn
+{
+	params["_player","_DEV_MAGAZINES"];
+	uisleep 1;
+	{
+		if !(_x isEqualTo "")then
+		{
+			diag_log ["DEBUG: AN_S_fnc_loadout_set: magazine: ", _x];
+			// private _ammoCount = _DEV_MAGAZINES_AMMO#_forEachIndex;
+			_player addMagazines [_x, 3];
+			// _player addMagazine [_x, _ammoCount];
+			// _player addMagazine [_x, _ammoCount];
+			// _player addMagazine [_x, _ammoCount];
+		};
+	}forEach _DEV_MAGAZINES;
+};
 
