@@ -51,15 +51,17 @@ def server_start():
     ip = (params["ip"], int(params["port"]))
     server_key = params["server_key"]
     server_ip = params["server_ip"]
-    print(f'#### Server key:\n#### - "{server_key}"')
+    print(f'#### Server key:\n#### -> {server_key}')
 
     # ############# Loot/Item data thingy stuff burp
     # ####### set the main lootseed ...
-    if params["lootseed"] is None:
-        sData.lootData["globalseed"] = "".join(random.choices(string.ascii_letters, k=8))
-    else:
-        sData.lootData["globalseed"] = params["lootseed"]
-    print(f'#### Lootseed:\n#### - "{sData.lootData["globalseed"]}"')
+    try:
+        sData.lootData["globalseed"] = int(''.join(list(filter(str.isdigit, params["lootseed"])))) % 999999
+    except (ValueError, KeyError, TypeError):
+        print(f'!!!! WARNING:\n!!!! NO INTEGERS FOUND IN CONFIG.CFG - GENERATING RANDOM SEED\n!!!!')
+        sData.lootData["globalseed"] = random.randint(0, 999999)
+
+    print(f'#### Lootseed:\n#### -> {sData.lootData["globalseed"]}')
 
     # ####### load all the Items
     itemParentData.load_files(sData=sData)
