@@ -46,6 +46,7 @@ cmdList = {
 				# Factions:
 				# set factions data
 				"fac_data_load":             {"fnc": "AN_S_fnc_factions_data_load", "spawn": 0},
+				"lootseed_set":             {"fnc": "AN_S_fnc_lootseed_set", "spawn": 0},
 
 				# Players:
 				# player: ASC Init finalized
