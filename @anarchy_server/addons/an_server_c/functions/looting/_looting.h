@@ -2,7 +2,7 @@
 
 class looting 
 {
-    DECLARE_SERVER_FUNC(looting,crate_loot_request);
+    DECLARE_SERVER_FUNC(looting,loot_request_crate_inventory);
     DECLARE_SERVER_FUNC(looting,lootseed_set);
 };
 

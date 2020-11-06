@@ -1,12 +1,12 @@
 /*
 	File: fn_loot_bubble.sqf
-	Author: Aaron Clark <vbawol>
+	Author: Spoffy and Aaron Clark <vbawol>
 	Date: 2020-07-20
 	Last Update: 2020-09-02
 	Public: No
 
 	Description:
-		Creates loot visable loot containers
+		Creates loot containers in the local area when called.
 
 	Parameter(s):
 		None
@@ -18,91 +18,72 @@
 		call AN_C_fnc_loot_bubble;
 */
 
-private _ticktime = diag_tickTime;
-
-private _debug_show_markers = true;
-private _debug_show_info = false;
-private _chance = 0.99;
-private _grid_size = 1;
-private _grid_x = 0;
-private _grid_y = 0;
-private _grid_rows = 20;
-
-private _total_rows = _grid_rows*_grid_rows;
-private _row_counter = 0;
-private _offset = -((_grid_rows*_grid_size)/2);
-private _playerpos = (getPosASL player) apply {floor _x};
-private _startpos =  [_playerpos#0,_playerpos#1,_playerpos#2] vectorAdd [_offset,_offset,0];
-private _pos = _startpos;
-
-private _check_counter = 0;
-
-private _looting_config = (missionConfigFile >> "gamemode" >> "looting" >> "buildings");
-
-for "_i" from 0 to _total_rows do
-{
-	_grid_x = _grid_x + _grid_size;
-	if (_row_counter >= _grid_rows) then
-	{
-		_grid_x = 0;
-		_row_counter = 0;
-		_grid_y = _grid_y + _grid_size;
-	};
-	_row_counter = _row_counter + 1;
-
-	private _normalized_pos = _pos apply {floor _x};
-	private _loot_pos_key = format["vn_%1",[_normalized_pos#0,_normalized_pos#1,_normalized_pos#2]];
-	private _crate_spawned = false;
-
-	if (isNil _loot_pos_key) then
-	{
-		if ((vn_an_seed + _normalized_pos#2) random [_normalized_pos#0,_normalized_pos#1] > _chance) then
-		{
-			private _pos_dn = (_normalized_pos vectorAdd [0,0,-1]);
-			private _pos_up = _pos_dn vectorAdd [0,0,4];
-			private _intersect = lineIntersectsSurfaces [
-				_pos_up,
-				_pos_dn,
-				player,
-				objNull,
-				true,
-				1,
-				"VIEW",
-				"FIRE"
-			];
-			_check_counter = _check_counter +1;
-			if !(_intersect isEqualTo []) then
-			{
-				(_intersect select 0) params ["_crate_pos","_crate_vec","_object","_building"];
-
-				if !(isNull _building) then
-				{
-					_is_allowed = getNumber (_looting_config >> typeOf _building >> "count");
-					if (_is_allowed > 0) then {
-
-						_crate_class = selectRandom getArray (_looting_config >> typeOf _building >> "containers");
-
-						_crate_spawned = true;
-						_crate = createSimpleObject [_crate_class, _crate_pos, true];
-
-						if (_debug_show_markers) then
-						{
-							_marker1 = createMarker [_loot_pos_key, _crate_pos];
-							_marker1 setMarkerType "hd_dot";
-						};
-						_crate setVariable ["linked_building", _building];
-						_crate setVariable ["linked_pos",_normalized_pos];
-						_crate setVariable ["linked_vec",_crate_vec];
-						vn_an_crates pushBack _crate;
-					};
-				};
-			};
-		};
-		missionNamespace setVariable [_loot_pos_key,_crate_spawned];
-	};
-	_pos = (_startpos vectorAdd [_grid_x,_grid_y,0]);
+if (isNil "an_c_looting_spawned_buildings") then {
+	an_c_looting_spawned_buildings = [];
+	an_c_looting_spawned_crates = [];
+	an_c_looting_last_player_pos = [0,0,0];
+	an_c_looting_range = 200;
+	an_c_looting_min_distance_refresh =	100;
+	player addAction [
+		"ASC: get crateData", 
+		{[] call AN_C_fnc_loot_inv_request;}, 
+		[], 
+		1.5, 
+		true, 
+		true, 
+		"",
+		"cursorObject getVariable ['an_c_looting_is_crate', false]", 
+		5, 
+		false
+	];
 };
-if (_debug_show_info) then
+
+private _playerPos = getPos player;
+if (   _playerPos distance an_c_looting_last_player_pos < an_c_looting_min_distance_refresh
+	|| vehicle player isKindOf "Air"
+) exitWith {};
+
+private _startTime = diag_frameNo;
+
+an_c_looting_last_player_pos = _playerPos;
+
+private _buildingsInRange = _playerPos nearObjects ["House", an_c_looting_range];
+private _spawnBuildings = _buildingsInRange - an_c_looting_spawned_buildings;
+an_c_looting_spawned_buildings = _buildingsInRange;
+
+if (!isNil "debug_loot_bubble") then {
+	systemChat format ["Spawning buildings: %1", count _spawnBuildings];
+};
+
+//Spawn in new buildings.
 {
-	 systemChat str [(diag_tickTime - _ticktime),_check_counter, count vn_an_crates];
+	private _building = _x;
+	private _finalSeed = [getPos _building] call an_g_fnc_loot_position_to_seed;
+
+	{
+		private _chance = (_finalSeed + _forEachIndex) random 1;
+		if (_chance < an_g_looting_crate_probability) then {
+			private _crate = createSimpleObject ["Land_vn_object_trashcan_01", AGLtoASL _x, true];
+			_crate setVariable ["an_c_looting_is_crate", true];
+			_crate setVariable ["an_c_looting_building", _building];
+			_crate setVariable ["an_c_looting_index", _forEachIndex];
+			an_c_looting_spawned_crates pushBack _crate;
+		};
+	} forEach (_building buildingPos -1);
+
+	an_c_looting_spawned_buildings pushBack _building;
+} forEach _spawnBuildings;
+
+
+//Despawn out of range crates.
+private _cratesInRange = (an_c_looting_spawned_crates inAreaArray [_playerPos, an_c_looting_range, an_c_looting_range]);
+private _despawnCrates = an_c_looting_spawned_crates - _cratesInRange;
+{
+	deleteVehicle _x;
+} forEach _despawnCrates;
+
+an_c_looting_spawned_crates = an_c_looting_spawned_crates select {!isNull _x};
+
+if (!isNil "debug_loot_bubble") then {
+	systemChat format ["Loot Bubble runtime: %1", diag_frameNo - _startTime];
 };
