@@ -1,17 +1,30 @@
 /*
-	send request to the Server to get loot for targeted object.
-	WIP! Needs wayyyy more counter-checks
+    File: loot_inv_request.sqf
+    Author: Dscha and Spoffy
+    Date: 2020-08-28
+    Last Update: 2020-11-06
+    Public: No
+    
+    Description:
+        Sends a request for a crate's inventory to the Arma server
+    
+    Parameter(s):
+		None
+    
+    Returns:
+		None
+    
+    Example(s):
+		[]	call an_c_fnc_loot_inv_request
 */
-#include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
-_tgt = cursorObject;
-// diag_log ["_tgt: ", _tgt];
+private _target = cursorObject;
 
-// if(!isSimpleObject _tgt)exitWith{systemChat "DEBUG MSG: LOOT_INV_REQUEST: No Object found.";};
-if(player distance _tgt > 5)exitWith{systemChat "DEBUG MSG: LOOT_INV_REQUEST: Too far away.";};
+if (player distance _target > 5) exitWith {systemChat "DEBUG MSG: LOOT_INV_REQUEST: Too far away.";};
+if !(_target getVariable ["an_c_looting_is_crate", false]) exitWith {systemChat "DEBUG MSG: LOOT_INV_REQUEST: Target is not a crate.";};
 
-private _building = _tgt getVariable ["linked_building",objNull];
-private _pos = _tgt getVariable ["linked_pos",[0,0,0]];
-
-// "send re to server to loot object with ref to crate object and crate pos and building item is spawned in"
-[player,'crate_loot_request',[player,_pos,_building],player getVariable 'para_player_token'] remoteExecCall ['para_s_fnc_rehandler',2];
+[
+	'loot_request_crate_inventory', 
+	//Grab building and index
+	[_target getVariable "an_c_looting_building", _target getVariable "an_c_looting_index"]
+] call para_c_fnc_call_on_server;

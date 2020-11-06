@@ -88,7 +88,6 @@ progressLoadingScreen 0.9;
 [parseText format["<t font='tt2020base_vn' color='#F5F2D0'>%1</t>",localize "STR_vn_mf_loading9"]] call vn_an_fnc_update_loading_screen;
 
 // Spawn and start the Loot-bubble-thingy-function-stuff
-vn_an_crates = [];
 [] spawn
 {
     systemChat "DEBUG: Starting loot bubble check";
@@ -142,7 +141,3 @@ sleep 4;
 		[] call para_c_fnc_infopanel_handler;
 	};
 };
-
-// Dscha: SPOFFY - HERE - Move me to a proper place please!
-// Placeholder addAction to trigger "looting"
-player addAction["ASC: get crateData", {[] call AN_C_fnc_loot_inv_request;}, nil, 1.5, true, true, "", "cursorObject in vn_an_crates", 5, false];

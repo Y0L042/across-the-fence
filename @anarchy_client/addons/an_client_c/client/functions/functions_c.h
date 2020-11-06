@@ -1,5 +1,5 @@
 #include "asc\_functions_asc.h"
 #include "factions\_factions.h"
-#include "looting\_functions_looting.h"
+#include "looting\_looting.h"
 #include "inventory\_inventory.h"
 #include "player\_player.h"
