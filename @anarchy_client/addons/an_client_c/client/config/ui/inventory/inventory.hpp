@@ -7,6 +7,8 @@
 
 #define EQUIP_SLOT_WPN_COLS 6
 #define EQUIP_SLOT_WPN_ROWS 3
+#define EQUIP_SLOT_SEC_COLS 4
+#define EQUIP_SLOT_SEC_ROWS 2
 #define EQUIP_SLOT_UNI_COLS 4
 #define EQUIP_SLOT_UNI_ROWS 6
 #define EQUIP_SLOT_VST_COLS 4
@@ -55,6 +57,13 @@ class tile_bg_an_slot_wpn_grid: tile_bg_an_inv_player_grid
 	w = UIW(EQUIP_SLOT_WPN_COLS);
 	h = UIH(EQUIP_SLOT_WPN_ROWS);
 	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_gun_gs.paa";
+};
+// Secondary / Handgun
+class tile_bg_an_slot_sec_grid: tile_bg_an_inv_player_grid
+{
+	w = UIW(EQUIP_SLOT_SEC_COLS);
+	h = UIH(EQUIP_SLOT_SEC_ROWS);
+	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_hgun_gs.paa";
 };
 // Uniform
 class tile_bg_an_slot_uni_grid: tile_bg_an_inv_player_grid
@@ -306,8 +315,6 @@ class an_inventory
 			
 			x = UIX_CR(10);
 			y = UIY_CU(10);
-			// w = UIW(EQUIP_SLOT_WPN_WIDTH);
-			// h = UIH(EQUIP_SLOT_WPN_HEIGHT);
 			w = UIW(EQUIP_SLOT_WPN_COLS);
 			h = UIH(EQUIP_SLOT_WPN_ROWS);
 			
@@ -557,5 +564,56 @@ class an_inventory
 				};
 			};
 		};
+		
+		
+		// Inventory: Slot: Backpack
+		class grid_sec_area: para_RscControlsGroupNoScrollbarHV
+		{
+			idc = 2103;
+			
+			x = UIX_CR(17);
+			y = UIY_CU(10);
+			w = UIW(EQUIP_SLOT_SEC_COLS);
+			h = UIH(EQUIP_SLOT_SEC_ROWS);
+			
+			onLoad = "uinamespace setvariable [""an_slot_sec_area"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_slot_sec_area"", controlNull];";
+			
+			class controls
+			{
+				class grid: para_RscControlsGroupNoScrollbarHV
+				{
+					idc = 2003;
+					
+					x = UIW(0);
+					y = UIH(0);
+					w = UIW(EQUIP_SLOT_SEC_COLS);
+					h = UIH(EQUIP_SLOT_SEC_ROWS);
+					
+					onLoad = "uinamespace setvariable [""an_slot_sec_grid"", (_this#0)];";
+					onUnload = "uinamespace setvariable [""an_slot_sec_grid"", controlNull];";
+					
+					class controls
+					{
+						
+						class bg: para_RscText
+						{
+							idc = 99999;
+							
+							x = 0;
+							y = 0;
+							w = UIW(EQUIP_SLOT_SEC_COLS);
+							h = UIH(EQUIP_SLOT_SEC_ROWS);
+							
+							colorText[] = {0.3,0.3,0.3,0.95};
+							colorBackground[] = {0.3,0.3,0.3,0.95};
+							text = "";
+							sizeEx = TXT_M;
+						};
+					};
+				};
+			};
+		};
+		
 	};
 };
