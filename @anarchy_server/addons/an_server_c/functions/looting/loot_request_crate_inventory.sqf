@@ -62,4 +62,8 @@ diag_log [":::: CRATE_LOOT_REQUEST: DATA:", ["call_function", ["crate_data_get",
 	4 - INT - Indicator (for the Backend) if it is a Loot-crate or not (1 = fill with loot | 0 = add nothing) - "1" also overrides a given gridSize!
 	5 - INT - Optional Argument: set this, to override the standard value of min. "2" items bein created (Result can still be higher, depending on the Players "scavenging"-skill)
 */
-["crate_data_get", [_playerID, _normalizedPosition, _crateId, _lootType, _isLootCrate, 1]] call AN_G_fnc_msg_send;
+
+private _lootAmount = 1;
+// DEV OVERRIDE SETTINGS:
+private _lootAmount = round(random[1,3.5,6]); // DEV SETTINGS:
+["crate_data_get", [_playerID, _normalizedPosition, _crateId, _lootType, _isLootCrate, _lootAmount]] call AN_G_fnc_msg_send;
