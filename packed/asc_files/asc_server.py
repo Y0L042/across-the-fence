@@ -142,9 +142,17 @@ class data_server:
 
     def gameserver_init(self):
         # Load up the main Data and send it to the Server:
-        # print(self.database.factions)
+
+        # Submit: lootseed (crate positions)
+        dataset = {
+            "lootseed": self.lootData["globalseed"]
+            }
+        asc_g_msg.sendMsg("lootseed_set", dataset, self.con_gameServer)
+
+        # Submit: Faction data
         factions_data = self.database.factions
         asc_g_msg.sendMsg("fac_data_load", factions_data, self.con_gameServer)
+
 
         # Do further stuff
 
