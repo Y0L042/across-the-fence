@@ -56,7 +56,6 @@ if(_slotID > 0)then
 	_tileCol = 0;
 };
 
-if(!_slotValidCheck)exitWith{systemchat "Can't be placed in that Slot";};
 
 private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_slots_usage_get;
 
@@ -84,8 +83,9 @@ private _itemTileUsage = [_ctrlGrid,_gridRows,_offsetPos,_gridTilesUsed] call an
 // diag_log ["DEBUG: UI_INV_MPOS: _itemTileUsage: ",_itemTileUsage];
 
 // Check if its a failed attemp
-if(_itemTileUsage isEqualto [])then
+if(_itemTileUsage isEqualto [] || !_slotValidCheck)then
 {
+	if(_slotValidCheck)then{systemchat "Can't be placed in that Slot";};
 	// if failed attemp -> readd the Item and its used slots in its previously used grid
 	private _ctrl = uinamespace getVariable ["an_ctrl_active",controlNull];
 	if(isNull _ctrl)exitWith{systemchat "ERROR: mPos: (isNull _ctrl)";};
