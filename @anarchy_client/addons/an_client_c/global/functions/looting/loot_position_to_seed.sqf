@@ -24,4 +24,4 @@ params ["_pos"];
 //This helps us stay within arma's max limit for accurate integers.
 private _seedPos = _pos apply {floor _x} apply {_x % 1021};
 private _posSeed = (_seedPos # 0 * 100) + (_seedPos # 1 * 10) + (_seedPos # 2);
-vn_an_seed + _posSeed;
+an_g_loot_pos_seed + _posSeed;

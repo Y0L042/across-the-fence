@@ -26,4 +26,4 @@ private _fnc_hashPos = {
 };
 
 //Hash using the crate position and anarchy seed
-(vn_an_seed toFixed 0) + (_position call _fnc_hashPos) 
+(an_g_loot_pos_seed toFixed 0) + (_position call _fnc_hashPos) 
