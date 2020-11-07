@@ -114,11 +114,5 @@ publicVariable "para_g_enemiesPerPlayer";
 an_g_looting_crate_probability = 0.75;
 publicVariable "an_g_looting_crate_probability";
 
-diag_log ["VN Anarchy: DEBUG: Adding AN_S_fnc_update_players to scheduler"];
-// ToDo: Set to a reasonable time
-private _updateTime = 15;
-["update_players", {call AN_S_fnc_update_players}, [], _updateTime] call para_g_fnc_scheduler_add_job;
-diag_log ["VN Anarchy: DEBUG: Done adding AN_S_fnc_update_players to scheduler"];
-
 //Initialise factions
 call an_s_fnc_factions_init;
