@@ -226,11 +226,21 @@ class CfgActions
 		text = "$STR_ACTION_UNLOCK_CONTROL";
 		textDefault = "$STR_ACTION_UNLOCK_CONTROL";
 	};
+/*
+	// Weapon switching - If switching is set in controls, these won't show up!
+ 	class UseWeapon: None
+	{
+		priority = 1.2;
+		showWindow = 0;
+		show = 1;
+		text = "%1";
+		textDefault = "%1";
+	};
 	class SwitchWeapon: None
 	{
 		priority = 3.1;
 		showWindow = 0;
-		show = 0;
+		show = 1;
 		shortcut = "SwitchWeapon";
 		text = "$STR_ACTION_WEAPON";
 		textDefault = "$STR_ACTION_WEAPON";
@@ -239,29 +249,21 @@ class CfgActions
 	class SwitchMagazine: SwitchWeapon
 	{
 		showWindow = 0;
-		show = 0;
+		show = 1;
 		shortcut = "ReloadMagazine";
 	};
 	class HideWeapon: SwitchWeapon
 	{
 		showWindow = 0;
-		show = 0;
+		show = 1;
 		text = "$STR_ACTION_HIDE_WEAPON";
 		textDefault = "$STR_ACTION_HIDE_WEAPON";
-	};
-	class UseWeapon: None
-	{
-		priority = 1.2;
-		showWindow = 0;
-		show = 0;
-		text = "%1";
-		textDefault = "%1";
 	};
 	class HandGunOn: None
 	{
 		priority = 3;
 		showWindow = 0;
-		show = 0;
+		show = 1;
 		text = "$STR_ACTION_WEAPON";
 		textDefault = "$STR_ACTION_WEAPON";
 		hideActions[] = {"SwitchHandGun"};
@@ -269,7 +271,7 @@ class CfgActions
 	class HandGunOnStand: HandGunOn
 	{
 		showWindow = 0;
-		show = 0;
+		show = 1;
 		text = "$STR_ACTION_WEAPONINHAND";
 		textDefault = "$STR_ACTION_WEAPONINHAND";
 	};
@@ -277,7 +279,7 @@ class CfgActions
 	{
 		priority = 3;
 		showWindow = 0;
-		show = 0;
+		show = 1;
 		text = "$STR_ACTION_WEAPON";
 		textDefault = "$STR_ACTION_WEAPON";
 		hideActions[] = {"SwitchPrimary"};
@@ -285,10 +287,12 @@ class CfgActions
 	class HandGunOffStand: HandGunOff
 	{
 		showWindow = 0;
-		show = 0;
+		showWindow = 1;
+		show = 1;
 		text = "$STR_ACTION_WEAPONINHAND";
 		textDefault = "$STR_ACTION_WEAPONINHAND";
 	};
+*/
 	class EngineOn: None
 	{
 		priority = 6;
