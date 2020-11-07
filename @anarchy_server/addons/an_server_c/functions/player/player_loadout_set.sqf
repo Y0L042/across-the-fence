@@ -80,7 +80,7 @@ _DEV_MAGAZINES_AMMO = [0,0,0];
 		// ToDo: checking and adding Attachments
 		// ToDo: get Ammo, add magazine and fill it with the amount of last saved state
 		_TEMPCLASSNAME = ENTRY_GET("parent",_itemData);
-
+		
 		//	!!!!! WARNING !!!!!
 		//	!! NOT FINAL! WILL USE "CLASS_NAME" FROM PARENT LATER !!
 		
@@ -111,11 +111,13 @@ _DEV_MAGAZINES_AMMO = [0,0,0];
 				{
 					private _magAmmoCount = getNumber(configfile >> "CfgMagazines" >> _magazine >> "count");
 					_DEV_MAGAZINES_AMMO set[(_slot - 2),_magAmmoCount];
+					
+					_defaultValue set[4,[_magazine,_magAmmoCount]];
 				};
 				
 				_DEV_MAGAZINES set[(_slot - 2), _magazine];
-				/////////////////////////////////////////////////////////////////////////////////
 			};
+			/////////////////////////////////////////////////////////////////////////////////
 		};
 		_loadout pushback _defaultValue;
 	}
@@ -142,8 +144,13 @@ _DEV_MAGAZINES_AMMO = [0,0,0];
 _loadout pushback ["vn_m19_binocs_grn","","","",[],[],""];	//It's a "weapon", so it needs to be an Array like this...
 _loadout pushback ["vn_o_item_map","","","vn_b_item_compass_sog","vn_b_item_watch",""];
 
+{
+	diag_log ["DEBUG: AN_S_fnc_loadout_set: _loadout: ", _x];
+}forEach _loadout;
+
 _player setUnitLoadout _loadout;
 
+// Yes... spawned... add some Magazines, after setUnitLoadout is done.
 [_player, _DEV_MAGAZINES] spawn
 {
 	params["_player","_DEV_MAGAZINES"];
@@ -151,12 +158,7 @@ _player setUnitLoadout _loadout;
 	{
 		if !(_x isEqualTo "")then
 		{
-			diag_log ["DEBUG: AN_S_fnc_loadout_set: magazine: ", _x];
-			// private _ammoCount = _DEV_MAGAZINES_AMMO#_forEachIndex;
 			_player addMagazines [_x, 3];
-			// _player addMagazine [_x, _ammoCount];
-			// _player addMagazine [_x, _ammoCount];
-			// _player addMagazine [_x, _ammoCount];
 		};
 	}forEach _DEV_MAGAZINES;
 };
