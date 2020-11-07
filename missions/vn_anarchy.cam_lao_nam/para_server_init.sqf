@@ -64,6 +64,10 @@ diag_log "VN Anarchy: Starting player list tracker";
 // do slow allplayers list updates
 ["player_list_tracker", {call para_s_fnc_player_list_tracker}, [], 15] call para_g_fnc_scheduler_add_job;
 
+diag_log "VN Anarchy: Starting player updater (backend)";
+// Send update requests, of all players, to the backend.
+["update_players", {call AN_S_fnc_update_players}, [], 15] call para_g_fnc_scheduler_add_job;
+
 //Set date here - it's as good a place as any. Day is just before a full moon, for good night ops.
 // [vn_mf_dawnLength, vn_mf_dayLength, vn_mf_duskLength, vn_mf_nightLength] call para_s_fnc_day_night_subsystem_init;
 
