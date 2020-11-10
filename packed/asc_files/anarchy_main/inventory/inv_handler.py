@@ -79,6 +79,10 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
     else:
         model = ""
 
+    if isLootcrate == 0:
+        # Player created Crates (e.g: Opening Inventory to drop things)
+        inv_rows = 16
+
     invData = {
         "crateID": crateID,
         "model": model,
