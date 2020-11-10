@@ -49,11 +49,14 @@ an_c_fnc_ui_inv_EH_mouse_z = compile preprocessFileLineNumbers "\sgd\anarchy\an_
 an_c_fnc_ui_inv_EH_mouseBtn = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_EH_mouseBtn.sqf";
 
 
-if(isNil "an_c_DEV_InventoryKeyEH_ID")then
+[]spawn
 {
-	waitUntil{!isNull findDisplay 46};
-	private _disp = findDisplay 46;
-	an_c_DEV_InventoryKeyEH_ID = _disp displayAddEventHandler ["keyUp",{call an_c_fnc_invKeyHandler;}];
+	if(isNil "an_c_DEV_InventoryKeyEH_ID")then
+	{
+		waitUntil{!isNull findDisplay 46};
+		private _disp = findDisplay 46;
+		an_c_DEV_InventoryKeyEH_ID = _disp displayAddEventHandler ["keyUp",{call an_c_fnc_invKeyHandler;}];
+	};
 };
 
 an_c_fnc_invKeyHandler =
@@ -62,10 +65,22 @@ an_c_fnc_invKeyHandler =
 	params ["_ctrl", "_btn", "_btn_shift", "_btn_ctrl", "_btn_alt"];
 	if(_btn == 34)then
 	{
-		systemchat str [cursorObject];
 		if !(cursorObject getVariable ['an_c_looting_is_crate', false])then
 		{
-			[player] call AN_C_fnc_loot_inv_request;
+			_nearObjectList = ASLToAGL(getPosASL player) nearObjects 2;
+			systemchat str[count(_nearObjectList)];
+			_tgt = player;
+			if !(_nearObjectList isEqualTo []) then
+			{
+				{
+					// ToDo: Add LineIntersect check!
+					if(_x getVariable ['an_c_looting_is_crate', false])exitWith
+					{
+						_tgt = _x;
+					};
+				}forEach _nearObjectList;
+			};
+			[_tgt] call AN_C_fnc_loot_inv_request;
 		}
 		else
 		{

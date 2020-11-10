@@ -55,10 +55,22 @@ an_c_fnc_invKeyHandler =
 	params ["_ctrl", "_btn", "_btn_shift", "_btn_ctrl", "_btn_alt"];
 	if(_btn == 34)then
 	{
-		systemchat str [cursorObject];
 		if !(cursorObject getVariable ['an_c_looting_is_crate', false])then
 		{
-			[player] call AN_C_fnc_loot_inv_request;
+			_nearObjectList = ASLToAGL(getPosASL player) nearObjects 2;
+			systemchat str[count(_nearObjectList)];
+			_tgt = player;
+			if !(_nearObjectList isEqualTo []) then
+			{
+				{
+					// ToDo: Add LineIntersect check!
+					if(_x getVariable ['an_c_looting_is_crate', false])exitWith
+					{
+						_tgt = _x;
+					};
+				}forEach _nearObjectList;
+			};
+			[_tgt] call AN_C_fnc_loot_inv_request;
 		}
 		else
 		{
