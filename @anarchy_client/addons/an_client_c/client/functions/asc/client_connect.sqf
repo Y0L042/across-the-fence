@@ -67,20 +67,18 @@ an_c_fnc_invKeyHandler =
 	{
 		if !(cursorObject getVariable ['an_c_looting_is_crate', false])then
 		{
-			_nearObjectList = ASLToAGL(getPosASL player) nearObjects 2;
-			systemchat str[count(_nearObjectList)];
-			_tgt = player;
-			if !(_nearObjectList isEqualTo []) then
+			private _target = player;
+			// ToDo: Spawn some kind of "loot indicator"-object?
+			private _nearestLootCrate = nearestObject [(getPosWorld player), "Land_vn_object_trashcan_01"];
+			if(player distance _nearestLootCrate < 2)then
 			{
+				_parent = lineIntersectsWith[eyePos player, getPosASL _nearestLootCrate]#0;
+				if(_parent isEqualTo _nearestLootCrate)then
 				{
-					// ToDo: Add LineIntersect check!
-					if(_x getVariable ['an_c_looting_is_crate', false])exitWith
-					{
-						_tgt = _x;
-					};
-				}forEach _nearObjectList;
+					_target = _nearestLootCrate;
+				};
 			};
-			[_tgt] call AN_C_fnc_loot_inv_request;
+			[_target] call AN_C_fnc_loot_inv_request;
 		}
 		else
 		{
