@@ -55,7 +55,15 @@ an_c_fnc_invKeyHandler =
 	params ["_ctrl", "_btn", "_btn_shift", "_btn_ctrl", "_btn_alt"];
 	if(_btn == 34)then
 	{
-		[player] call AN_C_fnc_loot_inv_request;
+		systemchat str [cursorObject];
+		if !(cursorObject getVariable ['an_c_looting_is_crate', false])then
+		{
+			[player] call AN_C_fnc_loot_inv_request;
+		}
+		else
+		{
+			[] call AN_C_fnc_loot_inv_request;
+		};
 	};
 };
 
