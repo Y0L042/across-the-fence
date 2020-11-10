@@ -64,7 +64,7 @@ cmdList = {
 		'client': {
 				# ""Tag" send from Arma" : Function in the backend
 				# NOTE: Make sure, that you imported the related plugin/method/folder/however it's called (and added the files to the "__init.py__" )
-				"itemMove":         item_handler.item_move,
+				"inv_itemMove":     item_handler.item_move,
 				"inv_get_grid":     inv_handler.inv_grid_get,
 				"inv_get_items":    inv_handler.inv_items_get
 			},
