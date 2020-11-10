@@ -157,8 +157,8 @@ if !(_isSamePos && _isSameInv && _isSameSlot)then
 	};
 	
 	// send command to the backend, to update its data.
-	diag_log ["DEBUG: item_create: MSG SEND Data:", ["itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID]]];
-	["itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID]] call AN_G_fnc_msg_send;
+	diag_log ["DEBUG: item_create: MSG SEND Data:", ["inv_itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID]]];
+	["inv_itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID]] call AN_G_fnc_msg_send;
 	
 	
 	/////////////////////////////////////
