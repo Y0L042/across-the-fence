@@ -48,6 +48,33 @@ an_c_fnc_ui_inv_get = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_
 an_c_fnc_ui_inv_EH_mouse_z = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_EH_mouse_z.sqf";
 an_c_fnc_ui_inv_EH_mouseBtn = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_EH_mouseBtn.sqf";
 
+
+if(isNil "an_c_DEV_InventoryKeyEH_ID")then
+{
+	waitUntil{!isNull findDisplay 46};
+	private _disp = findDisplay 46;
+	an_c_DEV_InventoryKeyEH_ID = _disp displayAddEventHandler ["keyUp",{call an_c_fnc_invKeyHandler;}];
+};
+
+an_c_fnc_invKeyHandler =
+{
+	disableSerialization;
+	params ["_ctrl", "_btn", "_btn_shift", "_btn_ctrl", "_btn_alt"];
+	if(_btn == 34)then
+	{
+		systemchat str [cursorObject];
+		if !(cursorObject getVariable ['an_c_looting_is_crate', false])then
+		{
+			[player] call AN_C_fnc_loot_inv_request;
+		}
+		else
+		{
+			[] call AN_C_fnc_loot_inv_request;
+		};
+	};
+};
+
+
   /////////////////////////////////////////////////
  // DEV END DEV END DEV END DEV END DEV END DEV //
 /////////////////////////////////////////////////

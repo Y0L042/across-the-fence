@@ -59,13 +59,6 @@ an_c_fnc_invKeyHandler =
 	};
 };
 
-if(isNil "an_c_DEV_InventoryKeyEH_ID")then
-{
-	waitUntil{!isNull findDisplay 46};
-	private _disp = findDisplay 46;
-	an_c_DEV_InventoryKeyEH_ID = _disp displayAddEventHandler ["keyUp",{call an_c_fnc_invKeyHandler;}];
-};
-
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
