@@ -21,7 +21,7 @@
 // In case of no Object passed (e.g. addAction), select the Cursorobject
 params[ ["_target", cursorObject, [objNull]] ];
 
-if (player distance _target > 5) exitWith {systemChat "DEBUG MSG: LOOT_INV_REQUEST: Too far away.";};
+if (player distance _target > 2) exitWith {systemChat "DEBUG MSG: LOOT_INV_REQUEST: Too far away.";};
 if (!(_target getVariable ["an_c_looting_is_crate", false]) && !(_target isEqualTo player)) exitWith {systemChat "DEBUG MSG: LOOT_INV_REQUEST: Target is not a crate OR a player.";};
 
 
