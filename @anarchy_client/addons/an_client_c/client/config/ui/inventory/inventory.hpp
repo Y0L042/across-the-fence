@@ -161,6 +161,13 @@ class an_inventory
 	onLoad = "[""onLoad"",_this,""an_inventory"",''] call 	(uinamespace getvariable 'BIS_fnc_initDisplay');";
 	onUnload = "[""onUnload"",_this,""an_inventory"",''] call 	(uinamespace getvariable 'BIS_fnc_initDisplay');";
 	
+	// KeyDown: block every button (movement)
+	onKeyDown = " if(_this#1 in [1])then{_this#0 closeDisplay 1;}; true ";
+	// KeyUp: block every button (movement), except ESC/TAB/G button to close the Inv
+	onKeyUp = " if(_this#1 in [15,34])then{_this#0 closeDisplay 1;}; true ";
+	// Handle scrolling the Mousewheel (only if an item is currently grabbed)
+	onMouseZChanged ="call an_c_fnc_ui_inv_EH_mouse_z";
+	
 	onMouseButtonDown	= "";
 	onMouseButtonUp		= "";
 	// onMouseMoving = "";		//"USELESS" ON A DISPLAY! Doesn't return X and Y Pos, just "distance from xy to xy during specific time/FPS (??)"

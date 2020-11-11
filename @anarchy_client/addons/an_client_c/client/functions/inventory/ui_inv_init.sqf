@@ -75,12 +75,6 @@ private _disp_preCheck = uiNamespace getVariable ["an_inventory", displayNull];
 if !(isNull _disp_preCheck)then{_disp_preCheck closeDisplay 1;};
 private _disp = (findDisplay 46) createDisplay "an_inventory";
 
-// KeyDown: block every button (movement)
-_disp displayAddEventHandler ["keyDown",{if(_this#1 in [1])then{_this#0 closeDisplay 1;}; true}];
-// KeyUp: block every button (movement), except ESC/TAB button to close the Inv
-_disp displayAddEventHandler ["keyUp",{if(_this#1 in [15])then{_this#0 closeDisplay 1;}; true }];
-// Handle scrolling the Mousewheel (only if an item is currently grabbed)
-_disp displayAddEventhandler ["MouseZChanged","call an_c_fnc_ui_inv_EH_mouse_z"];
 
 // Set the names for all available Inventories... 
 AN_INVENTORY_LIST =
