@@ -34,8 +34,9 @@ if(_btn == 34)then
 	
 	// Set the max distance to objects.
 	private _dist_max = 2;
+	private _cObj = cursorObject;
 	//Check if something is targeted, if not -> search for more
-	if !(cursorObject getVariable ['an_c_looting_is_crate', false])then
+	if !(_cObj getVariable ['an_c_looting_is_crate', false])then
 	{
 		// Lets assume, that the player just wants to open his Inventory. So we assign him here.
 		private _crate = player;
@@ -79,7 +80,7 @@ if(_btn == 34)then
 	}
 	else
 	{
-		if(player distance cursorObject < _dist_max)then{ [cursorObject] call AN_C_fnc_loot_inv_request; };
+		if(player distance _cObj < _dist_max)then{ [_cObj] call AN_C_fnc_loot_inv_request; };
 	};
 };
 
