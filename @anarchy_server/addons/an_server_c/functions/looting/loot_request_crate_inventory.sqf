@@ -25,7 +25,8 @@ params[
 if (isNull _building) exitWith {};
 
 private _cratePos = getPos _building;
-private _isLootCrate = if(_building isEqualTo _player)then{0}else{1};
+private _isDroppedCrate = typeOf _building in ["Land_Ammobox_rounds_F"];
+private _isLootCrate = if(_building isEqualTo _player || _isDroppedCrate )then{0}else{1};
 
 if(_isLootCrate > 0)then
 {
@@ -59,8 +60,14 @@ private _crateId = [_cratePos] call an_g_fnc_loot_generate_crate_id;
 private _minLootQuantity = floor random [1,2,6];
 private _normalizedPosition = _cratePos apply {floor _x};
 
-diag_log [":::: CRATE_LOOT_REQUEST: DATA:", ["call_function", ["crate_data_get", [_playerID, _normalizedPosition, _crateId, _lootType]]]];
+// !!! WIP !!! In case the player opens the Inventory, create a "droppedCrate" at this position.
+// Will most likely be moved to a seperate function, so it creates the new droppedCrate ONLY when a player puts something in it.
+if(_isLootCrate == 0 && !_isDroppedCrate)then
+{
+	createSimpleObject ["Land_Ammobox_rounds_F", getPosASL _player];
+};
 
+diag_log [":::: CRATE_LOOT_REQUEST: DATA:", ["call_function", ["crate_data_get", [_playerID, _normalizedPosition, _crateId, _lootType]]]];
 /*
 	0 - STR - playerID
 	1 - ARRAY - pos of crate

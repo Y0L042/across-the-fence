@@ -34,8 +34,10 @@ if(_btn == 34)then
 	
 	// Set the max distance to objects.
 	private _dist_max = 2;
+	//Check if something is targeted, if not -> search for more
 	if !(cursorObject getVariable ['an_c_looting_is_crate', false])then
 	{
+		// Lets assume, that the player just wants to open his Inventory. So we assign him here.
 		private _crate = player;
 		// Get the nearest lootcrates
 		private _nearestLootCrate = an_c_looting_spawned_crates inAreaArray [getPos player, 2, 2];
@@ -49,7 +51,19 @@ if(_btn == 34)then
 				_distCheck = _x distance player;
 				if(_distCheck < _dist)then{_dist = _distCheck; _crate = _x; };
 			}forEach _nearestLootCrate;
+		}
+		else
+		{
+			private _droppedBox = nearestObject [player, "Land_Ammobox_rounds_F"];
+			if!(isNull _droppedBox)then
+			{
+				if(player distance _droppedBox < _dist_max)exitWith
+				{
+					_crate = _droppedBox;
+				};		
+			};
 		};
+		
 		// If there were crates close by, check again if something ostructs the line of sight (e.g: a Wall)
 		if !(_crate isEqualTo player)then
 		{
