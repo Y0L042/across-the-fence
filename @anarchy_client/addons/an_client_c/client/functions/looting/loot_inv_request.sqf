@@ -9,18 +9,18 @@
         Sends a request for a crate's inventory to the Arma server
     
     Parameter(s):
-		None
+		0: Object - Object to check
     
     Returns:
 		None
     
     Example(s):
-		[]	call an_c_fnc_loot_inv_request
 		[player] call an_c_fnc_loot_inv_request;
 */
 // In case of no Object passed (e.g. addAction), select the Cursorobject
-params[ ["_target", cursorObject, [objNull]] ];
+params[ ["_target", objNull, [objNull]] ];
 
+if (isNull _target) exitWith {systemChat "DEBUG MSG: LOOT_INV_REQUEST: No Object selected.";};
 if (player distance _target > 2) exitWith {systemChat "DEBUG MSG: LOOT_INV_REQUEST: Too far away.";};
 if (!(_target getVariable ["an_c_looting_is_crate", false]) && !(_target isEqualTo player)) exitWith {systemChat "DEBUG MSG: LOOT_INV_REQUEST: Target is not a crate OR a player.";};
 

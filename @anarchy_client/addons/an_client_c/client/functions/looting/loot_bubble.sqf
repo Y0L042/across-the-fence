@@ -26,7 +26,7 @@ if (isNil "an_c_looting_spawned_buildings") then {
 	an_c_looting_min_distance_refresh =	100;
 	player addAction [
 		"ASC: get crateData", 
-		{[] call AN_C_fnc_loot_inv_request;}, 
+		{[cursorObject] call AN_C_fnc_loot_inv_request;}, 
 		[], 
 		1.5, 
 		true, 
