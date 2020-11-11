@@ -57,17 +57,25 @@ private _playerID = getPlayerUID _player;
 //TODO - Make this based on map location.
 private _lootType =	selectRandom ["type_generic", "type_military", "type_residential", "type_medical"];
 private _crateId = [_cratePos] call an_g_fnc_loot_generate_crate_id;
-private _minLootQuantity = floor random [1,2,6];
+private _minLootQuantity = round(random[1,3.5,6]); // DEV SETTINGS!
 private _normalizedPosition = _cratePos apply {floor _x};
+
 
 // !!! WIP !!! In case the player opens the Inventory, create a "droppedCrate" at this position.
 // Will most likely be moved to a seperate function, so it creates the new droppedCrate ONLY when a player puts something in it.
 if(_isLootCrate == 0 && !_isDroppedCrate)then
 {
 	createSimpleObject ["Land_Ammobox_rounds_F", getPosASL _player];
+	_lootType = "type_generic";
+	_minLootQuantity = 0;
+};
+if(_isDroppedCrate)then
+{
+	_lootType = "type_generic";
+	_minLootQuantity = 0;
 };
 
-diag_log [":::: CRATE_LOOT_REQUEST: DATA:", ["call_function", ["crate_data_get", [_playerID, _normalizedPosition, _crateId, _lootType]]]];
+diag_log [":::: CRATE_LOOT_REQUEST: DATA:", ["call_function", ["crate_data_get", [_playerID, _normalizedPosition, _crateId, _lootType, _isLootCrate, _minLootQuantity]]]];
 /*
 	0 - STR - playerID
 	1 - ARRAY - pos of crate
@@ -77,8 +85,4 @@ diag_log [":::: CRATE_LOOT_REQUEST: DATA:", ["call_function", ["crate_data_get",
 	5 - INT - Optional Argument: set this, to override the standard value of min. "2" items bein created (Result can still be higher, depending on the Players "scavenging"-skill)
 */
 
-///////////////////////////////
-// DEV OVERRIDE SETTINGS:
-private _lootAmount = round(random[1,3.5,6]); // DEV SETTINGS!
-///////////////////////////////
-["crate_data_get", [_playerID, _normalizedPosition, _crateId, _lootType, _isLootCrate, _lootAmount]] call AN_G_fnc_msg_send;
+["crate_data_get", [_playerID, _normalizedPosition, _crateId, _lootType, _isLootCrate, _minLootQuantity]] call AN_G_fnc_msg_send;
