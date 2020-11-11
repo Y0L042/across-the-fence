@@ -86,8 +86,8 @@ _ctrlItem ctrlCommit 0;
 	};
 }forEach[100,200];
 
-
-private _itemInvIDNew = if((ctrlIDC _ctrlInvGrid) isEqualto 1001)then{localNamespace getVariable ["an_inv_external_active",""]}else{getPlayerUID player};
+private _invExternalID = localNamespace getVariable ["an_inv_external_active",""];
+private _itemInvIDNew = if((ctrlIDC _ctrlInvGrid) isEqualto 1001)then{_invExternalID}else{getPlayerUID player};
 
 // get Item ID
 private _itemID = [] call an_c_fnc_ui_inv_item_active_id_get;
