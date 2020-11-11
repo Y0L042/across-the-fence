@@ -16,7 +16,7 @@ private _updateData = [];
 		toFixed -1;
 		
 		// store, so we can send over in one package
-		_updateData pushback [_puid, [_dataPos, _dataHealth]];
+		if(isPlayer _x)then{_updateData pushback [_puid, [_dataPos, _dataHealth]];};
 	};
 }forEach (allPlayers - entities "HeadlessClient_F");
 
