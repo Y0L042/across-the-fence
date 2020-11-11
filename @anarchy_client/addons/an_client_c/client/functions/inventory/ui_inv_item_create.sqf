@@ -160,57 +160,8 @@ if !(_isSamePos && _isSameInv && _isSameSlot)then
 	diag_log ["DEBUG: item_create: MSG SEND Data:", ["inv_itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID]]];
 	["inv_itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID]] call AN_G_fnc_msg_send;
 	
-	
-	/////////////////////////////////////
-	// ToDo: Move to seperate function!
-	// Update player Inventory
-	// NOTE: The remote Inventory will never be saved localy! So only the player Inventory needs to be updated!:
-	// get Current Inventory data
-	private _invDataCur = localNamespace getVariable ["an_cData_invData",[]];
-	// {diag_log ["CHECK: PRE : ",_x];}forEach _invDataCur;
-	private _itemDataPlayer = ENTRY_GET("itemData", _invDataCur);
-	// {diag_log ["CHECK: PRE : ",_x];}forEach _itemDataPlayer;
-	
-	//check if it needs to be deleted:
-	if(_itemInvIDNew isEqualTo (getPlayerUID player))then
-	{
-		// update OR add item
-		if(_itemInvIDCur isEqualTo (getPlayerUID player))then
-		{
-			// diag_log ["!!!!! CREATE: UPDATE ITEM !!!!!"];
-			{
-				if((_x#0) isEqualTo _itemID)exitWith
-				{
-					_itemDataPlayer set [_forEachIndex, [_itemID, _itemData]];
-				};
-			}forEach _itemDataPlayer;
-		}
-		else
-		{
-			// diag_log ["!!!!! CREATE: ADD ITEM !!!!!"];
-			_itemDataPlayer pushback [_itemID, _itemData];
-		};
-	}
-	else
-	{
-		// diag_log ["!!!!! CREATE: DELETE ITEM !!!!!"];
-		{
-			if((_x#0) isEqualTo _itemID)exitWith
-			{
-				_itemDataPlayer deleteAt _forEachIndex;
-			};
-		}forEach _itemDataPlayer;
-	};
-
-	// Update the local Player Inventory Data
-	localNamespace setVariable ["an_cData_invData",
-		[
-			["crateID", ENTRY_GET("crateID", _invDataCur)],
-			["inv_rows", ENTRY_GET("inv_rows", _invDataCur)],
-			["itemData", _itemDataPlayer ]
-		]
-	];
-	/////////////////////////////////////
+	// Update the local Inventory
+	[_itemInvIDCur,_itemInvIDNew,_itemData,_itemID] call an_c_fnc_ui_inv_data_update;
 };
 
 // diag_log ["CREATE _itemData: ", _itemData];

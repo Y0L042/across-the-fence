@@ -3,6 +3,7 @@
 class inventory 
 {
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_init);
+	// DECLARE_CLIENT_FUNC(inventory,ui_inv_data_update);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_check_freeTiles);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_create);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_getSize);
