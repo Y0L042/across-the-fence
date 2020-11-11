@@ -1,9 +1,38 @@
+/*
+    File: ui_inv_EH_keyHandler.sqf
+    Author: Dscha
+    Date: 2020-11-11
+    Last Update: 2020-11-11
+    Public: No
+    
+    Description:
+        Key DisplayEventhandler for Inventory Opening
+    
+    Parameter(s):
+		0: Control/Display
+		1: Pressed Key
+		2: State Shift
+		3: State Ctrl
+		4: State Alt
+    
+    Returns:
+		None
+    
+    Example(s):
+		(findDisplay 46) displayAddEventHandler ["keyUp",{call an_c_fnc_ui_inv_EH_keyHandler;}];
+*/
 
 disableSerialization;
 params ["_ctrl", "_btn", "_btn_shift", "_btn_ctrl", "_btn_alt"];
+private _ButtonDisabled = false;
+private _BD = {_ButtonDisabled = true;};
 // "G"
 if(_btn == 34)then
 {
+	// Disable the normal input for this button, by returning "true", at the end of the file.
+	call _BD;
+	
+	// Set the max distance to objects.
 	private _dist_max = 2;
 	if !(cursorObject getVariable ['an_c_looting_is_crate', false])then
 	{
@@ -39,3 +68,6 @@ if(_btn == 34)then
 		if(player distance cursorObject < _dist_max)then{ [cursorObject] call AN_C_fnc_loot_inv_request; };
 	};
 };
+
+//EOF:
+_ButtonDisabled

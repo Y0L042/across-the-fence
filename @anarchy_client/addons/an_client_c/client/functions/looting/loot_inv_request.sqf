@@ -2,7 +2,7 @@
     File: loot_inv_request.sqf
     Author: Dscha and Spoffy
     Date: 2020-08-28
-    Last Update: 2020-11-06
+    Last Update: 2020-11-11
     Public: No
     
     Description:
