@@ -47,6 +47,7 @@ an_c_fnc_ui_inv_get = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_
 // Eventhandler
 an_c_fnc_ui_inv_EH_mouse_z = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_EH_mouse_z.sqf";
 an_c_fnc_ui_inv_EH_mouseBtn = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_EH_mouseBtn.sqf";
+an_c_fnc_ui_inv_EH_keyHandler = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_EH_keyHandler.sqf";
 
 
 []spawn
@@ -55,38 +56,9 @@ an_c_fnc_ui_inv_EH_mouseBtn = compile preprocessFileLineNumbers "\sgd\anarchy\an
 	{
 		waitUntil{!isNull findDisplay 46};
 		private _disp = findDisplay 46;
-		an_c_DEV_InventoryKeyEH_ID = _disp displayAddEventHandler ["keyUp",{call an_c_fnc_invKeyHandler;}];
+		an_c_DEV_InventoryKeyEH_ID = _disp displayAddEventHandler ["keyUp",{call an_c_fnc_ui_inv_EH_keyHandler;}];
 	};
 };
-
-an_c_fnc_invKeyHandler =
-{
-	disableSerialization;
-	params ["_ctrl", "_btn", "_btn_shift", "_btn_ctrl", "_btn_alt"];
-	if(_btn == 34)then
-	{
-		if !(cursorObject getVariable ['an_c_looting_is_crate', false])then
-		{
-			private _target = player;
-			// ToDo: Spawn some kind of "loot indicator"-object?
-			private _nearestLootCrate = nearestObject [(getPosWorld player), "Land_vn_object_trashcan_01"];
-			if(player distance _nearestLootCrate < 2)then
-			{
-				_parent = lineIntersectsWith[eyePos player, getPosASL _nearestLootCrate]#0;
-				if(_parent isEqualTo _nearestLootCrate)then
-				{
-					_target = _nearestLootCrate;
-				};
-			};
-			[_target] call AN_C_fnc_loot_inv_request;
-		}
-		else
-		{
-			[] call AN_C_fnc_loot_inv_request;
-		};
-	};
-};
-
 
   /////////////////////////////////////////////////
  // DEV END DEV END DEV END DEV END DEV END DEV //
