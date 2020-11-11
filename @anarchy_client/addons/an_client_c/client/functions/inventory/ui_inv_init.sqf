@@ -49,6 +49,8 @@ an_c_fnc_ui_inv_EH_mouse_z = compile preprocessFileLineNumbers "\sgd\anarchy\an_
 an_c_fnc_ui_inv_EH_mouseBtn = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_EH_mouseBtn.sqf";
 an_c_fnc_ui_inv_EH_keyHandler = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_EH_keyHandler.sqf";
 
+an_c_fnc_loot_inv_request = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\looting\loot_inv_request.sqf";
+
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
