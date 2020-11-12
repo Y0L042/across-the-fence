@@ -7,3 +7,8 @@ class loot_request_crate_inventory
 {
 	fnc = "AN_S_fnc_loot_request_crate_inventory";
 };
+
+class loot_items_dropped
+{
+	fnc = "AN_S_fnc_loot_items_dropped";
+};
