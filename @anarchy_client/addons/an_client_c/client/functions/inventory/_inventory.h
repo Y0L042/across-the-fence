@@ -29,9 +29,9 @@ class inventory
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_data_get);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_data_parent_set);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_data_parent_get);
-	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_slots_usage_get);
-	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_slots_find_free);
-	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_slots_find_free_check);
+	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_space_usage_get);
+	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_space_find_free);
+	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_space_find_free_check);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_slotted_add);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_slotted_get);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_slotted_remove);
