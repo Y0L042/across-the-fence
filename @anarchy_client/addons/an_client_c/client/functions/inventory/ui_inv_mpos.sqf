@@ -1,4 +1,4 @@
-
+private _DEBUGON = false;
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
@@ -12,7 +12,7 @@ _gridSize = localNamespace getVariable [format["an_inv_grid_size_%1",_gridIDC],[
 _gridSize params ["_gridRows","_gridCols"];
 if(_gridRows isEqualto [-1,-1])exitWith
 {
-	diag_log ["ERROR: UI_INV_MPOS: GRID NOT SET!", _gridIDC, [_gridRows]];
+	if(_DEBUGON)then{diag_log ["ERROR: UI_INV_MPOS: GRID NOT SET!", _gridIDC, [_gridRows]];};
 };
 
 
@@ -28,16 +28,16 @@ if(an_ui_inv_grabActive)then{ an_ui_inv_grabActive = false; };
 //////////////////////////////////////////////
 private _itemClass = [] call an_c_fnc_ui_inv_item_active_class_get;
 private _parentData = [_itemClass] call an_c_fnc_ui_inv_item_data_parent_get;
-// diag_log ["DEBUG: UI_INV_MPOS: _parentData   :", _parentData];
+if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: _parentData   :", _parentData];};
 // Check if parentData was found!
-diag_log str ["_parentData", _parentData];
+if(_DEBUGON)then{diag_log str ["_parentData", _parentData];};
 if(_parentData isEqualto [])exitWith{private _text = ["ERROR: UI_INV_MPOS: _parentData NOT FOUND: Class:", _itemClass]; diag_log _text; systemchat str _text;};
 
 // Get all the needed Data from the parent
 private _parentSize = ENTRY_GET("size",_parentData);
-// diag_log ["DEBUG: UI_INV_MPOS: _parentSize   :", _parentSize];
+if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: _parentSize   :", _parentSize];};
 private _parentSlot = ENTRY_GET("slot",_parentData);
-diag_log ["DEBUG: UI_INV_MPOS: _parentSlot   :", _parentSlot];
+if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: _parentSlot   :", _parentSlot];};
 
 
 // Check if targeted Grid is a Slot and it is allowed to be placed in there
@@ -75,12 +75,12 @@ private _offsetPos = [[_tileRow, _tileCol]];	//store first Pos (needed, since th
 //Check if all tiles are free
 //get used slots from grid
 private _gridTilesUsed = [_gridIDC] call an_c_fnc_ui_inv_grid_tiles_used_get;
-// diag_log ["DEBUG: UI_INV_MPOS: _gridTilesUsed: ",_gridTilesUsed];
+if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: _gridTilesUsed: ",_gridTilesUsed];};
 
 // Check if tiles in the targeted Grid are free. If not -> Return empty Array and trigger a "re-add" to the old position
 // if free -> Return the used Tiles
 private _itemTileUsage = [_ctrlGrid,_gridRows,_offsetPos,_gridTilesUsed] call an_c_fnc_ui_inv_grid_check_freeTiles;
-// diag_log ["DEBUG: UI_INV_MPOS: _itemTileUsage: ",_itemTileUsage];
+if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: _itemTileUsage: ",_itemTileUsage];};
 
 // Check if its a failed attemp
 if(_itemTileUsage isEqualto [] || !_slotValidCheck)then

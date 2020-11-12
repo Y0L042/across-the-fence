@@ -1,11 +1,11 @@
-
+private _DEBUGON = false;
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
 params["_gridName", "_invData", ["_gridCols",8], ["_slotID",0]];
-diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Inventory: ...",_gridName];
+if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Inventory: ...",_gridName];};
 
 // create the grid
-diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: grid: ...",_gridName];
+if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: grid: ...",_gridName];};
 private _InvDataGridRows = ENTRY_GET("inv_rows",_invData);
 private _ctrlGrid = uinamespace getvariable [_gridName, controlNull];
 // Set the slotID (0 = Player and External Inv - everything > 0 == Slot)
@@ -17,19 +17,19 @@ _ctrlGrid setVariable ["slotID", _slotID];
 
 // set the Var for the EXTERNAL grid and show the "grid images"
 [_ctrlGrid, [_InvDataGridRows, _gridCols], _gridName, _slotID] call an_c_fnc_ui_inv_grid_create;
-diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: grid : ... done",_gridName];
+if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: grid : ... done",_gridName];};
 
 // add the Items:
-diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Items: ...",_gridName];
+if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Items: ...",_gridName];};
 private _items = ENTRY_GET("itemData",_invData);
 
-diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
+if(_DEBUGON)then{diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";};
 {
 	_x params ["_itemId","_itemData"];
 	// diag_log ["DEBUG: UI_INV_INIT: _itemData     :",_itemData];
 	
 	localNamespace setVariable [_itemId, _itemData];
-	diag_log ["DEBUG: LNS DATA: ", localNamespace getVariable [_itemId,"NONE"]];
+	if(_DEBUGON)then{diag_log ["DEBUG: LNS DATA: ", localNamespace getVariable [_itemId,"NONE"]];};
 	
 	private _itemSlotID = ENTRY_GET("inSlot",_itemData);
 	// get the parent class
@@ -52,7 +52,7 @@ diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
 		[_itemId] call an_c_fnc_ui_inv_item_active_id_set;
 		
 		[_ctrlGrid,0,[_itemPosY,_itemPosX]] call an_c_fnc_ui_inv_mPos;
-		diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
+		if(_DEBUGON)then{diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";};
 	}
 	else
 	{
@@ -71,5 +71,5 @@ diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";
 		};
 	};
 }forEach _items;
-diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Items: ... done",_gridName];
-diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Inventory: ... done",_gridName];
+if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Items: ... done",_gridName];};
+if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Inventory: ... done",_gridName];};

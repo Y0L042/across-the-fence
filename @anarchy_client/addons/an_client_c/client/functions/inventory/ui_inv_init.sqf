@@ -56,20 +56,18 @@ an_c_fnc_loot_inv_request = compile preprocessFileLineNumbers "\sgd\anarchy\an_c
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-
+private _DEBUGON = false;
 // #include "\sgd\paradigm\client\configs\ui\ui_def_base.inc"
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
 
 params["_dataCrate"];
 
-diag_log [":::: DEBUG: UI_INV_INIT: DATA:"];
+if(_DEBUGON)then{diag_log [":::: DEBUG: UI_INV_INIT: DATA:"];};
 private _crate_itemData	= ENTRY_GET("itemData",_dataCrate);
 
-diag_log [":::: DEBUG: UI_INV_INIT: ItemData:"];
-{
-	diag_log _x;
-}forEach _crate_itemData;
+if(_DEBUGON)then{diag_log [":::: DEBUG: UI_INV_INIT: ItemData:"];};
+if(_DEBUGON)then{{diag_log _x;}forEach _crate_itemData;};
 
 // Check, if inventory is already open. Close it, then reopen it again.
 private _disp_preCheck = uiNamespace getVariable ["an_inventory", displayNull];
@@ -108,17 +106,17 @@ an_inv_move_placeHorizontal = true;	// init
 an_ui_inv_grabActive = false;		// init
 
 ////// Create Inventory for Player and Ground
-diag_log "-----------------------------------------------";
+if(_DEBUGON)then{diag_log "-----------------------------------------------";};
 // Load Inventory: Player
 private _invItemData = localNamespace getVariable ["an_cData_invData",[]];
 ["an_inv_player_grid", _invItemData] call an_c_fnc_ui_inv_load;
-diag_log "-----------------------------------------------";
+if(_DEBUGON)then{diag_log "-----------------------------------------------";};
 
 // Store the ID of the active external Inventory
 localNamespace setVariable ["an_inv_external_active",ENTRY_GET("crateID",_dataCrate)];
 // Load Inventory: External
 ["an_inv_external_grid", _dataCrate] call an_c_fnc_ui_inv_load;
-diag_log "-----------------------------------------------";
+if(_DEBUGON)then{diag_log "-----------------------------------------------";};
 
 
 
@@ -127,7 +125,7 @@ diag_log "-----------------------------------------------";
 //////////////////////////////////////////////////////////////////////
 // DEV / WIP BELOW
 // Set up Gear Slot(-inventories)
-diag_log ["------------------------ GEAR ------------------------"];
+if(_DEBUGON)then{diag_log ["------------------------ GEAR ------------------------"];};
 private _slotList = [
 //   [		VarName, rows, cols, SlotID]
      ["an_slot_wpn_grid",3,6,2]
@@ -170,4 +168,4 @@ private _slottedItems = localNamespace getVariable ["an_cData_invData_slotted",[
 	[_gridName, _data, _slotsCols, _slotID] call an_c_fnc_ui_inv_load;
 	
 }forEach _slotList;
-diag_log ["------------------------ GEAR ------------------------"];
+if(_DEBUGON)then{diag_log ["------------------------ GEAR ------------------------"];};

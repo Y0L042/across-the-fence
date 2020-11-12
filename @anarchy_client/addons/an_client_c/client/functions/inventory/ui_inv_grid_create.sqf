@@ -3,7 +3,7 @@
 
 */
 
-
+private _DEBUGON = false;
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
 params["_ctrlGrid","_gridSize","_gridName","_slotID"];
@@ -19,7 +19,7 @@ if(_slotID != 0)then
 {
 	_gridRows = 1;
 };
-// diag_log ["GRID_CREATE: ", _gridH, _gridW];
+if(_DEBUGON)then{diag_log ["GRID_CREATE: ", _gridH, _gridW];};
 private _tileH = _gridH/_gridRows;
 
 
@@ -54,4 +54,4 @@ for "_pY" from 0 to (_gridRows-1)do
 };
 
 localNamespace setVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrid)], _gridSize];
-diag_log ["DEBUG: ui_inv_grid_create: size: ", localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrid)],[-1,-1]]];
+if(_DEBUGON)then{diag_log ["DEBUG: ui_inv_grid_create: size: ", localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrid)],[-1,-1]]];};
