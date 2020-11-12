@@ -57,7 +57,7 @@ if(_slotID > 0)then
 };
 
 
-private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_slots_usage_get;
+private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_space_usage_get;
 
 //_tiles_used == taken positions in Grid, needed to free up the needed Slots later
 private _offsetPos = [[_tileRow, _tileCol]];	//store first Pos (needed, since the offset will determined from this position)

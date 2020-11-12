@@ -37,11 +37,11 @@ if(_DEBUGON)then{diag_log [_rowMax, _colMax];};
 
 
 // Currently used Slots:
-private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_slots_usage_get;
+private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_space_usage_get;
 if(_DEBUGON)then{diag_log ["DEBUG: MOVE_AUTO: _itemSlotUsage:", _itemSlotUsage];};
 if(_DEBUGON)then{systemchat str ["DEBUG: MOVE_AUTO: _itemSlotUsage:", _itemSlotUsage];};
 
-_slots = [_rowMax, _colMax, _itemSlotUsage, _gridUsedSlots] call an_c_fnc_ui_inv_item_slots_find_free;
+_slots = [_rowMax, _colMax, _itemSlotUsage, _gridUsedSlots] call an_c_fnc_ui_inv_item_space_find_free;
 if(_DEBUGON)then{diag_log ["DEBUG: MOVE_AUTO: _slots          : ", _slots];};
 if(_DEBUGON)then{systemchat str ["DEBUG: MOVE_AUTO: _slots          : ", _slots];};
 
