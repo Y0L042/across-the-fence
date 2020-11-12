@@ -76,6 +76,8 @@ if(_btn == 34)then
 		// If there were loot- or droppedCrates close by
 		if !(_crate isEqualTo player)then
 		{
+/*
+// Currently disabled - needs rework
 			// check if something ostructs the line of sight (e.g: a Wall)
 			private _LISW_check = lineIntersectsWith[eyePos player, getPosASL _crate]#0;
 			// Reset back to the player, if something is in the way.
@@ -84,6 +86,7 @@ if(_btn == 34)then
 				_crate = player;
 				player setVariable["an_inv_dropActive",false];
 			};
+*/
 		};
 		if(_DEBUGON)then{systemchat str["EH KEYHANDLER: _droppedBox", getPosATL _crate];};
 		if(_DEBUGON)then{systemchat str["EH KEYHANDLER: dropActive ", (player getVariable "an_inv_dropActive")];};
