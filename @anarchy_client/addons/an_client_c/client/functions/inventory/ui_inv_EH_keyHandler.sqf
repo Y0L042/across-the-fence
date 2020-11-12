@@ -21,7 +21,7 @@
     Example(s):
 		(findDisplay 46) displayAddEventHandler ["keyUp",{call an_c_fnc_ui_inv_EH_keyHandler;}];
 */
-
+private _DEBUGON = false;
 disableSerialization;
 params ["_ctrl", "_btn", "_btn_shift", "_btn_ctrl", "_btn_alt"];
 private _ButtonDisabled = false;
@@ -56,6 +56,7 @@ if(_btn == 34)then
 		else
 		{
 			private _droppedBox = nearestObject [player, "Land_Ammobox_rounds_F"];
+			// private _droppedBox = (getPos player) nearestObject "Land_Ammobox_rounds_F";
 			if!(isNull _droppedBox)then
 			{
 				if(player distance _droppedBox < _dist_max)exitWith
@@ -75,6 +76,8 @@ if(_btn == 34)then
 				_crate = player;
 			};
 		};
+		if(_DEBUGON)then{systemchat str["EH KEYHANDLER: _droppedBox", getPosATL _crate];};
+		if(_DEBUGON)then{diag_log str["EH KEYHANDLER: _droppedBox", getPosATL _crate, _crate];};
 		// finaly request the Inventory
 		[_crate] call AN_C_fnc_loot_inv_request;
 	}

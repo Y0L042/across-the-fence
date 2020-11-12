@@ -14,7 +14,7 @@
 		ARRAY	currently used slots (NOT THE OFFSET of the Item itself!) ( e.g: [[0,1],[0,2],[0,3],...] )
 	]
 */
-
+private _DEBUGON = false;
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
@@ -157,13 +157,13 @@ if !(_isSamePos && _isSameInv && _isSameSlot)then
 	};
 	
 	// send command to the backend, to update its data.
-	diag_log ["DEBUG: item_create: MSG SEND Data:", ["inv_itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID]]];
+	if(_DEBUGON)then{diag_log ["DEBUG: item_create: MSG SEND Data:", ["inv_itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID]]];};
 	["inv_itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID]] call AN_G_fnc_msg_send;
 	
 	// Update the local Inventory
 	[_itemInvIDCur,_itemInvIDNew,_itemData,_itemID] call an_c_fnc_ui_inv_data_update;
 };
 
-// diag_log ["CREATE _itemData: ", _itemData];
+if(_DEBUGON)then{diag_log ["CREATE _itemData: ", _itemData];};
 // Update the ctrl with the updated ItemData
 [_ctrlItem, [[_posX,_posY,_ctrlItemW,_ctrlItemH],_usedSlots,_itemClass,_itemID]] call an_c_fnc_ui_inv_item_data_set;

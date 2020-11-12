@@ -1,3 +1,4 @@
+private _DEBUGON = false;
 params["_itemList"];
 _start = diag_tickTime;
 {
@@ -7,4 +8,4 @@ _start = diag_tickTime;
 	
 }forEach _itemList;
 _finish = diag_tickTime - _start;
-diag_log ["ITEM DATA RECEIVED: Item Data FINISHED:", _finish];
+if(_DEBUGON)then{diag_log ["ITEM DATA RECEIVED: Item Data FINISHED:", _finish];};

@@ -1,5 +1,5 @@
 
-
+private _DEBUGON = false;
 //executed from grabbed Item ctrl
 disableSerialization;
 params ["_ctrl", "_btn", "_xPos", "_yPos", "_btn_shift", "_btn_ctrl", "_btn_alt"];
@@ -11,7 +11,7 @@ if(_btn == 1 && an_ui_inv_grabActive)then
 	// re add the Item and its used slots in its previously used grid
 	// Get the previous data
 	private _data_prev = _ctrl getVariable ["item_data_prev",[]];
-	diag_log ["_data_prev: ",_data_prev];
+	if(_DEBUGON)then{diag_log ["_data_prev: ",_data_prev];};
 	_data_prev params ["_ctrl_parent_prev","_p_x","_p_y","_item_class","_item_usedSlots_prev","_pos_data"];
 	
 	private _grid_usedSlots = [(ctrlIDC _ctrl_parent_prev)] call an_c_fnc_ui_inv_grid_tiles_used_get;

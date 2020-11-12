@@ -1,6 +1,7 @@
 /*
 	Get the CfgClass
 */
+private _DEBUGON = false;
 params[
 	["_itemClass",-1,[-1]]
 ];
@@ -24,6 +25,6 @@ private _ret = switch(_itemClass)do
 	case 14: {"CfgMagazines"};	// Pouch (extra inventory, nothing else - atm not visible)
 	default {"CfgMagazines"};
 };
-// diag_log str["DEBUG: ITEM_GETCFGCLASS: _ret", _ret];
-// systemchat str["_ret", _ret];
+if(_DEBUGON)then{diag_log ["DEBUG: ITEM_GETCFGCLASS: _ret", _ret];};
+if(_DEBUGON)then{systemchat str["DEBUG: ITEM_GETCFGCLASS: _ret", _ret];};
 _ret

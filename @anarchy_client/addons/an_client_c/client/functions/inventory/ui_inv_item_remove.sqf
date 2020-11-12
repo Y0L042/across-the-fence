@@ -3,7 +3,7 @@
 	TODO: Split to two functions: REMOVE ITEM && REMOVE FROM GRID
 
 */
-
+private _DEBUGON = false;
 disableSerialization;
 
 params ["_ctrl", ["_btn",1,[0]]];//, "_xPos", "_yPos", "_btn_shift", "_btn_ctrl", "_btn_alt"];
@@ -13,19 +13,19 @@ if(_btn != 1)exitWith{systemchat "DEBUG: item_remove: (_btn != 1)";};
 //get the used slots from that Item
 
 private _item_data = [_ctrl] call an_c_fnc_ui_inv_item_data_get;
-// diag_log ["------- ITEM REMOVE: _item_data: ", _item_data];
+if(_DEBUGON)then{diag_log ["------- ITEM REMOVE: _item_data: ", _item_data];};
 _item_data params ["_pos_data","_item_usedSlots","_item_class","_item_id"];
 
 private _ctrl_grid = ctrlParentControlsGroup _ctrl;
 private _ctrl_grid_idc = ctrlIDC _ctrl_grid;
-diag_log ["DEBUG: ITEM_REMOVE: _ctrl_grid_idc : ", _ctrl_grid_idc];
-// systemchat str ["ITEM_REMOVE: _ctrl_grid_idc : ", _ctrl_grid_idc];
+if(_DEBUGON)then{diag_log ["DEBUG: ITEM_REMOVE: _ctrl_grid_idc : ", _ctrl_grid_idc];};
+if(_DEBUGON)then{systemchat str ["ITEM_REMOVE: _ctrl_grid_idc : ", _ctrl_grid_idc];};
 
 
 //get used slots from grid
 private _grid_usedSlots = [_ctrl_grid_idc] call an_c_fnc_ui_inv_grid_tiles_used_get;
-diag_log ["DEBUG: ITEM_REMOVE: _grid_usedSlots: ", _grid_usedSlots];
-// systemchat str ["ITEM_REMOVE: _grid_usedSlots: ", _grid_usedSlots];
+if(_DEBUGON)then{diag_log ["DEBUG: ITEM_REMOVE: _grid_usedSlots: ", _grid_usedSlots];};
+if(_DEBUGON)then{systemchat str ["ITEM_REMOVE: _grid_usedSlots: ", _grid_usedSlots];};
 
 
 // get the index pos of the used slots and store it temporarely
@@ -44,13 +44,13 @@ private _indexList = [];
 
 // then sort the list "backwards", to have the highest entry at index 0...
 _indexList sort false;
-// diag_log ["Pre :",_grid_usedSlots];
+if(_DEBUGON)then{diag_log ["Pre :",_grid_usedSlots];};
 
 // ...then delete them, starting from highest index to lowest (avoids to keep track of shifted IndexPos, because of the deletion)
 {
 	_grid_usedSlots deleteAt _x;
 }forEach _indexList;
-// diag_log ["Post:",_grid_usedSlots];
+if(_DEBUGON)then{diag_log ["Post:",_grid_usedSlots];};
 
 [_ctrl_grid_idc, _grid_usedSlots] call an_c_fnc_ui_inv_grid_tiles_used_set;
 
