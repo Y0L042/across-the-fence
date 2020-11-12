@@ -1,7 +1,7 @@
 /*
 	Auto move the Item the opposite Inventory (Shift+LMB on an Item)
 */
-
+private _DEBUGON = false;
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
 params ["_ctrl", "_btn", "_xPos", "_yPos", "_btnShift", "_btnCtrl", "_btnAlt"];
@@ -15,7 +15,7 @@ _ctrlGrid = uinamespace getvariable [_gridName,ControlNull];
 
 // Get all the blocked Slots of the target Inventory
 private _gridUsedSlots = [(ctrlIDC _ctrlGrid)] call an_c_fnc_ui_inv_grid_tiles_used_get;
-diag_log ["DEBUG: MOVE_AUTO: _gridUsedSlots :", _gridUsedSlots];
+if(_DEBUGON)then{diag_log ["DEBUG: MOVE_AUTO: _gridUsedSlots :", _gridUsedSlots];};
 
 private _itemData = [_ctrl] call an_c_fnc_ui_inv_item_data_get;
 _itemData params ["_posData","_itemUsedSlots","_itemClass","_itemId"];
@@ -24,7 +24,7 @@ _itemData params ["_posData","_itemUsedSlots","_itemClass","_itemId"];
 // Get the Parent Data for the selected Item
 private _parentData = [_itemClass] call an_c_fnc_ui_inv_item_data_parent_get;
 private _parentSize = ENTRY_GET("size",_parentData);
-diag_log ["DEBUG: MOVE_AUTO: _parentSize    :", _parentSize];
+if(_DEBUGON)then{diag_log ["DEBUG: MOVE_AUTO: _parentSize    :", _parentSize];};
 
 // Get the inventory Gridsize (rows only, since width is fixed) of the Inventory target
 private _gridSize = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrid)], [-1,-1]];
@@ -33,16 +33,16 @@ _gridSize params["_gridRows","_gridCols"];
 // We only need to check those Slots, which would be still inside Grid. e.g.: Column > (GridWidthSlots-ItemWidthSlots) == Don't even check that.
 private _rowMax = _gridRows-(_parentSize#0);
 private _colMax = _gridCols-(_parentSize#1);
-diag_log [_rowMax, _colMax];
+if(_DEBUGON)then{diag_log [_rowMax, _colMax];};
 
 
 // Currently used Slots:
 private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_slots_usage_get;
-diag_log ["DEBUG: MOVE_AUTO: _itemSlotUsage:", _itemSlotUsage];
+if(_DEBUGON)then{diag_log ["DEBUG: MOVE_AUTO: _itemSlotUsage:", _itemSlotUsage];};
 // systemchat str ["DEBUG: MOVE_AUTO: _itemSlotUsage:", _itemSlotUsage];
 
 _slots = [_rowMax, _colMax, _itemSlotUsage, _gridUsedSlots] call an_c_fnc_ui_inv_item_slots_find_free;
-diag_log ["DEBUG: MOVE_AUTO: _slots          : ", _slots];
+if(_DEBUGON)then{diag_log ["DEBUG: MOVE_AUTO: _slots          : ", _slots];};
 systemchat str ["DEBUG: MOVE_AUTO: _slots          : ", _slots];
 
 // No free slots found, exiting.
