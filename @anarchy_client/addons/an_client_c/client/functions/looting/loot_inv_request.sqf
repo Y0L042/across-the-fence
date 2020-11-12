@@ -22,9 +22,9 @@ params[ ["_target", objNull, [objNull]] ];
 
 if (isNull _target) exitWith {systemChat "DEBUG MSG: LOOT_INV_REQUEST: No Object selected.";};
 if (player distance _target > 2) exitWith {systemChat "DEBUG MSG: LOOT_INV_REQUEST: Too far away.";};
-private _isLootCrate = _target getVariable ["an_c_looting_is_crate", false];
+private _isLootCrate = _target getVariable ["an_c_looting_is_crate", false];	// Try to get the var from the selected Object, if its a lootcrate
 private _isPlayer = _target isEqualTo player;
-private _isDroppedCrate = typeOf _target in ["Land_Ammobox_rounds_F"];
+private _isDroppedCrate = typeOf _target in ["Land_Ammobox_rounds_F"];			// Check if it is a droppedCrate
 if (
 			!_isLootCrate
 		&&	!_isPlayer
@@ -32,14 +32,14 @@ if (
 	) exitWith {systemChat "DEBUG MSG: LOOT_INV_REQUEST: Target is not a crate OR a player.";};
 
 
-// ToDo: Check: when to trigger the "create a new Crate"-stuff :think: when an Item is dropped? :think: ToDo for later...
-// [ building, garrison pos index ]
+
 // Request the crate Data (and determine if a lootcrate was requested, or if the player just openend his inventory)
-// if (_target isEqualTo player) = True = _index will be ignored and a new empty "crate" will be created on the Client (and Backend)
+// if (_target isEqualTo player) = True = _index will be ignored and a new empty "droppedCrate" will be created on the Client (and Backend)
 if(_isLootCrate)then
 {
 	// If a lootcrate -> Gogogo
-	[ "loot_request_crate_inventory" ,[ _target getVariable "an_c_looting_building" ,_target getVariable "an_c_looting_index"] ] call para_c_fnc_call_on_server;
+	// 								[ building, 										garrison pos index ]
+	[ "loot_request_crate_inventory", [ _target getVariable "an_c_looting_building" ,_target getVariable "an_c_looting_index"] ] call para_c_fnc_call_on_server;
 }
 else
 {
