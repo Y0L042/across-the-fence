@@ -38,7 +38,7 @@ if (isNil "an_c_looting_spawned_buildings") then {
 	];
 };
 
-private _playerPos = getPos player;
+private _playerPos = getPosATL player;
 if (   _playerPos distance an_c_looting_last_player_pos < an_c_looting_min_distance_refresh
 	|| vehicle player isKindOf "Air"
 ) exitWith {};
@@ -58,7 +58,7 @@ if (!isNil "debug_loot_bubble") then {
 //Spawn in new buildings.
 {
 	private _building = _x;
-	private _finalSeed = [getPos _building] call an_g_fnc_loot_position_to_seed;
+	private _finalSeed = [getPosATL _building] call an_g_fnc_loot_position_to_seed;
 
 	{
 		private _chance = (_finalSeed + _forEachIndex) random 1;

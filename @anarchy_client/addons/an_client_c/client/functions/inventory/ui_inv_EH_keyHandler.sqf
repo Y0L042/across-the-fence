@@ -42,7 +42,7 @@ if(_btn == 34)then
 		// Lets assume, that the player just wants to open his Inventory. So we assign him here.
 		private _crate = player;
 		// Get the nearest lootcrates
-		private _nearestLootCrate = an_c_looting_spawned_crates inAreaArray [getPos player, 2, 2];
+		private _nearestLootCrate = an_c_looting_spawned_crates inAreaArray [getPosATL player, 2, 2];
 		// If there are multiples close by -> select the closest one.
 		private _nearestLootCrate_cnt = count(_nearestLootCrate);
 		if(_nearestLootCrate_cnt > 0)then

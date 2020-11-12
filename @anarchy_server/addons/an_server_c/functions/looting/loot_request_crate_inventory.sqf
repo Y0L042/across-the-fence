@@ -43,7 +43,7 @@ if(_isLootCrate > 0)then
 	private _isValid = _crateSeed random 1 < an_g_looting_crate_probability;
 	if !(_isValid) exitWith
 	{
-		private _message = format ["Anarchy Error: Bad crate requested, crate would not have spawned - Building: %1, Index: %2, Pos: %3", _building, _index, getPos _building];
+		private _message = format ["Anarchy Error: Bad crate requested, crate would not have spawned - Building: %1, Index: %2, Pos: %3", _building, _index, getPosATL _building];
 		diag_log _message;
 		[_message] remoteExec ["systemChat", _player];
 	};
@@ -52,7 +52,7 @@ if(_isLootCrate > 0)then
 
 	if (_player distance _cratePos > 5) exitWith 
 	{
-		private _message = format ["Anarchy error: Player %1 attempted to open crate from too far away: %2, %3", _player, _building buildingPos _index, getPos _player];
+		private _message = format ["Anarchy error: Player %1 attempted to open crate from too far away: %2, %3", _player, _building buildingPos _index, getPosATL _player];
 		diag_log _message;
 		[_message] remoteExecCall ["systemChat", _player];
 	};
