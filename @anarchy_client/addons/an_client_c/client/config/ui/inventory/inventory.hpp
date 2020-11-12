@@ -159,7 +159,7 @@ class an_inventory
 	enableSimulation = 1;
 	
 	onLoad = "[""onLoad"",_this,""an_inventory"",''] call 	(uinamespace getvariable 'BIS_fnc_initDisplay');";
-	onUnload = "[""onUnload"",_this,""an_inventory"",''] call 	(uinamespace getvariable 'BIS_fnc_initDisplay');";
+	onUnload = "[""onUnload"",_this,""an_inventory"",''] call 	(uinamespace getvariable 'BIS_fnc_initDisplay'); call an_c_fnc_ui_inv_item_drop_check;";
 	
 	// KeyDown: block every button (movement)
 	onKeyDown = " if(_this#1 in [1])then{_this#0 closeDisplay 1;}; true ";
