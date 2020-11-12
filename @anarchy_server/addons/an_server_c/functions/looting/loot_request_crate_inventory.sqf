@@ -2,7 +2,7 @@
 	File: fn_loot_request_crate_inventory.sqf
 	Author: Spoffy, Dscha
 	Date: 2020-11-06
-	Last Update: 2020-11-10
+	Last Update: 2020-11-12
 	Public: No
 
 	Description:
@@ -22,9 +22,14 @@ params[
 		,["_index",0,[0]]
 	];
 
-if (isNull _building) exitWith {};
+if (isNull _building) exitWith
+{
+	private _message = format ["Anarchy Error: Building not found - _this: %1", _this];
+	diag_log _message;
+	[_message] remoteExecCall ["systemChat", _player];
+};
 
-private _cratePos = getPos _building;
+private _cratePos = getPosATL _building;
 private _isDroppedCrate = typeOf _building in ["Land_Ammobox_rounds_F"];
 private _isLootCrate = if(_building isEqualTo _player || _isDroppedCrate )then{0}else{1};
 
@@ -49,8 +54,17 @@ if(_isLootCrate > 0)then
 	{
 		private _message = format ["Anarchy error: Player %1 attempted to open crate from too far away: %2, %3", _player, _building buildingPos _index, getPos _player];
 		diag_log _message;
-		[_message] remoteExec ["systemChat", _player];
+		[_message] remoteExecCall ["systemChat", _player];
 	};
+};
+
+// In case the player opens the Inventory, create a "droppedCrate" at this position.
+// Will only creates the new droppedCrate, when a player puts something into it (triggerd on the client)
+if(_isLootCrate == 0 || _isDroppedCrate)then
+{
+	_lootType = "type_generic";
+	_minLootQuantity = 0;
+	_player setVariable["an_inv_lastPos", _cratePos, false];
 };
 
 private _playerID = getPlayerUID _player;
@@ -59,21 +73,6 @@ private _lootType =	selectRandom ["type_generic", "type_military", "type_residen
 private _crateId = [_cratePos] call an_g_fnc_loot_generate_crate_id;
 private _minLootQuantity = round(random[1,3.5,6]); // DEV SETTINGS!
 private _normalizedPosition = _cratePos apply {floor _x};
-
-
-// !!! WIP !!! In case the player opens the Inventory, create a "droppedCrate" at this position.
-// Will most likely be moved to a seperate function, so it creates the new droppedCrate ONLY when a player puts something in it.
-if(_isLootCrate == 0 && !_isDroppedCrate)then
-{
-	createSimpleObject ["Land_Ammobox_rounds_F", getPosASL _player];
-	_lootType = "type_generic";
-	_minLootQuantity = 0;
-};
-if(_isDroppedCrate)then
-{
-	_lootType = "type_generic";
-	_minLootQuantity = 0;
-};
 
 diag_log [":::: CRATE_LOOT_REQUEST: DATA:", ["call_function", ["crate_data_get", [_playerID, _normalizedPosition, _crateId, _lootType, _isLootCrate, _minLootQuantity]]]];
 /*
