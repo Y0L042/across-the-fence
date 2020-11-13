@@ -120,6 +120,17 @@ localNamespace setVariable ["an_inv_external_active",ENTRY_GET("crateID",_dataCr
 ["an_inv_external_grid", _dataCrate] call an_c_fnc_ui_inv_load;
 if(_DEBUGON)then{diag_log "-----------------------------------------------";};
 
+// Change the header Text of the External Area
+private _ctrlExternalHeader = uinamespace getvariable ["an_inv_header_external", controlNull];
+private _useGround = player getVariable["an_inv_dropActive",false];
+if(_useGround)then
+{
+	_ctrlExternalHeader ctrlSetText "Ground";
+}
+else
+{
+	_ctrlExternalHeader ctrlSetText "Crate";
+};
 
 
 

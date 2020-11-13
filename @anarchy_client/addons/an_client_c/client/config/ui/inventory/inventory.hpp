@@ -193,7 +193,28 @@ class an_inventory
 	
 	class Controls
 	{
-		// Inventory: Player
+		// Inventory: Player/Personal
+		// Header Text
+		class header_personal: para_RscText
+		{
+			idc = 100;
+			
+			x = UIX_CR(1);
+			y = UIY_CU(11.5);
+			w = UIW(8);
+			h = UIH(1.25);
+			
+			colorText[] = {1,1,1,0.95};
+			colorBackground[] = {0.0,0.0,0.0,0.3};
+			text = "Personal";
+			sizeEx = TXT_M;
+			
+			style = "0x02";
+			
+			onLoad = "uinamespace setvariable [""an_inv_header_personal"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_inv_header_personal"", controlNull];";
+		};
+		// Inventory
 		class grid_player_area: para_RscControlsGroupNoScrollbarH
 		{
 			idc = 1100;
@@ -254,6 +275,22 @@ class an_inventory
 		};
 		
 		// Inventory: External
+		// Header Text
+		class header_external: header_personal
+		{
+			idc = 200;
+			
+			x = UIX_CL(9.65);
+			y = UIY_CU(11.5);
+			w = UIW(8);
+			h = UIH(1.25);
+			
+			text = "External";
+			
+			onLoad = "uinamespace setvariable [""an_inv_header_external"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_inv_header_external"", controlNull];";
+		};
+		// Inventory
 		class grid_crate_area: para_RscControlsGroupNoScrollbarH
 		{
 			idc = 1101;
@@ -314,6 +351,22 @@ class an_inventory
 			};
 		};
 		
+		/////////////////////////// EQUIP SLOTS:
+		// Header Text - Equipment
+		class header_equipment: header_personal
+		{
+			idc = 300;
+			
+			x = UIX_CR(10);
+			y = UIY_CU(11.5);
+			w = UIW(11);
+			h = UIH(1.25);
+			
+			text = "Equipment";
+			
+			onLoad = "uinamespace setvariable [""an_inv_header_equipment"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_inv_header_equipment"", controlNull];";
+		};
 		
 		// Inventory: Slot: Weapon
 		class grid_wpn_area: para_RscControlsGroupNoScrollbarHV

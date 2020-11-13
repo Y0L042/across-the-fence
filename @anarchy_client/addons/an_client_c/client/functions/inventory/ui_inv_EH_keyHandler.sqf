@@ -47,6 +47,7 @@ if(_btn == 34)then
 		private _nearestLootCrate_cnt = count(_nearestLootCrate);
 		if(_nearestLootCrate_cnt > 0)then
 		{
+			player setVariable["an_inv_dropActive",false];
 			// Only one? Select it then.
 			if(_nearestLootCrate_cnt == 1)exitWith{_crate = _nearestLootCrate#0};
 			// More than one? Check which one is the closest one.
@@ -55,7 +56,6 @@ if(_btn == 34)then
 				_distCheck = _x distance player;
 				if(_distCheck < _dist)then{_dist = _distCheck; _crate = _x; };
 			}forEach _nearestLootCrate;
-			player setVariable["an_inv_dropActive",false];
 		}
 		else
 		{
@@ -64,7 +64,7 @@ if(_btn == 34)then
 			// private _droppedBox = (getPos player) nearestObject "Land_Ammobox_rounds_F";
 			if!(isNull _droppedBox)then
 			{
-				if(player distance _droppedBox < _dist_max)exitWith
+				if(player distance _droppedBox < _dist_max)then
 				{
 					// A crate was found, so lets search for it
 					_crate = _droppedBox;
