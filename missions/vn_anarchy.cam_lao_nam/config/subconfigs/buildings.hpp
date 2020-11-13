@@ -12,13 +12,15 @@ class buildings
 {
 	class default
 	{
-		containers[] = {"Land_vn_object_trashcan_01"};
+		// containers[] = {"Land_vn_object_trashcan_01"};
+		containers[] = {"Land_vn_us_weapons"};
 		type = "type_generic";
 		count = 5;
 	};
 	class military
 	{
-		containers[] = {"Land_vn_object_trashcan_01"};
+		// containers[] = {"Land_vn_object_trashcan_01"};
+		containers[] = {"Land_vn_us_weapons"};
 		type = "loot_military";
 		count = 5;
 	};

@@ -32,7 +32,7 @@ if (isNil "an_c_looting_spawned_buildings") then {
 		true, 
 		true, 
 		"",
-		"cursorObject getVariable ['an_c_looting_is_crate', false]", 
+		"(cursorObject getVariable ['an_c_looting_is_crate', false] && (player distance cursorObject < 2))",
 		5, 
 		false
 	];
@@ -63,7 +63,8 @@ if (!isNil "debug_loot_bubble") then {
 	{
 		private _chance = (_finalSeed + _forEachIndex) random 1;
 		if (_chance < an_g_looting_crate_probability) then {
-			private _crate = createSimpleObject ["Land_vn_object_trashcan_01", AGLtoASL _x, true];
+			// private _crate = createSimpleObject ["Land_vn_object_trashcan_01", AGLtoASL _x, true];
+			private _crate = createSimpleObject ["Land_vn_us_weapons", AGLtoASL _x, true];
 			_crate setVariable ["an_c_looting_is_crate", true];
 			_crate setVariable ["an_c_looting_building", _building];
 			_crate setVariable ["an_c_looting_index", _forEachIndex];
