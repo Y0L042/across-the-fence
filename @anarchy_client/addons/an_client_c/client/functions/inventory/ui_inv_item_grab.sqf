@@ -21,7 +21,7 @@ _itemData params ["_posData","_itemUsedSpace","_itemClass","_itemID"];
 [_itemID] call an_c_fnc_ui_inv_item_active_id_set;
 (ctrlPosition _ctrl) params["_pX","_pY","_pW","_pH"];
 
-getMousePosition params["_mPos_x","_mPos_y"];
+
 private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
 private _ctrlGrpItem = _disp ctrlCreate ["inv_icon",32123];
 
