@@ -62,6 +62,7 @@ private _DEBUGON = false;
 // #include "\sgd\paradigm\client\configs\ui\ui_def_base.inc"
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
+if!(isNull objectParent player)exitWith{systemchat "DEBUG: Inventory currently blocked, while being in a vehicle!"};
 
 params["_dataCrate"];
 
