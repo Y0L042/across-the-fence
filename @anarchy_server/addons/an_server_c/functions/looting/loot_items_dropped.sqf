@@ -4,6 +4,11 @@
 	atm with globaly created objects (WIP), due to issues with simpleObjects and its update over the Netcode (e.g: visible, but can't be targeted)
 */
 
+private _DEBUGON = false;
+
+if(_DEBUGON)then{diag_log ["DEBUG: LOOT_ITEMS_DROPPED : (PRE)  _player : ", _player];};
+_player = if(_this isEqualTo [])then{_player}else{_this#0};
+if(_DEBUGON)then{diag_log ["DEBUG: LOOT_ITEMS_DROPPED : (POST) _player : ", _player];};
 
 private _pos = [_player] call an_s_fnc_loot_last_pos_get;
 
@@ -12,9 +17,6 @@ private _pos = [_player] call an_s_fnc_loot_last_pos_get;
 
 if(_pos isEqualTo [0,0,0])exitWith
 {
-	// reset the stored Var
-	[_player, [0,0,0]] call an_s_fnc_loot_last_pos_set;
-	
 	private _message = format ["Anarchy Error: items_dropped: Pos was not set : %1",_pos];
 	diag_log _message;
 	[_message] remoteExecCall ["systemChat", _player];
@@ -26,6 +28,4 @@ if(_pos isEqualTo [0,0,0])exitWith
 private _crate = createSimpleObject ["Land_Ammobox_rounds_F", [0,0,0]];
 _crate setPosATL _pos;
 
-// _message = format["LOOT_ITEMS_DROPPED - _pos: %1", _pos];
-// [_message] remoteExecCall ["systemChat", _player];
-// [_message] remoteExecCall ["diag_log", _player];
+_crate
