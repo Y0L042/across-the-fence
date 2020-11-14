@@ -63,7 +63,7 @@ private _DEBUGON = false;
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
 if!(isNull objectParent player)exitWith{systemchat "DEBUG: Inventory currently blocked, while being in a vehicle!"};
-
+if!(alive player)exitWith{};
 params["_dataCrate"];
 
 if(_DEBUGON)then{diag_log [":::: DEBUG: UI_INV_INIT: DATA:"];};
