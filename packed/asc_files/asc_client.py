@@ -55,6 +55,9 @@ def client_checkKey(sData, con_server, con_client, raddr):
                     # create class and start client_handler
                     client = data_client(sData=sData, con_server=con_server, con_client=con_client, raddr=raddr, puid=puid)
 
+                    # store the class, so we can access it at a later point:
+                    sData.userlist[puid] = client   # ToDo: Remove on disconnect
+
                     # start listening to the socket connection
                     client.client_listener()
                 else:

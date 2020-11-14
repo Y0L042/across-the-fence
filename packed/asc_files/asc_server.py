@@ -18,6 +18,7 @@ class data_server:
         self.threads_max = threads_max
         self.user_awaiting = dict()
         self.user_active = dict()
+        self.userlist = dict()
         self.con_gameServer = None
         self.mainConnection = None
         self.database = None
