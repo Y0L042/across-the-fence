@@ -78,10 +78,11 @@ def item_move(client=None, args=()):
     if client is None:
         print('ERROR: INV_HANDLER: ITEM_MOVE: "CLIENT" NOT PASSED')
         return
-
-    print(f"ARGS: {args}")
+    # print(f"DEBUG: ITEM_MOVE: client: {client}")
+    # print(f"DEBUG: ITEM_MOVE: ARGS: {args}")
     try:
         # invID = either "getPlayerUID" for players OR "randomID" for Crates
+        # args = [var1,var2, etc]
         itemID, invID_old, invID_new, isFlipped, invPos, inSlot = args
         # print(f"cData: {client.cData}")
     except Exception as e:

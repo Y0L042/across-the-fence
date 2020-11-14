@@ -261,7 +261,7 @@ def inv_slots_used_get(slotsStart=None, slots_ignore=None, sizeItem=None, invGri
                     elif [(xin+xpos), (yin+ypos)] in slots_ignore:
                         slots_used.append([xin+xpos, yin+ypos])
                     else:
-                        print(f"DEBUG: INV_HANDLER: inv_slots_used_get - NO FREE SLOTS FOUND - Slot: {[xin+xpos, yin+ypos]} (If EQUIP REQUEST -> All is fine!)")
+                        # print(f"DEBUG: INV_HANDLER: inv_slots_used_get - NO FREE SLOTS FOUND - Slot: {[xin+xpos, yin+ypos]} (If EQUIP REQUEST -> All is fine!)")
                         return []
                 except IndexError:
                     print("Parts of the Item are outside the Inventory ")
