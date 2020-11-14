@@ -2,7 +2,7 @@
 	File: fn_loot_request_crate_inventory.sqf
 	Author: Spoffy, Dscha
 	Date: 2020-11-06
-	Last Update: 2020-11-12
+	Last Update: 2020-11-14
 	Public: No
 
 	Description:
@@ -23,7 +23,7 @@ params[
 		,["_index",0,[0]]
 	];
 
-_openInv = if(count(_this) < 3)then{1}else{0};
+_openInv = if(count(_this) < 3)then{1}else{0};	// DEV - Will be used for "a silent update" of the player Inventory - not triggering the "open Inventory" stuff
 _player = if(_openInv == 1)then{_player}else{_this#2};
 
 if (isNull _building) exitWith
