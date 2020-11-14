@@ -30,10 +30,9 @@ cmdList = {
 				"player_fired": item_handler.item_degrade,
 
 				# Player:
-				# # update stats
 				"update_players": client_handler.players_stats_update,
-				# # Update the faction? Might be, idk
-				"player_update_faction": client_handler.player_update_faction
+				"player_update_faction": client_handler.player_update_faction,
+				"player_killed": client_handler.player_killed,
 			},
 		'arma_server': {
 				# "functionTag in Arma": "Function to execute"
