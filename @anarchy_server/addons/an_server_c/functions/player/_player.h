@@ -7,5 +7,6 @@ class player
     DECLARE_SERVER_FUNC(player,player_faction_set);
     DECLARE_SERVER_FUNC(player,player_health_set);
     DECLARE_SERVER_FUNC(player,player_loadout_set);
+    DECLARE_SERVER_FUNC(player,player_EH_killed);
 };
 
