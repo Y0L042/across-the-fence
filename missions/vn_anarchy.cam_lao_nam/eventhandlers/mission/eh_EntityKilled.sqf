@@ -29,3 +29,9 @@ params
 ];
 
 ["EntityKilled mEH: %1", _this] call BIS_fnc_logFormat;
+
+// Players
+if(isPlayer _unit)then
+{
+	_this call an_s_fnc_player_EH_killed;
+};
