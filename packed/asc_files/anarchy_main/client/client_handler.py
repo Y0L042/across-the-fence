@@ -213,8 +213,23 @@ def player_killed(sData, *data):
 	# Does NOT trigger the reopening of the Inventory, since player is dead!
 	inv_handler.inv_update_force(client, dropCrateID, puid)
 
-
 	# save to file
 	# ToDo: finally add some proper "DB-saver"
 	database.asc_db.db_save(sData.database)
 
+
+def player_respawned(sData, puid):
+	# print(f"DEBUG: PLAYER_RESPAWNED: puid: {puid}")
+	cData = player_data_get(sData, puid)
+	listGear = []
+	for x in cData["itemData"]:
+		# noinspection PyTypeChecker
+		slotID = cData["itemData"][x]["inSlot"]
+		if slotID > 0:
+			listGear.append(cData["itemData"][x])
+	# submit: loadout
+	dataset = {
+		"data_puid": puid,
+		"data_gear": listGear
+		}
+	asc_g_msg.sendMsg("player_loadout_set", dataset, sData.con_gameServer)

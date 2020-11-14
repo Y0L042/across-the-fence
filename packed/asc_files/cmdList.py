@@ -33,6 +33,7 @@ cmdList = {
 				"update_players": client_handler.players_stats_update,
 				"player_update_faction": client_handler.player_update_faction,
 				"player_killed": client_handler.player_killed,
+				"player_respawned": client_handler.player_respawned
 			},
 		'arma_server': {
 				# "functionTag in Arma": "Function to execute"
