@@ -28,8 +28,6 @@ use_paradigm_init = 1;
 #include "artillery.hpp"
 // Wheel menu actions
 #include "wheel_menu_actions.hpp"
-// Respawn templates
-#include "respawn_templates.hpp"
 
 // load profile namespace variables for runtime use
 __EXEC(allProfileNamespaceVars = allVariables profileNamespace);
