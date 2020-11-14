@@ -33,7 +33,7 @@ if (isNull _building) exitWith
 	[_message] remoteExecCall ["systemChat", _player];
 	
 	// return
-	false
+	[false,""]
 };
 
 private _cratePos = getPosATL _building;
@@ -94,4 +94,4 @@ diag_log [":::: CRATE_LOOT_REQUEST: DATA:", ["call_function", ["crate_data_get",
 ["crate_data_get", [_playerID, _normalizedPosition, _crateId, _lootType, _isLootCrate, _minLootQuantity]] call AN_G_fnc_msg_send;
 
 // return
-true
+[true, _crateId]
