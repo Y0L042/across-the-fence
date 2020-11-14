@@ -64,7 +64,7 @@ if(_isLootCrate == 0 || _isDroppedCrate)then
 {
 	_lootType = "type_generic";
 	_minLootQuantity = 0;
-	_player setVariable["an_inv_lastPos", _cratePos, false];
+	[_player, _cratePos] call an_s_fnc_loot_last_pos_set;
 };
 
 private _playerID = getPlayerUID _player;
