@@ -16,17 +16,24 @@
 
 	Example(s):
 		[_object, 0] call AN_s_fnc_loot_request_crate_inventory;
+		[_object, 0, _player] call AN_s_fnc_loot_request_crate_inventory;
 */
 params[
 		 ["_building",ObjNull,[ObjNull]]
 		,["_index",0,[0]]
 	];
 
+_openInv = if(count(_this) < 3)then{1}else{0};
+_player = if(_openInv == 1)then{_player}else{_this#2};
+
 if (isNull _building) exitWith
 {
 	private _message = format ["Anarchy Error: Building not found - _this: %1", _this];
 	diag_log _message;
 	[_message] remoteExecCall ["systemChat", _player];
+	
+	// return
+	false
 };
 
 private _cratePos = getPosATL _building;
@@ -85,3 +92,6 @@ diag_log [":::: CRATE_LOOT_REQUEST: DATA:", ["call_function", ["crate_data_get",
 */
 
 ["crate_data_get", [_playerID, _normalizedPosition, _crateId, _lootType, _isLootCrate, _minLootQuantity]] call AN_G_fnc_msg_send;
+
+// return
+true
