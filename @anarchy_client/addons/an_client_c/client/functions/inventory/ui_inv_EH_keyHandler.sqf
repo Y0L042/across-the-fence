@@ -32,6 +32,9 @@ if(_btn == 34)then
 	// Disable the normal input for this button, by returning "true", at the end of the file.
 	call _BD;
 	
+	if!(isNull objectParent player)exitWith{systemchat "DEBUG: Inventory currently blocked, while being in a vehicle!"};
+	if!(alive player)exitWith{};
+	
 	// Set the max distance to objects.
 	private _dist_max = 2;
 	private _cObj = cursorObject;
