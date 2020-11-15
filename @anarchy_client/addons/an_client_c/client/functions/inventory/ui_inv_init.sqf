@@ -55,6 +55,67 @@ an_c_fnc_ui_inv_EH_keyHandler = compile preprocessFileLineNumbers "\sgd\anarchy\
 an_c_fnc_loot_inv_request = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\looting\loot_inv_request.sqf";
 
 
+
+// Dev Functions for Inventory Interactions!
+/*
+	1. Request will be send to the backend , that one will check if all the conditions are met.
+	2. If there are differences to the data send by the client and the data on the Backend ->
+	3. Command will be send to the Server and back to the client to reset "things"
+	
+	Example:
+	Health:
+	1. ItemID and "action Tag" of the MedKit is send back to the backend, requesting ActionX to execute
+	2. Backend checks, if he has a MedKit
+		True:
+			- Server sends playerID and the "setDamage" Tag to the Server
+			- Server waits, until the Animation/Timer has run out
+			- Executes the setDamage command on the client
+		False:
+			- Nothing will be executed for the Client
+			- Inventory ForceRefresh will be send to the Client
+*/
+an_fnc_bandage_use = 
+{
+	params["_ctrl"];
+	systemChat format["Bandage used: Health: %1", round(100-(damage player)*100)];
+	private _dmgCur = damage player;
+	if(_dmgCur > 0)then
+	{
+		[_ctrl] call an_c_fnc_ui_inv_item_remove;
+		_dmgCur = _dmgCur - 0.15;
+		player setDamage _dmgCur;
+		systemChat format["Bandage used: Health: %1", round(100-(damage player)*100)];
+	};
+};
+an_fnc_FAK_use = 
+{
+	params["_ctrl"];
+	systemChat format["FirstAidKit used: Health: %1", round(100-(damage player)*100)];
+	private _dmgCur = damage player;
+	if(_dmgCur > 0)then
+	{
+		[_ctrl] call an_c_fnc_ui_inv_item_remove;
+		_dmgCur = _dmgCur - 0.3;
+		player setDamage _dmgCur;
+		systemChat format["FirstAidKit used: Health: %1", round(100-(damage player)*100)];
+	};
+};
+an_fnc_MediKit_use =
+{
+	params["_ctrl"];
+	systemChat format["MediKit used: Health: %1", round(100-(damage player)*100)];
+	private _dmgCur = damage player;
+	if(_dmgCur > 0)then
+	{
+		[_ctrl] call an_c_fnc_ui_inv_item_remove;
+		_dmgCur = 0;
+		player setDamage _dmgCur;
+		systemChat format["MediKit used: Health: %1", round(100-(damage player)*100)];
+		
+	};
+};
+AN_C_FNC_PLACEHOLDER = {systemChat str["FUNCTION CALLED: PLACEHOLDER"];};
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -166,7 +227,7 @@ private _slottedItems = localNamespace getVariable ["an_cData_invData_slotted",[
 			,["inv_rows", _slotsRows]
 		];
 	
-	private _slotItem = _slottedItems findIf {(_x#0) isEqualTo _slotID};	// Todo: Making getting and setting a seperate function
+	private _slotItem = _slottedItems findIf {(_x#0) isEqualTo _slotID};
 	if(_slotItem != -1)then
 	{
 		private _itemData = (_slottedItems#_slotItem)#1;

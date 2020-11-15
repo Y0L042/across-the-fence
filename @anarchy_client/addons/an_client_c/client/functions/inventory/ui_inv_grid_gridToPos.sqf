@@ -14,7 +14,7 @@ _item_pos params ["_item_pos_row","_item_pos_col"];
 (ctrlPosition _ctrl) params["","","_ctrl_w","_ctrl_h"];
 
 //calc the width and height of each slot in the control
-private _invSizeCol = _ctrl getVariable ["an_sizeCol", 8];	// ToDo: an_sizeCol - Recheck if needed.
+private _invSizeCol = _ctrl getVariable ["an_sizeCol", 8];
 private _grid_w_tile = _ctrl_w / _invSizeCol;
 private _grid_h_tile = _ctrl_h / _grid_rows;
 
