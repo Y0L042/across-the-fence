@@ -23,6 +23,9 @@ private _ret = switch(_itemClass)do
 	case 13: {"CfgWeapons"};	// Vest
 	case 15: {"CfgVehicles"};	// Backpack
 	case 14: {"CfgMagazines"};	// Pouch (extra inventory, nothing else - atm not visible)
+	case 15: {"CfgWeapons"};	// Goggles
+	case 16: {"CfgWeapons"};	// Facewear
+	case 17: {"CfgWeapons"};	// Bino
 	default {"CfgMagazines"};
 };
 if(_DEBUGON)then{diag_log ["DEBUG: ITEM_GETCFGCLASS: _ret", _ret];};

@@ -212,9 +212,10 @@ private _slotList = [
     ,["an_slot_hel_grid",3,3,10]
     ,["an_slot_bkp_grid",4,4,15]
     // ,["goggles",""]
+    // ,["facewear",""]
+    // ,["Bino",""]
     // ,["pouch",""]
     // ,["tool",""]
-    // ,["w_hand",""]
     // ,["w_launch",""]
     // ,["w_main_b",""]
 ];
