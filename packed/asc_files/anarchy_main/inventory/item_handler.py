@@ -153,7 +153,7 @@ def item_move(client=None, args=()):
         inv_handler.inv_update_force(client=client, invID_old=invID_old, invID_new=invID_new)
         return
 
-    print(f"--------------------\n  EQUIP REQUEST: {isEquip}\nUNEQUIP REQUEST: {isUnEquip}\n--------------------")
+    # print(f"--------------------\n  EQUIP REQUEST: {isEquip} - UNEQUIP REQUEST: {isUnEquip}\n--------------------")
     # Check if the old Inv is the new Inv (moving Item inside an Inventory) ignore the previously used slots then.
     if invID_old == invID_new:
         # get currently used slots, ignoring the previously used slots

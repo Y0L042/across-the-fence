@@ -21,15 +21,15 @@ def invGrid_create(rows):
 
 # try to get the Crate data. If not found -> Create a new one. We simply assume the Data, coming from the Game-server, is correct/valid.
 def crate_data_get(sData, clientID: str = None, pos: list = None, crateID: str = None, lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 4, persistent: int = 0, model: str = "IG_supplyCrate_F"):
-    print(f"clientID: {clientID}\n"
-          f"pos: {pos}\n"
-          f"crateID: {crateID}\n"
-          f"lootType: {lootType}\n"
-          f"isLootcrate: {isLootcrate}\n"
-          f"loot_count: {loot_count}\n"
-          f"inv_rows: {inv_rows}\n"
-          f"persistent: {persistent}\n"
-          f"model: {model}\n")
+    # print(f"clientID: {clientID}\n"
+    #       f"pos: {pos}\n"
+    #       f"crateID: {crateID}\n"
+    #       f"lootType: {lootType}\n"
+    #       f"isLootcrate: {isLootcrate}\n"
+    #       f"loot_count: {loot_count}\n"
+    #       f"inv_rows: {inv_rows}\n"
+    #       f"persistent: {persistent}\n"
+    #       f"model: {model}\n")
     try:
         if persistent > 0:
             invData = sData.database.crates[crateID]
@@ -93,13 +93,13 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
         "itemData": {}
         }
 
-    print(f"CRATE ADD:\n"
-          f"crateID     : {crateID}\n"
-          f"Model       : {model}\n"
-          f"Pos         : {pos}\n"
-          f"type        : {lootType}\n"
-          f"inv_rows    : {inv_rows}\n"
-          f"invData     : {invData}\n")
+    # print(f"CRATE ADD:\n"
+    #       f"crateID     : {crateID}\n"
+    #       f"Model       : {model}\n"
+    #       f"Pos         : {pos}\n"
+    #       f"type        : {lootType}\n"
+    #       f"inv_rows    : {inv_rows}\n"
+    #       f"invData     : {invData}\n")
 
     # create the Inventory
     if persistent > 0:
@@ -108,20 +108,20 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
     else:
         # fill the lootcrate (if crate/Inventory is a lootcrate)
         if isLootcrate == 1:
-            print(f"DEBUG: INV_HANDLER: crate_add: isLootcrate: {isLootcrate}")
+            # print(f"DEBUG: INV_HANDLER: crate_add: isLootcrate: {isLootcrate}")
 
             skill_scavenging = sData.database.players[clientID]["skills"]["scavenging"]
-            print(f"DEBUG: INV_HANDLER: crate_add: skill_scavenging: {skill_scavenging}")
+            # print(f"DEBUG: INV_HANDLER: crate_add: skill_scavenging: {skill_scavenging}")
 
             # ToDo: recalculate the loot_count properly, based on the scavenging skill!
             # check if skill is high enough, otherwise randRange will complain, that the "end"-number isn't high enough... (must be "start < end")
             if skill_scavenging > 0:
                 loot_count = random.randrange(loot_count, int(loot_count + (skill_scavenging * DEFAULT_loot_skill_multiplier)))
-            print(f"DEBUG: INV_HANDLER: crate_add: loot_count: {loot_count}")
+            # print(f"DEBUG: INV_HANDLER: crate_add: loot_count: {loot_count}")
 
             # get the list of Item names
             items_list = item_handler.loot_item_list_create(sData=sData, crate_id=crateID, loot_count=loot_count, loot_type=lootType)
-            print(f"DEBUG: INV_HANDLER: crate_add: items_list_raw: {items_list}\n----------------")
+            # print(f"DEBUG: INV_HANDLER: crate_add: items_list_raw: {items_list}\n----------------")
 
             # cycle through all the parents (parent can either be full itemData or a subType)
             for parent in items_list:
@@ -130,16 +130,16 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
                     if parent in sData.itemSubTypes:
                         # create the Item Data structure
                         subType_parent = sData.itemSubTypes[parent]["parent"]
-                        print(f"DEBUG: INV_HANDLER: crate_add: subType_class: {parent} - subType_parent: {subType_parent}")
+                        # print(f"DEBUG: INV_HANDLER: crate_add: subType_class: {parent} - subType_parent: {subType_parent}")
 
                         # create and get the Item Data structure
                         item = item_handler.item_create(parent=subType_parent)
                         # get the subTypeData of the desired Item
                         subType = sData.itemSubTypes[parent]
-                        print(f"DEBUG: INV_HANDLER: crate_add: subType: {subType} -  item: {item}")
+                        # print(f"DEBUG: INV_HANDLER: crate_add: subType: {subType} -  item: {item}")
                         # update the parentData with the subTypeData
                         item.update(subType)
-                        print(f"DEBUG: INV_HANDLER: crate_add -> item_create: item #2: {item}")
+                        # print(f"DEBUG: INV_HANDLER: crate_add -> item_create: item #2: {item}")
                         # ToDo: call a function in item_handler to update/calc stats like hp_cur, depending on... something
                     else:
                         item = item_handler.item_create(parent=parent)
@@ -152,7 +152,7 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
                     print(f"ERROR: INV_HANDLER: create_add: ITEM DEFINITION NOT FOUND: {parent} - Creating dummy Icon")
                     item = item_handler.item_create(parent="PLACEHOLDER")
                     invData, item = item_handler.item_add_to_inv(sData=sData, invData=invData, isLootcrate=isLootcrate, item=item)
-            print(f"DEBUG: INV_HANDLER: crate_add: invData: {invData}")
+            # print(f"DEBUG: INV_HANDLER: crate_add: invData: {invData}")
 
         # store in database, under temporary crates
         sData.database.sessionCrates[crateID] = invData
@@ -269,7 +269,7 @@ def inv_slots_used_get(slotsStart=None, slots_ignore=None, sizeItem=None, invGri
     except Exception as e:
         print(f'ERROR: INV_HANDLER: inv_slots_used_get - ERROR:\n{e}')
         return []
-    print(f"slots_used: {slots_used}")
+    # print(f"slots_used: {slots_used}")
     return slots_used
 
 
@@ -323,22 +323,22 @@ def inv_slots_free_get(invGrid, item_size):
 
 
 def inv_grid_get(client=None, args=()):
-    print('FUNCTION CALLED BY REMOTE: "inv_get_grid"')
+    # print('FUNCTION CALLED BY REMOTE: "inv_get_grid"')
     gridID = args[0]
 
     data = inv_getData(client, gridID)["inv_grid"]
-    print(f"gridID: {gridID}\ndata: {data}")
+    # print(f"gridID: {gridID}\ndata: {data}")
 
     con = client.con_client
     asc_g_msg.sendMsg("ret_inv_get_grid", data, con)
 
 
 def inv_items_get(client=None, args=()):
-    print('FUNCTION CALLED BY REMOTE: "inv_get_items"')
+    # print('FUNCTION CALLED BY REMOTE: "inv_get_items"')
     gridID = args[0]
 
     data = inv_getData(client, gridID)["itemData"]
-    print(f"gridID: {gridID}\ndata: {data}")
+    # print(f"gridID: {gridID}\ndata: {data}")
 
     con = client.con_client
     asc_g_msg.sendMsg("ret_inv_get_items", data, con)
