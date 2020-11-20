@@ -128,20 +128,37 @@ _DEV_MAGAZINES_AMMO = [0,0,0];
 }forEach
 [
 //	 https://community.bistudio.com/wiki/setUnitLoadout
-	 [2,	["","","","",[],[],""] ]	// ["arifle_MX_ACO_pointer_F","","acc_pointer_IR","optic_Aco",[],[],""],
-	,[4,	["","","","",[],[],""] ]	// [],	// Launcher
-	,[3,	["","","","",[],[],""] ]	// ["hgun_P07_F","","","",["16Rnd_9x21_Mag",16],[],""],
-	,[12,	["",[]] ]					// ["U_B_CombatUniform_mcam",[ ["30Rnd_65x39_caseless_mag",2,1] ]],
-	,[13,	["",[]] ]					// ["V_PlateCarrier1_rgr",[]],
-	,[15,	["",[]] ]					// ["B_AssaultPack_mcamo_Ammo",[]],
-	,[10,	""]							// "H_HelmetB_grass",
-	,[11,	""]							// "",
+	 [2,	["","","","",[],[],""] ]	// Weapon: Primary
+	,[4,	["","","","",[],[],""] ]	// Weapon: Launcher
+	,[3,	["","","","",[],[],""] ]	// Weapon: Secondary
+	,[12,	["",[]] ]					// Gear: Uniform
+	,[13,	["",[]] ]					// Gear: Vest
+	,[15,	["",[]] ]					// Gear: Backpack
+	,[10,	""]							// Gear: Helmet
+	,[11,	""]							// Gear: Goggles/Glasses
+	,[17,	["","","","",[],[],""] ]	// Gear: Binocular
 ];
+
+/*
+
+_loadout =	[
+Index:	0		 ["Weapon: Primary","Muzzle","Flashlight","Optics",["MagazineInWeapon",AmmoCount],[],"Bipod"]
+Index:	1		,["Weapon: Launcher","Muzzle","Flashlight","Optics",["MagazineInWeapon",AmmoCount],[],"Bipod"]
+Index:	2		,["Weapon: Handgun","Muzzle","Flashlight","Optics",["MagazineInWeapon",AmmoCount],[],"Bipod"]
+Index:	3		,["Gear: Uniform",	[ ["FirstAidKit",1],["MiniGrenade",1,1] ] ]	// if Item		: ["FirstAidKit",Amount];
+Index:	4		,["Gear: Vest",		[ ["FirstAidKit",1],["MiniGrenade",1,1] ] ]	// if Magazine	: ["MiniGrenade", Amount, Bullets/Rounds]
+Index:	5		,["Gear: Backpack",	[ ["FirstAidKit",1],["MiniGrenade",1,1] ] ]	// Magazines can't be "overfilled" with rounds!
+Index:	6		,"Gear: Helmet"
+Index:	7		,"Gear: Goggles/Glasses"
+Index:	8		,["Binocular","","","",[],[],""]	// Binoculars are technically a "weapon", it looks the same as in Index 0-2
+Index:	9		,["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch","NVGoggles"]
+			]
+*/
 
 
 // Following is the standard gear for every player (not planed to be put down nor exchanged)
 // Note: Might be nice, having different standard loadouts for each faction.
-_loadout pushback ["vn_m19_binocs_grn","","","",[],[],""];	//It's a "weapon", so it needs to be an Array like this...
+// _loadout pushback ["vn_m19_binocs_grn","","","",[],[],""];	//It's a "weapon", so it needs to be an Array like this...
 _loadout pushback ["vn_o_item_map","","","vn_b_item_compass_sog","vn_b_item_watch",""];
 
 {

@@ -26,7 +26,7 @@ disableSerialization;
 params ["_ctrl", "_btn", "_btn_shift", "_btn_ctrl", "_btn_alt"];
 private _ButtonDisabled = false;
 private _BD = {_ButtonDisabled = true;};
-// "G"
+// 34 == "G" == Open Anarchy Inventory
 if(_btn == 34)then
 {
 	// Disable the normal input for this button, by returning "true", at the end of the file.

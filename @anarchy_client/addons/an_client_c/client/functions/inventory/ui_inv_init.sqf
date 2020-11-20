@@ -174,6 +174,8 @@ if(_DEBUGON)then{diag_log "-----------------------------------------------";};
 // Load Inventory: Player
 private _invItemData = localNamespace getVariable ["an_cData_invData",[]];
 ["an_inv_player_grid", _invItemData] call an_c_fnc_ui_inv_load;
+
+// Change the header Text of the Personal Area, by setting the playername as text
 private _ctrlPersonalHeader = uinamespace getvariable ["an_inv_header_personal", controlNull];
 _ctrlPersonalHeader ctrlSetText name player;
 if(_DEBUGON)then{diag_log "-----------------------------------------------";};
@@ -187,15 +189,8 @@ if(_DEBUGON)then{diag_log "-----------------------------------------------";};
 // Change the header Text of the External Area
 private _ctrlExternalHeader = uinamespace getvariable ["an_inv_header_external", controlNull];
 private _useGround = player getVariable["an_inv_dropActive",false];
-if(_useGround)then
-{
-	_ctrlExternalHeader ctrlSetText "Ground";
-}
-else
-{
-	_ctrlExternalHeader ctrlSetText "Crate";
-};
-
+if(_useGround)then	{ _ctrlExternalHeader ctrlSetText "Ground"; }
+else				{ _ctrlExternalHeader ctrlSetText "Crate"; };
 
 
 //////////////////////////////////////////////////////////////////////
