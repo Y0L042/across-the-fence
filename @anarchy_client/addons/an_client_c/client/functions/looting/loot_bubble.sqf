@@ -24,7 +24,8 @@ if (isNil "an_c_looting_spawned_buildings") then {
 	an_c_looting_last_player_pos = [0,0,0];
 	an_c_looting_range = 200;
 	an_c_looting_min_distance_refresh =	100;
-	player addAction [
+/* // Addaction disabled - handled via Keyhandler
+player addAction [
 		"ASC: get crateData", 
 		{[cursorObject] call AN_C_fnc_loot_inv_request;}, 
 		[], 
@@ -36,6 +37,7 @@ if (isNil "an_c_looting_spawned_buildings") then {
 		5, 
 		false
 	];
+*/
 };
 
 private _playerPos = getPosATL player;
