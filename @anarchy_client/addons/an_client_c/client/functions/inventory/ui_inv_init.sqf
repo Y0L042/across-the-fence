@@ -174,6 +174,8 @@ if(_DEBUGON)then{diag_log "-----------------------------------------------";};
 // Load Inventory: Player
 private _invItemData = localNamespace getVariable ["an_cData_invData",[]];
 ["an_inv_player_grid", _invItemData] call an_c_fnc_ui_inv_load;
+private _ctrlPersonalHeader = uinamespace getvariable ["an_inv_header_personal", controlNull];
+_ctrlPersonalHeader ctrlSetText name player;
 if(_DEBUGON)then{diag_log "-----------------------------------------------";};
 
 // Store the ID of the active external Inventory
