@@ -77,3 +77,11 @@ AN_S_fnc_client_updater_fired =
 // Add scheduler job - update the backend every N seconds
 ["ASC_EH_fired_updater", AN_S_fnc_client_updater_fired, [], 5] call para_g_fnc_scheduler_add_job;
  */
+
+an_s_fnc_mpKilled_EH =
+{
+	// diag_log ["TRIGGERED: AN_S_FNC_MPKILLED_EH", _this];
+	params ["_unit", "_killer", "_instigator", "_useEffects"];
+	_this call an_s_fnc_player_EH_killed;
+};
+_OwnerPawn addMPEventHandler ["mpkilled", {call an_s_fnc_mpKilled_EH}];
