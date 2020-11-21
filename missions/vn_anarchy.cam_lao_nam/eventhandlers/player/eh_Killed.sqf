@@ -7,6 +7,7 @@
 
     Description:
 		Player Killed Event Handler.
+		Called localy on Client machine.
 
     Parameter(s):
 		_unit - Description [DATATYPE, defaults to DEFAULTVALUE]

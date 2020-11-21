@@ -64,7 +64,7 @@ _DEV_MAGAZINES = ["","",""];
 _DEV_MAGAZINES_AMMO = [0,0,0];
 // Weapons:
 {
-	_x params ["_slot", "_defaultValue"];
+	_x params ["_slot", "_dataLayout", "_defaultValue"];
 	
 	// check if there is an Item with the given SlotID:
 	private _itemData = [];
@@ -86,11 +86,14 @@ _DEV_MAGAZINES_AMMO = [0,0,0];
 		
 		if(_defaultValue isEqualType "")then
 		{
-			_defaultValue = _TEMPCLASSNAME;
+			_dataLayout = _TEMPCLASSNAME;
 		}
 		else
 		{
-			_defaultValue set[0,_TEMPCLASSNAME];
+			diag_log ["PRE  :", _TEMPCLASSNAME, _dataLayout];
+			_dataLayout set[0,_TEMPCLASSNAME];
+			diag_log ["POST :", _TEMPCLASSNAME, _dataLayout];
+			
 			/////////////////////////////////////////////////////////////////////////////////
 			// DEV: Add some Magazines, each time the Weapon is changed
 			if(_slot in [2,3,4])then
@@ -112,14 +115,15 @@ _DEV_MAGAZINES_AMMO = [0,0,0];
 					private _magAmmoCount = getNumber(configfile >> "CfgMagazines" >> _magazine >> "count");
 					_DEV_MAGAZINES_AMMO set[(_slot - 2),_magAmmoCount];
 					
-					_defaultValue set[4,[_magazine,_magAmmoCount]];
+					_dataLayout set[4,[_magazine,_magAmmoCount]];
 				};
 				
 				_DEV_MAGAZINES set[(_slot - 2), _magazine];
 			};
 			/////////////////////////////////////////////////////////////////////////////////
 		};
-		_loadout pushback _defaultValue;
+		diag_log ["FINAL:", _dataLayout];
+		_loadout pushback _dataLayout;
 	}
 	else
 	{
@@ -128,15 +132,15 @@ _DEV_MAGAZINES_AMMO = [0,0,0];
 }forEach
 [
 //	 https://community.bistudio.com/wiki/setUnitLoadout
-	 [2,	["","","","",[],[],""] ]	// Weapon: Primary
-	,[4,	["","","","",[],[],""] ]	// Weapon: Launcher
-	,[3,	["","","","",[],[],""] ]	// Weapon: Secondary
-	,[12,	["",[]] ]					// Gear: Uniform
-	,[13,	["",[]] ]					// Gear: Vest
-	,[15,	["",[]] ]					// Gear: Backpack
-	,[10,	""]							// Gear: Helmet
-	,[11,	""]							// Gear: Goggles/Glasses
-	,[17,	["","","","",[],[],""] ]	// Gear: Binocular
+	 [2,	["","","","",[],[],""],["","","","",[],[],""] ]	// Weapon: Primary
+	,[4,	["","","","",[],[],""],["","","","",[],[],""] ]	// Weapon: Launcher
+	,[3,	["","","","",[],[],""],["","","","",[],[],""] ]	// Weapon: Secondary
+	,[12,	["",[]],[] ]									// Gear: Uniform
+	,[13,	["",[]],[] ]									// Gear: Vest
+	,[15,	["",[]],[] ]									// Gear: Backpack
+	,[10,	"",""]											// Gear: Helmet
+	,[11,	"",""]											// Gear: Goggles/Glasses
+	,[17,	["","","","",[],[],""],["","","","",[],[],""] ]	// Gear: Binocular
 ];
 
 /*
