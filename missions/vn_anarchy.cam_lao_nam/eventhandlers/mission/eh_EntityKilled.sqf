@@ -30,8 +30,11 @@ params
 
 ["EntityKilled mEH: %1", _this] call BIS_fnc_logFormat;
 
+/*
+		DISABLED - Testing "MPKilled" in Server - player_connected.sqf
 // Players
 if(isPlayer _unit)then
 {
 	_this call an_s_fnc_player_EH_killed;
 };
+*/
