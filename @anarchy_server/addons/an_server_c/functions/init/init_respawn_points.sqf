@@ -26,4 +26,4 @@
 		format ["an_s_respawn_points_%1", str _side],
 		_markers apply {[_side, _x, markerText _x] call BIS_fnc_addRespawnPosition}
 	];
-} forEach [west, east, independent];
+} forEach [west, east, independent, civilian];

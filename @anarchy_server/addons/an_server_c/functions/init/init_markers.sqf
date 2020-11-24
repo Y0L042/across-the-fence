@@ -19,6 +19,7 @@
 an_s_markers_respawn_east = [];
 an_s_markers_respawn_west = [];
 an_s_markers_respawn_guer = [];
+an_s_markers_respawn_civ = [];
 
 {
 	if (_x find "an_respawn_east" isEqualTo 0) then {
@@ -29,5 +30,8 @@ an_s_markers_respawn_guer = [];
 	};
 	if (_x find "an_respawn_guer" isEqualTo 0) then {
 		an_s_markers_respawn_guer pushBack _x;
+	};
+	if (_x find "an_respawn_civ" isEqualTo 0) then {
+		an_s_markers_respawn_civ pushBack _x;
 	};
 } forEach allMapMarkers;
