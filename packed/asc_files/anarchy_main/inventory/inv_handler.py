@@ -20,7 +20,7 @@ def invGrid_create(rows):
 
 
 # try to get the Crate data. If not found -> Create a new one. We simply assume the Data, coming from the Game-server, is correct/valid.
-def crate_data_get(sData, clientID: str = None, pos: list = None, crateID: str = None, lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 4, persistent: int = 0, model: str = "IG_supplyCrate_F"):
+def crate_data_get(sData, clientID: str = None, pos: list = None, crateID: str = None, lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 16, persistent: int = 0, model: str = "IG_supplyCrate_F"):
     # print(f"clientID: {clientID}\n"
     #       f"pos: {pos}\n"
     #       f"crateID: {crateID}\n"
@@ -53,7 +53,7 @@ def crate_data_get(sData, clientID: str = None, pos: list = None, crateID: str =
         print(f"ERROR: INV_HANDLER: crate_data_get: HUGE WOBBLE WOBBLE! Data:\nclientID: {clientID}\npos: {pos}\ncrateID: {crateID}\nlootType: {lootType}\npersistent {persistent}\ninv_rows {inv_rows}\n---------")
 
 # called by Server only!
-def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 4, persistent: int = 0, model: str = "IG_supplyCrate_F"):
+def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 16, persistent: int = 0, model: str = "IG_supplyCrate_F"):
     """
     :param sData:       ServerData (auto-passed)
     :param clientID:    A3 playerUID
@@ -171,7 +171,6 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
 def inv_send_toClient(invData, conClient):
     # remove the inv_grid from the data, since we don't need it on the Client
     invData_noGrid = dict(invData)
-    del invData_noGrid["inv_grid"]
     asc_g_msg.sendMsg("ret_inv_crateData", invData_noGrid, conClient)
 
 def inv_update_force(client, invID_old, invID_new):
@@ -320,17 +319,6 @@ def inv_slots_free_get(invGrid, item_size):
             return slots
     # Normally, this one should never trigger... but who knows /shrug
     return []
-
-
-def inv_grid_get(client=None, args=()):
-    # print('FUNCTION CALLED BY REMOTE: "inv_get_grid"')
-    gridID = args[0]
-
-    data = inv_getData(client, gridID)["inv_grid"]
-    # print(f"gridID: {gridID}\ndata: {data}")
-
-    con = client.con_client
-    asc_g_msg.sendMsg("ret_inv_get_grid", data, con)
 
 
 def inv_items_get(client=None, args=()):
