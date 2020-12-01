@@ -13,6 +13,7 @@ private _ret = switch(_itemClass#0)do
 	case 0: {"CfgMagazines"};	// Inventory Items only
 	
 	case 2: {"CfgWeapons"};		// Primary Weapon
+	// case 202: {"CfgWeapons"};	// Primary Weapon (second Slot) - Not needed, but just left in here as Overview
 	case 3: {"CfgWeapons"};		// Handgun
 	case 4: {"CfgWeapons"};		// Launcher
 	case 5: {"CfgWeapons"};		// Tool (Pickaxe/Hammer)
