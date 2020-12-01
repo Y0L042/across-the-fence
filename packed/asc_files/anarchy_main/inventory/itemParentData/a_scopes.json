@@ -14,7 +14,7 @@
 	"vn_o_9x_m14":
 	{
 		"size": [1, 3],
-		"slot": 30,
+		"slot": [30],
 		"class_name": "vn_o_9x_m14",
 		"name": "",
 		"image": "",
@@ -28,7 +28,7 @@
 	"vn_o_anpvs2_m14":
 	{
 		"size": [2, 4],
-		"slot": 30,
+		"slot": [30],
 		"class_name": "vn_o_anpvs2_m14",
 		"name": "",
 		"image": "",
@@ -42,7 +42,7 @@
 	"vn_o_4x_m16":
 	{
 		"size": [1, 3],
-		"slot": 30,
+		"slot": [30],
 		"class_name": "vn_o_4x_m16",
 		"name": "",
 		"image": "",

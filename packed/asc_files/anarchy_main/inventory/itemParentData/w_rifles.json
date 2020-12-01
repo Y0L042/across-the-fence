@@ -3,7 +3,7 @@
 	"vn_m16":
 	{
 		"size": [3, 6],
-		"slot": 2,
+		"slot": [2,202],
 		"class_name": "vn_m16",
 		"name": "",
 		"image": "",
@@ -17,7 +17,7 @@
 	"vn_m38":
 	{
 		"size": [3, 6],
-		"slot": 2,
+		"slot": [2,202],
 		"class_name": "vn_m38",
 		"name": "",
 		"image": "",
@@ -31,7 +31,7 @@
 	"vn_m4956":
 	{
 		"size": [3, 6],
-		"slot": 2,
+		"slot": [2,202],
 		"class_name": "vn_m4956",
 		"name": "",
 		"image": "",

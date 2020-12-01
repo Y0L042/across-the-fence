@@ -3,7 +3,7 @@
 	"oldSock":
 	{
 		"size": [2, 2],
-		"slot": 0,
+		"slot": [0],
 		"class_name": "",
 		"name": "STR_Old_Socks",
 		"image": "\\A3\\Weapons_F\\Items\\data\\UI\\gear_Toolkit_CA.paa",
@@ -17,7 +17,7 @@
 	"trashItem2":
 	{
 		"size": [3, 2],
-		"slot": 0,
+		"slot": [0],
 		"class_name": "",
 		"name": "STR_trashItem2",
 		"image": "\\A3\\Weapons_F\\Items\\data\\UI\\gear_Toolkit_CA.paa",
@@ -31,7 +31,7 @@
 	"boxershorts":
 	{
 		"size": [2, 2],
-		"slot": 0,
+		"slot": [0],
 		"class_name": "",
 		"name": "STR_boxershorts",
 		"image": "\\A3\\Weapons_F\\Items\\data\\UI\\gear_Toolkit_CA.paa",

@@ -3,7 +3,7 @@
 	"bandage":
 	{
 		"size": [1, 2],
-		"slot": 0,
+		"slot": [0],
 		"class_name": "",
 		"name": "STR_Bandage",
 		"image": "\\A3\\Weapons_F\\Items\\data\\UI\\gear_gps_CA.paa",
@@ -18,7 +18,7 @@
 	"FirstAidKit":
 	{
 		"size": [2, 2],
-		"slot": 0,
+		"slot": [0],
 		"class_name": "",
 		"name": "STR_FirstAidKit",
 		"image": "\\A3\\Weapons_F\\Items\\data\\UI\\gear_FirstAidKit_CA.paa",
@@ -32,7 +32,7 @@
 	"Medikit":
 	{
 		"size": [3, 3],
-		"slot": 0,
+		"slot": [0],
 		"class_name": "",
 		"name": "STR_MediKit",
 		"image": "\\A3\\Weapons_F\\Items\\data\\UI\\gear_Medikit_CA.paa",

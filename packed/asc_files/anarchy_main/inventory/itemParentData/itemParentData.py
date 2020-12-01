@@ -26,7 +26,7 @@ def load_files(sData):
 	# add a "placeholder" aka fallback Item:
 	sData.itemParentData["PLACEHOLDER"] = {
 				"size":        [2, 2],
-				"slot":        0,
+				"slot":        [0],
 				"class_name":  "",
 				"name":        "PLACEHOLDER",
 				"image":       "\\vn\\ui_f_vietnam\\data\\logo\\savage_ca.paa",

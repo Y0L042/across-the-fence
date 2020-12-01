@@ -3,7 +3,7 @@
 	"vn_b_pack_01":
 	{
 		"size": [4, 4],
-		"slot": 15,
+		"slot": [15],
 		"class_name": "vn_b_pack_01",
 		"name": "",
 		"image": "",
@@ -17,7 +17,7 @@
 	"vn_b_pack_02":
 	{
 		"size": [4, 4],
-		"slot": 15,
+		"slot": [15],
 		"class_name": "vn_b_pack_02",
 		"name": "",
 		"image": "",
@@ -31,7 +31,7 @@
 	"vn_o_pack_01":
 	{
 		"size": [4, 4],
-		"slot": 15,
+		"slot": [15],
 		"class_name": "vn_o_pack_01",
 		"name": "",
 		"image": "",
@@ -45,7 +45,7 @@
 	"vn_o_pack_02":
 	{
 		"size": [4, 4],
-		"slot": 15,
+		"slot": [15],
 		"class_name": "vn_o_pack_02",
 		"name": "",
 		"image": "",
@@ -59,7 +59,7 @@
 	"vn_c_pack_01":
 	{
 		"size": [4, 4],
-		"slot": 15,
+		"slot": [15],
 		"class_name": "vn_c_pack_01",
 		"name": "",
 		"image": "",

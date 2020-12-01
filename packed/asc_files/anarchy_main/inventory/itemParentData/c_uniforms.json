@@ -3,7 +3,7 @@
 	"vn_b_uniform_macv_01_01":
 	{
 		"size": [6, 4],
-		"slot": 12,
+		"slot": [12],
 		"class_name": "vn_b_uniform_macv_01_01",
 		"name": "",
 		"image": "",
@@ -17,7 +17,7 @@
 	"vn_b_uniform_sog_01_01":
 	{
 		"size": [6, 4],
-		"slot": 12,
+		"slot": [12],
 		"class_name": "vn_b_uniform_sog_01_01",
 		"name": "",
 		"image": "",
@@ -31,7 +31,7 @@
 	"vn_b_uniform_sog_02_04":
 	{
 		"size": [6, 4],
-		"slot": 12,
+		"slot": [12],
 		"class_name": "vn_b_uniform_sog_02_04",
 		"name": "",
 		"image": "",
@@ -45,7 +45,7 @@
 	"vn_o_uniform_vc_03_02":
 	{
 		"size": [6, 4],
-		"slot": 12,
+		"slot": [12],
 		"class_name": "vn_o_uniform_vc_03_02",
 		"name": "",
 		"image": "",
@@ -59,7 +59,7 @@
 	"vn_o_uniform_vc_mf_01_07":
 	{
 		"size": [6, 4],
-		"slot": 12,
+		"slot": [12],
 		"class_name": "vn_o_uniform_vc_mf_01_07",
 		"name": "",
 		"image": "",
@@ -73,7 +73,7 @@
 	"vn_b_uniform_macv_01_06":
 	{
 		"size": [6, 4],
-		"slot": 12,
+		"slot": [12],
 		"class_name": "vn_b_uniform_macv_01_06",
 		"name": "",
 		"image": "",

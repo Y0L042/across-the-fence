@@ -3,7 +3,7 @@
 	"launch_RPG32_F":
 	{
 		"size": [3, 6],
-		"slot": 4,
+		"slot": [4],
 		"class_name": "launch_RPG32_F",
 		"name": "",
 		"image": "",
@@ -17,7 +17,7 @@
 	"launch_NLAW_F":
 	{
 		"size": [3, 6],
-		"slot": 4,
+		"slot": [4],
 		"class_name": "launch_NLAW_F",
 		"name": "",
 		"image": "",
