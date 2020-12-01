@@ -18,13 +18,13 @@ an_ui_inv_grabActive = true;
 private _itemData = [_ctrl] call an_c_fnc_ui_inv_item_data_get;
 _itemData params ["_posData","_itemUsedSpace","_itemClass","_itemID"];
 
+// Get the Parent Data for the selected Item
+private _parentData = [_itemClass] call an_c_fnc_ui_inv_item_data_parent_get;
 
 // DEV: Block everything, except Left Mousebutton
 if(_btn in [1])exitWith
 {
 	an_ui_inv_grabActive = false;
-	// Get the Parent Data for the selected Item
-	private _parentData = [_itemClass] call an_c_fnc_ui_inv_item_data_parent_get;
 	// systemchat str ["_parentData", _parentData];
 	private _actions = ENTRY_GET("actions",_parentData);
 	{
@@ -44,11 +44,13 @@ if(_btn in [1])exitWith
 };
 
 
-
 [_itemClass] call an_c_fnc_ui_inv_item_active_class_set;
 [_itemID] call an_c_fnc_ui_inv_item_active_id_set;
-(ctrlPosition _ctrl) params["_pX","_pY","_pW","_pH"];
+(ctrlPosition _ctrl) params["_pX","_pY","",""];
 
+// Recalculate the Size of the Item, in case it was taken from a Slot (Slot == different Width/Height, than normal Grid)
+private _ctrlInvGrid = uinamespace getvariable ["an_inv_player_grid", controlNull];
+([_parentData, _ctrlInvGrid] call an_c_fnc_ui_inv_item_size_calc) params ["_pW","_pH"];
 
 private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
 private _ctrlGrpItem = _disp ctrlCreate ["inv_icon",32123];

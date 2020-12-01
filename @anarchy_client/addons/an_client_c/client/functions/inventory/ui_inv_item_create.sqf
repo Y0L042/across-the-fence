@@ -20,33 +20,14 @@ private _DEBUGON = false;
 
 params["_ctrlInvGrid","_posX","_posY","_itemClass","_usedSlots","_slotID"];
 
-//get Item parentData
-private _parentData = _itemClass call an_c_fnc_ui_inv_item_data_parent_get;
-ENTRY_GET("size",_parentData) params ["_parentSizeY", "_parentSizeX"];
-
 private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
 //create the Icon
 private _itemIDC = localNamespace getVariable ["an_Item_IDC_count",107441];
 private _ctrlItem = _disp ctrlCreate ["inv_icon",_itemIDC,_ctrlInvGrid];
 localNamespace setVariable ["an_Item_IDC_count",(_itemIDC + 1)];
 
-(ctrlPosition _ctrlInvGrid)params["_gridX","_gridY","_gridW","_gridH"];
-
-
-private _gridSize = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlInvGrid)], [-1,-1]];
-_gridSize params["_gridRows","_gridCols"];
-if(_gridRows isEqualTo [-1,-1])exitWith{systemchat str ["ITEM_CREATE: GRID NOT SET!", _gridRows];};
-
-private _tileW = _gridW / _gridCols;
-private _tileH = _gridH / _gridRows;
-
-// systemchat str [!_canFlip, !an_inv_move_placeHorizontal];
-private _canFlip = if(_parentSizeY == _parentSizeX)then{0}else{1};
-if((_canFlip == 0) && !an_inv_move_placeHorizontal)then{an_inv_move_placeHorizontal = true};
-//get width and height of selected icon
-private _ctrlItemW = if(an_inv_move_placeHorizontal)then{_tileW*_parentSizeX}else{_tileH*_parentSizeY};
-private _ctrlItemH = if(an_inv_move_placeHorizontal)then{_tileH*_parentSizeY}else{_tileW*_parentSizeX};
-
+// Get the proper Size, related to Grid Size
+([_parentData, _ctrlInvGrid] call an_c_fnc_ui_inv_item_size_calc) params ["_ctrlItemW","_ctrlItemH"];
 
 //if needed -> "rotate" the main ctrlGroup and adjust the values to 4/3 (Arma Base Resolution)
 if(an_inv_move_placeHorizontal)then
