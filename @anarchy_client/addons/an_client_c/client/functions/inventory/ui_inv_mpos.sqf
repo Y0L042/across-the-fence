@@ -45,9 +45,9 @@ _slotID = _ctrlGrid getVariable ["slotID", 0];
 // systemchat str [_parentSlot, _slotID];
 
 _slotValidCheck = true;
-if(_slotID > 0 && !(_slotID in _parentSlot))then
+if(_slotID > 0)then
 {
-	_slotValidCheck = false;
+	if!(_slotID in _parentSlot)exitWith{_slotValidCheck = false;};
 	// systemchat str["SLOT CHECK PASSED - Reseting ROW/COL - _itemClass: ", _itemClass];
 	// if -> reset the Row/Col to [0,0]
 	_tileRow = 0;
