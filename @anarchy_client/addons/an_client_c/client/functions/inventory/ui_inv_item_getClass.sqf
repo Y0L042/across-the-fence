@@ -3,12 +3,12 @@
 */
 private _DEBUGON = false;
 params[
-	["_itemClass",-1,[-1]]
+	["_itemClass",[],[[]]]
 ];
 
-if (_itemClass < 0)exitWith{""};
+if(_itemClass isEqualTo [])exitWith{""};
 
-private _ret = switch(_itemClass)do
+private _ret = switch(_itemClass#0)do
 {
 	case 0: {"CfgMagazines"};	// Inventory Items only
 	
