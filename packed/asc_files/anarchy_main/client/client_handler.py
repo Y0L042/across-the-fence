@@ -47,7 +47,7 @@ def client_init(self):
 		player_data_set(self.sData, self.puid, self.cData)
 
 		# add Starter Gear:
-		startGear = [["vn_b_bandana_03", 10], ["vn_b_uniform_macv_01_06", 12]]
+		startGear = [["vn_b_bandana_03", [10]], ["vn_b_uniform_macv_01_06", [12]]]
 		for itemData in startGear:
 			item = item_handler.item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
 			item["curInv"] = self.cData["puid"]
@@ -203,7 +203,7 @@ def player_killed(sData, *data):
 	cData["inv_grid"] = inv_handler.invGrid_create(16)
 
 	# add Starter Gear:
-	startGear = [["vn_b_bandana_03", 10], ["vn_b_uniform_macv_01_06", 12]]
+	startGear = [["vn_b_bandana_03", [10]], ["vn_b_uniform_macv_01_06", [12]]]
 	for itemData in startGear:
 		item = item_handler.item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
 		item["curInv"] = cData["puid"]
