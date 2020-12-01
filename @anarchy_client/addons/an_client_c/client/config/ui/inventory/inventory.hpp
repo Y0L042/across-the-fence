@@ -76,6 +76,13 @@ class tile_bg_an_slot_wpn_grid: tile_bg_an_inv_player_grid
 	h = UIH(EQUIP_SLOT_WPN_ROWS);
 	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_gun_gs.paa";
 };
+// Weapon Main B
+class tile_bg_an_slot_wpn_grid_b: tile_bg_an_inv_player_grid
+{
+	w = UIW(EQUIP_SLOT_WPN_COLS);
+	h = UIH(EQUIP_SLOT_WPN_ROWS);
+	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_gun_gs.paa";
+};
 // Secondary / Handgun
 class tile_bg_an_slot_sec_grid: tile_bg_an_inv_player_grid
 {
@@ -444,6 +451,62 @@ class an_inventory
 			};
 		};
 		
+		class grid_wpn_area_b: para_RscControlsGroupNoScrollbarHV
+		{
+			idc = 2302;
+			
+			x = UIX_CR(10);
+			y = UIY_CU((10-(EQUIP_SLOT_WPN_ROWS+0.5)));
+			w = UIW(EQUIP_SLOT_WPN_COLS);
+			h = UIH(EQUIP_SLOT_WPN_ROWS);
+			
+			onLoad = "uinamespace setvariable [""an_slot_wpn_area_b"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_slot_wpn_area_b"", controlNull];";
+			
+			onMouseButtonDown	= "";
+			onMouseButtonUp		= "";
+			// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
+			// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
+			class controls
+			{
+				class grid: para_RscControlsGroupNoScrollbarHV
+				{
+					idc = 2202;
+					
+					x = UIW(0);
+					y = UIH(0);
+					w = UIW(EQUIP_SLOT_WPN_COLS);
+					h = UIH(EQUIP_SLOT_WPN_ROWS);
+					
+					onLoad = "uinamespace setvariable [""an_slot_wpn_grid_b"", (_this#0)];";
+					onUnload = "uinamespace setvariable [""an_slot_wpn_grid_b"", controlNull];";
+					
+					// onMouseButtonDown	= "";		//RESERVED: "grab" Item
+					// onMouseButtonUp		= "";
+					// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
+					// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
+					
+					class controls
+					{
+						
+						class bg: para_RscText
+						{
+							idc = 99999;
+							
+							x = 0;
+							y = 0;
+							w = UIW(EQUIP_SLOT_WPN_COLS);
+							h = UIH(EQUIP_SLOT_WPN_ROWS);
+							
+							colorText[] = {0.3,0.3,0.3,0.95};
+							colorBackground[] = {0.3,0.3,0.3,0.95};
+							text = "";
+							sizeEx = TXT_M;
+						};
+					};
+				};
+			};
+		};
 		
 		// Inventory: Slot: Uniform
 		class grid_uni_area: para_RscControlsGroupNoScrollbarHV
@@ -451,7 +514,7 @@ class an_inventory
 			idc = 2112;
 			
 			x = UIX_CR(10);
-			y = UIY_CU(6);
+			y = UIY_CU(5);
 			w = UIW(EQUIP_SLOT_UNI_COLS);
 			h = UIH(EQUIP_SLOT_UNI_ROWS);
 			
