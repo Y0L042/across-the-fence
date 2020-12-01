@@ -53,7 +53,7 @@ diag_log format["ASC: Inventory itemData	: %1", _itemDataPlayer];
 localNamespace setVariable ["an_cData_invData",
 		[
 			["crateID",getPlayerUID player],
-			["inv_rows", count(ENTRY_GET("inv_grid", _dataset))],
+			["inv_rows", ENTRY_GET("inv_rows", _dataset)],
 			["itemData", _itemDataPlayer ]
 		]
 	];
