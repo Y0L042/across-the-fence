@@ -1,10 +1,10 @@
 {
 	"type_generic":
 	{
-		"weapons"	: 4,
-		"medical"	: 1,
-		"trash"		: 4,
-		"clothes"	: 1
+		"weapons"	: 3,
+		"medical"	: 3,
+		"trash"		: 3,
+		"clothes"	: 2
 	},
 	
 	"type_medical":

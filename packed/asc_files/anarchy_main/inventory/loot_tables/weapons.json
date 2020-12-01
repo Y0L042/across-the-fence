@@ -3,7 +3,8 @@
 	{
 		"pistols": 3,
 		"rifles": 2,
-		"shotguns": 2
+		"shotguns": 2,
+		"lmg": 2
 	},
 
 	"pistols":
@@ -26,5 +27,12 @@
 		"vn_izh54": 3,
 		"vn_izh54_shorty": 3,
 		"vn_m1897": 1
+	},
+	"lmg":
+	{
+		"vn_m60": 3,
+		"vn_m60_shorty": 3,
+		"vn_rpd": 3,
+		"vn_rpd_shorty": 3
 	}
 }
