@@ -45,17 +45,14 @@ _slotID = _ctrlGrid getVariable ["slotID", 0];
 // systemchat str [_parentSlot, _slotID];
 
 _slotValidCheck = true;
-// Check if it's 
-if(_slotID > 0)then
+if(_slotID > 0 && !(_slotID in _parentSlot))then
 {
-	// Check if Item can be placed in this Slot
-	if(_parentSlot != _slotID)exitWith{_slotValidCheck = false;};
+	_slotValidCheck = false;
 	// systemchat str["SLOT CHECK PASSED - Reseting ROW/COL - _itemClass: ", _itemClass];
 	// if -> reset the Row/Col to [0,0]
 	_tileRow = 0;
 	_tileCol = 0;
 };
-
 
 private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_space_usage_get;
 
