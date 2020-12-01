@@ -150,6 +150,7 @@ AN_INVENTORY_LIST =
 AN_SLOTS_LIST =
 [
 	 ["an_slot_wpn_area","an_slot_wpn_grid"]
+	,["an_slot_wpn_area_b","an_slot_wpn_grid_b"]
 	,["an_slot_sec_area","an_slot_sec_grid"]
 	,["an_slot_uni_area","an_slot_uni_grid"]
 	,["an_slot_vst_area","an_slot_vst_grid"]
@@ -202,6 +203,7 @@ if(_DEBUGON)then{diag_log ["------------------------ GEAR ----------------------
 private _slotList = [
 //   [		VarName, rows, cols, SlotID]
      ["an_slot_wpn_grid",3,6,2]
+	,["an_slot_wpn_grid_b",3,6,202]
     ,["an_slot_sec_grid",2,4,3]
     ,["an_slot_uni_grid",6,4,12]
     ,["an_slot_vst_grid",4,4,13]
