@@ -22,7 +22,8 @@ def client_add(**kwargs):
 				""
 			],
 		"faction": "CIV",   # Standard start faction
-		'inv_grid': inv_handler.invGrid_create(16),
+		'inv_grid': inv_handler.invGrid_create(16), # ToDo: Remove the "grid" itself and exchange it with some kind of "used slots"-list
+		'inv_rows': 16,
 		'itemData': {},
 		'ammo': {
 				"ammoType_a": 0,
