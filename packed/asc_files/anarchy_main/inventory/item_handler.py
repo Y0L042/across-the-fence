@@ -41,7 +41,7 @@ def inv_data_get(sData, invID):
         return [False, {}]
 
 
-def item_create(parent: str = "", slot: int = 0, doSlot=False):
+def item_create(parent: str = "", slot=None, doSlot=False):
     """
 
     :param parent:
@@ -50,6 +50,8 @@ def item_create(parent: str = "", slot: int = 0, doSlot=False):
     :return:
     """
 
+    if slot is None:
+        slot = [0]
     item = {
         "id":           id_handler.create_id(),        # Item ID - Will ALWAYS be generated!
         "parent":       parent,           # Base Item Data, the A3 UI can refer to (stored ItemData)
@@ -69,7 +71,8 @@ def item_create(parent: str = "", slot: int = 0, doSlot=False):
         }
 
     if doSlot:
-        item["inSlot"] = slot
+        # ToDo: recheck later, if a slotCheck is needed here
+        item["inSlot"] = slot[0]
 
     return item
 
