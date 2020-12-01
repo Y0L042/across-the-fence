@@ -321,6 +321,17 @@ def inv_slots_free_get(invGrid, item_size):
     return []
 
 
+def inv_grid_get(client=None, args=()):
+    # print('FUNCTION CALLED BY REMOTE: "inv_get_grid"')
+    gridID = args[0]
+
+    data = inv_getData(client, gridID)["inv_grid"]
+    # print(f"gridID: {gridID}\ndata: {data}")
+
+    con = client.con_client
+    asc_g_msg.sendMsg("ret_inv_get_grid", data, con)
+
+
 def inv_items_get(client=None, args=()):
     # print('FUNCTION CALLED BY REMOTE: "inv_get_items"')
     gridID = args[0]
