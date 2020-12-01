@@ -112,7 +112,7 @@ def client_init(self):
 	print(f"SENDING: INVENTORY ITEMDATA TO {self.puid}...")
 	dataset = {
 			"itemData": self.cData["itemData"],
-			"inv_grid": self.cData["inv_grid"]
+			"inv_rows": self.cData["inv_rows"]
 		}
 	# remove the grid from the data, passed to the client.
 	asc_g_msg.sendMsg("player_gear_set", dataset, self.con_client)
