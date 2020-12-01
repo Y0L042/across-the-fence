@@ -4,7 +4,7 @@
 private _DEBUGON = false;
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
-params ["_ctrl", "_btn", "_xPos", "_yPos", "_btnShift", "_btnCtrl", "_btnAlt"];
+params ["_ctrl", "_btn", "_xPos", "_yPos", "_btnShift", "_btnCtrl", "_btnAlt",["_slotIndexCheck",0,[0]]];
 
 
 private _itemData = [_ctrl] call an_c_fnc_ui_inv_item_data_get;
@@ -14,10 +14,12 @@ _itemData params ["_posData","_itemUsedSlots","_itemClass","_itemId"];
 // Get the Parent Data for the selected Item
 private _parentData = [_itemClass] call an_c_fnc_ui_inv_item_data_parent_get;
 private _parentSize = ENTRY_GET("size",_parentData);
-private _parentSlotID = ENTRY_GET("slot",_parentData);
+// Get the parent slot data.
+private _parentSlotID_list = ENTRY_GET("slot",_parentData);
+_parentSlotID = _parentSlotID_list#_slotIndexCheck;
 if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _parentSize     :", _parentSize]; diag_log _msg, systemchat str _msg;};
 if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _parentSlotID   :", _parentSlotID]; diag_log _msg, systemchat str _msg;};
-
+// If multiple entries, check the first one first.
 
 // Get the Slot Grid, by using the slotID + 2100/2000 (IDC + SlotID == Slot Grid control))
 private _disp = uiNamespace getVariable ["an_inventory",displayNull];
@@ -28,6 +30,15 @@ if(isNull _ctrlGrid)exitWith{};
 // Get all the blocked Slots of the target Inventory
 private _gridUsedSlots = [(ctrlIDC _ctrlGrid)] call an_c_fnc_ui_inv_grid_tiles_used_get;
 if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _gridUsedSlots   :", _gridUsedSlots]; diag_log _msg, systemchat str _msg;};
+// In case of multiple Slots possible (e.g. WeaponMain) -> Check the next Slot
+
+if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _slotsUsed  :", !(_gridUsedSlots isEqualTo [])]; diag_log _msg, systemchat str _msg;};
+if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: All checked :", (_slotIndexCheck < ((count _parentSlotID_list)-1))]; diag_log _msg, systemchat str _msg;};
+if(!(_gridUsedSlots isEqualTo []) && (_slotIndexCheck < ((count _parentSlotID_list)-1)) )exitWith
+{
+	[_ctrl, _btn, _xPos, _yPos, _btnShift, _btnCtrl, _btnAlt, (_slotIndexCheck+1)] call an_c_fnc_ui_inv_item_move_auto_slot;
+};
+// If still nothing found -> Exit here.
 if!(_gridUsedSlots isEqualTo [])exitWith{systemchat "Slot is already occupied";};
 
 // Get the inventory Gridsize (rows only, since width is fixed) of the Inventory target
