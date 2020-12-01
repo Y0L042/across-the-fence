@@ -188,7 +188,7 @@ def inv_update_force(client, invID_old, invID_new):
     # resending it, triggers a force-reopen of the Inventory (instantly)
     dataset = {
         "itemData": client.cData["itemData"],
-        "inv_grid": client.cData["inv_grid"]
+        "inv_rows": client.cData["inv_rows"]
         }
     # update the player Gear
     asc_g_msg.sendMsg("player_gear_set", dataset, client.con_client)
