@@ -215,7 +215,6 @@ private _slotList = [
     // ,["pouch",""]
     // ,["tool",""]
     // ,["w_launch",""]
-    // ,["w_main_b",""]
 ];
 private _slottedItems = localNamespace getVariable ["an_cData_invData_slotted",[]];
 

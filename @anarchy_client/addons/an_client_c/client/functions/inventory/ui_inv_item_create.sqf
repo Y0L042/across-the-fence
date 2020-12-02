@@ -67,8 +67,13 @@ _ctrlItem ctrlCommit 0;
 	};
 }forEach[100,200];
 
-private _invExternalID = localNamespace getVariable ["an_inv_external_active",""];
-private _itemInvIDNew = if((ctrlIDC _ctrlInvGrid) isEqualto 1001)then{_invExternalID}else{getPlayerUID player};
+////////////////////////////////
+//ToDo: Rework needed, when multiple Inventories were added!
+private _invExternalID = localNamespace getVariable ["an_inv_external_active",""];	// Is set during the opening init the Inventory
+private _invGridExternal = uinamespace getvariable ['an_inv_external_grid', controlNull];
+private _itemInvIDNew = if((ctrlIDC _ctrlInvGrid) isEqualto (ctrlIDC _invGridExternal))then{_invExternalID}else{getPlayerUID player};
+systemchat str ["_itemInvIDNew", ctrlIDC _invGridExternal, (ctrlIDC _ctrlInvGrid), _itemInvIDNew, ((ctrlIDC _ctrlInvGrid) isEqualto (ctrlIDC _invGridExternal))];
+////////////////////////////////
 
 // get Item ID
 private _itemID = [] call an_c_fnc_ui_inv_item_active_id_get;
