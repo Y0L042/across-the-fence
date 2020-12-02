@@ -1,11 +1,12 @@
 {
 	"clothes":
 	{
-		"vests": 2,
+		"vests": 3,
 		"headgear": 3,
 		"helmets": 3,
-		"uniforms": 5,
-		"backpacks": 2
+		"uniforms": 3,
+		"backpacks": 3,
+		"facewear": 3
 	},
 	
 	"vests":
@@ -22,6 +23,15 @@
 		"vn_b_boonie_02_01": 1,
 		"vn_b_bandana_01": 1,
 		"vn_b_beret_01_01": 1
+	},
+
+	"facewear":
+	{
+		"vn_b_aviator": 1,
+		"vn_b_scarf_01_01": 1,
+		"vn_o_acc_goggles_01": 1,
+		"vn_o_bandana_b": 1,
+		"vn_o_poncho_01_01": 1
 	},
 	
 	"helmets":
