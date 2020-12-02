@@ -162,7 +162,6 @@ Index:	9		,["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch","NVGoggles
 
 // Following is the standard gear for every player (not planed to be put down nor exchanged)
 // Note: Might be nice, having different standard loadouts for each faction.
-// _loadout pushback ["vn_m19_binocs_grn","","","",[],[],""];	//It's a "weapon", so it needs to be an Array like this...
 _loadout pushback ["vn_o_item_map","","","vn_b_item_compass_sog","vn_b_item_watch",""];
 
 {
