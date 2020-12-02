@@ -72,7 +72,7 @@ _ctrlItem ctrlCommit 0;
 private _invExternalID = localNamespace getVariable ["an_inv_external_active",""];	// Is set during the opening init the Inventory
 private _invGridExternal = uinamespace getvariable ['an_inv_external_grid', controlNull];
 private _itemInvIDNew = if((ctrlIDC _ctrlInvGrid) isEqualto (ctrlIDC _invGridExternal))then{_invExternalID}else{getPlayerUID player};
-systemchat str ["_itemInvIDNew", ctrlIDC _invGridExternal, (ctrlIDC _ctrlInvGrid), _itemInvIDNew, ((ctrlIDC _ctrlInvGrid) isEqualto (ctrlIDC _invGridExternal))];
+// systemchat str ["_itemInvIDNew", ctrlIDC _invGridExternal, (ctrlIDC _ctrlInvGrid), _itemInvIDNew, ((ctrlIDC _ctrlInvGrid) isEqualto (ctrlIDC _invGridExternal))];
 ////////////////////////////////
 
 // get Item ID
