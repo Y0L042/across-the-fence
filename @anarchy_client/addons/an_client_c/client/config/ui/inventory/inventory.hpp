@@ -36,10 +36,114 @@
 #define EQUIP_SLOT_HEL_ROWS 2
 #define EQUIP_SLOT_HEL_COLS EQUIP_SLOT_HEL_ROWS
 
+
+
+
+// Baseclass for Inventory Area and Grid
+
+#define CREATEINVENTORY(NAME,IDCBASE,IDCGRID, INVBASE_X,INVBASE_Y,INVBASE_W,INVBASE_H, INVGRID_X,INVGRID_Y,INVGRID_W,INVGRID_H) \
+class an_##NAME : para_RscControlsGroupNoScrollbarH	\
+{	\
+	idc = IDCBASE;	\
+		\
+	x = INVBASE_X;	\
+	y = INVBASE_Y;	\
+	w = INVBASE_W;	\
+	h = INVBASE_H;	\
+		\
+	onLoad = uinamespace setvariable ['an_##NAME##_area', (_this select 0)];	\
+	onUnload = uinamespace setvariable ['an_##NAME##_area', controlNull];	\
+		\
+	class controls	\
+	{	\
+		class grid: para_RscControlsGroupNoScrollbarHV	\
+		{	\
+			idc = IDCGRID;	\
+				\
+			x = INVGRID_X;	\
+			y = INVGRID_Y;	\
+			w = INVGRID_W;	\
+			h = INVGRID_H;	\
+				\
+			onLoad = uinamespace setvariable ['an_##NAME##_grid', (_this select 0)];	\
+			onUnload = uinamespace setvariable ['an_##NAME##_grid', controlNull];	\
+				\
+			class controls	\
+			{	\
+					\
+				class bg: para_RscText	\
+				{	\
+					idc = 99999;	\
+						\
+					x = INVGRID_X;	\
+					y = INVGRID_Y;	\
+					w = INVGRID_W;	\
+					h = INVGRID_H;	\
+						\
+					colorText[] = {0.3,0.3,0.3,0.95};	\
+					colorBackground[] = {0.3,0.3,0.3,0.95};	\
+					text = "";	\
+					sizeEx = TXT_M;	\
+				};	\
+			};	\
+		};	\
+	};	\
+}
+
+#define CREATESLOT(NAME, IDCBASE,IDCGRID, INVBASE_X,INVBASE_Y,INVBASE_W,INVBASE_H, INVGRID_X,INVGRID_Y,INVGRID_W,INVGRID_H) \
+class an_##NAME : para_RscControlsGroupNoScrollbarHV	\
+{	\
+	idc = IDCBASE;	\
+		\
+	x = INVBASE_X;	\
+	y = INVBASE_Y;	\
+	w = INVBASE_W;	\
+	h = INVBASE_H;	\
+		\
+	onLoad = uinamespace setvariable ['an_##NAME##_area', (_this select 0)];	\
+	onUnload = uinamespace setvariable ['an_##NAME##_area', controlNull];	\
+		\
+	class controls	\
+	{	\
+		class grid: para_RscControlsGroupNoScrollbarHV	\
+		{	\
+			idc = IDCGRID;	\
+				\
+			x = INVGRID_X;	\
+			y = INVGRID_Y;	\
+			w = INVGRID_W;	\
+			h = INVGRID_H;	\
+				\
+			onLoad = uinamespace setvariable ['an_##NAME##_grid', (_this select 0)];	\
+			onUnload = uinamespace setvariable ['an_##NAME##_grid', controlNull];	\
+				\
+			class controls\
+			{	\
+				class bg: para_RscText	\
+				{	\
+					idc = 99999;	\
+					onLoad = "(_this select 0) ctrlEnable false";\
+						\
+					x = INVGRID_X;	\
+					y = INVGRID_Y;	\
+					w = INVGRID_W;	\
+					h = INVGRID_H;	\
+						\
+					colorText[] = {0.3,0.3,0.3,0.95};	\
+					colorBackground[] = {0.3,0.3,0.3,0.95};	\
+					text = "";	\
+					sizeEx = TXT_M;	\
+				};	\
+			};	\
+		};	\
+	};	\
+}
+
+
+
 // Backgrounds:
 // Player
-// class tile_bg_an_inv_player_grid: para_RscPicture
-class tile_bg_an_inv_player_grid: para_RscPictureKeepAspect
+class tile_bg_an_inv_grid_base: para_RscPictureKeepAspect
 {
 	idc = -1;
 	type = 0;
@@ -58,16 +162,19 @@ class tile_bg_an_inv_player_grid: para_RscPictureKeepAspect
 	sizeEx = TXT_M;
 	font = USEDFONT;
 	
-	text = "sgd\anarchy\an_client_c\client\config\ui\inventory\data\box.paa";
+	text = "";
 };
 
 #define TILEGRIDBG(NAME,WIDTH,HEIGHT,IMAGE) \
-class tile_bg_##NAME : tile_bg_an_inv_player_grid \
+class tile_bg_##NAME : tile_bg_an_inv_grid_base \
 { \
 	w = UIW(WIDTH); \
 	h = UIH(HEIGHT); \
 	text = IMAGE; \
 }
+
+// Player
+TILEGRIDBG(an_inv_player_grid,TILE_W,TILE_H,"sgd\anarchy\an_client_c\client\config\ui\inventory\data\box.paa");
 
 // External
 TILEGRIDBG(an_inv_external_grid,TILE_W,TILE_H,"sgd\anarchy\an_client_c\client\config\ui\inventory\data\box.paa");
@@ -78,7 +185,7 @@ TILEGRIDBG(an_inv_external_grid,TILE_W,TILE_H,"sgd\anarchy\an_client_c\client\co
 // Weapon Main
 TILEGRIDBG(an_slot_wpn_grid,EQUIP_SLOT_WPN_COLS,EQUIP_SLOT_WPN_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_gun_gs.paa");
 // Weapon Main B
-TILEGRIDBG(an_slot_wpn_grid_b,EQUIP_SLOT_WPN_COLS,EQUIP_SLOT_WPN_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_gun_gs.paa");
+TILEGRIDBG(an_slot_wpn_b_grid,EQUIP_SLOT_WPN_COLS,EQUIP_SLOT_WPN_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_gun_gs.paa");
 // Secondary / Handgun
 TILEGRIDBG(an_slot_sec_grid,EQUIP_SLOT_SEC_COLS,EQUIP_SLOT_SEC_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_hgun_gs.paa");
 // Uniform
@@ -89,6 +196,7 @@ TILEGRIDBG(an_slot_vst_grid,EQUIP_SLOT_VST_COLS,EQUIP_SLOT_VST_ROWS,"a3\ui_f\dat
 TILEGRIDBG(an_slot_hel_grid,EQUIP_SLOT_HEL_COLS,EQUIP_SLOT_HEL_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_helmet_gs.paa");
 // Backpack
 TILEGRIDBG(an_slot_bkp_grid,EQUIP_SLOT_BKP_COLS,EQUIP_SLOT_BKP_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_backpack_gs.paa");
+
 
 
 class inv_icon: para_RscControlsGroupNoScrollbarHV
@@ -146,6 +254,8 @@ class inv_icon: para_RscControlsGroupNoScrollbarHV
 };
 
 
+
+
 class an_inventory
 {
 	idd = 1074;
@@ -162,7 +272,7 @@ class an_inventory
 	// KeyUp: block every button (movement), except ESC/TAB/G button to close the Inv
 	onKeyUp = " if(_this#1 in [15,34])then{_this#0 closeDisplay 1;}; true ";
 	// Handle scrolling the Mousewheel (only if an item is currently grabbed)
-	onMouseZChanged ="call an_c_fnc_ui_inv_EH_mouse_z";
+	onMouseZChanged = "call an_c_fnc_ui_inv_EH_mouse_z";
 	
 	onMouseButtonDown	= "";
 	onMouseButtonUp		= "";
@@ -210,65 +320,9 @@ class an_inventory
 			onLoad = "uinamespace setvariable [""an_inv_header_personal"", (_this#0)];";
 			onUnload = "uinamespace setvariable [""an_inv_header_personal"", controlNull];";
 		};
+		
 		// Inventory
-		class grid_player_area: para_RscControlsGroupNoScrollbarH
-		{
-			idc = 1100;
-			
-			x = UIX_CR(1);
-			y = UIY_CU(10);
-			w = UIW(8.65);
-			h = UIH(20);
-			
-			onLoad = "uinamespace setvariable [""an_inv_player_area"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""an_inv_player_area"", controlNull];";
-			
-			
-			onMouseButtonDown	= "";
-			onMouseButtonUp		= "";
-			// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
-			// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
-			
-			class controls
-			{
-				class grid: para_RscControlsGroupNoScrollbarHV
-				{
-					idc = 1000;
-					
-					x = UIW(0);
-					y = UIH(0);
-					w = UIW(WIDTH);
-					h = UIH(HEIGHT);
-					
-					onLoad = "uinamespace setvariable [""an_inv_player_grid"", (_this#0)];";
-					onUnload = "uinamespace setvariable [""an_inv_player_grid"", controlNull];";
-					
-					// onMouseButtonDown	= "";		//RESERVED: "grab" Item
-					// onMouseButtonUp		= "";
-					// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
-					// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
-					
-					class controls
-					{
-						
-						class bg: para_RscText
-						{
-							idc = 99999;
-							
-							x = 0;
-							y = 0;
-							w = UIW(WIDTH);
-							h = UIH(HEIGHT);
-							
-							colorText[] = {0.3,0.3,0.3,0.95};
-							colorBackground[] = {0.3,0.3,0.3,0.95};
-							text = "";
-							sizeEx = TXT_M;
-						};
-					};
-				};
-			};
-		};
+		CREATEINVENTORY(inv_player,1100,1000, UIX_CR(1),UIY_CU(10),UIW(8.65),UIH(20), UIW(0),UIH(0),UIW(WIDTH),UIH(HEIGHT));
 		
 		// Inventory: External
 		// Header Text
@@ -287,65 +341,7 @@ class an_inventory
 			onUnload = "uinamespace setvariable [""an_inv_header_external"", controlNull];";
 		};
 		// Inventory
-		class grid_crate_area: para_RscControlsGroupNoScrollbarH
-		{
-			idc = 1101;
-			
-			x = UIX_CL(9.65);
-			y = UIY_CU(10);
-			w = UIW(8.65);
-			h = UIH(20);
-			
-			
-			onLoad = "uinamespace setvariable [""an_inv_external_area"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""an_inv_external_area"", controlNull];";
-			
-			
-			onMouseButtonDown	= "";
-			onMouseButtonUp		= "";
-			// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
-			// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
-			
-			class controls
-			{
-				class grid: para_RscControlsGroupNoScrollbarHV
-				{
-					idc = 1001;
-					
-					x = UIW(0);
-					y = UIH(0);
-					w = UIW(WIDTH);
-					h = UIH(SLOT_H);
-					
-					onLoad = "uinamespace setvariable [""an_inv_external_grid"", (_this#0)];";
-					onUnload = "uinamespace setvariable [""an_inv_external_grid"", controlNull];";
-					
-					// onMouseButtonDown	= "";		//RESERVED: "grab" Item
-					// onMouseButtonUp		= "";
-					// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
-					// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
-					
-					class controls
-					{
-						
-						class bg: para_RscText
-						{
-							idc = 99999;
-							
-							x = 0;
-							y = 0;
-							w = UIW(WIDTH);
-							h = UIH(HEIGHT);
-							
-							colorText[] = {0.3,0.3,0.3,0.95};
-							colorBackground[] = {0.3,0.3,0.3,0.95};
-							text = "";
-							sizeEx = TXT_M;
-						};
-					};
-				};
-			};
-		};
+		CREATEINVENTORY(inv_external,1101,1001, UIX_CL(9.65),UIY_CU(10),UIW(8.65),UIH(20), UIW(0),UIH(0),UIW(WIDTH),UIH(HEIGHT));
 		
 		/////////////////////////// EQUIP SLOTS:
 		// Header Text - Equipment
@@ -364,368 +360,25 @@ class an_inventory
 			onUnload = "uinamespace setvariable [""an_inv_header_equipment"", controlNull];";
 		};
 		
-		// Inventory: Slot: Weapon
-		class grid_wpn_area: para_RscControlsGroupNoScrollbarHV
-		{
-			idc = 2102;
-			
-			x = UIX_CR(10);
-			y = UIY_CU(10);
-			w = UIW(EQUIP_SLOT_WPN_COLS);
-			h = UIH(EQUIP_SLOT_WPN_ROWS);
-			
-			onLoad = "uinamespace setvariable [""an_slot_wpn_area"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""an_slot_wpn_area"", controlNull];";
-			
-			onMouseButtonDown	= "";
-			onMouseButtonUp		= "";
-			// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
-			// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
-			class controls
-			{
-				class grid: para_RscControlsGroupNoScrollbarHV
-				{
-					idc = 2002;
-					
-					x = UIW(0);
-					y = UIH(0);
-					w = UIW(EQUIP_SLOT_WPN_COLS);
-					h = UIH(EQUIP_SLOT_WPN_ROWS);
-					
-					onLoad = "uinamespace setvariable [""an_slot_wpn_grid"", (_this#0)];";
-					onUnload = "uinamespace setvariable [""an_slot_wpn_grid"", controlNull];";
-					
-					// onMouseButtonDown	= "";		//RESERVED: "grab" Item
-					// onMouseButtonUp		= "";
-					// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
-					// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
-					
-					class controls
-					{
-						
-						class bg: para_RscText
-						{
-							idc = 99999;
-							
-							x = 0;
-							y = 0;
-							w = UIW(EQUIP_SLOT_WPN_COLS);
-							h = UIH(EQUIP_SLOT_WPN_ROWS);
-							
-							colorText[] = {0.3,0.3,0.3,0.95};
-							colorBackground[] = {0.3,0.3,0.3,0.95};
-							text = "";
-							sizeEx = TXT_M;
-						};
-					};
-				};
-			};
-		};
+		// Inventory: Slot: Weapon - Active
+		CREATESLOT(slot_wpn, 2102,2002, UIX_CR(10),UIY_CU(10),UIW(EQUIP_SLOT_WPN_COLS),UIH(EQUIP_SLOT_WPN_ROWS), UIW(0),UIH(0),UIW(EQUIP_SLOT_WPN_COLS),UIH(EQUIP_SLOT_WPN_ROWS));
 		
-		class grid_wpn_area_b: para_RscControlsGroupNoScrollbarHV
-		{
-			idc = 2302;
-			
-			x = UIX_CR(10);
-			y = UIY_CU((10-(EQUIP_SLOT_WPN_ROWS+0.5)));
-			w = UIW(EQUIP_SLOT_WPN_COLS);
-			h = UIH(EQUIP_SLOT_WPN_ROWS);
-			
-			onLoad = "uinamespace setvariable [""an_slot_wpn_area_b"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""an_slot_wpn_area_b"", controlNull];";
-			
-			onMouseButtonDown	= "";
-			onMouseButtonUp		= "";
-			// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
-			// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
-			class controls
-			{
-				class grid: para_RscControlsGroupNoScrollbarHV
-				{
-					idc = 2202;
-					
-					x = UIW(0);
-					y = UIH(0);
-					w = UIW(EQUIP_SLOT_WPN_COLS);
-					h = UIH(EQUIP_SLOT_WPN_ROWS);
-					
-					onLoad = "uinamespace setvariable [""an_slot_wpn_grid_b"", (_this#0)];";
-					onUnload = "uinamespace setvariable [""an_slot_wpn_grid_b"", controlNull];";
-					
-					// onMouseButtonDown	= "";		//RESERVED: "grab" Item
-					// onMouseButtonUp		= "";
-					// onMouseMoving = "";		//DO NOT USE! Buggy (not detecting reliably)
-					// onMouseZChanged = "";	//DO NOT USE! Buggy (not detecting reliably)
-					
-					class controls
-					{
-						
-						class bg: para_RscText
-						{
-							idc = 99999;
-							
-							x = 0;
-							y = 0;
-							w = UIW(EQUIP_SLOT_WPN_COLS);
-							h = UIH(EQUIP_SLOT_WPN_ROWS);
-							
-							colorText[] = {0.3,0.3,0.3,0.95};
-							colorBackground[] = {0.3,0.3,0.3,0.95};
-							text = "";
-							sizeEx = TXT_M;
-						};
-					};
-				};
-			};
-		};
+		// Inventory: Slot: Weapon - Second (on the back)
+		CREATESLOT(slot_wpn_b, 2302,2202, UIX_CR(10),UIY_CU((10-(EQUIP_SLOT_WPN_ROWS+0.5))),UIW(EQUIP_SLOT_WPN_COLS),UIH(EQUIP_SLOT_WPN_ROWS), UIW(0),UIH(0),UIW(EQUIP_SLOT_WPN_COLS),UIH(EQUIP_SLOT_WPN_ROWS));
 		
 		// Inventory: Slot: Uniform
-		class grid_uni_area: para_RscControlsGroupNoScrollbarHV
-		{
-			idc = 2112;
-			
-			x = UIX_CR(10);
-			y = UIY_CU(5);
-			w = UIW(EQUIP_SLOT_UNI_COLS);
-			h = UIH(EQUIP_SLOT_UNI_ROWS);
-			
-			onLoad = "uinamespace setvariable [""an_slot_uni_area"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""an_slot_uni_area"", controlNull];";
-			
-			class controls
-			{
-				class grid: para_RscControlsGroupNoScrollbarHV
-				{
-					idc = 2012;
-					
-					x = UIW(0);
-					y = UIH(0);
-					w = UIW(EQUIP_SLOT_UNI_COLS);
-					h = UIH(EQUIP_SLOT_UNI_ROWS);
-					
-					onLoad = "uinamespace setvariable [""an_slot_uni_grid"", (_this#0)];";
-					onUnload = "uinamespace setvariable [""an_slot_uni_grid"", controlNull];";
-					
-					class controls
-					{
-						
-						class bg: para_RscText
-						{
-							idc = 99999;
-							
-							x = 0;
-							y = 0;
-							w = UIW(EQUIP_SLOT_UNI_COLS);
-							h = UIH(EQUIP_SLOT_UNI_ROWS);
-							
-							colorText[] = {0.3,0.3,0.3,0.95};
-							colorBackground[] = {0.3,0.3,0.3,0.95};
-							text = "";
-							sizeEx = TXT_M;
-						};
-					};
-				};
-			};
-		};
-		
+		CREATESLOT(slot_uni, 2112,2012, UIX_CR(10),UIY_CU(5),UIW(EQUIP_SLOT_UNI_COLS),UIH(EQUIP_SLOT_UNI_ROWS), UIW(0),UIH(0),UIW(EQUIP_SLOT_UNI_COLS),UIH(EQUIP_SLOT_UNI_ROWS));
 		
 		// Inventory: Slot: Vest
-		class grid_vst_area: para_RscControlsGroupNoScrollbarHV
-		{
-			idc = 2113;
-			
-			x = UIX_CR(10);
-			y = UIY_CD(1);
-			w = UIW(EQUIP_SLOT_VST_COLS);
-			h = UIH(EQUIP_SLOT_VST_ROWS);
-			
-			onLoad = "uinamespace setvariable [""an_slot_vst_area"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""an_slot_vst_area"", controlNull];";
-			
-			class controls
-			{
-				class grid: para_RscControlsGroupNoScrollbarHV
-				{
-					idc = 2013;
-					
-					x = UIW(0);
-					y = UIH(0);
-					w = UIW(EQUIP_SLOT_VST_COLS);
-					h = UIH(EQUIP_SLOT_VST_ROWS);
-					
-					onLoad = "uinamespace setvariable [""an_slot_vst_grid"", (_this#0)];";
-					onUnload = "uinamespace setvariable [""an_slot_vst_grid"", controlNull];";
-					
-					class controls
-					{
-						
-						class bg: para_RscText
-						{
-							idc = 99999;
-							
-							x = 0;
-							y = 0;
-							w = UIW(EQUIP_SLOT_VST_COLS);
-							h = UIH(EQUIP_SLOT_VST_ROWS);
-							
-							colorText[] = {0.3,0.3,0.3,0.95};
-							colorBackground[] = {0.3,0.3,0.3,0.95};
-							text = "";
-							sizeEx = TXT_M;
-						};
-					};
-				};
-			};
-		};
+		CREATESLOT(slot_vst, 2113,2013, UIX_CR(10),UIY_CD(1),UIW(EQUIP_SLOT_VST_COLS),UIH(EQUIP_SLOT_VST_ROWS), UIW(0),UIH(0),UIW(EQUIP_SLOT_VST_COLS),UIH(EQUIP_SLOT_VST_ROWS));
 		
 		// Inventory: Slot: Helmet
-		class grid_hel_area: para_RscControlsGroupNoScrollbarHV
-		{
-			idc = 2110;
-			
-			x = UIX_CR(15);
-			y = UIY_CU(6);
-			w = UIW(EQUIP_SLOT_HEL_COLS);
-			h = UIH(EQUIP_SLOT_HEL_ROWS);
-			
-			onLoad = "uinamespace setvariable [""an_slot_hel_area"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""an_slot_hel_area"", controlNull];";
-			
-			class controls
-			{
-				class grid: para_RscControlsGroupNoScrollbarHV
-				{
-					idc = 2010;
-					
-					x = UIW(0);
-					y = UIH(0);
-					w = UIW(EQUIP_SLOT_HEL_COLS);
-					h = UIH(EQUIP_SLOT_HEL_ROWS);
-					
-					onLoad = "uinamespace setvariable [""an_slot_hel_grid"", (_this#0)];";
-					onUnload = "uinamespace setvariable [""an_slot_hel_grid"", controlNull];";
-					
-					class controls
-					{
-						
-						class bg: para_RscText
-						{
-							idc = 99999;
-							
-							x = 0;
-							y = 0;
-							w = UIW(EQUIP_SLOT_HEL_COLS);
-							h = UIH(EQUIP_SLOT_HEL_ROWS);
-							
-							colorText[] = {0.3,0.3,0.3,0.95};
-							colorBackground[] = {0.3,0.3,0.3,0.95};
-							text = "";
-							sizeEx = TXT_M;
-						};
-					};
-				};
-			};
-		};
-		
+		CREATESLOT(slot_hel, 2110,2010, UIX_CR(15),UIY_CU(6),UIW(EQUIP_SLOT_HEL_COLS),UIH(EQUIP_SLOT_HEL_ROWS), UIW(0),UIH(0),UIW(EQUIP_SLOT_HEL_COLS),UIH(EQUIP_SLOT_HEL_ROWS));
 		
 		// Inventory: Slot: Backpack
-		class grid_bkp_area: para_RscControlsGroupNoScrollbarHV
-		{
-			idc = 2115;
-			
-			x = UIX_CR(15);
-			y = UIY_CU(2);
-			w = UIW(EQUIP_SLOT_BKP_COLS);
-			h = UIH(EQUIP_SLOT_BKP_ROWS);
-			
-			onLoad = "uinamespace setvariable [""an_slot_bkp_area"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""an_slot_bkp_area"", controlNull];";
-			
-			class controls
-			{
-				class grid: para_RscControlsGroupNoScrollbarHV
-				{
-					idc = 2015;
-					
-					x = UIW(0);
-					y = UIH(0);
-					w = UIW(EQUIP_SLOT_BKP_COLS);
-					h = UIH(EQUIP_SLOT_BKP_ROWS);
-					
-					onLoad = "uinamespace setvariable [""an_slot_bkp_grid"", (_this#0)];";
-					onUnload = "uinamespace setvariable [""an_slot_bkp_grid"", controlNull];";
-					
-					class controls
-					{
-						
-						class bg: para_RscText
-						{
-							idc = 99999;
-							
-							x = 0;
-							y = 0;
-							w = UIW(EQUIP_SLOT_BKP_COLS);
-							h = UIH(EQUIP_SLOT_BKP_ROWS);
-							
-							colorText[] = {0.3,0.3,0.3,0.95};
-							colorBackground[] = {0.3,0.3,0.3,0.95};
-							text = "";
-							sizeEx = TXT_M;
-						};
-					};
-				};
-			};
-		};
+		CREATESLOT(slot_bkp, 2115,2015, UIX_CR(15),UIY_CU(2),UIW(EQUIP_SLOT_BKP_COLS),UIH(EQUIP_SLOT_BKP_ROWS), UIW(0),UIH(0),UIW(EQUIP_SLOT_BKP_COLS),UIH(EQUIP_SLOT_BKP_ROWS));
 		
-		
-		// Inventory: Slot: Backpack
-		class grid_sec_area: para_RscControlsGroupNoScrollbarHV
-		{
-			idc = 2103;
-			
-			x = UIX_CR(17);
-			y = UIY_CU(10);
-			w = UIW(EQUIP_SLOT_SEC_COLS);
-			h = UIH(EQUIP_SLOT_SEC_ROWS);
-			
-			onLoad = "uinamespace setvariable [""an_slot_sec_area"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""an_slot_sec_area"", controlNull];";
-			
-			class controls
-			{
-				class grid: para_RscControlsGroupNoScrollbarHV
-				{
-					idc = 2003;
-					
-					x = UIW(0);
-					y = UIH(0);
-					w = UIW(EQUIP_SLOT_SEC_COLS);
-					h = UIH(EQUIP_SLOT_SEC_ROWS);
-					
-					onLoad = "uinamespace setvariable [""an_slot_sec_grid"", (_this#0)];";
-					onUnload = "uinamespace setvariable [""an_slot_sec_grid"", controlNull];";
-					
-					class controls
-					{
-						
-						class bg: para_RscText
-						{
-							idc = 99999;
-							
-							x = 0;
-							y = 0;
-							w = UIW(EQUIP_SLOT_SEC_COLS);
-							h = UIH(EQUIP_SLOT_SEC_ROWS);
-							
-							colorText[] = {0.3,0.3,0.3,0.95};
-							colorBackground[] = {0.3,0.3,0.3,0.95};
-							text = "";
-							sizeEx = TXT_M;
-						};
-					};
-				};
-			};
-		};
-		
+		// Inventory: Slot: Secondary
+		CREATESLOT(slot_sec, 2103,2003, UIX_CR(17),UIY_CU(10),UIW(EQUIP_SLOT_SEC_COLS),UIH(EQUIP_SLOT_SEC_ROWS), UIW(0),UIH(0),UIW(EQUIP_SLOT_SEC_COLS),UIH(EQUIP_SLOT_SEC_ROWS));
 	};
 };

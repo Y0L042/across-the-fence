@@ -15,6 +15,7 @@ if(isNull _disp)exitWith{systemchat "ERROR: grid_create: isNull _disp";};
 private _gridW = (ctrlPosition _ctrlGrid)#2;
 private _gridH = ((_gridW / 0.75) / _gridCols) * _gridRows;	//adjust to 4/3 Value
 
+// If not ground or player Inventory -> limit to only 1 row, so the preDefined Icon controls can be loaded in.
 if(_slotID != 0)then
 {
 	_gridRows = 1;
