@@ -65,7 +65,7 @@ cmdList = {
 				# ""Tag" send from Arma" : Function in the backend
 				# NOTE: Make sure, that you imported the related plugin/method/folder/however it's called (and added the files to the "__init.py__" )
 				"inv_itemMove":     item_handler.item_move,
-				"inv_get_grid":     inv_handler.inv_grid_get,
+				# "inv_get_grid":     inv_handler.inv_grid_get,
 				"inv_get_items":    inv_handler.inv_items_get
 			},
 		'arma_client': {
@@ -73,7 +73,7 @@ cmdList = {
 				# NOTE: Make sure, that the Tag is compatible with the Arma 3 Variable logic
 				"INIT_CLIENTDATA":      {"fnc": "an_c_fnc_clientData_init", "spawn": 0},
 				"INIT_ITEMDATA":        {"fnc": "an_c_fnc_ui_inv_item_data_init", "spawn": 0},
-				"ret_inv_get_grid":     {"fnc": "DEV_an_fnc_hintGrid", "spawn": 0},
+				# "ret_inv_get_grid":     {"fnc": "DEV_an_fnc_hintGrid", "spawn": 0},
 				"ret_inv_get_items":    {"fnc": "DEV_an_fnc_hintItemData", "spawn": 0},
 				"ret_inv_crateData":    {"fnc": "an_c_fnc_ui_inv_init", "spawn": 0},
 				"player_gear_set":      {"fnc": "an_c_fnc_player_gear_set", "spawn": 0},
