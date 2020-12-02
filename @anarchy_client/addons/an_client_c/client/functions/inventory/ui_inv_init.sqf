@@ -157,6 +157,7 @@ AN_SLOTS_LIST =
 	,["an_slot_bkp_area","an_slot_bkp_grid"]
 	,["an_slot_hel_area","an_slot_hel_grid"]
 	,["an_slot_gog_area","an_slot_gog_grid"]
+	,["an_slot_bin_area","an_slot_bin_grid"]
 ];
 // "Reset" the tileUsage Vars
 {
@@ -211,9 +212,7 @@ private _slotList = [
     ,["an_slot_hel_grid",3,3,10]
     ,["an_slot_bkp_grid",4,4,15]
     ,["an_slot_gog_grid",2,2,11]
-    // ,["goggles",""]
-    // ,["facewear",""]
-    // ,["Bino",""]
+    ,["an_slot_bin_grid",3,3,17]
     // ,["pouch",""]
     // ,["tool",""]
     // ,["w_launch",""]

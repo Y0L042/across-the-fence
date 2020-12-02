@@ -6,40 +6,29 @@
 #define TILE_H (HEIGHT/TILES_Y)
 
 // Main Weapon
-// #define EQUIP_SLOT_WPN_ROWS 3
-// #define EQUIP_SLOT_WPN_COLS 6
 #define EQUIP_SLOT_WPN_ROWS 2
 #define EQUIP_SLOT_WPN_COLS EQUIP_SLOT_WPN_ROWS * 2
 // Seconday (Handgun)
-// #define EQUIP_SLOT_SEC_ROWS 2
-// #define EQUIP_SLOT_SEC_COLS 4
 #define EQUIP_SLOT_SEC_ROWS 2
 #define EQUIP_SLOT_SEC_COLS EQUIP_SLOT_SEC_ROWS * 2
 // Uniform
-// #define EQUIP_SLOT_UNI_ROWS 6
-// #define EQUIP_SLOT_UNI_COLS 4
 #define EQUIP_SLOT_UNI_ROWS 3
 #define EQUIP_SLOT_UNI_COLS (EQUIP_SLOT_UNI_ROWS / 1.5)
 // Vest
-// #define EQUIP_SLOT_VST_ROWS 4
-// #define EQUIP_SLOT_VST_COLS 4
 #define EQUIP_SLOT_VST_ROWS 2
 #define EQUIP_SLOT_VST_COLS EQUIP_SLOT_VST_ROWS
 // Backup
-// #define EQUIP_SLOT_BKP_ROWS 4
-// #define EQUIP_SLOT_BKP_COLS 4
 #define EQUIP_SLOT_BKP_ROWS 2
 #define EQUIP_SLOT_BKP_COLS EQUIP_SLOT_BKP_ROWS
 // Helmet
-// #define EQUIP_SLOT_HEL_ROWS 3
-// #define EQUIP_SLOT_HEL_COLS 3
 #define EQUIP_SLOT_HEL_ROWS 2
 #define EQUIP_SLOT_HEL_COLS EQUIP_SLOT_HEL_ROWS
 // Goggles/Glasses/Balaclava
-// #define EQUIP_SLOT_HEL_ROWS 3
-// #define EQUIP_SLOT_HEL_COLS 3
 #define EQUIP_SLOT_GOG_ROWS 2
 #define EQUIP_SLOT_GOG_COLS EQUIP_SLOT_GOG_ROWS
+// Binonucular
+#define EQUIP_SLOT_BIN_ROWS 3
+#define EQUIP_SLOT_BIN_COLS EQUIP_SLOT_BIN_ROWS
 
 
 
@@ -203,6 +192,8 @@ TILEGRIDBG(an_slot_bkp_grid,EQUIP_SLOT_BKP_COLS,EQUIP_SLOT_BKP_ROWS,"a3\ui_f\dat
 TILEGRIDBG(an_slot_hel_grid,EQUIP_SLOT_HEL_COLS,EQUIP_SLOT_HEL_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_helmet_gs.paa");
 // Goggles/Glasses/Balaclava
 TILEGRIDBG(an_slot_gog_grid,EQUIP_SLOT_GOG_COLS,EQUIP_SLOT_GOG_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_glasses_gs.paa");
+// Binonucular
+TILEGRIDBG(an_slot_bin_grid,EQUIP_SLOT_BIN_COLS,EQUIP_SLOT_BIN_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_binocular_gs.paa");
 
 
 
@@ -394,5 +385,8 @@ class an_inventory
 		
 		// Inventory: Slot: Goggles
 		CREATESLOT(slot_gog, 2111,2011, UIX_CR((10+EQUIP_SLOT_UNI_COLS+0.5)),UIY_CU((5-EQUIP_SLOT_HEL_ROWS-0.5)),UIW(EQUIP_SLOT_GOG_COLS),UIH(EQUIP_SLOT_GOG_ROWS), UIW(0),UIH(0),UIW(EQUIP_SLOT_GOG_COLS),UIH(EQUIP_SLOT_GOG_ROWS));
+		
+		// Inventory: Slot: Binonucular
+		CREATESLOT(slot_bin, 2117,2017, UIX_CR((10+EQUIP_SLOT_UNI_COLS+0.5)),UIY_CU((5-EQUIP_SLOT_HEL_ROWS-EQUIP_SLOT_GOG_ROWS-1)),UIW(EQUIP_SLOT_BIN_COLS),UIH(EQUIP_SLOT_BIN_ROWS), UIW(0),UIH(0),UIW(EQUIP_SLOT_BIN_COLS),UIH(EQUIP_SLOT_BIN_ROWS));
 	};
 };
