@@ -60,64 +60,35 @@ class tile_bg_an_inv_player_grid: para_RscPictureKeepAspect
 	
 	text = "sgd\anarchy\an_client_c\client\config\ui\inventory\data\box.paa";
 };
+
+#define TILEGRIDBG(NAME,WIDTH,HEIGHT,IMAGE) \
+class tile_bg_##NAME : tile_bg_an_inv_player_grid \
+{ \
+	w = UIW(WIDTH); \
+	h = UIH(HEIGHT); \
+	text = IMAGE; \
+}
+
 // External
-class tile_bg_an_inv_external_grid: tile_bg_an_inv_player_grid
-{
-	// in case of chaning to a different Background image or color scheme
-	text = "sgd\anarchy\an_client_c\client\config\ui\inventory\data\box.paa";
-};
+TILEGRIDBG(an_inv_external_grid,TILE_W,TILE_H,"sgd\anarchy\an_client_c\client\config\ui\inventory\data\box.paa");
+
 
 // Slots:
 // P:\a3\ui_f\data\GUI\Rsc\RscDisplayGear
 // Weapon Main
-class tile_bg_an_slot_wpn_grid: tile_bg_an_inv_player_grid
-{
-	w = UIW(EQUIP_SLOT_WPN_COLS);
-	h = UIH(EQUIP_SLOT_WPN_ROWS);
-	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_gun_gs.paa";
-};
+TILEGRIDBG(an_slot_wpn_grid,EQUIP_SLOT_WPN_COLS,EQUIP_SLOT_WPN_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_gun_gs.paa");
 // Weapon Main B
-class tile_bg_an_slot_wpn_grid_b: tile_bg_an_inv_player_grid
-{
-	w = UIW(EQUIP_SLOT_WPN_COLS);
-	h = UIH(EQUIP_SLOT_WPN_ROWS);
-	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_gun_gs.paa";
-};
+TILEGRIDBG(an_slot_wpn_grid_b,EQUIP_SLOT_WPN_COLS,EQUIP_SLOT_WPN_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_gun_gs.paa");
 // Secondary / Handgun
-class tile_bg_an_slot_sec_grid: tile_bg_an_inv_player_grid
-{
-	w = UIW(EQUIP_SLOT_SEC_COLS);
-	h = UIH(EQUIP_SLOT_SEC_ROWS);
-	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_hgun_gs.paa";
-};
+TILEGRIDBG(an_slot_sec_grid,EQUIP_SLOT_SEC_COLS,EQUIP_SLOT_SEC_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_hgun_gs.paa");
 // Uniform
-class tile_bg_an_slot_uni_grid: tile_bg_an_inv_player_grid
-{
-	w = UIW(EQUIP_SLOT_UNI_COLS);
-	h = UIH(EQUIP_SLOT_UNI_ROWS);
-	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_uniform_gs.paa";
-};
+TILEGRIDBG(an_slot_uni_grid,EQUIP_SLOT_UNI_COLS,EQUIP_SLOT_UNI_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_uniform_gs.paa");
 // Vest
-class tile_bg_an_slot_vst_grid: tile_bg_an_inv_player_grid
-{
-	w = UIW(EQUIP_SLOT_VST_COLS);
-	h = UIH(EQUIP_SLOT_VST_ROWS);
-	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_vest_gs.paa";
-};
+TILEGRIDBG(an_slot_vst_grid,EQUIP_SLOT_VST_COLS,EQUIP_SLOT_VST_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_vest_gs.paa");
 // Helmet
-class tile_bg_an_slot_hel_grid: tile_bg_an_inv_player_grid
-{
-	w = UIW(EQUIP_SLOT_HEL_COLS);
-	h = UIH(EQUIP_SLOT_HEL_ROWS);
-	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_helmet_gs.paa";
-};
+TILEGRIDBG(an_slot_hel_grid,EQUIP_SLOT_HEL_COLS,EQUIP_SLOT_HEL_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_helmet_gs.paa");
 // Backpack
-class tile_bg_an_slot_bkp_grid: tile_bg_an_inv_player_grid
-{
-	w = UIW(EQUIP_SLOT_BKP_COLS);
-	h = UIH(EQUIP_SLOT_BKP_ROWS);
-	text = "a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_backpack_gs.paa";
-};
+TILEGRIDBG(an_slot_bkp_grid,EQUIP_SLOT_BKP_COLS,EQUIP_SLOT_BKP_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_backpack_gs.paa");
 
 
 class inv_icon: para_RscControlsGroupNoScrollbarHV
