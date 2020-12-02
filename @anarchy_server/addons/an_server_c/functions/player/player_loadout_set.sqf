@@ -139,7 +139,7 @@ _DEV_MAGAZINES_AMMO = [0,0,0];
 	,[13,	["",[]],[] ]									// Gear: Vest
 	,[15,	["",[]],[] ]									// Gear: Backpack
 	,[10,	"",""]											// Gear: Helmet
-	,[11,	"",""]											// Gear: Goggles/Glasses
+	,[11,	"",""]											// Gear: Goggles/Glasses/Balaclava
 	,[17,	["","","","",[],[],""],["","","","",[],[],""] ]	// Gear: Binocular
 ];
 
@@ -153,7 +153,7 @@ Index:	3		,["Gear: Uniform",	[ ["FirstAidKit",1],["MiniGrenade",1,1] ] ]	// if I
 Index:	4		,["Gear: Vest",		[ ["FirstAidKit",1],["MiniGrenade",1,1] ] ]	// if Magazine	: ["MiniGrenade", Amount, Bullets/Rounds]
 Index:	5		,["Gear: Backpack",	[ ["FirstAidKit",1],["MiniGrenade",1,1] ] ]	// Magazines can't be "overfilled" with rounds!
 Index:	6		,"Gear: Helmet"
-Index:	7		,"Gear: Goggles/Glasses"
+Index:	7		,"Gear: Goggles/Glasses/Balaclava"
 Index:	8		,["Binocular","","","",[],[],""]	// Binoculars are technically a "weapon", it looks the same as in Index 0-2
 Index:	9		,["ItemMap","ItemGPS","ItemRadio","ItemCompass","ItemWatch","NVGoggles"]
 			]

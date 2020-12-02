@@ -19,14 +19,12 @@ private _ret = switch(_itemClass#0)do
 	case 5: {"CfgWeapons"};		// Tool (Pickaxe/Hammer)
 	
 	case 10: {"CfgWeapons"};	// Helmet
-	case 11: {"CfgGlasses"};	// Glasses TODO: Check class
+	case 11: {"CfgGlasses"};	// Goggles/Glasses/Balaclava/Facewear
 	case 12: {"CfgWeapons"};	// Uniform
 	case 13: {"CfgWeapons"};	// Vest
-	case 15: {"CfgVehicles"};	// Backpack
 	case 14: {"CfgMagazines"};	// Pouch (extra inventory, nothing else - atm not visible)
-	case 15: {"CfgWeapons"};	// Goggles
-	case 16: {"CfgWeapons"};	// Facewear
-	case 17: {"CfgWeapons"};	// Bino
+	case 15: {"CfgVehicles"};	// Backpack
+	case 16: {"CfgWeapons"};	// Bino
 	default {"CfgMagazines"};
 };
 if(_DEBUGON)then{diag_log ["DEBUG: ITEM_GETCFGCLASS: _ret", _ret];};
