@@ -1,0 +1,59 @@
+
+{
+	"vn_m19_binocs_grn":
+	{
+		"size": [3, 3],
+		"slot": [17],
+		"class_name": "vn_m19_binocs_grn",
+		"name": "",
+		"image": "",
+		"addInvSpace": 0,
+		"hp_max": 100,
+		"tear": 0,
+		"actions": {
+			"placeholder": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []]
+		}
+	},
+	"vn_m19_binocs_grey":
+	{
+		"size": [3, 3],
+		"slot": [17],
+		"class_name": "vn_m19_binocs_grey",
+		"name": "",
+		"image": "",
+		"addInvSpace": 0,
+		"hp_max": 100,
+		"tear": 0,
+		"actions": {
+			"placeholder": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []]
+		}
+	},
+	"vn_mk21_binocs":
+	{
+		"size": [3, 3],
+		"slot": [17],
+		"class_name": "vn_mk21_binocs",
+		"name": "",
+		"image": "",
+		"addInvSpace": 0,
+		"hp_max": 100,
+		"tear": 0,
+		"actions": {
+			"placeholder": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []]
+		}
+	},
+	"vn_anpvs2_binoc":
+	{
+		"size": [3, 3],
+		"slot": [17],
+		"class_name": "vn_anpvs2_binoc",
+		"name": "",
+		"image": "",
+		"addInvSpace": 0,
+		"hp_max": 100,
+		"tear": 0,
+		"actions": {
+			"placeholder": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []]
+		}
+	}
+}
