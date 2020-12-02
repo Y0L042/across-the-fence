@@ -299,9 +299,35 @@ class an_inventory
 	
 	class Controls
 	{
+		
+		// Inventory: External
+		// Header Text
+		class header_external: para_RscText
+		{
+			idc = 200;
+			
+			style = "0x02";
+			
+			x = UIX_CL(9.65);
+			y = UIY_CU(11.5);
+			w = UIW(8);
+			h = UIH(1.25);
+			
+			colorText[] = {1,1,1,0.95};
+			colorBackground[] = {0.0,0.0,0.0,0.3};
+			sizeEx = TXT_M;
+			
+			text = "External";
+			
+			onLoad = "uinamespace setvariable [""an_inv_header_external"", (_this#0)];";
+			onUnload = "uinamespace setvariable [""an_inv_header_external"", controlNull];";
+		};
+		// Inventory
+		CREATEINVENTORY(inv_external,1100,1000, UIX_CL(9.65),UIY_CU(10),UIW(8.65),UIH(20), UIW(0),UIH(0),UIW(WIDTH),UIH(HEIGHT));
+		
 		// Inventory: Player/Personal
 		// Header Text
-		class header_personal: para_RscText
+		class header_personal: header_external
 		{
 			idc = 100;
 			
@@ -310,38 +336,14 @@ class an_inventory
 			w = UIW(8);
 			h = UIH(1.25);
 			
-			colorText[] = {1,1,1,0.95};
-			colorBackground[] = {0.0,0.0,0.0,0.3};
 			text = "Personal";
-			sizeEx = TXT_M;
-			
-			style = "0x02";
 			
 			onLoad = "uinamespace setvariable [""an_inv_header_personal"", (_this#0)];";
 			onUnload = "uinamespace setvariable [""an_inv_header_personal"", controlNull];";
 		};
-		
 		// Inventory
-		CREATEINVENTORY(inv_player,1100,1000, UIX_CR(1),UIY_CU(10),UIW(8.65),UIH(20), UIW(0),UIH(0),UIW(WIDTH),UIH(HEIGHT));
-		
-		// Inventory: External
-		// Header Text
-		class header_external: header_personal
-		{
-			idc = 200;
-			
-			x = UIX_CL(9.65);
-			y = UIY_CU(11.5);
-			w = UIW(8);
-			h = UIH(1.25);
-			
-			text = "External";
-			
-			onLoad = "uinamespace setvariable [""an_inv_header_external"", (_this#0)];";
-			onUnload = "uinamespace setvariable [""an_inv_header_external"", controlNull];";
-		};
-		// Inventory
-		CREATEINVENTORY(inv_external,1101,1001, UIX_CL(9.65),UIY_CU(10),UIW(8.65),UIH(20), UIW(0),UIH(0),UIW(WIDTH),UIH(HEIGHT));
+		CREATEINVENTORY(inv_player,1101,1001, UIX_CR(1),UIY_CU(10),UIW(8.65),UIH(20), UIW(0),UIH(0),UIW(WIDTH),UIH(HEIGHT));
+		// CREATEINVENTORY(inv_vst,1102,1002, UIX_CR(1),UIY_CU(3),UIW(8.65),UIH((TILE_W * 6)), UIW(0),UIH(0),UIW(WIDTH),UIH((TILE_W * 6)));
 		
 		/////////////////////////// EQUIP SLOTS:
 		// Header Text - Equipment
