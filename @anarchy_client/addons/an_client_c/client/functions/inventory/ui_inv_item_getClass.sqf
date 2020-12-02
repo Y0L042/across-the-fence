@@ -19,7 +19,7 @@ private _ret = switch(_itemClass#0)do
 	case 5: {"CfgWeapons"};		// Tool (Pickaxe/Hammer)
 	
 	case 10: {"CfgWeapons"};	// Helmet
-	case 11: {"CfgWeapons"};	// Glasses TODO: Check class
+	case 11: {"CfgGlasses"};	// Glasses TODO: Check class
 	case 12: {"CfgWeapons"};	// Uniform
 	case 13: {"CfgWeapons"};	// Vest
 	case 15: {"CfgVehicles"};	// Backpack
