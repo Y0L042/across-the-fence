@@ -7,11 +7,12 @@ private _DEBUGON = false;
 params ["_ctrl", "_btn", "_xPos", "_yPos", "_btnShift", "_btnCtrl", "_btnAlt"];
 
 // Get the ctrlGroupParent, to determine in which Inventory the selected Item is, then select the opposite Inventory
+// In case of a slot -> Select the Personal Inventory!
 ////////////////////////////////
 //ToDo: Rework needed, when multiple Inventories were added!
-private _invGridExternal = uinamespace getvariable ['an_inv_external_grid', controlNull];
+private _invGridExternal = uinamespace getvariable ['an_inv_player_grid', controlNull];
 //																								Personal					External
-_invTarget = if(ctrlIDC (ctrlParentControlsGroup _ctrl) == (ctrlIDC _invGridExternal))then{AN_INVENTORY_LIST#0}else{AN_INVENTORY_LIST#1};
+_invTarget = if!(ctrlIDC (ctrlParentControlsGroup _ctrl) == (ctrlIDC _invGridExternal))then{AN_INVENTORY_LIST#0}else{AN_INVENTORY_LIST#1};
 ////////////////////////////////
 _invTarget params ["_areaName","_gridName"];
 
