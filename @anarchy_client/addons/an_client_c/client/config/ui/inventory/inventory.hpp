@@ -308,7 +308,7 @@ class an_inventory
 			style = "0x02";
 			
 			x = UIX_CL(9.65);
-			y = UIY_CU(11.5);
+			y = UIY_CU(12.5);
 			w = UIW(8);
 			h = UIH(1.25);
 			
@@ -331,7 +331,7 @@ class an_inventory
 			idc = 100;
 			
 			x = UIX_CR(1);
-			y = UIY_CU(11.5);
+			// y = UIY_CU(12.5);
 			w = UIW(8);
 			h = UIH(1.25);
 			
@@ -342,16 +342,16 @@ class an_inventory
 		};
 		// Inventory
 		CREATEINVENTORY(inv_player,1101,1001, UIX_CR(1),UIY_CU(10),UIW(8.65),UIH(20), UIW(0),UIH(0),UIW(WIDTH),UIH(HEIGHT));
-		// CREATEINVENTORY(inv_vst,1102,1002, UIX_CR(1),UIY_CU(3),UIW(8.65),UIH((TILE_W * 6)), UIW(0),UIH(0),UIW(WIDTH),UIH((TILE_W * 6)));
+		// CREATEINVENTORY(inv_vst,1102,1002, UIX_CR(1),UIY_CD(11),UIW(8.65),UIH((TILE_W * 5)), UIW(0),UIH(0),UIW(WIDTH),UIH((TILE_W * 6)));
 		
 		/////////////////////////// EQUIP SLOTS:
 		// Header Text - Equipment
-		class header_equipment: header_personal
+		class header_equipment: header_external
 		{
 			idc = 300;
 			
 			x = UIX_CR(10);
-			y = UIY_CU(11.5);
+			// y = UIY_CU(12.5);
 			w = UIW(11);
 			h = UIH(1.25);
 			
