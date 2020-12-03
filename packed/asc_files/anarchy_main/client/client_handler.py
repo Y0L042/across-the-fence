@@ -22,15 +22,10 @@ def client_add(**kwargs):
 				""
 			],
 		"faction": "CIV",   # Standard start faction
-		'inv_grid': inv_handler.invGrid_create(16), # ToDo: Remove the "grid" itself and exchange it with some kind of "used slots"-list
+		'inv_grid': inv_handler.invGrid_create(16, 8),     # ToDo: Remove the "grid" itself and exchange it with some kind of "used slots"-list
 		'inv_rows': 16,
-		'itemData': {},
-		'ammo': {
-				"ammoType_a": 0,
-				"ammoType_b": 0,
-				"ammoType_c": 0,
-				"ammoType_d": 0
-			}
+		'inv_cols': 8,
+		'itemData': {}
 		}
 
 	cData.update(kwargs)
@@ -112,7 +107,8 @@ def client_init(self):
 	print(f"SENDING: INVENTORY ITEMDATA TO {self.puid}...")
 	dataset = {
 			"itemData": self.cData["itemData"],
-			"inv_rows": self.cData["inv_rows"]
+			"inv_rows": self.cData["inv_rows"],
+			"inv_cols": self.cData["inv_cols"]
 		}
 	# remove the grid from the data, passed to the client.
 	asc_g_msg.sendMsg("player_gear_set", dataset, self.con_client)
@@ -200,7 +196,7 @@ def player_killed(sData, *data):
 		item["inSlot"] = 0
 
 	# reset the grid of the player to the Standard Value:
-	cData["inv_grid"] = inv_handler.invGrid_create(16)
+	cData["inv_grid"] = inv_handler.invGrid_create(16, 8)
 
 	# add Starter Gear:
 	startGear = [["vn_b_bandana_03", [10]], ["vn_b_uniform_macv_01_06", [12]]]

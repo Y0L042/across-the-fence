@@ -11,16 +11,16 @@ DEFAULT_loot_count = 2
 DEFAULT_loot_skill_multiplier = 2
 
 # inventory = INT
-def invGrid_create(rows):
+def invGrid_create(rows, cols):
     ret = []
     for x in range(rows):
-        _line = [0] * 8
+        _line = [0] * cols
         ret.append(_line)
     return ret
 
 
 # try to get the Crate data. If not found -> Create a new one. We simply assume the Data, coming from the Game-server, is correct/valid.
-def crate_data_get(sData, clientID: str = None, pos: list = None, crateID: str = None, lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 16, persistent: int = 0, model: str = "IG_supplyCrate_F"):
+def crate_data_get(sData, clientID: str = None, pos: list = None, crateID: str = None, lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 16, inv_cols: int = 8, persistent: int = 0, model: str = "IG_supplyCrate_F"):
     # print(f"clientID: {clientID}\n"
     #       f"pos: {pos}\n"
     #       f"crateID: {crateID}\n"
@@ -48,12 +48,12 @@ def crate_data_get(sData, clientID: str = None, pos: list = None, crateID: str =
     # No "Error", the crate was just not in the List. So let's create a new crate entry
     except KeyError:
         print(f"DEBUG: INV_HANDLER: crate_data_get: Creating new Crate")
-        crate_add(sData=sData, clientID=clientID, pos=pos, crateID=crateID, lootType=lootType, isLootcrate=isLootcrate, loot_count=loot_count, inv_rows=inv_rows, persistent=persistent)
+        crate_add(sData=sData, clientID=clientID, pos=pos, crateID=crateID, lootType=lootType, isLootcrate=isLootcrate, loot_count=loot_count, inv_rows=inv_rows, inv_cols=inv_cols, persistent=persistent)
     except Exception:
         print(f"ERROR: INV_HANDLER: crate_data_get: HUGE WOBBLE WOBBLE! Data:\nclientID: {clientID}\npos: {pos}\ncrateID: {crateID}\nlootType: {lootType}\npersistent {persistent}\ninv_rows {inv_rows}\n---------")
 
 # called by Server only!
-def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 16, persistent: int = 0, model: str = "IG_supplyCrate_F"):
+def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 16, inv_cols: int = 8, persistent: int = 0, model: str = "IG_supplyCrate_F"):
     """
     :param sData:       ServerData (auto-passed)
     :param clientID:    A3 playerUID
@@ -63,6 +63,7 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
     :param isLootcrate: is the crate a newly created Loot-crate or not
     :param loot_count:  Int - amount of Items to add (can be altered by Loot-skill of the player)
     :param inv_rows:    Int - Rows
+    :param inv_cols:    Int - Columns
     The following arguments are ONLY for creating persistent crates:
     :param persistent:  Save to Database or not (persistent crates only)
     :param model:       A3 typeOf Class (persistent crates only)
@@ -82,14 +83,16 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
     if isLootcrate == 0:
         # Player created Crates (e.g: Opening Inventory to drop things)
         inv_rows = 16
+        inv_cols = 8
 
     invData = {
         "crateID": crateID,
         "model": model,
         "pos": pos,
         "type": lootType,
-        "inv_grid": invGrid_create(inv_rows),
-        "inv_rows": inv_rows,    # rows
+        "inv_grid": invGrid_create(inv_rows, inv_cols),
+        "inv_rows": inv_rows,   # rows
+        "inv_cols": inv_cols,   # columns
         "itemData": {}
         }
 
@@ -188,7 +191,8 @@ def inv_update_force(client, invID_old, invID_new):
     # resending it, triggers a force-reopen of the Inventory (instantly)
     dataset = {
         "itemData": client.cData["itemData"],
-        "inv_rows": client.cData["inv_rows"]
+        "inv_rows": client.cData["inv_rows"],
+        "inv_cols": client.cData["inv_cols"]
         }
     # update the player Gear
     asc_g_msg.sendMsg("player_gear_set", dataset, client.con_client)

@@ -229,6 +229,7 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
 
         invGrid = invData["inv_grid"]
         inv_rows = invData["inv_rows"]
+        inv_cols = invData["inv_cols"]
         inv_itemData = invData["itemData"]
 
         # get the parent Data
@@ -262,7 +263,7 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
                 if isLootcrate > 0:
                     # print(f"DEBUG: item_handler: item_add_to_inv: It's a lootcrate -> Adding new row. Count: {grid_rows_final}\n-------------")
                     # add a new row to the tempInventory
-                    newRow = [0] * 8
+                    newRow = [0] * inv_cols
                     invGrid.append(newRow)
                     grid_rows_final = len(invGrid)
 
