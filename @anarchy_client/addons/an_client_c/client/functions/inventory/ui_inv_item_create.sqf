@@ -84,12 +84,17 @@ private _itemData = localNamespace getVariable [_itemID,[]];
 // Get the current Inventory...
 private _itemPosCur = ENTRY_GET("invPos", _itemData);
 private _isSamePos = _itemPosCur isEqualTo (_usedSlots#0);
+// ... its subInventory ...
+private _itemInvSubCur = ENTRY_GET("invSub", _itemData);
 // ... its Position ...
-private _itemInvIDCur = ENTRY_GET("curInv", _itemData);
+_itemInvIDCur = ENTRY_GET("curInv", _itemData);
 private _isSameInv = _itemInvIDCur in ["",_itemInvIDNew];
-// ... and Slot
+// ... and Slot ...
 private _itemInSlotCur = ENTRY_GET("inSlot", _itemData);
 private _isSameSlot = _itemInSlotCur == _slotID;
+
+// Get the active Grid IDC - If it's a Slot -> "0"
+private _invGearID = if(_slotID > 0)then{"0"}else{str(_gridActive-1000)};	// 12 = Uniform
 
 // Check if the position is the same as before AND if it is in the old Inventory (Short: Check if it was moved, or just added (e.g: inv_load)!)
 if !(_isSamePos && _isSameInv && _isSameSlot)then
@@ -144,11 +149,12 @@ if !(_isSamePos && _isSameInv && _isSameSlot)then
 	};
 	
 	// send command to the backend, to update its data.
-	if(_DEBUGON)then{diag_log ["DEBUG: item_create: MSG SEND Data:", ["inv_itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID]]];};
-	["inv_itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID]] call AN_G_fnc_msg_send;
+	if(_DEBUGON)then{diag_log ["DEBUG: item_create: MSG SEND Data:", ["inv_itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID, _invGearID]]];};
+	
+	["inv_itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID, _invGearID]] call AN_G_fnc_msg_send;
 	
 	// Update the local Inventory
-	[_itemInvIDCur,_itemInvIDNew,_itemData,_itemID] call an_c_fnc_ui_inv_data_update;
+	[_itemInvIDCur,_itemInvIDNew,_itemData,_itemID, _invGearID] call an_c_fnc_ui_inv_data_update;
 };
 
 if(_DEBUGON)then{diag_log ["CREATE _itemData: ", _itemData];};

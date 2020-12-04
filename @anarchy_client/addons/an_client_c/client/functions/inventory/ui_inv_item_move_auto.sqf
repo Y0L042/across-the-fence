@@ -9,14 +9,11 @@ params ["_ctrl", "_btn", "_xPos", "_yPos", "_btnShift", "_btnCtrl", "_btnAlt"];
 // Get the ctrlGroupParent, to determine in which Inventory the selected Item is, then select the opposite Inventory
 // In case of a slot -> Select the Personal Inventory!
 ////////////////////////////////
-//ToDo: Rework needed, when multiple Inventories were added!
-private _invGridExternal = uinamespace getvariable ['an_inv_player_grid', controlNull];
-//																								Personal					External
-_invTarget = if!(ctrlIDC (ctrlParentControlsGroup _ctrl) == (ctrlIDC _invGridExternal))then{AN_INVENTORY_LIST#0}else{AN_INVENTORY_LIST#1};
-////////////////////////////////
-_invTarget params ["_areaName","_gridName"];
-
-_ctrlGrid = uinamespace getvariable [_gridName,ControlNull];
+// If "gridAutoTgt" is not set -> "External" or a Slot is selected. So let's move the Item to the Uniform Inventory (for now)
+private _gridName = (ctrlParentControlsGroup _ctrl) getVariable ["gridAutoTgt",""];
+if(_gridName isEqualTo "")then{_gridName = "an_inv_uni_grid"};
+private _ctrlGrid = uinamespace getvariable [_gridName, ControlNull];
+if(isNull _ctrlGrid)exitWith{systemchat "ERROR: item_move_auto: GRID NOT FOUND!";};
 
 // Get all the blocked Slots of the target Inventory
 private _gridUsedSlots = [(ctrlIDC _ctrlGrid)] call an_c_fnc_ui_inv_grid_tiles_used_get;

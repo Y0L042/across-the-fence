@@ -1,16 +1,25 @@
 private _DEBUGON = false;
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
-params["_gridName", "_invData", ["_gridCols",8], ["_slotID",0]];
+params["_gridName", "_isExternal", "_invData", ["_gridCols",8], ["_slotID",0]];
 if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: Inventory: ...",_gridName];};
 
 // create the grid
 if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_INIT: %1 - setting up: grid: ...",_gridName];};
 private _InvDataGridRows = ENTRY_GET("inv_rows",_invData);
 private _ctrlGrid = uinamespace getvariable [_gridName, controlNull];
+// Store the gridname, so we can access it later easily
+_ctrlGrid setVariable ["gridName", _gridName];
+if(_isExternal)then
+{
+	_ctrlGrid setVariable ["gridAutoTgt",""];
+	systemchat str ["#1", _gridName, _isExternal];
+}else{
+	_ctrlGrid setVariable ["gridAutoTgt","an_inv_external_grid"];
+	systemchat str ["#2", _gridName, _isExternal];
+};
 // Set the slotID (0 = Player and External Inv - everything > 0 == Slot)
 _ctrlGrid setVariable ["slotID", _slotID];
-
 // set the Col size in the grid itself, so we can request it later again (Slots = different Col count)
 // Must be set BEFORE grid_create is being called.
 // _ctrlGrid setVariable ["an_sizeCol", _gridCols];		// ToDo: an_sizeCol - Recheck if needed.

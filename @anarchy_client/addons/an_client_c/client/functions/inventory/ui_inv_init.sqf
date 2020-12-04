@@ -180,7 +180,7 @@ an_ui_inv_grabActive = false;		// init
 if(_DEBUGON)then{diag_log "-----------------------------------------------";};
 // Load Inventory: Player (Uniform)
 private _invItemData = localNamespace getVariable ["an_cData_invData",[]];
-["an_inv_uni_grid", _invItemData] call an_c_fnc_ui_inv_load;
+["an_inv_uni_grid", false, _invItemData] call an_c_fnc_ui_inv_load;
 
 // Change the header Text of the Personal Area, by setting the playername as text
 private _ctrlPersonalHeader = uinamespace getvariable ["an_inv_header_personal", controlNull];
@@ -191,9 +191,9 @@ if(_DEBUGON)then{diag_log "-----------------------------------------------";};
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////// DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV
 
-["an_inv_vst_grid", [["inv_rows",4],["itemData",[]]]] call an_c_fnc_ui_inv_load;
-["an_inv_pch_grid", [["inv_rows",4],["itemData",[]]]] call an_c_fnc_ui_inv_load;
-["an_inv_bkp_grid", [["inv_rows",4],["itemData",[]]]] call an_c_fnc_ui_inv_load;
+["an_inv_vst_grid", false, [["inv_rows",4],["itemData",[]]]] call an_c_fnc_ui_inv_load;
+["an_inv_pch_grid", false, [["inv_rows",4],["itemData",[]]]] call an_c_fnc_ui_inv_load;
+["an_inv_bkp_grid", false, [["inv_rows",4],["itemData",[]]]] call an_c_fnc_ui_inv_load;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -203,7 +203,7 @@ if(_DEBUGON)then{diag_log "-----------------------------------------------";};
 // Store the ID of the active external Inventory
 localNamespace setVariable ["an_inv_external_active",ENTRY_GET("crateID",_dataCrate)];
 // Load Inventory: External
-["an_inv_external_grid", _dataCrate] call an_c_fnc_ui_inv_load;
+["an_inv_external_grid", true, _dataCrate] call an_c_fnc_ui_inv_load;
 if(_DEBUGON)then{diag_log "-----------------------------------------------";};
 
 // Change the header Text of the External Area
@@ -257,7 +257,7 @@ private _slottedItems = localNamespace getVariable ["an_cData_invData_slotted",[
 		_data pushback ["itemData",[]];
 	};
 	
-	[_gridName, _data, _slotsCols, _slotID] call an_c_fnc_ui_inv_load;
+	[_gridName, true, _data, _slotsCols, _slotID] call an_c_fnc_ui_inv_load;
 	
 }forEach _slotList;
 if(_DEBUGON)then{diag_log ["------------------------ GEAR ------------------------"];};
