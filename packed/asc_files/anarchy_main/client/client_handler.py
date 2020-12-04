@@ -99,10 +99,6 @@ def client_init(self):
 	asc_g_msg.sendMsg("INIT_ITEMDATA", self.sData.itemParentData, self.con_client)
 	PRINT_OK(f"SENDING: INIT_ITEMDATA TO {self.puid}... DONE")
 
-	# send player Data
-	PRINT_DEBUG(f"SENDING: INIT_CLIENTDATA TO {self.puid}...")
-	# asc_g_msg.sendMsg("INIT_CLIENTDATA", self.cData, self.con_client)
-
 	# Gear:
 	PRINT_DEBUG(f"SENDING: INVENTORY ITEMDATA TO {self.puid}...")
 	dataset = {
