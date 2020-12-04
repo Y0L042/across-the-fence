@@ -1,11 +1,11 @@
 import json
 import os
-
+from printHandler import *
 
 def load_files(sData):
 	# ####### load all the Items
 	path = os.path.dirname(__file__)
-	print(f'#### Loading itemParentData...')
+	PRINT_STATUS(f'#### Loading itemParentData...')
 	# get all files in the directory
 	json_files = [pos_json for pos_json in os.listdir(path) if pos_json.endswith('.json')]
 	for filename in json_files:
@@ -15,13 +15,13 @@ def load_files(sData):
 				# add every Base_ItemData to the sData.itemParentData
 				data = json.load(file)
 				for x in data:
-					# print(f"DEBUG: ItemData: {data[x]}")
+					# PRINT_DEBUG(f"DEBUG: ItemData: {data[x]}")
 					sData.itemParentData[x] = data[x]
 		except Exception as e:
-			print(filename)
-			print(f"ERROR: LOAD_FILES: Could not load filename: {filename} - Error: {e}")
+			PRINT_WARNING(filename)
+			PRINT_WARNING(f"ERROR: LOAD_FILES: Could not load filename: {filename} - Error: {e}")
 
-	print(f'#### Loading itemParentData... done')
+	PRINT_OK(f'#### Loading itemParentData... done')
 
 	# add a "placeholder" aka fallback Item:
 	sData.itemParentData["PLACEHOLDER"] = {

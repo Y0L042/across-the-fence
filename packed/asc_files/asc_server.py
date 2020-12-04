@@ -4,6 +4,7 @@ from asc_fnc import *
 from cmdList import cmdList
 from asc_fnc.asc_db import database
 from asc_fnc.message_handler import message_handler_s
+from printHandler import *
 
 # set up the ServerData Class
 class data_server:
@@ -40,14 +41,14 @@ class data_server:
         # Load up the Database:
         self.database = database.asc_db(con_gameServer=self.con_gameServer, dbName=dbName, dbPath=dbPath )
         if self.database.name is None:
-            print(f"self.database.name: {self.database.name}")
+            PRINT_WARNING(f"self.database.name: {self.database.name}")
             self.mainConnection.close()
             return
-        print(f'#### ASC: DB Name: {self.database.db_get_name()}\n#### ASC: DB Last update: {self.database.db_get_lastUpd()}\n########################################################\n')
+        PRINT_DEBUG(f'#### ASC: DB Name: {self.database.db_get_name()}\n#### ASC: DB Last update: {self.database.db_get_lastUpd()}\n########################################################\n')
 
-        print("ASC SERVER: arma_server COMMANDS:\n", cmdList["arma_server"])
+        PRINT_ATTENTION(f'ASC SERVER: arma_server COMMANDS:\n{cmdList["arma_server"]}')
         asc_g_msg.sendMsg("INIT_FUNCTIONS", cmdList["arma_server"], self.con_gameServer)
-        print("\nASC SERVER: COMMANDS SEND TO SERVER\n")
+        PRINT_OK("\nASC SERVER: COMMANDS SEND TO SERVER\n")
 
         # ################### send all needed variables
         self.gameserver_init()
@@ -58,7 +59,7 @@ class data_server:
             try:
                 msg = asc_g_msg.getMulti(self.con_gameServer)
                 if not msg:
-                    print(f"GAME SERVER: Connection closed")
+                    PRINT_WARNING(f"GAME SERVER: Connection closed")
                     for key in self.user_active:
                         con = self.user_active[key]["con"]
                         con.shutdown(socket.SHUT_RDWR)
@@ -84,7 +85,7 @@ class data_server:
                                 message_handler_s(sData=self, code=code, args=data)
                             except Exception as e:
                                 # something went wrong, terribly...
-                                print(f"FAULTY MESSAGE RECEIVED! ABORTING! MESSAGE: Exception: {e}")
+                                PRINT_WARNING(f"FAULTY MESSAGE RECEIVED! ABORTING! MESSAGE: Exception: {e}")
                                 continue
 
                             # remove msg_tmp from the main "MultiMessage"
@@ -100,11 +101,11 @@ class data_server:
                             message_handler_s(sData=self, code=code, args=data)
                         except Exception as e:
                             # something went wrong, terribly...
-                            print(f"FAULTY MESSAGE RECEIVED! ABORTING! MESSAGE: Exception: {e}")
+                            PRINT_WARNING(f"FAULTY MESSAGE RECEIVED! ABORTING! MESSAGE: Exception: {e}")
                             continue
 
             except ConnectionResetError:
-                print(f"GAME SERVER: CRE - Connection closed - Disconnecting all Clients...")
+                PRINT_WARNING(f"GAME SERVER: CRE - Connection closed - Disconnecting all Clients...")
                 for key in self.user_active:
                     con = self.user_active[key]["con"]
                     try:
@@ -113,11 +114,11 @@ class data_server:
                     except OSError:
                         # already closed
                         pass
-                print(f"GAME SERVER: CRE - Connection closed - Disconnecting all Clients... done")
+                PRINT_WARNING(f"GAME SERVER: CRE - Connection closed - Disconnecting all Clients... done")
                 break
 
             except socket.timeout:
-                print("GAME SERVER: Socket timeout - Disconnecting all Clients...")
+                PRINT_WARNING("GAME SERVER: Socket timeout - Disconnecting all Clients...")
                 for key in self.user_active:
                     con = self.user_active[key]["con"]
                     try:
@@ -126,19 +127,19 @@ class data_server:
                     except OSError:
                         # already closed
                         pass
-                print("GAME SERVER: Socket timeout - Disconnecting all Clients... done")
+                PRINT_WARNING("GAME SERVER: Socket timeout - Disconnecting all Clients... done")
                 break
 
         try:
-            print(f"GAME SERVER: Connection closed - closing Socket...")
+            PRINT_WARNING(f"GAME SERVER: Connection closed - closing Socket...")
             # Left in as a note: DO NOT RE-ENABLE! "breaks" the auto-exit... :whistle:
             # self.mainConnection.shutdown(socket.SHUT_RDWR)
             self.mainConnection.close()
         except OSError:
             # already closed
-            print(f"GAME SERVER: Connection already closed.")
+            PRINT_WARNING(f"GAME SERVER: Connection already closed.")
 
-        print(f"GAME SERVER: Connection closed - closing Socket... done")
+        PRINT_WARNING(f"GAME SERVER: Connection closed - closing Socket... done")
         return
 
     def gameserver_init(self):

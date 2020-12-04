@@ -1,6 +1,7 @@
 import json
 import socket
 import time
+from printHandler import *
 
 def sendMsg(fncName: str, data: dict, con: socket.socket):
 	"""
@@ -16,7 +17,7 @@ def sendMsg(fncName: str, data: dict, con: socket.socket):
 		msg = bytes(f"{json.dumps(msg_data)}$$", "ascii")
 		con.sendall(msg)
 	except Exception as e:
-		print(f"ERROR: SendMSG: EXCEPTION TRIGGERED: {e}")
+		PRINT_WARNING(f"ERROR: SendMSG: EXCEPTION TRIGGERED: {e}")
 
 
 def getMulti(client_con: socket.socket, msg: bytes = b""):
@@ -36,8 +37,8 @@ def getMulti(client_con: socket.socket, msg: bytes = b""):
 		# Todo: Re-check method to determine endless spam
 		# if a message exceeds a certain bytes limit (e.g. endless Message)
 		if len(msg) > 20000:
-			print('WARNING: GETMULTI: "POSSIBLE" SPAM DETECTED: Message length >20000')
-			print(f"Message:\n{len(msg)} - {client_con.getpeername()}")
+			PRINT_WARNING('WARNING: GETMULTI: "POSSIBLE" SPAM DETECTED: Message length >20000')
+			PRINT_WARNING(f"Message:\n{len(msg)} - {client_con.getpeername()}")
 			# Todo: forced disconnect currently disabled
 			# try:
 			# 	client_con.shutdown(socket.SHUT_RDWR)
@@ -56,10 +57,15 @@ def getMulti(client_con: socket.socket, msg: bytes = b""):
 			return getMulti(client_con, msg)
 
 		else:
-			print("EEEEEELLLLLLLLLLLSSSSSSSSSSSSSEEEEEEEEEEEEEEEE")
+			PRINT_WARNING("EEEEEELLLLLLLLLLLSSSSSSSSSSSSSEEEEEEEEEEEEEEEE")
 			# no idea what happened there /shrug
 			return None
 
-	except (ConnectionResetError, OSError, ConnectionAbortedError):
-		print("getMulti - connection aborted")
+	# Client Disconnected
+	except OSError:
+		PRINT_DEBUG(f"DEBUG: SOCKET LISTENER - connection closed")
+		return None
+	# something else happend :thonk:
+	except (ConnectionResetError, ConnectionAbortedError) as e:
+		PRINT_ATTENTION(f"ERROR: SOCKET LISTENER - EXCEPTION TRIGGERED:\n{e}")
 		return None

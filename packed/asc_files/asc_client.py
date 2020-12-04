@@ -6,7 +6,7 @@ from anarchy_main.client import *
 from asc_fnc.message_handler import message_handler_c
 from cmdList import cmdList
 import json
-
+from printHandler import *
 
 def client_checkKey(sData, con_server, con_client, raddr):
     """
@@ -18,7 +18,7 @@ def client_checkKey(sData, con_server, con_client, raddr):
     :return:            None
     """
     # 1st message = We expect the Key of a length of 32Bit, to identify the connected User:
-    print("waiting for Key...")
+    PRINT_DEBUG("waiting for Key...")
     while True:
         try:
             # receive only the 32Bit key, nothing else
@@ -32,8 +32,8 @@ def client_checkKey(sData, con_server, con_client, raddr):
                 # decode key to get a normal string
                 tKey = tKey_tmp.decode("ascii")
 
-                # print(f"AWAITING: KEY : {tKey}")
-                # print(f"AWAITING: LIST: {sData.user_awaiting}")
+                # PRINT_DEBUG(f"AWAITING: KEY : {tKey}")
+                # PRINT_DEBUG(f"AWAITING: LIST: {sData.user_awaiting}")
 
                 if tKey in sData.user_awaiting:
                     # reset timeout
@@ -43,7 +43,7 @@ def client_checkKey(sData, con_server, con_client, raddr):
                     puid = sData.user_awaiting[tKey]
 
                     # remove tKey from awaiting list
-                    print(f"DEBUG MSG: user_rem: tKey: {tKey} - puid: {puid}")
+                    PRINT_DEBUG(f"DEBUG MSG: user_rem: tKey: {tKey} - puid: {puid}")
                     del sData.user_awaiting[tKey]
 
                     # add the client connection to user_active (to close the connection)
@@ -61,14 +61,14 @@ def client_checkKey(sData, con_server, con_client, raddr):
                     # start listening to the socket connection
                     client.client_listener()
                 else:
-                    print("ASC_CLIENT: Key not found in awaitList - closing connection")
+                    PRINT_WARNING("ASC_CLIENT: Key not found in awaitList - closing connection")
                     con_client.shutdown(socket.SHUT_RDWR)
                     con_client.close()
                 break
         except socket.timeout:
             con_client.shutdown(socket.SHUT_RDWR)
             con_client.close()
-            print("Timeout on connection")
+            PRINT_WARNING("Timeout on connection")
             return
 
 
@@ -90,9 +90,9 @@ class data_client:
         con = self.con_client
         raddr = self.ip
 
-        # print("ASC CLIENT: arma_client COMMANDS: ", cmdList["arma_client"])
+        # PRINT_DEBUG("ASC CLIENT: arma_client COMMANDS: ", cmdList["arma_client"])
         asc_g_msg.sendMsg("INIT_FUNCTIONS", cmdList["arma_client"], con)
-        print("ASC CLIENT: COMMANDS SEND TO CLIENT")
+        PRINT_OK("ASC CLIENT: COMMANDS SEND TO CLIENT")
 
         # load up the client information
         client_handler.client_init(self)
@@ -101,7 +101,7 @@ class data_client:
             try:
                 msg = asc_g_msg.getMulti(con)
                 if not msg:
-                    # print(f"ASC_CLIENT: None - Connection closed: {raddr[0]} : {raddr[1]}")
+                    # PRINT_ATTENTION(f"ASC_CLIENT: None - Connection closed: {raddr[0]} : {raddr[1]}")
                     break
                 try:
                     # check if multiple messages received at once and handle them separately
@@ -121,14 +121,14 @@ class data_client:
                                 message_handler_c(client=self, code=code, args=data)
                             except Exception as e:
                                 # something went wrong, terribly...
-                                print(f"FAULTY MESSAGE RECEIVED! ABORTING! MESSAGE: Exception: {e}")
+                                PRINT_WARNING(f"FAULTY MESSAGE RECEIVED! ABORTING! MESSAGE: Exception: {e}")
                                 continue
 
                             # remove msg_tmp from the main "MultiMessage"
                             msg = msg[splitPos::]
                     else:
                         try:
-                            # print("ASC_CLIENT: GET MESSAGE: SINGLE MESSAGE RECEIVED")
+                            # PRINT_DEBUG("ASC_CLIENT: GET MESSAGE: SINGLE MESSAGE RECEIVED")
                             # load as json and decode it
                             msg_d = json.loads(msg.decode('ascii'))
                             # get the codeTag for the functions cmdList
@@ -139,17 +139,17 @@ class data_client:
                             # message_handler_c(con=con, code=code, cData=self.cData, args=data)
                         except Exception as e:
                             # something went wrong, terribly...
-                            print(f"FAULTY MESSAGE RECEIVED! ABORTING! MESSAGE: Exception: {e}")
+                            # PRINT_WARNING(f"FAULTY MESSAGE RECEIVED! ABORTING! MESSAGE: Exception: {e}")
                             continue
 
                 except (UnicodeDecodeError, Exception) as e:
-                    print(f"ASC_CLIENT: {e} = msg: {msg}")
+                    PRINT_WARNING(f"EXCEPTION: ASC_CLIENT: {e}\nmsg: {msg}")
                     pass
             except ConnectionResetError:
-                print(f"ASC_CLIENT: CR - Connection closed: {raddr[0]} : {raddr[1]}")
+                PRINT_ATTENTION(f"ASC_CLIENT: CRE - Connection closed: {raddr[0]} : {raddr[1]}")
                 break
             except socket.timeout:
-                print("DEV: TIMEOUT")
+                PRINT_WARNING("DEV: TIMEOUT")
                 break
 
         # reduce Connected Client Count

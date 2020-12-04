@@ -1,11 +1,11 @@
 import json
 import os
-
+from printHandler import *
 
 def load_files(sData):
 	# ####### load the Loottables
 	path = os.path.dirname(__file__)
-	print(f'#### Loading loot-tables...')
+	PRINT_STATUS(f'#### Loading loot-tables...')
 	# get all files in the directory
 	json_files = [pos_json for pos_json in os.listdir(path) if pos_json.endswith('.json')]
 	for filename in json_files:
@@ -18,6 +18,6 @@ def load_files(sData):
 					sData.lootData["tables"][key] = jsonData[key]
 
 		except Exception as e:
-			print(filename)
-			print(f"ERROR: LOAD_FILES: Could not load filename: {filename} - Error: {e}")
-	print(f'#### Loading loot-tables... done')
+			PRINT_WARNING(filename)
+			PRINT_WARNING(f"ERROR: LOAD_FILES: Could not load filename: {filename} - Error: {e}")
+	PRINT_OK(f'#### Loading loot-tables... done')

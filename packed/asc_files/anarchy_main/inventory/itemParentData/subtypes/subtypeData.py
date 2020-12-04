@@ -1,11 +1,11 @@
 import json
 import os
-
+from printHandler import *
 
 def load_files(sData):
 	# ####### load all the Items
 	path = os.path.dirname(__file__)
-	print(f'#### Loading itemData...')
+	PRINT_STATUS(f'#### Loading itemData...')
 	# get all files in the directory
 	json_files = [pos_json for pos_json in os.listdir(path) if pos_json.endswith('.json')]
 	for filename in json_files:
@@ -15,9 +15,9 @@ def load_files(sData):
 				# add every Base_ItemData to the sData.itemDataSubTypes
 				data = json.load(file)
 				for x in data:
-					# print(f"DEBUG: ItemData: {data[x]}")
+					# PRINT_DEBUG(f"DEBUG: ItemData: {data[x]}")
 					sData.itemSubTypes[x] = data[x]
 		except Exception as e:
-			print(filename)
-			print(f"ERROR: LOAD_FILES: Could not load filename: {filename} - Error: {e}")
-	print(f'#### Loading itemData... done')
+			PRINT_WARNING(filename)
+			PRINT_WARNING(f"ERROR: LOAD_FILES: Could not load filename: {filename} - Error: {e}")
+	PRINT_OK(f'#### Loading itemData... done')

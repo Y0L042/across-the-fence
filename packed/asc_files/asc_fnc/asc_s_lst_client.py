@@ -1,4 +1,5 @@
 import socket
+from printHandler import *
 
 # Keep track of connected Clients (very basic)
 def clientCnt_add(sData):
@@ -9,7 +10,7 @@ def clientCnt_add(sData):
 	:return: Nothing
 	"""
 	sData.cur += 1
-	print(f"Client connected: ({sData.cur} connected)")
+	PRINT_DEBUG(f"Client connected: ({sData.cur} connected)")
 
 
 def clientCnt_rem(sData):
@@ -20,7 +21,7 @@ def clientCnt_rem(sData):
 	:return:
 	"""
 	sData.cur -= 1
-	print(f"Client disconnected: ({sData.cur} connected)")
+	PRINT_DEBUG(f"Client disconnected: ({sData.cur} connected)")
 
 
 # add Clients to the await-list
@@ -36,9 +37,9 @@ def client_await_add(sData, *args):
 	try:
 		tKey, puid = args
 		sData.user_awaiting[tKey] = puid
-		print(f"user_awaiting: ADD: {sData.user_awaiting}")
+		PRINT_DEBUG(f"user_awaiting: ADD: {sData.user_awaiting}")
 	except Exception as e:
-		print(f"ERROR: CAA: {e}")
+		PRINT_WARNING(f"ERROR: CAA: {e}")
 		return
 
 
@@ -51,7 +52,7 @@ def client_active_rem(sData, *args):
 	:return:
 	"""
 	puid = args[0]
-	print(f"DEBUG: client_active_rem: PlayerID: {puid} - disconnected. Removing from active/await list")
+	PRINT_DEBUG(f"DEBUG: client_active_rem: PlayerID: {puid} - disconnected. Removing from active/await list")
 	# close client socket Connection
 	try:
 		try:
@@ -62,16 +63,16 @@ def client_active_rem(sData, *args):
 			del sData.user_active[puid]
 		except KeyError:
 			raise KeyError
-		print(f'DEBUG: client_active_rem: PlayerID: {puid} disconnected and was removed from "user_active"')
+		PRINT_DEBUG(f'DEBUG: client_active_rem: PlayerID: {puid} disconnected and was removed from "user_active"')
 
 	except (KeyError, WindowsError) as e:
-		print(f'DEBUG: client_active_rem: PlayerID: {puid} - (KeyError, WindowsError):\n{e}\n-------------------------')
+		PRINT_DEBUG(f'DEBUG: client_active_rem: PlayerID: {puid} - (KeyError, WindowsError):\n{e}\n-------------------------')
 		# the disconnected Client didn't connect properly, so remove it from "self.user_awaiting"
 		for tKey in sData.user_awaiting:
-			print("CHECKING: ", sData.user_awaiting[tKey], " - ", puid)
+			PRINT_DEBUG(f"CHECKING: {sData.user_awaiting[tKey]} - {puid}")
 			if sData.user_awaiting[tKey] == puid:
 				del sData.user_awaiting[tKey]
-				print(f'DEBUG: Player: {puid} disconnected and was removed from "user_awaiting"')
+				PRINT_DEBUG(f'DEBUG: Player: {puid} disconnected and was removed from "user_awaiting"')
 				break
 	except Exception as e:
 		print(f"ERROR: client_active_rem: UNKNOWN ERROR: {e}")
@@ -88,7 +89,7 @@ def blacklist_add(sData, raddr):
 			:return:
 			"""
 	sData.blacklist.append(raddr[0])
-	print("blacklist: ", sData.blacklist)
+	PRINT_ATTENTION(f"blacklist: {sData.blacklist}")
 
 
 def blacklist_rem(sData, raddr):
@@ -102,7 +103,7 @@ def blacklist_rem(sData, raddr):
 	"""
 	if raddr in sData.blacklist:
 		sData.blacklist.remove(raddr)
-		print(f"Blacklist: remote Address removed: {raddr}")
-		print(f"Blacklist: {sData.blacklist}")
+		PRINT_ATTENTION(f"Blacklist: remote Address removed: {raddr}")
+		PRINT_ATTENTION(f"Blacklist: {sData.blacklist}")
 	else:
-		print(f"Blacklist: remote Address NOT FOUND: {raddr}")
+		PRINT_WARNING(f"Blacklist: remote Address NOT FOUND: {raddr}")

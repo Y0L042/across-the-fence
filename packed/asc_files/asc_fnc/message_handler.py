@@ -1,5 +1,5 @@
 from cmdList import cmdList
-
+from printHandler import *
 
 def message_handler_c(client=None, code: str = "None", args=()):
 	"""

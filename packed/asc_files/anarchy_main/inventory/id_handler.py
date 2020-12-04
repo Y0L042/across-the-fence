@@ -1,6 +1,6 @@
 import base64
 from datetime import datetime
-
+from printHandler import *
 
 class Counter:
     def __init__(self):
@@ -16,8 +16,8 @@ def create_id():
     key = "%s-%s" % (datetime.now().isoformat(), Counter.cnt)
     # create the ID
     ret = base64.b64encode(bytes(key, 'utf-8')).decode("utf-8")
-    # print(len(ret), ret, key, len(datetime.now().isoformat()))
-    # print(len(ret), Counter.cnt)
+    # PRINT_ATTENTION(len(ret), ret, key, len(datetime.now().isoformat()))
+    # PRINT_ATTENTION(len(ret), Counter.cnt)
 
     return ret  # len == 40 - string
 
