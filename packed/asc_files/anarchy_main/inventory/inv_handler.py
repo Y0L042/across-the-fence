@@ -82,7 +82,7 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
 
     if isLootcrate == 0:
         # Player created Crates (e.g: Opening Inventory to drop things)
-        inv_rows = 16
+        inv_rows = 20
         inv_cols = 8
 
     invData = {
@@ -209,28 +209,29 @@ def crate_rem(sData, createID, pos):
 
 
 def inv_getData(client, invID):
-
     try:
         # check if player Inventory (mostly used)
         if invID == client.puid:
-            return client.cData
+            PRINT_DEBUG(f"DEBUG: inv_getData: isPlayer: True")
+            return [client.cData, True]
         else:
             # Check if temporary/Session Crates (used while looting, so 2nd place)
-            try:
-                return client.sData.database.sessionCrates[invID]
-            # Last try: Check the persistent Inventories (most likely the less used from the 3 options)
-            except KeyError:
-                try:
-                    return client.sData.database.crates[invID]
-                except KeyError:
-                    PRINT_WARNING('ERROR: INV_HANDLER: inv_getData NOT FOUND')
-                    return
+            if invID in client.sData.database.sessionCrates:
+                PRINT_DEBUG(f"DEBUG: inv_getData: isPlayer: False")
+                return [client.sData.database.sessionCrates[invID], False]
+            # Last chance: Check the persistent Inventories (most likely the less used from the 3 options)
+            elif invID in client.sData.database.crates:
+                PRINT_DEBUG(f"DEBUG: inv_getData: isPlayer: False")
+                return [client.sData.database.crates[invID], False]
+            else:
+                PRINT_WARNING(f'ERROR: INV_HANDLER: inv_getData NOT FOUND - ID: {invID}')
+                return [{}, False]
     except KeyError:
-        PRINT_WARNING('ERROR: INV_HANDLER: inv_getData NOT FOUND')
-        return
+        PRINT_WARNING(f'ERROR: INV_HANDLER: inv_getData invID NOT FOUND - ID: {invID}')
+        return [{}, False]
     except Exception as e:
-        PRINT_WARNING(f'ERROR: INV_HANDLER: inv_getData - UNKNOWN ERROR:\n{e}')
-        return
+        PRINT_WARNING(f'ERROR: INV_HANDLER: inv_getData - UNKNOWN ERROR - ID: {invID}:\n{e}')
+        return [{}, False]
 
 
 # usedSlots = slots occupied by the given Item Size INSIDE the invGrid!
@@ -329,7 +330,8 @@ def inv_items_get(client=None, args=()):
     # PRINT_DEBUG('FUNCTION CALLED BY REMOTE: "inv_get_items"')
     gridID = args[0]
 
-    data = inv_getData(client, gridID)["itemData"]
+    # noinspection PyTypeChecker
+    data, isPlayer = inv_getData(client, gridID)["itemData"]
     # PRINT_DEBUG(f"gridID: {gridID}\ndata: {data}")
 
     con = client.con_client

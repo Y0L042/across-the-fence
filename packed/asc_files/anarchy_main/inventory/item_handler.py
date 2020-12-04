@@ -84,10 +84,11 @@ def item_move(client=None, args=()):
     # PRINT_DEBUG(f"DEBUG: ITEM_MOVE: client: {client}")
     # PRINT_DEBUG(f"DEBUG: ITEM_MOVE: ARGS: {args}")
     try:
-        # invID = either "getPlayerUID" for players OR "randomID" for Crates
-        # args = [var1,var2, etc]
-        itemID, invID_old, invID_new, isFlipped, invPos, inSlot = args
-        # print(f"cData: {client.cData}")
+        # # invID = either "getPlayerUID" for players OR "randomID" for Crates
+        # # invGearID = Ground (0) - Uniform (12) - Vest (13) - Pouch (14) - Backpack (15)
+        # # args = [var1,var2, etc]
+        itemID, invID_old, invID_new, isFlipped, invPos, inSlot, invGearID = args
+        # PRINT_DEBUG(f"cData: {client.cData}")
     except Exception as e:
         PRINT_WARNING(f'ERROR: INV_HANDLER: ITEM_MOVE: Could NOT get Data from args:\n{e}\n')
         return
@@ -102,10 +103,8 @@ def item_move(client=None, args=()):
     # PRINT_DEBUG(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
 
     # get old Inventory + grid
-    oldInv = inv_handler.inv_getData(client, invID_old)
+    oldInv, isPlayer = inv_handler.inv_getData(client, invID_old)
     oldInv_invGrid = oldInv["inv_grid"]
-    # PRINT_DEBUG(f"::::: OLD INV:\n{oldInv}")
-    # PRINT_DEBUG(f"::::: OLD INV GRID:\n{oldInv_invGrid}")
 
     item = None
     # and the item data
@@ -126,10 +125,8 @@ def item_move(client=None, args=()):
     sizeItem = item_parent_data["size"]
 
     # also get the new inventory + grid
-    newInv = inv_handler.inv_getData(client, invID_new)
+    newInv, isPlayer = inv_handler.inv_getData(client, invID_new)
     newInv_invGrid = newInv["inv_grid"]
-    # PRINT_DEBUG(f"::::: NEW INV:\n{newInv}")
-    # PRINT_DEBUG(f"::::: NEW INV GRID:\n{newInv_invGrid}")
 
     isFlipped_cur = item["isFlipped"]
     inSlot_cur = item["inSlot"]
