@@ -168,8 +168,14 @@ class tile_bg_##NAME : tile_bg_an_inv_grid_base \
 	text = IMAGE; \
 }
 
-// Player
+// Player (Uniform)
 TILEGRIDBG(an_inv_player_grid,TILE_W,TILE_H,"sgd\anarchy\an_client_c\client\config\ui\inventory\data\box.paa");
+// Vest
+TILEGRIDBG(an_inv_vst_grid,TILE_W,TILE_H,"sgd\anarchy\an_client_c\client\config\ui\inventory\data\box.paa");
+// Pouch
+TILEGRIDBG(an_inv_pch_grid,TILE_W,TILE_H,"sgd\anarchy\an_client_c\client\config\ui\inventory\data\box.paa");
+// Backpack
+TILEGRIDBG(an_inv_bkp_grid,TILE_W,TILE_H,"sgd\anarchy\an_client_c\client\config\ui\inventory\data\box.paa");
 
 // External
 TILEGRIDBG(an_inv_external_grid,TILE_W,TILE_H,"sgd\anarchy\an_client_c\client\config\ui\inventory\data\box.paa");
@@ -341,8 +347,10 @@ class an_inventory
 			onUnload = "uinamespace setvariable [""an_inv_header_personal"", controlNull];";
 		};
 		// Inventory
-		CREATEINVENTORY(inv_player,1101,1001, UIX_CR(1),UIY_CU(10),UIW(8.65),UIH(20), UIW(0),UIH(0),UIW(WIDTH),UIH(HEIGHT));
-		// CREATEINVENTORY(inv_vst,1102,1002, UIX_CR(1),UIY_CD(11),UIW(8.65),UIH((TILE_W * 5)), UIW(0),UIH(0),UIW(WIDTH),UIH((TILE_W * 6)));
+		CREATEINVENTORY(inv_player,1112,1012, UIX_CR(1),UIY_CU(10),UIW(8.65),UIH(20), UIW(0),UIH(0),UIW(WIDTH),UIH(HEIGHT));
+		CREATEINVENTORY(inv_vst,1113,1013, UIX_CL(10),UIY_CD(11),UIW(8.65),UIH((TILE_W * 5)), UIW(0),UIH(0),UIW(WIDTH),UIH((TILE_W * 6)));
+		CREATEINVENTORY(inv_pch,1114,1014, UIX_CR(0),UIY_CD(11),UIW(8.65),UIH((TILE_W * 5)), UIW(0),UIH(0),UIW(WIDTH),UIH((TILE_W * 6)));
+		CREATEINVENTORY(inv_bkp,1115,1015, UIX_CR(10),UIY_CD(11),UIW(8.65),UIH((TILE_W * 5)), UIW(0),UIH(0),UIW(WIDTH),UIH((TILE_W * 6)));
 		
 		/////////////////////////// EQUIP SLOTS:
 		// Header Text - Equipment

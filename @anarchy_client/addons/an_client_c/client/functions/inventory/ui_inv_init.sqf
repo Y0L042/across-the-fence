@@ -143,8 +143,11 @@ private _disp = (findDisplay 46) createDisplay "an_inventory";
 // Set the names for all available Inventories... 
 AN_INVENTORY_LIST =
 [
-	 ["an_inv_player_area","an_inv_player_grid"]
-	,["an_inv_external_area","an_inv_external_grid"]
+	 ["an_inv_external_area","an_inv_external_grid"]
+	,["an_inv_player_area","an_inv_player_grid"]
+	,["an_inv_vst_area","an_inv_vst_grid"]
+	,["an_inv_pch_area","an_inv_pch_grid"]
+	,["an_inv_bkp_area","an_inv_bkp_grid"]
 ];
 // ...and Slots
 AN_SLOTS_LIST =
@@ -175,7 +178,7 @@ an_ui_inv_grabActive = false;		// init
 
 ////// Create Inventory for Player and Ground
 if(_DEBUGON)then{diag_log "-----------------------------------------------";};
-// Load Inventory: Player
+// Load Inventory: Player (Uniform)
 private _invItemData = localNamespace getVariable ["an_cData_invData",[]];
 ["an_inv_player_grid", _invItemData] call an_c_fnc_ui_inv_load;
 
@@ -183,6 +186,19 @@ private _invItemData = localNamespace getVariable ["an_cData_invData",[]];
 private _ctrlPersonalHeader = uinamespace getvariable ["an_inv_header_personal", controlNull];
 _ctrlPersonalHeader ctrlSetText name player;
 if(_DEBUGON)then{diag_log "-----------------------------------------------";};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////// DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV
+
+["an_inv_vst_grid", [["inv_rows",4],["itemData",[]]]] call an_c_fnc_ui_inv_load;
+["an_inv_pch_grid", [["inv_rows",4],["itemData",[]]]] call an_c_fnc_ui_inv_load;
+["an_inv_bkp_grid", [["inv_rows",4],["itemData",[]]]] call an_c_fnc_ui_inv_load;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 // Store the ID of the active external Inventory
 localNamespace setVariable ["an_inv_external_active",ENTRY_GET("crateID",_dataCrate)];
