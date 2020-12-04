@@ -10,33 +10,37 @@ def message_handler_c(client=None, code: str = "None", args=()):
 	"""
 
 	if client is None:
-		print("ERROR: MSG_HANDLER_C: CLIENT DATA NOT PASSED")
+		PRINT_WARNING("ERROR: MSG_HANDLER_C: CLIENT DATA NOT PASSED")
 		return
 	if args is None:
 		args = ()
 
-	# print(f"DEBUG: MSG_HANDLER_C: Code: {code} - args: {args}")
+	# PRINT_DEBUG(f"DEBUG: MSG_HANDLER_C: Code: {code} - args: {args}")
 
-	try:
+	# try:
+	if code in cmdList["client"]:
 		if len(args) > 0:
-			# print("cmdList WITH Args")
+			# PRINT_DEBUG("cmdList WITH Args")
 			cmdList["client"][code](client=client, args=args)
 		else:
-			# print("cmdList WITHOUT Args")
+			# PRINT_DEBUG("cmdList WITHOUT Args")
 			cmdList["client"][code](client=client)
+	else:
+		PRINT_WARNING(f"ERROR: MSG_HANDLER_C: PASSED CODE NOT FOUND:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
+		pass
 
-	except KeyError as e:
-		print(f"ERROR: MSG_HANDLER_C: KeyError:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
-		pass
-	except UnicodeDecodeError as e:
-		print(f"ERROR: MSG_HANDLER_C: UnicodeDecodeError:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
-		pass
-	except AttributeError as e:
-		print(f"ERROR: MSG_HANDLER_C: AttributeError:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
-		pass
-	except Exception as e:
-		print(f"ERROR: MSG_HANDLER_C: Exception:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
-		pass
+	# except KeyError as e:
+	# 	PRINT_WARNING(f"ERROR: MSG_HANDLER_C: KeyError:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
+	# 	pass
+	# except UnicodeDecodeError as e:
+	# 	PRINT_WARNING(f"ERROR: MSG_HANDLER_C: UnicodeDecodeError:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
+	# 	pass
+	# except AttributeError as e:
+	# 	PRINT_WARNING(f"ERROR: MSG_HANDLER_C: AttributeError:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
+	# 	pass
+	# except Exception as e:
+	# 	PRINT_WARNING(f"ERROR: MSG_HANDLER_C: Exception:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
+	# 	pass
 
 
 def message_handler_s(sData=None, code: str = "None", args=None):
@@ -48,30 +52,34 @@ def message_handler_s(sData=None, code: str = "None", args=None):
 	"""
 	if sData is None:
 		# DEV
-		print("ERROR: MSG_HANDLER_S: sData NOT PASSED!")
+		PRINT_WARNING("ERROR: MSG_HANDLER_S: sData NOT PASSED!")
 		return
 	if args is None:
 		args = ()
 
-	# print(f"DEBUG: MSG_HANDLER_S: Code: {code} - args: {args}")
+	# PRINT_DEBUG(f"DEBUG: MSG_HANDLER_S: Code: {code} - args: {args}")
 
-	try:
+	# try:
+	if code in cmdList["server"]:
 		if len(args) > 0:
-			# print("cmdList WITH Args")
+			# PRINT_DEBUG("cmdList WITH Args")
 			cmdList["server"][code](sData, *args)
 		else:
-			# print("cmdList WITHOUT Args")
+			# PRINT_DEBUG("cmdList WITHOUT Args")
 			cmdList["server"][code](sData)
+	else:
+		PRINT_WARNING(f"ERROR: MSG_HANDLER_S: PASSED CODE NOT FOUND:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
+		pass
 
-	except KeyError as e:
-		print(f"ERROR: MSG_HANDLER_S: KeyError:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
-		pass
-	except UnicodeDecodeError as e:
-		print(f"ERROR: MSG_HANDLER_S: UnicodeDecodeError:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
-		pass
-	except AttributeError as e:
-		print(f"ERROR: MSG_HANDLER_S: AttributeError:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
-		pass
-	except Exception as e:
-		print(f"ERROR: MSG_HANDLER_S: Exception:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
-		pass
+	# except KeyError as e:
+	# 	PRINT_WARNING(f"ERROR: MSG_HANDLER_S: KeyError:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
+	# 	pass
+	# except UnicodeDecodeError as e:
+	# 	PRINT_WARNING(f"ERROR: MSG_HANDLER_S: UnicodeDecodeError:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
+	# 	pass
+	# except AttributeError as e:
+	# 	PRINT_WARNING(f"ERROR: MSG_HANDLER_S: AttributeError:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
+	# 	pass
+	# except Exception as e:
+		PRINT_WARNING(f"ERROR: MSG_HANDLER_S: Exception:\ncode: {code}\nargs: {args}\nERROR MESSAGE: {e}")
+	# 	pass
