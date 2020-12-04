@@ -3,7 +3,7 @@
 	
 	an_c_fnc_ui_inv_item_create
 	[
-		CTRL	ctrlGrp to add to	//grid_personal ("an_inv_player_grid")
+		CTRL	ctrlGrp to add to	//an_inv_(uni|vst|pch|bkp|external)_grid
 		FLOAT	pos inside ctrlGrp
 		FLOAT	y pos inside ctrlGrp
 		[
@@ -71,7 +71,8 @@ _ctrlItem ctrlCommit 0;
 //ToDo: Rework needed, when multiple Inventories were added!
 private _invExternalID = localNamespace getVariable ["an_inv_external_active",""];	// Is set during the opening init the Inventory
 private _invGridExternal = uinamespace getvariable ['an_inv_external_grid', controlNull];
-private _itemInvIDNew = if((ctrlIDC _ctrlInvGrid) isEqualto (ctrlIDC _invGridExternal))then{_invExternalID}else{getPlayerUID player};
+private _gridActive = (ctrlIDC _ctrlInvGrid);
+private _itemInvIDNew = if(_gridActive isEqualto (ctrlIDC _invGridExternal))then{_invExternalID}else{getPlayerUID player};
 // systemchat str ["_itemInvIDNew", ctrlIDC _invGridExternal, (ctrlIDC _ctrlInvGrid), _itemInvIDNew, ((ctrlIDC _ctrlInvGrid) isEqualto (ctrlIDC _invGridExternal))];
 ////////////////////////////////
 

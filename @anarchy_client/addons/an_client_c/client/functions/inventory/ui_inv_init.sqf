@@ -144,7 +144,7 @@ private _disp = (findDisplay 46) createDisplay "an_inventory";
 AN_INVENTORY_LIST =
 [
 	 ["an_inv_external_area","an_inv_external_grid"]
-	,["an_inv_player_area","an_inv_player_grid"]
+	,["an_inv_uni_area","an_inv_uni_grid"]
 	,["an_inv_vst_area","an_inv_vst_grid"]
 	,["an_inv_pch_area","an_inv_pch_grid"]
 	,["an_inv_bkp_area","an_inv_bkp_grid"]
@@ -180,7 +180,7 @@ an_ui_inv_grabActive = false;		// init
 if(_DEBUGON)then{diag_log "-----------------------------------------------";};
 // Load Inventory: Player (Uniform)
 private _invItemData = localNamespace getVariable ["an_cData_invData",[]];
-["an_inv_player_grid", _invItemData] call an_c_fnc_ui_inv_load;
+["an_inv_uni_grid", _invItemData] call an_c_fnc_ui_inv_load;
 
 // Change the header Text of the Personal Area, by setting the playername as text
 private _ctrlPersonalHeader = uinamespace getvariable ["an_inv_header_personal", controlNull];

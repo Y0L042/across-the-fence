@@ -56,9 +56,8 @@ if(_DEBUGON)then{diag_log "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-";};
 	}
 	else
 	{
-		// ToDo: check if the Slot is already in use!
 		// Only add the slotted Item, when the correct grid (the corresponding Slot-grid, related to the SlotID) is passed
-		if !(_gridName in ["an_inv_player_grid","an_inv_external_grid"])then
+		if !(_gridName in ["an_inv_uni_grid","an_inv_vst_grid","an_inv_pch_grid","an_inv_bkp_grid","an_inv_external_grid"])then
 		{
 			// diag_log format["DEBUG: UI_INV_INIT: _gridName == %1",_gridName];
 			// diag_log [_itemSlotID, _ctrlGrid, _itemClass, _itemData];

@@ -49,7 +49,7 @@ if(_btn in [1])exitWith
 (ctrlPosition _ctrl) params["_pX","_pY","",""];
 
 // Recalculate the Size of the Item, in case it was taken from a Slot (Slot == different Width/Height, than normal Grid)
-private _ctrlInvGrid = uinamespace getvariable ["an_inv_player_grid", controlNull];
+private _ctrlInvGrid = uinamespace getvariable ["an_inv_uni_grid", controlNull];
 ([_parentData, _ctrlInvGrid] call an_c_fnc_ui_inv_item_size_calc) params ["_pW","_pH"];
 
 private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
