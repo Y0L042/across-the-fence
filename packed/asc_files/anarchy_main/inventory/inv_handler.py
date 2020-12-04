@@ -1,5 +1,5 @@
 import random
-
+from printHandler import *
 from . import id_handler
 from asc_fnc.asc_db.database import asc_db
 from asc_fnc import asc_g_msg
@@ -21,7 +21,7 @@ def invGrid_create(rows, cols):
 
 # try to get the Crate data. If not found -> Create a new one. We simply assume the Data, coming from the Game-server, is correct/valid.
 def crate_data_get(sData, clientID: str = None, pos: list = None, crateID: str = None, lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 16, inv_cols: int = 8, persistent: int = 0, model: str = "IG_supplyCrate_F"):
-    # print(f"clientID: {clientID}\n"
+    # PRINT_DEBUG(f"clientID: {clientID}\n"
     #       f"pos: {pos}\n"
     #       f"crateID: {crateID}\n"
     #       f"lootType: {lootType}\n"
@@ -39,7 +39,7 @@ def crate_data_get(sData, clientID: str = None, pos: list = None, crateID: str =
         # ToDo: Add an "in use"-check
         # send Inventory data back to the requesting client
         conClient = sData.user_active[clientID]["con"]
-        print(f"DEBUG: INV_HANDLER: crate_data_get: Crate found, sending Data to Client.")
+        PRINT_DEBUG(f"DEBUG: INV_HANDLER: crate_data_get: Crate found, sending Data to Client.")
 
         # send the invData to the Client
         inv_send_toClient(invData, conClient)
@@ -47,10 +47,10 @@ def crate_data_get(sData, clientID: str = None, pos: list = None, crateID: str =
 
     # No "Error", the crate was just not in the List. So let's create a new crate entry
     except KeyError:
-        print(f"DEBUG: INV_HANDLER: crate_data_get: Creating new Crate")
+        PRINT_DEBUG(f"DEBUG: INV_HANDLER: crate_data_get: Creating new Crate")
         crate_add(sData=sData, clientID=clientID, pos=pos, crateID=crateID, lootType=lootType, isLootcrate=isLootcrate, loot_count=loot_count, inv_rows=inv_rows, inv_cols=inv_cols, persistent=persistent)
     except Exception:
-        print(f"ERROR: INV_HANDLER: crate_data_get: HUGE WOBBLE WOBBLE! Data:\nclientID: {clientID}\npos: {pos}\ncrateID: {crateID}\nlootType: {lootType}\npersistent {persistent}\ninv_rows {inv_rows}\n---------")
+        PRINT_WARNING(f"ERROR: INV_HANDLER: crate_data_get: HUGE WOBBLE WOBBLE! Data:\nclientID: {clientID}\npos: {pos}\ncrateID: {crateID}\nlootType: {lootType}\npersistent {persistent}\ninv_rows {inv_rows}\n---------")
 
 # called by Server only!
 def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 16, inv_cols: int = 8, persistent: int = 0, model: str = "IG_supplyCrate_F"):
@@ -71,7 +71,7 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
     """
 
     if None in [clientID, pos]:
-        print(f"ERROR: INV_HANDLER: create_add: clientID or Pos not transmitted: clientID: {clientID} | pos: {pos}")
+        PRINT_WARNING(f"ERROR: INV_HANDLER: create_add: clientID or Pos not transmitted: clientID: {clientID} | pos: {pos}")
         return
 
     if persistent > 0:
@@ -96,7 +96,7 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
         "itemData": {}
         }
 
-    # print(f"CRATE ADD:\n"
+    # PRINT_DEBUG(f"CRATE ADD:\n"
     #       f"crateID     : {crateID}\n"
     #       f"Model       : {model}\n"
     #       f"Pos         : {pos}\n"
@@ -111,20 +111,20 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
     else:
         # fill the lootcrate (if crate/Inventory is a lootcrate)
         if isLootcrate == 1:
-            # print(f"DEBUG: INV_HANDLER: crate_add: isLootcrate: {isLootcrate}")
+            # PRINT_DEBUG(f"DEBUG: INV_HANDLER: crate_add: isLootcrate: {isLootcrate}")
 
             skill_scavenging = sData.database.players[clientID]["skills"]["scavenging"]
-            # print(f"DEBUG: INV_HANDLER: crate_add: skill_scavenging: {skill_scavenging}")
+            # PRINT_DEBUG(f"DEBUG: INV_HANDLER: crate_add: skill_scavenging: {skill_scavenging}")
 
             # ToDo: recalculate the loot_count properly, based on the scavenging skill!
             # check if skill is high enough, otherwise randRange will complain, that the "end"-number isn't high enough... (must be "start < end")
             if skill_scavenging > 0:
                 loot_count = random.randrange(loot_count, int(loot_count + (skill_scavenging * DEFAULT_loot_skill_multiplier)))
-            # print(f"DEBUG: INV_HANDLER: crate_add: loot_count: {loot_count}")
+            # PRINT_DEBUG(f"DEBUG: INV_HANDLER: crate_add: loot_count: {loot_count}")
 
             # get the list of Item names
             items_list = item_handler.loot_item_list_create(sData=sData, crate_id=crateID, loot_count=loot_count, loot_type=lootType)
-            # print(f"DEBUG: INV_HANDLER: crate_add: items_list_raw: {items_list}\n----------------")
+            # PRINT_DEBUG(f"DEBUG: INV_HANDLER: crate_add: items_list_raw: {items_list}\n----------------")
 
             # cycle through all the parents (parent can either be full itemData or a subType)
             for parent in items_list:
@@ -133,16 +133,16 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
                     if parent in sData.itemSubTypes:
                         # create the Item Data structure
                         subType_parent = sData.itemSubTypes[parent]["parent"]
-                        # print(f"DEBUG: INV_HANDLER: crate_add: subType_class: {parent} - subType_parent: {subType_parent}")
+                        # PRINT_DEBUG(f"DEBUG: INV_HANDLER: crate_add: subType_class: {parent} - subType_parent: {subType_parent}")
 
                         # create and get the Item Data structure
                         item = item_handler.item_create(parent=subType_parent)
                         # get the subTypeData of the desired Item
                         subType = sData.itemSubTypes[parent]
-                        # print(f"DEBUG: INV_HANDLER: crate_add: subType: {subType} -  item: {item}")
+                        # PRINT_DEBUG(f"DEBUG: INV_HANDLER: crate_add: subType: {subType} -  item: {item}")
                         # update the parentData with the subTypeData
                         item.update(subType)
-                        # print(f"DEBUG: INV_HANDLER: crate_add -> item_create: item #2: {item}")
+                        # PRINT_DEBUG(f"DEBUG: INV_HANDLER: crate_add -> item_create: item #2: {item}")
                         # ToDo: call a function in item_handler to update/calc stats like hp_cur, depending on... something
                     else:
                         item = item_handler.item_create(parent=parent)
@@ -152,10 +152,10 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
 
                 # in case the item wasn't defined in parentData -> Create a default/fallback item
                 except Exception as e:
-                    print(f"ERROR: INV_HANDLER: create_add: ITEM DEFINITION NOT FOUND: {parent} - Creating dummy Icon")
+                    PRINT_WARNING(f"ERROR: INV_HANDLER: create_add: ITEM DEFINITION NOT FOUND: {parent} - Creating dummy Icon")
                     item = item_handler.item_create(parent="PLACEHOLDER")
                     invData, item = item_handler.item_add_to_inv(sData=sData, invData=invData, isLootcrate=isLootcrate, item=item)
-            # print(f"DEBUG: INV_HANDLER: crate_add: invData: {invData}")
+            # PRINT_DEBUG(f"DEBUG: INV_HANDLER: crate_add: invData: {invData}")
 
         # store in database, under temporary crates
         sData.database.sessionCrates[crateID] = invData
@@ -168,7 +168,7 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
         # send the invData to the Client
         inv_send_toClient(invData, conClient)
     except KeyError:
-        print(f"ERROR: INV_HANDLER: create_add: clientID NOT FOUND in user_active: {clientID}")
+        PRINT_WARNING(f"ERROR: INV_HANDLER: create_add: clientID NOT FOUND in user_active: {clientID}")
 
 
 def inv_send_toClient(invData, conClient):
@@ -223,13 +223,13 @@ def inv_getData(client, invID):
                 try:
                     return client.sData.database.crates[invID]
                 except KeyError:
-                    print('ERROR: INV_HANDLER: inv_getData NOT FOUND')
+                    PRINT_WARNING('ERROR: INV_HANDLER: inv_getData NOT FOUND')
                     return
     except KeyError:
-        print('ERROR: INV_HANDLER: inv_getData NOT FOUND')
+        PRINT_WARNING('ERROR: INV_HANDLER: inv_getData NOT FOUND')
         return
     except Exception as e:
-        print(f'ERROR: INV_HANDLER: inv_getData - UNKNOWN ERROR:\n{e}')
+        PRINT_WARNING(f'ERROR: INV_HANDLER: inv_getData - UNKNOWN ERROR:\n{e}')
         return
 
 
@@ -245,12 +245,12 @@ def inv_slots_used_get(slotsStart=None, slots_ignore=None, sizeItem=None, invGri
         slot_state_needed = 0
 
     xin, yin = slotsStart
-    # print(slots)
+    # PRINT_DEBUG(slots)
     if isFlipped == 0:
         xit, yit = sizeItem
     else:
         yit, xit = sizeItem
-    # print(size)
+    # PRINT_DEBUG(size)
     slots_used = []
     try:
         for xpos in range(xit):
@@ -264,24 +264,24 @@ def inv_slots_used_get(slotsStart=None, slots_ignore=None, sizeItem=None, invGri
                     elif [(xin+xpos), (yin+ypos)] in slots_ignore:
                         slots_used.append([xin+xpos, yin+ypos])
                     else:
-                        # print(f"DEBUG: INV_HANDLER: inv_slots_used_get - NO FREE SLOTS FOUND - Slot: {[xin+xpos, yin+ypos]} (If EQUIP REQUEST -> All is fine!)")
+                        # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_slots_used_get - NO FREE SLOTS FOUND - Slot: {[xin+xpos, yin+ypos]} (If EQUIP REQUEST -> All is fine!)")
                         return []
                 except IndexError:
-                    print("Parts of the Item are outside the Inventory ")
+                    PRINT_WARNING("ERROR: INV_HANDLER: inv_slots_used_get: Parts of the Item are outside the Inventory ")
                     return []
     except Exception as e:
-        print(f'ERROR: INV_HANDLER: inv_slots_used_get - ERROR:\n{e}')
+        PRINT_WARNING(f'ERROR: INV_HANDLER: inv_slots_used_get - ERROR:\n{e}')
         return []
-    # print(f"slots_used: {slots_used}")
+    # PRINT_DEBUG(f"slots_used: {slots_used}")
     return slots_used
 
 
 def inv_slots_used_set(slots_used=None, invGrid=None, isAdd=True):
     if None in [slots_used, invGrid]:
-        print(f'ERROR: INV_HANDLER: inv_slots_used_set - ERROR: slots_used: {slots_used} - invGrid: {invGrid}')
+        PRINT_WARNING(f'ERROR: INV_HANDLER: inv_slots_used_set - ERROR: slots_used: {slots_used} - invGrid: {invGrid}')
         return False
 
-    # print(f'DEBUG: INV_HANDLER: inv_slots_used_set - {len(slots_used)} - Slots: {slots_used}')
+    # PRINT_DEBUG(f'DEBUG: INV_HANDLER: inv_slots_used_set - {len(slots_used)} - Slots: {slots_used}')
     if len(slots_used) == 0:
         return True
 
@@ -290,7 +290,7 @@ def inv_slots_used_set(slots_used=None, invGrid=None, isAdd=True):
     else:
         slot_used_state = 0
 
-    # print("free slots found")
+    # PRINT_DEBUG("free slots found")
     for index in range(len(slots_used)):
         x, y = slots_used[index]
         invGrid[x][y] = slot_used_state
@@ -325,23 +325,12 @@ def inv_slots_free_get(invGrid, item_size):
     return []
 
 
-# def inv_grid_get(client=None, args=()):
-#     # print('FUNCTION CALLED BY REMOTE: "inv_get_grid"')
-#     gridID = args[0]
-#
-#     data = inv_getData(client, gridID)["inv_grid"]
-#     # print(f"gridID: {gridID}\ndata: {data}")
-#
-#     con = client.con_client
-#     asc_g_msg.sendMsg("ret_inv_get_grid", data, con)
-
-
 def inv_items_get(client=None, args=()):
-    # print('FUNCTION CALLED BY REMOTE: "inv_get_items"')
+    # PRINT_DEBUG('FUNCTION CALLED BY REMOTE: "inv_get_items"')
     gridID = args[0]
 
     data = inv_getData(client, gridID)["itemData"]
-    # print(f"gridID: {gridID}\ndata: {data}")
+    # PRINT_DEBUG(f"gridID: {gridID}\ndata: {data}")
 
     con = client.con_client
     asc_g_msg.sendMsg("ret_inv_get_items", data, con)

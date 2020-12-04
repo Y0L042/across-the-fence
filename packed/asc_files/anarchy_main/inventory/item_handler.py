@@ -1,5 +1,5 @@
 import random
-
+from printHandler import *
 from asc_fnc import asc_g_msg
 from . import inv_handler, id_handler
 
@@ -34,10 +34,10 @@ def inv_data_get(sData, invID):
             try:
                 return [False, sData.database.players[invID]]
             except KeyError:
-                print('ERROR: INV_HANDLER: inv_data_get: No Inventory data found')
+                PRINT_WARNING('ERROR: INV_HANDLER: inv_data_get: No Inventory data found')
                 return [False, {}]
     except Exception as e:
-        print(f'ERROR: INV_HANDLER: inv_data_get: UNKNOWN ERROR:\n{e}')
+        PRINT_WARNING(f'ERROR: INV_HANDLER: inv_data_get: UNKNOWN ERROR:\n{e}')
         return [False, {}]
 
 
@@ -79,33 +79,33 @@ def item_create(parent: str = "", slot=None, doSlot=False):
 
 def item_move(client=None, args=()):
     if client is None:
-        print('ERROR: INV_HANDLER: ITEM_MOVE: "CLIENT" NOT PASSED')
+        PRINT_WARNING('ERROR: INV_HANDLER: ITEM_MOVE: "CLIENT" NOT PASSED')
         return
-    # print(f"DEBUG: ITEM_MOVE: client: {client}")
-    # print(f"DEBUG: ITEM_MOVE: ARGS: {args}")
+    # PRINT_DEBUG(f"DEBUG: ITEM_MOVE: client: {client}")
+    # PRINT_DEBUG(f"DEBUG: ITEM_MOVE: ARGS: {args}")
     try:
         # invID = either "getPlayerUID" for players OR "randomID" for Crates
         # args = [var1,var2, etc]
         itemID, invID_old, invID_new, isFlipped, invPos, inSlot = args
         # print(f"cData: {client.cData}")
     except Exception as e:
-        print(f'ERROR: INV_HANDLER: ITEM_MOVE: Could NOT get Data from args:\n{e}\n')
+        PRINT_WARNING(f'ERROR: INV_HANDLER: ITEM_MOVE: Could NOT get Data from args:\n{e}\n')
         return
-    # print(f"----------------")
-    # print(f"itemID      : {itemID}")
-    # print(f"invID_old   : {invID_old}")
-    # print(f"invID_new   : {invID_new}")
-    # print(f"isFlipped   : {isFlipped}")
-    # print(f"invPos      : {invPos}")
-    # print(f"invGearID   : {invGearID}")
-    # print(f"----------------")
-    # print(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+    # PRINT_DEBUG(f"----------------")
+    # PRINT_DEBUG(f"itemID      : {itemID}")
+    # PRINT_DEBUG(f"invID_old   : {invID_old}")
+    # PRINT_DEBUG(f"invID_new   : {invID_new}")
+    # PRINT_DEBUG(f"isFlipped   : {isFlipped}")
+    # PRINT_DEBUG(f"invPos      : {invPos}")
+    # PRINT_DEBUG(f"invGearID   : {invGearID}")
+    # PRINT_DEBUG(f"----------------")
+    # PRINT_DEBUG(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
 
     # get old Inventory + grid
     oldInv = inv_handler.inv_getData(client, invID_old)
     oldInv_invGrid = oldInv["inv_grid"]
-    # print(f"::::: OLD INV:\n{oldInv}")
-    # print(f"::::: OLD INV GRID:\n{oldInv_invGrid}")
+    # PRINT_DEBUG(f"::::: OLD INV:\n{oldInv}")
+    # PRINT_DEBUG(f"::::: OLD INV GRID:\n{oldInv_invGrid}")
 
     item = None
     # and the item data
@@ -114,12 +114,12 @@ def item_move(client=None, args=()):
 
     # exit if item couldn't be added
     if item is None:
-        print(f"ERROR: ITEM_MOVE: Key not found: {itemID}\nERROR: Resending Inventory update back to the player")
+        PRINT_WARNING(f"ERROR: ITEM_MOVE: Key not found: {itemID}\nERROR: Resending Inventory update back to the player")
         # resending it, triggers a force-reopen of the Inventory (force reopen/load Inventory)
         inv_handler.inv_update_force(client=client, invID_old=invID_old, invID_new=invID_new)
         return
 
-    # print(f"::::: item:\n{item}")
+    # PRINT_DEBUG(f"::::: item:\n{item}")
 
     # get the parent Data
     item_parent_data = item_get_parentData(sData=client.sData, itemName=item["parent"])
@@ -128,8 +128,8 @@ def item_move(client=None, args=()):
     # also get the new inventory + grid
     newInv = inv_handler.inv_getData(client, invID_new)
     newInv_invGrid = newInv["inv_grid"]
-    # print(f"::::: NEW INV:\n{newInv}")
-    # print(f"::::: NEW INV GRID:\n{newInv_invGrid}")
+    # PRINT_DEBUG(f"::::: NEW INV:\n{newInv}")
+    # PRINT_DEBUG(f"::::: NEW INV GRID:\n{newInv_invGrid}")
 
     isFlipped_cur = item["isFlipped"]
     inSlot_cur = item["inSlot"]
@@ -154,11 +154,11 @@ def item_move(client=None, args=()):
 
     # Check if the item used slots. In case of unequipping -> Ignore
     if len(slots_used_old) == 0 and not isUnEquip:
-        print("INVENTORY: Something was wrong with the old Item State - no blocked tiles found")
+        PRINT_WARNING("INVENTORY: Something was wrong with the old Item State - no blocked tiles found")
         inv_handler.inv_update_force(client=client, invID_old=invID_old, invID_new=invID_new)
         return
 
-    # print(f"--------------------\n  EQUIP REQUEST: {isEquip} - UNEQUIP REQUEST: {isUnEquip}\n--------------------")
+    # PRINT_DEBUG(f"--------------------\n  EQUIP REQUEST: {isEquip} - UNEQUIP REQUEST: {isUnEquip}\n--------------------")
     # Check if the old Inv is the new Inv (moving Item inside an Inventory) ignore the previously used slots then.
     if invID_old == invID_new:
         # get currently used slots, ignoring the previously used slots
@@ -167,11 +167,11 @@ def item_move(client=None, args=()):
         # check for free slots
         slots_used_new = inv_handler.inv_slots_used_get(slotsStart=invPos, invGrid=newInv_invGrid, isFlipped=isFlipped, sizeItem=sizeItem, isAdd=True)
 
-    # print(f"::::: slots_used: {slots_used_new}")
+    # PRINT_DEBUG(f"::::: slots_used: {slots_used_new}")
 
     # check if there was enough space in the new Inventory. In case of Equip: Ignore
     if len(slots_used_new) == 0 and not isEquip:
-        print("INVENTORY: Item can NOT be added")
+        PRINT_WARNING("INVENTORY: Item can NOT be added")
         inv_handler.inv_update_force(client=client, invID_old=invID_old, invID_new=invID_new)
         return
     else:
@@ -193,7 +193,7 @@ def item_move(client=None, args=()):
 
         # and add it to the new Inventory itemData
         newInv["itemData"][item["id"]] = item
-        # print(newInv["itemData"])
+        # PRINT_DEBUG(newInv["itemData"])
 
         # To finalize it: Check if its an (un)equip request and update the player, if needed.
         if isEquip or isUnEquip:
@@ -226,7 +226,7 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
     """
     try:
         if None in [item, invData]:
-            print(f"ERROR: item_add_to_inv: item NOT found.\ninvID: {invData}\nitem: {item}------")
+            PRINT_WARNING(f"ERROR: item_add_to_inv: item NOT found.\ninvID: {invData}\nitem: {item}------")
             return
 
         invGrid = invData["inv_grid"]
@@ -249,7 +249,7 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
         #########################################################
         # check if the DataSize is correct (e.g.: values > 0)
         if len(item_parent_data) == 0:
-            print(f"ERROR: item_handler: item_add_to_inv: item_parent_data NOT FOUND - item['parent']: {item['parent']}")
+            PRINT_WARNING(f"ERROR: item_handler: item_add_to_inv: item_parent_data NOT FOUND - item['parent']: {item['parent']}")
             return invData
 
         x_size = check_size(item_parent_data["size"])
@@ -261,9 +261,9 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
         while True:
             slot_usage = inv_handler.inv_slots_free_get(invGrid=invGrid, item_size=x_size)
             if len(slot_usage) == 0:
-                # print(f"DEBUG: item_handler: item_add_to_inv: No free slots found.")
+                # PRINT_DEBUG(f"DEBUG: item_handler: item_add_to_inv: No free slots found.")
                 if isLootcrate > 0:
-                    # print(f"DEBUG: item_handler: item_add_to_inv: It's a lootcrate -> Adding new row. Count: {grid_rows_final}\n-------------")
+                    # PRINT_DEBUG(f"DEBUG: item_handler: item_add_to_inv: It's a lootcrate -> Adding new row. Count: {grid_rows_final}\n-------------")
                     # add a new row to the tempInventory
                     newRow = [0] * inv_cols
                     invGrid.append(newRow)
@@ -276,7 +276,7 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
                 else:
                     break
             else:
-                # print(f"DEBUG: item_handler: item_add_to_inv: slot_usage: {slot_usage}")
+                # PRINT_DEBUG(f"DEBUG: item_handler: item_add_to_inv: slot_usage: {slot_usage}")
                 break
 
         # check if there were slots found
@@ -295,22 +295,22 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
             # ... and set the ID of the "crate"
             item["curInv"] = invData["crateID"]
         else:
-            print(f"ERROR: item_add_list: No free slots found for x_ItemData:\n{item}\n inv_rows: {inv_rows}\n-------------")
+            PRINT_WARNING(f"ERROR: item_add_list: No free slots found for x_ItemData:\n{item}\n inv_rows: {inv_rows}\n-------------")
         #########################################################
 
         # return the updated invData!
-        # print(f"DEBUG: item_handler: item_add_to_inv: invData:\nDEBUG: {invData}\n----------------------")
+        # PRINT_DEBUG(f"DEBUG: item_handler: item_add_to_inv: invData:\nDEBUG: {invData}\n----------------------")
         return [invData, item]
 
         # client.cData["itemData"][newItem["id"]] = newItem
-        # print(client.cData["itemData"])
+        # PRINT_DEBUG(client.cData["itemData"])
         # # ToDo: TEMP! Saving will be done by an extra Thread from the Server! e.g. every 10 "pushes" OR every 10s -> save data to file
         # client.sData.database.db_save()
     except TypeError:
-        # print(f'--------------\nERROR: item_add_to_inv: Error while getting parent definition for {item["parent"]} (undefined baseItem?) - Creating Dummy Item\n--------------')
+        PRINT_WARNING(f'--------------\nERROR: item_add_to_inv: Error while getting parent definition for {item["parent"]} (undefined baseItem?) - Creating Dummy Item\n--------------')
         return
     except Exception as e:
-        print(f"-------------\nERROR: item_add_list: EXCEPTION:\n{e}\n-------------")
+        PRINT_WARNING(f"-------------\nERROR: item_add_list: EXCEPTION:\n{e}\n-------------")
 
 
 def loot_item_generate(sData, x_dict, DEBUG_itemInfo=None):
@@ -319,14 +319,14 @@ def loot_item_generate(sData, x_dict, DEBUG_itemInfo=None):
 
     # select random item
     selected_type = random.choices(list(x_dict), weights=list(x_dict.values()), k=1)[0]
-    # print(f"DEBUG: loot_item_generate: selected_type: {selected_type}")
+    # PRINT_DEBUG(f"DEBUG: loot_item_generate: selected_type: {selected_type}")
     DEBUG_itemInfo.append(selected_type)
     # check if selected_type exists other wise return class
     if selected_type in sData.lootData["tables"]:
-        # print(f"DEBUG: DEBUG_itemInfo: {DEBUG_itemInfo}")
+        # PRINT_DEBUG(f"DEBUG: DEBUG_itemInfo: {DEBUG_itemInfo}")
         return loot_item_generate(sData, sData.lootData["tables"][selected_type], DEBUG_itemInfo)
     else:
-        # print(f"DEBUG: loot_item_generate: selected_type: {selected_type}")
+        # PRINT_DEBUG(f"DEBUG: loot_item_generate: selected_type: {selected_type}")
         return selected_type
 
 
@@ -340,7 +340,7 @@ def loot_item_list_create(sData, crate_id, loot_type, loot_count):
     """
 
     # initial_seed = f"{sData.lootData['globalseed']} - {crate_id} - {loot_type}"
-    # print(f"DEBUG: loot_item_list_create: initial_seed: {initial_seed}")
+    # PRINT_DEBUG(f"DEBUG: loot_item_list_create: initial_seed: {initial_seed}")
 
     # list of item names
     loot_list = []
@@ -353,12 +353,12 @@ def loot_item_list_create(sData, crate_id, loot_type, loot_count):
     # return the loot_list array with the their item-names
     return loot_list
     # ############################# NOTE:
-    # print(loot_item_list_create("98372491", "type_military", 3))
+    # PRINT_DEBUG(loot_item_list_create("98372491", "type_military", 3))
 
 
 def item_get_parentData(sData, itemName: str = None):
     if itemName is None:
-        print(f"ERROR: item_get_parentData: NO itemName given!")
+        PRINT_WARNING(f"ERROR: item_get_parentData: NO itemName given!")
         return {}
     # get the parent-itemData
     try:
@@ -367,7 +367,7 @@ def item_get_parentData(sData, itemName: str = None):
         elif itemName in sData.itemSubTypes:
             return sData.itemSubTypes[itemName]
     except Exception as e:
-        print(f"ERROR: item_get_parentData: Exception:\nitemName: {itemName}\nException: {e}")
+        PRINT_WARNING(f"ERROR: item_get_parentData: Exception:\nitemName: {itemName}\nException: {e}")
 
 def item_degrade(sData, user, itemType, *args):
     # slotID:
@@ -376,10 +376,10 @@ def item_degrade(sData, user, itemType, *args):
     # 2 Secondary (launcher)
     if itemType == "wpn":
         slotID, ammoType, firemode, shots = args
-        print(f"DEBUG: item_degrade - user: {user} - args: {args}"
+        PRINT_DEBUG(f"DEBUG: item_degrade - user: {user} - args: {args}"
               f"\nslotID   - {slotID}"
               f"\nfiremode - {firemode}"
               f"\nammoType - {ammoType}"
               f"\nshots - {shots}")
-        # print(f"DEBUG: item_degrade - userdata: {sData.database.players[user]}")
+        PRINT_DEBUG(f"DEBUG: item_degrade - userdata: {sData.database.players[user]}")
 

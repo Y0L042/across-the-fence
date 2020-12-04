@@ -1,7 +1,7 @@
 from asc_fnc import *
 from anarchy_main.inventory import *
 from asc_fnc.asc_db import database
-
+from printHandler import *
 
 def client_add(**kwargs):
 	# Default Values for new Clients
@@ -30,14 +30,14 @@ def client_add(**kwargs):
 
 	cData.update(kwargs)
 
-	# print(item)
+	# PRINT_DEBUG(item)
 	return cData
 
 # Note: called from asc_client
 def client_init(self):
 	self.cData = player_data_get(self.sData, self.puid)
 	if len(self.cData) == 0:
-		print(f"ASC: CLIENT HANDLER: PUID NOT FOUND. CREATING NEW ENTRY FOR PUID: {self.puid}")
+		PRINT_ATTENTION(f"ASC: CLIENT HANDLER: PUID NOT FOUND. CREATING NEW ENTRY FOR PUID: {self.puid}")
 		self.cData = client_add(puid=self.puid)
 		player_data_set(self.sData, self.puid, self.cData)
 
@@ -59,7 +59,7 @@ def client_init(self):
 
 	# Server:
 	# send Player Dataset over to the Server, so it can set up the player:
-	print(f"SENDING: DATASET FROM {self.puid} TO GAMESERVER...")
+	PRINT_DEBUG(f"SENDING: DATASET FROM {self.puid} TO GAMESERVER...")
 
 	# submit: faction
 	dataset = {
@@ -89,22 +89,22 @@ def client_init(self):
 		}
 	asc_g_msg.sendMsg("player_health_set", dataset, self.sData.con_gameServer)
 
-	print(f"SENDING: DATASET FROM {self.puid} TO GAMESERVER... Done")
+	PRINT_OK(f"SENDING: DATASET FROM {self.puid} TO GAMESERVER... Done")
 	# All Data was send to the Server.
 	#################################
 	# Now send the data to the client:
 
 	# send itemParent Definitions
-	print(f"SENDING: INIT_ITEMDATA TO {self.puid}... ")
+	PRINT_DEBUG(f"SENDING: INIT_ITEMDATA TO {self.puid}... ")
 	asc_g_msg.sendMsg("INIT_ITEMDATA", self.sData.itemParentData, self.con_client)
-	print(f"SENDING: INIT_ITEMDATA TO {self.puid}... DONE")
+	PRINT_OK(f"SENDING: INIT_ITEMDATA TO {self.puid}... DONE")
 
 	# send player Data
-	print(f"SENDING: INIT_CLIENTDATA TO {self.puid}...")
+	PRINT_DEBUG(f"SENDING: INIT_CLIENTDATA TO {self.puid}...")
 	# asc_g_msg.sendMsg("INIT_CLIENTDATA", self.cData, self.con_client)
 
 	# Gear:
-	print(f"SENDING: INVENTORY ITEMDATA TO {self.puid}...")
+	PRINT_DEBUG(f"SENDING: INVENTORY ITEMDATA TO {self.puid}...")
 	dataset = {
 			"itemData": self.cData["itemData"],
 			"inv_rows": self.cData["inv_rows"],
@@ -112,25 +112,25 @@ def client_init(self):
 		}
 	# remove the grid from the data, passed to the client.
 	asc_g_msg.sendMsg("player_gear_set", dataset, self.con_client)
-	print(f"SENDING: INVENTORY ITEMDATA TO {self.puid}... DONE")
+	PRINT_OK(f"SENDING: INVENTORY ITEMDATA TO {self.puid}... DONE")
 
 	# Skills
-	print(f"SENDING: SKILLS TO {self.puid}...")
+	PRINT_DEBUG(f"SENDING: SKILLS TO {self.puid}...")
 	dataset = {
 		"skills": self.cData["skills"]
 		}
 	asc_g_msg.sendMsg("player_skills_set", dataset, self.con_client)
-	print(f"SENDING: SKILLS TO {self.puid}... DONE")
+	PRINT_OK(f"SENDING: SKILLS TO {self.puid}... DONE")
 
 	# send the "Client has passed the ASC init phase" message to the Server
-	print(f'PLAYER INIT DONE FOR {self.puid} - SENDING "PLAYER READY" TO THE GAMESERVER')
+	PRINT_OK(f'PLAYER INIT DONE FOR {self.puid} - SENDING "PLAYER READY" TO THE GAMESERVER')
 	asc_g_msg.sendMsg("INIT_PLAYER_DONE", {"data_puid": self.puid}, self.con_server)
 
 
 
 def player_data_get(sData, puid):
-	# print("player_data_get: puid:", puid)
-	# print(sData.database.players)
+	# PRINT_DEBUG("player_data_get: puid:", puid)
+	# PRINT_DEBUG(sData.database.players)
 	try:
 		pData = sData.database.players[puid]
 	except KeyError:
@@ -142,23 +142,23 @@ def player_data_set(sData, puid, data):
 		sData.database.players[puid] = data
 		database.asc_db.db_save(sData.database)
 	except KeyError:
-		# print(f"ASC_DB: PlayerUID [{puid}] not found!")
+		# PRINT_WARNING(f"ASC_DB: PlayerUID [{puid}] not found!")
 		pass
 
 
 def players_stats_update(sData, *datalist):
-	# print(f"datalist - {datalist}")
+	# PRINT_DEBUG(f"datalist - {datalist}")
 	for data in datalist:
 		try:
-			# print(f"data - {data}")
+			# PRINT_DEBUG(f"data - {data}")
 			puid, data_stats = data
 			pData = player_data_get(sData, puid)
 			for stat in data_stats:
-				# print(f"stat - {stat}")
+				# PRINT_DEBUG(f"stat - {stat}")
 				stat_type, stat_value = stat
 				pData[stat_type] = stat_value
 		except Exception as e:
-			print(f"ERROR: players_stat_update: ERROR: {e}")
+			PRINT_WARNING(f"ERROR: players_stat_update: ERROR: {e}")
 
 	database.asc_db.db_save(sData.database)
 
@@ -166,7 +166,7 @@ def players_stats_update(sData, *datalist):
 def player_update_faction(sData, *data):
 	puid, faction = data
 	pData = player_data_get(sData, puid)
-	print(f"DEBUG: player_update_faction: {puid} joined faction {faction} (previous: {pData['faction']})")
+	PRINT_ATTENTION(f"DEBUG: player_update_faction: {puid} joined faction {faction} (previous: {pData['faction']})")
 	pData["faction"] = faction
 	# save to file
 	database.asc_db.db_save(sData.database)
@@ -216,7 +216,7 @@ def player_killed(sData, *data):
 
 
 def player_respawned(sData, puid):
-	# print(f"DEBUG: PLAYER_RESPAWNED: puid: {puid}")
+	PRINT_ATTENTION(f"DEBUG: PLAYER_RESPAWNED: puid: {puid}")
 	cData = player_data_get(sData, puid)
 	listGear = []
 	for x in cData["itemData"]:
