@@ -91,12 +91,14 @@ def item_move(client=None, args=()):
     except Exception as e:
         print(f'ERROR: INV_HANDLER: ITEM_MOVE: Could NOT get Data from args:\n{e}\n')
         return
-
-    # print(f"itemID: {itemID}")
-    # print(f"invID_old: {invID_old}")
-    # print(f"invID_new: {invID_new}")
-    # print(f"isFlipped: {isFlipped}")
-    # print(f"invPos: {invPos}")
+    # print(f"----------------")
+    # print(f"itemID      : {itemID}")
+    # print(f"invID_old   : {invID_old}")
+    # print(f"invID_new   : {invID_new}")
+    # print(f"isFlipped   : {isFlipped}")
+    # print(f"invPos      : {invPos}")
+    # print(f"invGearID   : {invGearID}")
+    # print(f"----------------")
     # print(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
 
     # get old Inventory + grid
