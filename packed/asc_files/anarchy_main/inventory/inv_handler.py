@@ -93,6 +93,13 @@ def crate_add(sData, clientID: str = None, pos: list = None, crateID: str = "", 
         "inv_grid": invGrid_create(inv_rows, inv_cols),
         "inv_rows": inv_rows,   # rows
         "inv_cols": inv_cols,   # columns
+        'inventory': {
+            "0": {
+                "inv_grid": invGrid_create(inv_rows, inv_cols),
+                "inv_rows": inv_rows,
+                'inv_cols': inv_cols
+                }
+            },
         "itemData": {}
         }
 
@@ -224,10 +231,10 @@ def inv_getData(client, invID):
                 PRINT_DEBUG(f"DEBUG: inv_getData: isPlayer: False")
                 return [client.sData.database.crates[invID], False]
             else:
-                PRINT_WARNING(f'ERROR: INV_HANDLER: inv_getData NOT FOUND - ID: {invID}')
+                PRINT_WARNING(f'ERROR: INV_HANDLER: inv_getData invID NOT FOUND #1 - ID: {invID}')
                 return [{}, False]
     except KeyError:
-        PRINT_WARNING(f'ERROR: INV_HANDLER: inv_getData invID NOT FOUND - ID: {invID}')
+        PRINT_WARNING(f'ERROR: INV_HANDLER: inv_getData invID NOT FOUND #2 - ID: {invID}')
         return [{}, False]
     except Exception as e:
         PRINT_WARNING(f'ERROR: INV_HANDLER: inv_getData - UNKNOWN ERROR - ID: {invID}:\n{e}')

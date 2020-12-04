@@ -25,6 +25,33 @@ def client_add(**kwargs):
 		'inv_grid': inv_handler.invGrid_create(16, 8),     # ToDo: Remove the "grid" itself and exchange it with some kind of "used slots"-list
 		'inv_rows': 16,
 		'inv_cols': 8,
+		'inv_usedSlots': [],
+		'inventory': {
+			# Uniform
+			"12": {
+				"inv_grid": inv_handler.invGrid_create(16, 8),  # DEV VALUES
+				"inv_rows": 16,  # DEV VALUES
+				'inv_cols': 8  # DEV VALUES
+				},
+			# Vest
+			"13": {
+				"inv_grid": inv_handler.invGrid_create(4, 8),  # DEV VALUES
+				"inv_rows": 4,  # DEV VALUES
+				'inv_cols': 8  # DEV VALUES
+				},
+			# Pouch
+			"14": {
+				"inv_grid": inv_handler.invGrid_create(4, 8),  # DEV VALUES
+				"inv_rows": 4,  # DEV VALUES
+				'inv_cols': 8  # DEV VALUES
+				},
+			# Backpack
+			"15": {
+				"inv_grid": inv_handler.invGrid_create(4, 8),  # DEV VALUES
+				"inv_rows": 4,  # DEV VALUES
+				'inv_cols': 8  # DEV VALUES
+				}
+			},
 		'itemData': {}
 		}
 

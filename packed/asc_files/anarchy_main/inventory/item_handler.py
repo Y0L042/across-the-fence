@@ -58,6 +58,7 @@ def item_create(parent: str = "", slot=None, doSlot=False):
         "hp_cur":       100,         # Current HP
         "hp_max":       100,         # Max HP
         "curInv":       "-1",        # ID of Inventory, that the Item is in
+        "invSub":       "0",        # subInventory (in player Inv only!)
         "invPos":       [0, 0],      # TopLeft Position of the Item in the InventoryGrid
         "isFlipped":    0,           # 0/1 - Check if Item was flipped
         "inSlot":       0,           # 0-N - in which Slot is the Item in? (0 = normal inventory)
@@ -181,6 +182,12 @@ def item_move(client=None, args=()):
         # update Item
         item["invPos"] = invPos
         item["curInv"] = invID_new
+        if isPlayer:
+            # Assign the ID, in which the Item is placed in (12 = Uniform - 13 = Vest - 14 = Pouch - 15 Backpack)
+            item["invSub"] = invGearID
+        else:
+            # In case of external (e.g. Ground/Crate) Inventory: 0
+            item["invSub"] = "0"
         item["isFlipped"] = isFlipped
         item["inSlot"] = inSlot
 
@@ -212,7 +219,7 @@ def item_move(client=None, args=()):
     # ToDo: TEMP! Saving will be done by an extra Thread from the Server!
     client.sData.database.db_save()
 
-def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None):
+def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, invGearID: str = "0"):
     """
 
     :param sData:
