@@ -8,7 +8,15 @@ private _updateData = [];
 		
 		// get current pos and dir (precise positions)
 		toFixed 8;
-		private _dataPos = ["pos", [getPosWorld _x, getDir _x, animationState _x]];
+		private _animName = switch(stance _x)do
+		{
+			case "STAND": {"amovpercmstpsraswrfldnon"};
+			case "CROUCH": {"amovpknlmstpsraswrfldnon"};
+			case "PRONE": {"amovppnemstpsraswrfldnon"};
+			default {"amovpercmstpsraswrfldnon"};
+		};
+		
+		private _dataPos = ["pos", [getPosWorld _x, getDir _x, _animName]];
 		// get health
 		toFixed 3;
 		private _dataHealth = ["health", (getDammage _x)];
