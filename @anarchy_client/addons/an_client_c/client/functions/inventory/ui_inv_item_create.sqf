@@ -149,9 +149,9 @@ if !(_isSamePos && _isSameInv && _isSameSlot)then
 	};
 	
 	// send command to the backend, to update its data.
-	if(_DEBUGON)then{diag_log ["DEBUG: item_create: MSG SEND Data:", ["inv_itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID, _invGearID]]];};
+	if(_DEBUGON)then{diag_log ["DEBUG: item_create: MSG SEND Data:", ["inv_item_move", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID, _invGearID]]];};
 	
-	["inv_itemMove", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID, _invGearID]] call AN_G_fnc_msg_send;
+	["inv_item_move", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID, _invGearID]] call AN_G_fnc_msg_send;
 	
 	// Update the local Inventory
 	[_itemInvIDCur,_itemInvIDNew,_itemData,_itemID, _invGearID] call an_c_fnc_ui_inv_data_update;
