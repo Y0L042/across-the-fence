@@ -143,25 +143,25 @@ def inv_data_create(sData, clientID: str = None, pos: list = None, crateID: str 
                         # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create: subType_class: {parent} - subType_parent: {subType_parent}")
 
                         # create and get the Item Data structure
-                        item = item_create(parent=subType_parent)
+                        item = inv_item_create(parent=subType_parent)
                         # get the subTypeData of the desired Item
                         subType = sData.itemSubTypes[parent]
                         # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create: subType: {subType} -  item: {item}")
                         # update the parentData with the subTypeData
                         item.update(subType)
-                        # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create -> item_create: item #2: {item}")
+                        # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create -> inv_item_create: item #2: {item}")
                         # ToDo: call a function in item_handler to update/calc stats like hp_cur, depending on... something
                     else:
-                        item = item_create(parent=parent)
+                        item = inv_item_create(parent=parent)
 
                     # Add item to Inventory and update the invData
-                    invData, item = item_add_to_inv(sData=sData, invData=invData, isLootcrate=isLootcrate, item=item)
+                    invData, item = inv_item_add_to_inv(sData=sData, invData=invData, isLootcrate=isLootcrate, item=item)
 
                 # in case the item wasn't defined in parentData -> Create a default/fallback item
                 except Exception as e:
                     PRINT_WARNING(f"ERROR: INV_HANDLER: create_add: ITEM DEFINITION NOT FOUND: {parent} - Creating dummy Icon")
-                    item = item_create(parent="PLACEHOLDER")
-                    invData, item = item_add_to_inv(sData=sData, invData=invData, isLootcrate=isLootcrate, item=item)
+                    item = inv_item_create(parent="PLACEHOLDER")
+                    invData, item = inv_item_add_to_inv(sData=sData, invData=invData, isLootcrate=isLootcrate, item=item)
             # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create: invData: {invData}")
 
         # store in database, under temporary crates
@@ -179,6 +179,7 @@ def inv_data_send_toClient(invData, conClient):
     invData_noGrid = dict(invData)
     # del invData_noGrid["invGrid"]
     asc_g_msg.sendMsg("ret_inv_crateData", invData_noGrid, conClient)
+
 
 def inv_data_update_force(client, invID_old, invID_new):
     """
@@ -208,26 +209,32 @@ def inv_data_update_force(client, invID_old, invID_new):
 
 
 # called by Server only!
-def inv_data_remove(sData, createID):
-    crate = sData.database.crates[createID]
-    # kind of security check
-    del crate
+def inv_data_remove(sData, crateID: str = ""):
+    # Check the Session Crates
+    if crateID in sData.database.sessionCrates:
+        del sData.database.sessionCrates[crateID]
+    # Check the persistent Crates (rly?)
+    elif crateID in sData.database.crates:
+        del sData.database.crates[crateID]
+    else:
+        PRINT_WARNING(f'ERROR: INV_HANDLER: inv_data_remove crateID NOT FOUND - crateID: {crateID}')
+    return
 
 
 def inv_data_get(client, invID):
     try:
         # check if player Inventory (mostly used)
         if invID == client.puid:
-            PRINT_DEBUG(f"DEBUG: inv_data_get: isPlayer: True")
+            # PRINT_DEBUG(f"DEBUG: inv_data_get: isPlayer: True")
             return [client.cData, True]
         else:
             # Check if temporary/Session Crates (used while looting, so 2nd place)
             if invID in client.sData.database.sessionCrates:
-                PRINT_DEBUG(f"DEBUG: inv_data_get: isPlayer: False")
+                # PRINT_DEBUG(f"DEBUG: inv_data_get: isPlayer: False")
                 return [client.sData.database.sessionCrates[invID], False]
             # Last chance: Check the persistent Inventories (most likely the less used from the 3 options)
             elif invID in client.sData.database.crates:
-                PRINT_DEBUG(f"DEBUG: inv_data_get: isPlayer: False")
+                # PRINT_DEBUG(f"DEBUG: inv_data_get: isPlayer: False")
                 return [client.sData.database.crates[invID], False]
             else:
                 PRINT_WARNING(f'ERROR: INV_HANDLER: inv_data_get invID NOT FOUND #1 - ID: {invID}')
@@ -332,22 +339,7 @@ def inv_slots_free_get(invGrid, item_size):
     return []
 
 
-def inv_items_get(client=None, args=()):
-    # PRINT_DEBUG('FUNCTION CALLED BY REMOTE: "inv_get_items"')
-    gridID = args[0]
-
-    # noinspection PyTypeChecker
-    data, isPlayer = inv_data_get(client, gridID)["itemData"]
-    if len(data) == 0:
-        PRINT_WARNING(f"ERROR: inv_items_get: data not found!")
-
-        return
-    # PRINT_DEBUG(f"gridID: {gridID}\ndata: {data}")
-
-    con = client.con_client
-    asc_g_msg.sendMsg("ret_inv_get_items", data, con)
-
-def check_size(size):
+def inv_item_check_size(size):
     # if given, check if X/Y are not < 1
     if size[0] < 1:
         size[0] = 1
@@ -356,13 +348,13 @@ def check_size(size):
     return size
 
 
-def check_canFlip(size):
+def inv_item_check_canFlip(size):
     if size[0] == size[1]:  # if a square -> No need to be flippable, so "0"
         return 0
     else:
         return 1
 
-def item_create(parent: str = "", slot=None, doSlot=False):
+def inv_item_create(parent: str = "", slot=None, doSlot=False):
     """
 
     :param parent:
@@ -399,7 +391,7 @@ def item_create(parent: str = "", slot=None, doSlot=False):
     return item
 
 
-def item_move(client=None, args=()):
+def inv_item_move(client=None, args=()):
     if client is None:
         PRINT_WARNING('ERROR: INV_HANDLER: ITEM_MOVE: "CLIENT" NOT PASSED')
         return
@@ -446,7 +438,7 @@ def item_move(client=None, args=()):
     # PRINT_DEBUG(f"::::: item:\n{item}")
 
     # get the parent Data
-    item_parent_data = item_get_parentData(sData=client.sData, itemName=item["parent"])
+    item_parent_data = inv_item_parent_get(sData=client.sData, itemName=item["parent"])
     sizeItem = item_parent_data["size"]
 
     # also get the new inventory + grid
@@ -542,22 +534,23 @@ def item_move(client=None, args=()):
                 }
             asc_g_msg.sendMsg("player_loadout_set", dataset, client.sData.con_gameServer)
 
-
     # ToDo: TEMP! Saving will be done by an extra Thread from the Server!
     client.sData.database.db_save()
 
-def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, invGearID: str = "0"):
+
+def inv_item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, invGearID: str = "0"):
     """
 
     :param sData:
     :param invData:
     :param isLootcrate:
     :param item:
+    :param invGearID:
     :return:
     """
     try:
         if None in [item, invData]:
-            PRINT_WARNING(f"ERROR: item_add_to_inv: item NOT found.\ninvID: {invData}\nitem: {item}------")
+            PRINT_WARNING(f"ERROR: inv_item_add_to_inv: item NOT found.\ninvID: {invData}\nitem: {item}------")
             return
 
         invGrid = invData["inv_grid"]
@@ -566,7 +559,7 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, invGea
         inv_itemData = invData["itemData"]
 
         # get the parent Data
-        item_parent_data = item_get_parentData(sData=sData, itemName=item["parent"])
+        item_parent_data = inv_item_parent_get(sData=sData, itemName=item["parent"])
         # check if parent Data is a subclass of a main Item definition
         try:
             if "parent" in item_parent_data:
@@ -580,10 +573,10 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, invGea
         #########################################################
         # check if the DataSize is correct (e.g.: values > 0)
         if len(item_parent_data) == 0:
-            PRINT_WARNING(f"ERROR: item_handler: item_add_to_inv: item_parent_data NOT FOUND - item['parent']: {item['parent']}")
+            PRINT_WARNING(f"ERROR: item_handler: inv_item_add_to_inv: item_parent_data NOT FOUND - item['parent']: {item['parent']}")
             return invData
 
-        x_size = check_size(item_parent_data["size"])
+        x_size = inv_item_check_size(item_parent_data["size"])
 
         # keep count of how many rows will be added in the end (IF isLootcrate == 1)
         grid_rows_final = len(invGrid)
@@ -592,9 +585,9 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, invGea
         while True:
             slot_usage = inv_slots_free_get(invGrid=invGrid, item_size=x_size)
             if len(slot_usage) == 0:
-                # PRINT_DEBUG(f"DEBUG: item_handler: item_add_to_inv: No free slots found.")
+                # PRINT_DEBUG(f"DEBUG: item_handler: inv_item_add_to_inv: No free slots found.")
                 if isLootcrate > 0:
-                    # PRINT_DEBUG(f"DEBUG: item_handler: item_add_to_inv: It's a lootcrate -> Adding new row. Count: {grid_rows_final}\n-------------")
+                    # PRINT_DEBUG(f"DEBUG: item_handler: inv_item_add_to_inv: It's a lootcrate -> Adding new row. Count: {grid_rows_final}\n-------------")
                     # add a new row to the tempInventory
                     newRow = [0] * inv_cols
                     invGrid.append(newRow)
@@ -607,7 +600,7 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, invGea
                 else:
                     break
             else:
-                # PRINT_DEBUG(f"DEBUG: item_handler: item_add_to_inv: slot_usage: {slot_usage}")
+                # PRINT_DEBUG(f"DEBUG: item_handler: inv_item_add_to_inv: slot_usage: {slot_usage}")
                 break
 
         # check if there were slots found
@@ -630,7 +623,7 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, invGea
         #########################################################
 
         # return the updated invData!
-        # PRINT_DEBUG(f"DEBUG: item_handler: item_add_to_inv: invData:\nDEBUG: {invData}\n----------------------")
+        # PRINT_DEBUG(f"DEBUG: item_handler: inv_item_add_to_inv: invData:\nDEBUG: {invData}\n----------------------")
         return [invData, item]
 
         # client.cData["itemData"][newItem["id"]] = newItem
@@ -638,15 +631,15 @@ def item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, invGea
         # # ToDo: TEMP! Saving will be done by an extra Thread from the Server! e.g. every 10 "pushes" OR every 10s -> save data to file
         # client.sData.database.db_save()
     except TypeError:
-        PRINT_WARNING(f'--------------\nERROR: item_add_to_inv: Error while getting parent definition for {item["parent"]} (undefined baseItem?) - Creating Dummy Item\n--------------')
+        PRINT_WARNING(f'--------------\nERROR: inv_item_add_to_inv: Error while getting parent definition for {item["parent"]} (undefined baseItem?) - Creating Dummy Item\n--------------')
         return
     except Exception as e:
         PRINT_WARNING(f"-------------\nERROR: item_add_list: EXCEPTION:\n{e}\n-------------")
 
 
-def item_get_parentData(sData, itemName: str = None):
+def inv_item_parent_get(sData, itemName: str = None):
     if itemName is None:
-        PRINT_WARNING(f"ERROR: item_get_parentData: NO itemName given!")
+        PRINT_WARNING(f"ERROR: inv_item_parent_get: NO itemName given!")
         return {}
     # get the parent-itemData
     try:
@@ -655,18 +648,19 @@ def item_get_parentData(sData, itemName: str = None):
         elif itemName in sData.itemSubTypes:
             return sData.itemSubTypes[itemName]
     except Exception as e:
-        PRINT_WARNING(f"ERROR: item_get_parentData: Exception:\nitemName: {itemName}\nException: {e}")
+        PRINT_WARNING(f"ERROR: inv_item_parent_get: Exception:\nitemName: {itemName}\nException: {e}")
 
-def item_degrade(sData, user, itemType, *args):
+
+def inv_item_degrade(sData, user, itemType, *args):
     # slotID:
     # 0 Primary
     # 1 Handgun
     # 2 Secondary (launcher)
     if itemType == "wpn":
         slotID, ammoType, firemode, shots = args
-        PRINT_DEBUG(f"DEBUG: item_degrade - user: {user} - args: {args}"
+        PRINT_DEBUG(f"DEBUG: inv_item_degrade - user: {user} - args: {args}"
               f"\nslotID   - {slotID}"
               f"\nfiremode - {firemode}"
               f"\nammoType - {ammoType}"
               f"\nshots - {shots}")
-        PRINT_DEBUG(f"DEBUG: item_degrade - userdata: {sData.database.players[user]}")
+        PRINT_DEBUG(f"DEBUG: inv_item_degrade - userdata: {sData.database.players[user]}")

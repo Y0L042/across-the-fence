@@ -71,7 +71,7 @@ def client_init(self):
 		# add Starter Gear:
 		startGear = [["vn_b_bandana_03", [10]], ["vn_b_uniform_macv_01_06", [12]]]
 		for itemData in startGear:
-			item = inv_handler.item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
+			item = inv_handler.inv_item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
 			item["curInv"] = self.cData["puid"]
 			# Add it to the itemData (inventory) - Since those Items are already "equipped", they won't take any slots.
 			self.cData["itemData"][item["id"]] = item
@@ -209,8 +209,8 @@ def player_killed(sData, *data):
 		itemData = cData["itemData"][itemID]
 
 		# "move" the Items to the newly created Crate
-		# ToDo: Recheck again later, if "item_move" must be used here (rel: ItemStats)
-		invData, item = inv_handler.item_add_to_inv(sData, invData=crateData, isLootcrate=1, item=itemData)
+		# ToDo: Recheck again later, if "inv_item_move" must be used here (rel: ItemStats)
+		invData, item = inv_handler.inv_item_add_to_inv(sData, invData=crateData, isLootcrate=1, item=itemData)
 
 		# remove the old Item cData
 		cData["itemData"].pop(itemID)
@@ -224,7 +224,7 @@ def player_killed(sData, *data):
 	# add Starter Gear:
 	startGear = [["vn_b_bandana_03", [10]], ["vn_b_uniform_macv_01_06", [12]]]
 	for itemData in startGear:
-		item = inv_handler.item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
+		item = inv_handler.inv_item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
 		item["curInv"] = cData["puid"]
 		# Add it to the itemData (inventory) - Since those Items are already "equipped", they won't take any slots.
 		cData["itemData"][item["id"]] = item

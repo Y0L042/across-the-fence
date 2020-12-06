@@ -27,7 +27,7 @@ cmdList = {
 
 				# Item Handling:
 				# # Degradation (WIP)
-				"player_fired": inv_handler.item_degrade,
+				"player_fired": inv_handler.inv_item_degrade,
 
 				# Player:
 				"update_players": client_handler.players_stats_update,
@@ -64,8 +64,7 @@ cmdList = {
 		'client': {
 				# ""Tag" send from Arma" : Function in the backend
 				# NOTE: Make sure, that you imported the related plugin/method/folder/however it's called (and added the files to the "__init.py__" )
-				"inv_itemMove":     inv_handler.item_move,
-				"inv_get_items":    inv_handler.inv_items_get
+				"inv_item_move":     inv_handler.inv_item_move
 			},
 		'arma_client': {
 				# "functionTag in Arma": "Function to execute"
