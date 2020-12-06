@@ -81,7 +81,7 @@ private _crateId = [_cratePos] call an_g_fnc_loot_generate_crate_id;
 private _minLootQuantity = round(random[1,3.5,6]); // DEV SETTINGS!
 private _normalizedPosition = _cratePos apply {floor _x};
 
-diag_log [":::: CRATE_LOOT_REQUEST: DATA:", ["call_function", ["crate_data_get", [_playerID, _normalizedPosition, _crateId, _lootType, _isLootCrate, _minLootQuantity]]]];
+diag_log [":::: CRATE_LOOT_REQUEST: DATA:", ["call_function", ["inv_data_request", [_playerID, _normalizedPosition, _crateId, _lootType, _isLootCrate, _minLootQuantity]]]];
 /*
 	0 - STR - playerID
 	1 - ARRAY - pos of crate
@@ -91,7 +91,7 @@ diag_log [":::: CRATE_LOOT_REQUEST: DATA:", ["call_function", ["crate_data_get",
 	5 - INT - Optional Argument: set this, to override the standard value of min. "2" items bein created (Result can still be higher, depending on the Players "scavenging"-skill)
 */
 
-["crate_data_get", [_playerID, _normalizedPosition, _crateId, _lootType, _isLootCrate, _minLootQuantity]] call AN_G_fnc_msg_send;
+["inv_data_request", [_playerID, _normalizedPosition, _crateId, _lootType, _isLootCrate, _minLootQuantity]] call AN_G_fnc_msg_send;
 
 // return
 [true, _crateId]
