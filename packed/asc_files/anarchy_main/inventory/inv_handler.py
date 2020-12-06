@@ -36,6 +36,7 @@ def inv_data_request(sData, clientID: str = None, pos: list = None, crateID: str
         else:
             invData = sData.database.sessionCrates[crateID]
 
+
         # ToDo: Add an "in use"-check
         # send Inventory data back to the requesting client
         conClient = sData.user_active[clientID]["con"]
@@ -90,9 +91,6 @@ def inv_data_create(sData, clientID: str = None, pos: list = None, crateID: str 
         "model":     model,
         "pos":       pos,
         "type":      lootType,
-        "inv_grid":  inv_grid_create(inv_rows, inv_cols),
-        "inv_rows":  inv_rows,   # rows
-        "inv_cols":  inv_cols,   # columns
         'inventory': {
             "0": {
                 "inv_grid": inv_grid_create(inv_rows, inv_cols),
@@ -179,11 +177,16 @@ def inv_data_create(sData, clientID: str = None, pos: list = None, crateID: str 
     inv_data_send_toClient(invData, conClient)
 
 
-def inv_data_send_toClient(invData, conClient):
-    # remove the inv_grid from the data, since we don't need it on the Client
-    invData_noGrid = dict(invData)
-    # del invData_noGrid["invGrid"]
-    asc_g_msg.sendMsg("ret_inv_crateData", invData_noGrid, conClient)
+def inv_data_send_toClient(invData, conClient, invGridID="0"):
+    # PRINT_ATTENTION(f"inv_data_send_toClient: invData: {invData}")
+    dataset = {
+        "itemData": invData["itemData"],
+        "crateID": invData["crateID"],
+        # "inventory": self.cData["inventory"]
+        "inv_rows": invData["inventory"][invGridID]["inv_rows"],
+        "inv_cols": invData["inventory"][invGridID]["inv_cols"]
+        }
+    asc_g_msg.sendMsg("ret_inv_crateData", dataset, conClient)
 
 
 def inv_data_update_force(client, invID_old, invID_new):
@@ -195,8 +198,10 @@ def inv_data_update_force(client, invID_old, invID_new):
 
     # Since we want to send over the remote Inventory -> Check if invID_old is NOT the player Inv.
     if invID_old != client.puid:
+        # PRINT_ATTENTION(f"inv_data_update_force - PRE inv_data_get: invID_old: {invID_old}")
         inv_remote, isPlayer = inv_data_get(client, invID_old)
     else:
+        # PRINT_ATTENTION(f"inv_data_update_force - PRE inv_data_get: invID_new: {invID_new}")
         inv_remote, isPlayer = inv_data_get(client, invID_new)
     # resending it, triggers a force-reopen of the Inventory (instantly)
     if len(inv_remote) == 0:
@@ -204,8 +209,8 @@ def inv_data_update_force(client, invID_old, invID_new):
         return
     dataset = {
         "itemData": client.cData["itemData"],
-        "inv_rows": client.cData["inv_rows"],
-        "inv_cols": client.cData["inv_cols"]
+        "inv_rows": client.cData["inventory"]["12"]["inv_rows"],    # TODO: DEV VALUE - Needs .sqf adjustments first!
+        "inv_cols": client.cData["inventory"]["12"]["inv_cols"]     # TODO: DEV VALUE - Needs .sqf adjustments first!
         }
     # update the player Gear
     asc_g_msg.sendMsg("player_gear_set", dataset, client.con_client)
@@ -227,6 +232,7 @@ def inv_data_remove(sData, crateID: str = ""):
 
 
 def inv_data_get(client, invID):
+    # PRINT_ATTENTION(f'DEBUG: INV_HANDLER: inv_data_get invID : {invID}')
     try:
         # check if player Inventory (mostly used)
         if invID == client.puid:
@@ -422,16 +428,18 @@ def inv_item_move(client=None, args=()):
     # PRINT_DEBUG(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
 
     # get old Inventory + grid
+    PRINT_ATTENTION(f"inv_item_move - PRE inv_data_get: invID_old: {invID_old}")
     oldInv, isPlayer = inv_data_get(client, invID_old)
     if len(oldInv) == 0:
         PRINT_WARNING(f"ERROR: inv_items_get: data not found!")
         return
-    oldInv_invGrid = oldInv["inv_grid"]
 
     item = None
+    invGearID_old = "0"
     # and the item data
     if itemID in oldInv["itemData"]:
         item = oldInv["itemData"][itemID]
+        invGearID_old = oldInv["itemData"][itemID]["invSub"]
 
     # exit if item couldn't be added
     if item is None:
@@ -439,19 +447,23 @@ def inv_item_move(client=None, args=()):
         # resending it, triggers a force-reopen of the Inventory (force reopen/load Inventory)
         inv_data_update_force(client=client, invID_old=invID_old, invID_new=invID_new)
         return
-
     # PRINT_DEBUG(f"::::: item:\n{item}")
+
+    oldInv_invGrid = oldInv["inventory"][invGearID_old]["inv_grid"]
 
     # get the parent Data
     item_parent_data = inv_item_parent_get(sData=client.sData, itemName=item["parent"])
+
     sizeItem = item_parent_data["size"]
 
     # also get the new inventory + grid
+    PRINT_ATTENTION(f"inv_item_move - PRE inv_data_get: invID_new: {invID_new}")
     newInv, isPlayer = inv_data_get(client, invID_new)
     if len(newInv) == 0:
         PRINT_WARNING(f"ERROR: inv_items_get: data not found!")
         return
-    newInv_invGrid = newInv["inv_grid"]
+
+    newInv_invGrid = newInv["inventory"][invGearID]["inv_grid"]
 
     isFlipped_cur = item["isFlipped"]
     inSlot_cur = item["inSlot"]
@@ -508,6 +520,7 @@ def inv_item_move(client=None, args=()):
         item["curInv"] = invID_new
         if isPlayer:
             # Assign the ID, in which the Item is placed in (12 = Uniform - 13 = Vest - 14 = Pouch - 15 Backpack)
+            # using the "isPlayer"-result from the "newInv" data request
             item["invSub"] = invGearID
         else:
             # In case of external (e.g. Ground/Crate) Inventory: 0
@@ -558,9 +571,9 @@ def inv_item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, in
             PRINT_WARNING(f"ERROR: inv_item_add_to_inv: item NOT found.\ninvID: {invData}\nitem: {item}------")
             return
 
-        invGrid = invData["inv_grid"]
-        inv_rows = invData["inv_rows"]
-        inv_cols = invData["inv_cols"]
+        invGrid = invData["inventory"][invGearID]["inv_grid"]
+        inv_rows = invData["inventory"][invGearID]["inv_rows"]
+        inv_cols = invData["inventory"][invGearID]["inv_cols"]
         inv_itemData = invData["itemData"]
 
         # get the parent Data
@@ -579,7 +592,7 @@ def inv_item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, in
         # check if the DataSize is correct (e.g.: values > 0)
         if len(item_parent_data) == 0:
             PRINT_WARNING(f"ERROR: item_handler: inv_item_add_to_inv: item_parent_data NOT FOUND - item['parent']: {item['parent']}")
-            return invData
+            return invData["inventory"][invGearID]
 
         x_size = inv_item_check_size(item_parent_data["size"])
 
@@ -612,8 +625,8 @@ def inv_item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, in
         if len(slot_usage) > 0:
             # update the Inventory Grid, its gridSize ...
             inv_slots_used_set(slots_used=slot_usage, invGrid=invGrid, isAdd=True)
-            invData["inv_grid"] = invGrid
-            invData["inv_rows"] = grid_rows_final
+            invData["inventory"][invGearID]["inv_grid"] = invGrid
+            invData["inventory"][invGearID]["inv_rows"] = grid_rows_final
             invData["itemData"] = inv_itemData
 
             # ... and add the item to its itemData

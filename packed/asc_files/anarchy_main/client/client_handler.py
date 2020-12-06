@@ -22,11 +22,13 @@ def client_add(**kwargs):
 				""
 			],
 		"faction": "CIV",   # Standard start faction
-		'inv_grid': inv_handler.inv_grid_create(16, 8),     # ToDo: Remove the "grid" itself and exchange it with some kind of "used slots"-list
-		'inv_rows': 16,
-		'inv_cols': 8,
 		'inv_usedSlots': [],
 		'inventory': {
+			"0": {
+				"inv_grid": inv_handler.inv_grid_create(20, 8),  # DEV VALUES
+				"inv_rows": 20,  # DEV VALUES
+				'inv_cols': 8  # DEV VALUES
+				},
 			# Uniform
 			"12": {
 				"inv_grid": inv_handler.inv_grid_create(16, 8),  # DEV VALUES
@@ -69,7 +71,7 @@ def client_init(self):
 		player_data_set(self.sData, self.puid, self.cData)
 
 		# add Starter Gear:
-		startGear = [["vn_b_bandana_03", [10]], ["vn_b_uniform_macv_01_06", [12]]]
+		startGear = [["vn_b_uniform_macv_01_06", [12]], ["vn_b_bandana_03", [10]]]
 		for itemData in startGear:
 			item = inv_handler.inv_item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
 			item["curInv"] = self.cData["puid"]
@@ -130,8 +132,9 @@ def client_init(self):
 	PRINT_DEBUG(f"SENDING: INVENTORY ITEMDATA TO {self.puid}...")
 	dataset = {
 			"itemData": self.cData["itemData"],
-			"inv_rows": self.cData["inv_rows"],
-			"inv_cols": self.cData["inv_cols"]
+			# "inventory": self.cData["inventory"]
+			"inv_rows": self.cData["inventory"]["12"]["inv_rows"],  # ToDo: Send all grids (12-15) - Needs .sqf adjustments first!
+			"inv_cols": self.cData["inventory"]["12"]["inv_cols"]   # ToDo: Send all grids (12-15) - Needs .sqf adjustments first!
 		}
 	# remove the grid from the data, passed to the client.
 	asc_g_msg.sendMsg("player_gear_set", dataset, self.con_client)
@@ -215,14 +218,18 @@ def player_killed(sData, *data):
 		# remove the old Item cData
 		cData["itemData"].pop(itemID)
 
-		# Reset the Item back to an Inventory Slot
+		# Reset the Item back to an Inventory Slot, inside a crate
 		item["inSlot"] = 0
+		item["invSub"] = "0"
 
 	# reset the grid of the player to the Standard Value:
-	cData["inv_grid"] = inv_handler.inv_grid_create(16, 8)
+	cData["inventory"]["12"]["inv_grid"] = inv_handler.inv_grid_create(16, 8)   # TODO: DEV VALUE - Needs .sqf adjustments first!
+	cData["inventory"]["13"]["inv_grid"] = inv_handler.inv_grid_create(4, 8)    # TODO: DEV VALUE - Needs .sqf adjustments first!
+	cData["inventory"]["14"]["inv_grid"] = inv_handler.inv_grid_create(4, 8)    # TODO: DEV VALUE - Needs .sqf adjustments first!
+	cData["inventory"]["15"]["inv_grid"] = inv_handler.inv_grid_create(4, 8)    # TODO: DEV VALUE - Needs .sqf adjustments first!
 
 	# add Starter Gear:
-	startGear = [["vn_b_bandana_03", [10]], ["vn_b_uniform_macv_01_06", [12]]]
+	startGear = [["vn_b_uniform_macv_01_06", [12]], ["vn_b_bandana_03", [10]]]
 	for itemData in startGear:
 		item = inv_handler.inv_item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
 		item["curInv"] = cData["puid"]
