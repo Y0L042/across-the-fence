@@ -68,7 +68,6 @@ class data_server:
                     break
                 else:
                     # check if multiple messages received at once and handle them separately
-                    # if b"}{" in msg:
                     if b"$$" in msg:
                         for i in range(msg.count(b"$$")):
                             splitPos = msg.find(b"$$") + 2
@@ -77,32 +76,22 @@ class data_server:
                             else:
                                 msg_tmp = msg[:splitPos - 2:]
 
-                            try:
-                                msg_d = json.loads(msg_tmp.decode('ascii'))
-                                # get the codeTag and Data for the functions cmdList
-                                code = msg_d["fnc"]
-                                data = msg_d["data"]
-                                message_handler_s(sData=self, code=code, args=data)
-                            except Exception as e:
-                                # something went wrong, terribly...
-                                PRINT_WARNING(f"FAULTY MESSAGE RECEIVED! ABORTING! MESSAGE: Exception: {e}")
-                                continue
+                            msg_d = json.loads(msg_tmp.decode('ascii'))
+                            # get the codeTag and Data for the functions cmdList
+                            code = msg_d["fnc"]
+                            data = msg_d["data"]
+                            message_handler_s(sData=self, code=code, args=data)
 
                             # remove msg_tmp from the main "MultiMessage"
                             msg = msg[splitPos::]
                     else:
-                        try:
-                            # load as json and decode it
-                            msg_d = json.loads(msg.decode('ascii'))
-                            # get the codeTag for the functions cmdList
-                            code = msg_d["fnc"]
-                            data = msg_d["data"]
+                        # load as json and decode it
+                        msg_d = json.loads(msg.decode('ascii'))
+                        # get the codeTag for the functions cmdList
+                        code = msg_d["fnc"]
+                        data = msg_d["data"]
 
-                            message_handler_s(sData=self, code=code, args=data)
-                        except Exception as e:
-                            # something went wrong, terribly...
-                            PRINT_WARNING(f"FAULTY MESSAGE RECEIVED! ABORTING! MESSAGE: Exception: {e}")
-                            continue
+                        message_handler_s(sData=self, code=code, args=data)
 
             except ConnectionResetError:
                 PRINT_WARNING(f"GAME SERVER: CRE - Connection closed - Disconnecting all Clients...")

@@ -65,6 +65,7 @@ def client_checkKey(sData, con_server, con_client, raddr):
                     con_client.shutdown(socket.SHUT_RDWR)
                     con_client.close()
                 break
+
         except socket.timeout:
             con_client.shutdown(socket.SHUT_RDWR)
             con_client.close()
@@ -103,48 +104,34 @@ class data_client:
                 if not msg:
                     # PRINT_ATTENTION(f"ASC_CLIENT: None - Connection closed: {raddr[0]} : {raddr[1]}")
                     break
-                try:
-                    # check if multiple messages received at once and handle them separately
-                    if b"$$" in msg:
-                        for i in range(msg.count(b"$$")):
-                            splitPos = msg.find(b"$$") + 2
-                            if splitPos == 0:
-                                msg_tmp = msg
-                            else:
-                                msg_tmp = msg[:splitPos - 2:]
 
-                            try:
-                                msg_d = json.loads(msg_tmp.decode('ascii'))
-                                # get the codeTag and Data for the functions cmdList
-                                code = msg_d["fnc"]
-                                data = msg_d["data"]
-                                message_handler_c(client=self, code=code, args=data)
-                            except Exception as e:
-                                # something went wrong, terribly...
-                                PRINT_WARNING(f"FAULTY MESSAGE RECEIVED! ABORTING! MESSAGE: Exception: {e}")
-                                continue
+                # check if multiple messages received at once and handle them separately
+                if b"$$" in msg:
+                    for i in range(msg.count(b"$$")):
+                        splitPos = msg.find(b"$$") + 2
+                        if splitPos == 0:
+                            msg_tmp = msg
+                        else:
+                            msg_tmp = msg[:splitPos - 2:]
 
-                            # remove msg_tmp from the main "MultiMessage"
-                            msg = msg[splitPos::]
-                    else:
-                        try:
-                            # PRINT_DEBUG("ASC_CLIENT: GET MESSAGE: SINGLE MESSAGE RECEIVED")
-                            # load as json and decode it
-                            msg_d = json.loads(msg.decode('ascii'))
-                            # get the codeTag for the functions cmdList
-                            code = msg_d["fnc"]
-                            data = msg_d["data"]
+                        msg_d = json.loads(msg_tmp.decode('ascii'))
+                        # get the codeTag and Data for the functions cmdList
+                        code = msg_d["fnc"]
+                        data = msg_d["data"]
+                        message_handler_c(client=self, code=code, args=data)
 
-                            message_handler_c(client=self, code=code, args=data)
-                            # message_handler_c(con=con, code=code, cData=self.cData, args=data)
-                        except Exception as e:
-                            # something went wrong, terribly...
-                            # PRINT_WARNING(f"FAULTY MESSAGE RECEIVED! ABORTING! MESSAGE: Exception: {e}")
-                            continue
+                        # remove msg_tmp from the main "MultiMessage"
+                        msg = msg[splitPos::]
+                else:
+                    # PRINT_DEBUG("ASC_CLIENT: GET MESSAGE: SINGLE MESSAGE RECEIVED")
+                    # load as json and decode it
+                    msg_d = json.loads(msg.decode('ascii'))
+                    # get the codeTag for the functions cmdList
+                    code = msg_d["fnc"]
+                    data = msg_d["data"]
 
-                except (UnicodeDecodeError, Exception) as e:
-                    PRINT_WARNING(f"EXCEPTION: ASC_CLIENT: {e}\nmsg: {msg}")
-                    pass
+                    message_handler_c(client=self, code=code, args=data)
+
             except ConnectionResetError:
                 PRINT_ATTENTION(f"ASC_CLIENT: CRE - Connection closed: {raddr[0]} : {raddr[1]}")
                 break
