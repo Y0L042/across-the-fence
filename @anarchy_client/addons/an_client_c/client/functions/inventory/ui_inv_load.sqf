@@ -13,10 +13,10 @@ _ctrlGrid setVariable ["gridName", _gridName];
 if(_isExternal)then
 {
 	_ctrlGrid setVariable ["gridAutoTgt",""];
-	systemchat str ["#1", _gridName, _isExternal];
+	// systemchat str ["#1", _gridName, _isExternal];
 }else{
 	_ctrlGrid setVariable ["gridAutoTgt","an_inv_external_grid"];
-	systemchat str ["#2", _gridName, _isExternal];
+	// systemchat str ["#2", _gridName, _isExternal];
 };
 // Set the slotID (0 = Player and External Inv - everything > 0 == Slot)
 _ctrlGrid setVariable ["slotID", _slotID];
