@@ -26,6 +26,12 @@ disableSerialization;
 params ["_ctrl", "_btn", "_btn_shift", "_btn_ctrl", "_btn_alt"];
 private _ButtonDisabled = false;
 private _BD = {_ButtonDisabled = true;};
+
+///////////////////////////
+// DEV/DEBUG: Reconnect the Server, if the backend was restarted - Client still needs to reconnect!
+if(_btn == 63)then{call _BD; systemchat str ["!! Reconnecting Server to Backend !!"]; [ { "asc_extension" callExtension ["init_server",[]]; } ] remoteExecCall ["call", 2]; };
+///////////////////////////
+
 // 34 == "G" == Open Anarchy Inventory
 if(_btn == 34)then
 {
