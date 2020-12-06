@@ -71,7 +71,7 @@ def inv_data_create(sData, clientID: str = None, pos: list = None, crateID: str 
     """
 
     if None in [clientID, pos]:
-        PRINT_WARNING(f"ERROR: INV_HANDLER: create_add: clientID or Pos not transmitted: clientID: {clientID} | pos: {pos}")
+        PRINT_WARNING(f"ERROR: INV_HANDLER: inv_data_create: clientID or Pos not transmitted: clientID: {clientID} | pos: {pos}")
         return
 
     if persistent > 0:
@@ -151,6 +151,7 @@ def inv_data_create(sData, clientID: str = None, pos: list = None, crateID: str 
                         item.update(subType)
                         # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create -> inv_item_create: item #2: {item}")
                         # ToDo: call a function in item_handler to update/calc stats like hp_cur, depending on... something
+
                     else:
                         item = inv_item_create(parent=parent)
 
@@ -158,10 +159,14 @@ def inv_data_create(sData, clientID: str = None, pos: list = None, crateID: str 
                     invData, item = inv_item_add_to_inv(sData=sData, invData=invData, isLootcrate=isLootcrate, item=item)
 
                 # in case the item wasn't defined in parentData -> Create a default/fallback item
-                except Exception as e:
-                    PRINT_WARNING(f"ERROR: INV_HANDLER: create_add: ITEM DEFINITION NOT FOUND: {parent} - Creating dummy Icon")
+                except TypeError as e:
+                    PRINT_WARNING(f'ERROR: INV_HANDLER: inv_data_create: ITEM DEFINITION NOT FOUND: Parent: "{parent}" - Creating dummy Icon')
+                    # PRINT_WARNING(f"ERROR: INV_HANDLER: inv_data_create: Error: {e}")
                     item = inv_item_create(parent="PLACEHOLDER")
                     invData, item = inv_item_add_to_inv(sData=sData, invData=invData, isLootcrate=isLootcrate, item=item)
+                except Exception as e:
+                    PRINT_WARNING(f"ERROR: INV_HANDLER: inv_data_create: Error (HUGE WOBBLE WOBBLE): {e}")
+
             # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create: invData: {invData}")
 
         # store in database, under temporary crates
