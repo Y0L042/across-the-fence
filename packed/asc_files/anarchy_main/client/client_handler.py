@@ -22,32 +22,32 @@ def client_add(**kwargs):
 				""
 			],
 		"faction": "CIV",   # Standard start faction
-		'inv_grid': inv_handler.invGrid_create(16, 8),     # ToDo: Remove the "grid" itself and exchange it with some kind of "used slots"-list
+		'inv_grid': inv_handler.inv_grid_create(16, 8),     # ToDo: Remove the "grid" itself and exchange it with some kind of "used slots"-list
 		'inv_rows': 16,
 		'inv_cols': 8,
 		'inv_usedSlots': [],
 		'inventory': {
 			# Uniform
 			"12": {
-				"inv_grid": inv_handler.invGrid_create(16, 8),  # DEV VALUES
+				"inv_grid": inv_handler.inv_grid_create(16, 8),  # DEV VALUES
 				"inv_rows": 16,  # DEV VALUES
 				'inv_cols': 8  # DEV VALUES
 				},
 			# Vest
 			"13": {
-				"inv_grid": inv_handler.invGrid_create(4, 8),  # DEV VALUES
+				"inv_grid": inv_handler.inv_grid_create(4, 8),  # DEV VALUES
 				"inv_rows": 4,  # DEV VALUES
 				'inv_cols': 8  # DEV VALUES
 				},
 			# Pouch
 			"14": {
-				"inv_grid": inv_handler.invGrid_create(4, 8),  # DEV VALUES
+				"inv_grid": inv_handler.inv_grid_create(4, 8),  # DEV VALUES
 				"inv_rows": 4,  # DEV VALUES
 				'inv_cols': 8  # DEV VALUES
 				},
 			# Backpack
 			"15": {
-				"inv_grid": inv_handler.invGrid_create(4, 8),  # DEV VALUES
+				"inv_grid": inv_handler.inv_grid_create(4, 8),  # DEV VALUES
 				"inv_rows": 4,  # DEV VALUES
 				'inv_cols': 8  # DEV VALUES
 				}
@@ -71,7 +71,7 @@ def client_init(self):
 		# add Starter Gear:
 		startGear = [["vn_b_bandana_03", [10]], ["vn_b_uniform_macv_01_06", [12]]]
 		for itemData in startGear:
-			item = item_handler.item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
+			item = inv_handler.item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
 			item["curInv"] = self.cData["puid"]
 			# Add it to the itemData (inventory) - Since those Items are already "equipped", they won't take any slots.
 			self.cData["itemData"][item["id"]] = item
@@ -210,7 +210,7 @@ def player_killed(sData, *data):
 
 		# "move" the Items to the newly created Crate
 		# ToDo: Recheck again later, if "item_move" must be used here (rel: ItemStats)
-		invData, item = item_handler.item_add_to_inv(sData, invData=crateData, isLootcrate=1, item=itemData)
+		invData, item = inv_handler.item_add_to_inv(sData, invData=crateData, isLootcrate=1, item=itemData)
 
 		# remove the old Item cData
 		cData["itemData"].pop(itemID)
@@ -219,19 +219,19 @@ def player_killed(sData, *data):
 		item["inSlot"] = 0
 
 	# reset the grid of the player to the Standard Value:
-	cData["inv_grid"] = inv_handler.invGrid_create(16, 8)
+	cData["inv_grid"] = inv_handler.inv_grid_create(16, 8)
 
 	# add Starter Gear:
 	startGear = [["vn_b_bandana_03", [10]], ["vn_b_uniform_macv_01_06", [12]]]
 	for itemData in startGear:
-		item = item_handler.item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
+		item = inv_handler.item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
 		item["curInv"] = cData["puid"]
 		# Add it to the itemData (inventory) - Since those Items are already "equipped", they won't take any slots.
 		cData["itemData"][item["id"]] = item
 
 	# force-update the player Inventory, so all the values will be reset
 	# Does NOT trigger the reopening of the Inventory, since player is dead!
-	inv_handler.inv_update_force(client, dropCrateID, puid)
+	inv_handler.inv_data_update_force(client, dropCrateID, puid)
 
 	# save to file
 	# ToDo: finally add some proper "DB-saver"

@@ -21,13 +21,13 @@ cmdList = {
 
 				# Inventory:
 				# # Try to get data from crates/Inventories.
-				"crate_data_get": inv_handler.crate_data_get,
+				"inv_data_request": inv_handler.inv_data_request,
 				# # remove crates from the database
-				"crate_rem": inv_handler.crate_rem,
+				"inv_data_remove": inv_handler.inv_data_remove,
 
 				# Item Handling:
 				# # Degradation (WIP)
-				"player_fired": item_handler.item_degrade,
+				"player_fired": inv_handler.item_degrade,
 
 				# Player:
 				"update_players": client_handler.players_stats_update,
@@ -59,13 +59,12 @@ cmdList = {
 
 
 				# Inventory
-				"crate_add":                {"fnc": "AN_S_fnc_crate_add", "spawn": 0}
+				"inv_data_create":                {"fnc": "AN_S_fnc_crate_add", "spawn": 0}
 			},
 		'client': {
 				# ""Tag" send from Arma" : Function in the backend
 				# NOTE: Make sure, that you imported the related plugin/method/folder/however it's called (and added the files to the "__init.py__" )
-				"inv_itemMove":     item_handler.item_move,
-				# "inv_get_grid":     inv_handler.inv_grid_get,
+				"inv_itemMove":     inv_handler.item_move,
 				"inv_get_items":    inv_handler.inv_items_get
 			},
 		'arma_client': {
