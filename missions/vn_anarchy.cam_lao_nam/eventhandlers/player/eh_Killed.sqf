@@ -34,4 +34,4 @@ para_l_buildmode = nil;
 para_l_placing = false;
 
 // Reset the slotted IventoryItems on the player
-{ [_x] call an_c_fnc_ui_inv_item_slotted_remove; }forEach[2,3,10,12,13,15];
+{ [_x] call an_c_fnc_ui_inv_item_slotted_remove; }forEach[2,202,3,4,5,10,11,12,13,14,15,16,17];
