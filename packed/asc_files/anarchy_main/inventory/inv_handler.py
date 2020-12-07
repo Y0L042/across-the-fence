@@ -4,7 +4,7 @@ from . import id_handler
 from . import loot_handler
 from asc_fnc.asc_db.database import asc_db
 from asc_fnc import asc_g_msg
-
+import copy
 
 # Default Variables: (DEV/WIP? Put it somewhere else, idk yet)
 DEFAULT_loot_count = 2
@@ -176,15 +176,21 @@ def inv_data_create(sData, clientID: str = None, pos: list = None, crateID: str 
     # send the invData to the Client
     inv_data_send_toClient(invData, conClient)
 
+def inv_data_strip_inventory_invGrid(inventory):
+    # creates a copy of the given inventory and returns a new dict, without inv_grid (not needed on the client)
+    PRINT_ATTENTION(f'inv_data_strip_inventory_invGrid: inventory: {inventory}')
+    stripped_inventory = copy.deepcopy(inventory)
+    for key in stripped_inventory:
+        del stripped_inventory[key]["inv_grid"]
+    PRINT_ATTENTION(f'inv_data_strip_inventory_invGrid: stripped_inventory: {stripped_inventory}')
+    return stripped_inventory
 
-def inv_data_send_toClient(invData, conClient, invGridID="0"):
+def inv_data_send_toClient(invData, conClient):
     # PRINT_ATTENTION(f"inv_data_send_toClient: invData: {invData}")
     dataset = {
-        "itemData": invData["itemData"],
         "crateID": invData["crateID"],
-        # "inventory": self.cData["inventory"]
-        "inv_rows": invData["inventory"][invGridID]["inv_rows"],
-        "inv_cols": invData["inventory"][invGridID]["inv_cols"]
+        "itemData": invData["itemData"],
+        "inventory": inv_data_strip_inventory_invGrid(invData["inventory"])
         }
     asc_g_msg.sendMsg("ret_inv_crateData", dataset, conClient)
 
@@ -207,15 +213,18 @@ def inv_data_update_force(client, invID_old, invID_new):
     if len(inv_remote) == 0:
         PRINT_WARNING(f"ERROR: inv_data_update_force: inv_remote not found!")
         return
+
     dataset = {
+        "crateID": client.puid,
         "itemData": client.cData["itemData"],
-        "inv_rows": client.cData["inventory"]["12"]["inv_rows"],    # TODO: DEV VALUE - Needs .sqf adjustments first!
-        "inv_cols": client.cData["inventory"]["12"]["inv_cols"]     # TODO: DEV VALUE - Needs .sqf adjustments first!
+        "inventory": inv_data_strip_inventory_invGrid(client.cData["inventory"])
         }
     # update the player Gear
     asc_g_msg.sendMsg("player_gear_set", dataset, client.con_client)
-    # send Remote Inventory back to the player and trigger the Inventory UI to be reopen, so it loads the new data
-    inv_data_send_toClient(inv_remote, client.con_client)
+    # Remove the dict entry: "inv_grid" (not needed on the client)
+    stripped_inv_remote = inv_data_strip_inventory_invGrid(inv_remote["inventory"])
+    # send the stripped Remote Inventory back to the player and trigger the Inventory UI to be reopen, so it loads the new data
+    inv_data_send_toClient(stripped_inv_remote, client.con_client)
 
 
 # called by Server only!

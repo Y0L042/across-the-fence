@@ -132,9 +132,7 @@ def client_init(self):
 	PRINT_DEBUG(f"SENDING: INVENTORY ITEMDATA TO {self.puid}...")
 	dataset = {
 			"itemData": self.cData["itemData"],
-			# "inventory": self.cData["inventory"]
-			"inv_rows": self.cData["inventory"]["12"]["inv_rows"],  # ToDo: Send all grids (12-15) - Needs .sqf adjustments first!
-			"inv_cols": self.cData["inventory"]["12"]["inv_cols"]   # ToDo: Send all grids (12-15) - Needs .sqf adjustments first!
+			"inventory": inv_handler.inv_data_strip_inventory_invGrid(self.cData["inventory"])
 		}
 	# remove the grid from the data, passed to the client.
 	asc_g_msg.sendMsg("player_gear_set", dataset, self.con_client)
@@ -151,7 +149,6 @@ def client_init(self):
 	# send the "Client has passed the ASC init phase" message to the Server
 	PRINT_OK(f'PLAYER INIT DONE FOR {self.puid} - SENDING "PLAYER READY" TO THE GAMESERVER')
 	asc_g_msg.sendMsg("INIT_PLAYER_DONE", {"data_puid": self.puid}, self.con_server)
-
 
 
 def player_data_get(sData, puid):
