@@ -8,9 +8,13 @@ params ["_ctrlGrid", "_btn", "_mPos", ["_btnShift",false,[false]], ["_btnCtrl",f
 _mPos params ["_mPosX", "_mPosY"];
 
 private _gridIDC = ctrlIDC _ctrlGrid;
-_gridSize = localNamespace getVariable [format["an_inv_grid_size_%1",_gridIDC],[-1,-1]];
-_gridSize params ["_gridRows","_gridCols"];
-if(_gridRows isEqualto [-1,-1])exitWith
+// _gridSize = localNamespace getVariable [format["an_inv_grid_size_%1",_gridIDC],[-1,-1]];
+// _gridSize params ["_gridRows","_gridCols"];
+private _gridRows = _ctrlGrid getVariable ["rows", -1];
+private _gridCols = _ctrlGrid getVariable ["cols", -1];
+if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_MPOS: Grid Rows/Cols: [%1,%2]", _gridRows,_gridCols];};
+
+if(_gridRows < 0)exitWith
 {
 	if(_DEBUGON)then{diag_log ["ERROR: UI_INV_MPOS: GRID NOT SET!", _gridIDC, [_gridRows]];};
 };
@@ -91,8 +95,8 @@ if(_itemTileUsage isEqualto [] || !_slotValidCheck)then
 	if(_dataPrev isEqualto [])exitWith{systemchat "ERROR: mPos: (_dataPrev isEqualto [])";};
 	
 	// Get the previous data
-	_dataPrev params ["_ctrlParentPrev","_pX","_pY","_itemClass","_itemUsedSlotsPrev","_posData"];
-	
+	_dataPrev pushback _parentData;
+	_dataPrev params ["_ctrlParentPrev","_pX","_pY","_itemClass","_itemUsedSlotsPrev","_posData","_parentData"];	// *burp*
 	private _gridTilesUsedCur = [(ctrlIDC _ctrlParentPrev)] call an_c_fnc_ui_inv_grid_tiles_used_get;
 	
 	// add all tiles to the "blocked tiles"-array and store it in the Grid-parent itself
@@ -108,10 +112,10 @@ else
 	[_ctrlGrid,_gridTilesUsed,_itemTileUsage] call an_c_fnc_ui_inv_grid_tiles_used_update;
 	
 	// get the grid pos of the first entry (TopLeft Slot)
-	([_ctrlGrid, _gridRows, _itemTileUsage#0] call an_c_fnc_ui_inv_grid_gridToPos)params["_itemGridPosRow", "_itemGridPosCol"];
+	([_ctrlGrid, _itemTileUsage#0] call an_c_fnc_ui_inv_grid_gridToPos)params["_itemGridPosRow", "_itemGridPosCol"];
 	
 	// add the Item to the passed position
-	[_ctrlGrid,_itemGridPosRow,_itemGridPosCol,_itemClass,_offsetPos, _slotID] call an_c_fnc_ui_inv_item_create;
+	[_ctrlGrid,_itemGridPosRow,_itemGridPosCol,_itemClass,_offsetPos, _slotID, _parentData] call an_c_fnc_ui_inv_item_create;
 };
 
 

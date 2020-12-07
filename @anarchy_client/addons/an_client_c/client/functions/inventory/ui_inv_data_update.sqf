@@ -3,7 +3,7 @@ private _DEBUGON = false;
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 // Update player Inventory
 // NOTE: The remote Inventory will never be saved localy! So only the player Inventory needs to be updated!:
-params["_itemInvIDCur","_itemInvIDNew","_itemData","_itemID","_invGearID"];
+params["_itemInvIDCur","_itemInvIDNew","_itemData","_itemID"];
 
 // get Current Inventory data
 private _invDataCur = localNamespace getVariable ["an_cData_invData",[]];
@@ -46,7 +46,7 @@ else
 localNamespace setVariable ["an_cData_invData",
 	[
 		["crateID", ENTRY_GET("crateID", _invDataCur)],
-		["inv_rows", ENTRY_GET("inv_rows", _invDataCur)],
+		["inventory", ENTRY_GET("inventory", _invDataCur)],
 		["itemData", _itemDataPlayer ]
 	]
 ];

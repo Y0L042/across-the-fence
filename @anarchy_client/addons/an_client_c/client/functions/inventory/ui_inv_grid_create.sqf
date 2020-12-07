@@ -6,8 +6,11 @@
 private _DEBUGON = false;
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
-params["_ctrlGrid","_gridSize","_gridName","_slotID"];
-_gridSize params["_gridRows","_gridCols"];
+params["_ctrlGrid","_gridName"];
+
+private _gridRows = _ctrlGrid getVariable ["rows", 0];
+private _gridCols = _ctrlGrid getVariable ["cols", 8];
+private _slotID = _ctrlGrid getVariable ["slotID", 0];
 
 private _disp = uiNamespace getVariable ["an_inventory",displayNull];
 if(isNull _disp)exitWith{systemchat "ERROR: grid_create: isNull _disp";};

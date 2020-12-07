@@ -30,7 +30,7 @@ params["_dataset"];
 
 //Item data for each Item in the Inventory
 private _itemDataPlayer = ENTRY_GET("itemData", _dataset);
-diag_log format["ASC: Inventory itemData	: %1", _itemDataPlayer];
+diag_log format["ASC: Inventory _itemDataPlayer	: %1", _itemDataPlayer];
 {
 	_x params["_item_id", "_itemData"];
 	
@@ -52,8 +52,8 @@ diag_log format["ASC: Inventory itemData	: %1", _itemDataPlayer];
 // save the current Inventory, properly defined, so it can be used with "ui_inv_load".
 localNamespace setVariable ["an_cData_invData",
 		[
-			["crateID",getPlayerUID player],
-			["inv_rows", ENTRY_GET("inv_rows", _dataset)],
+			["crateID", getPlayerUID player],
+			["inventory", ENTRY_GET("inventory", _dataset)],
 			["itemData", _itemDataPlayer ]
 		]
 	];

@@ -52,7 +52,7 @@ if(_slots isEqualTo [])exitWith{systemchat "ERROR: item_move_auto: No free slots
 
 
 //convert from gridPos to uiPos
-([_ctrlGrid, _gridRows, (_slots#0) ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
+([_ctrlGrid, (_slots#0) ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
 
 // set the ID and Classname, to create the Item
 [_itemClass] call an_c_fnc_ui_inv_item_active_class_set;

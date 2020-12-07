@@ -5,9 +5,9 @@
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 params["_parentData","_ctrlInvGrid"];
 
-private _gridSize = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlInvGrid)], [-1,-1]];
-_gridSize params["_gridRows","_gridCols"];
-if(_gridSize isEqualTo [-1,-1])exitWith{systemchat str ["ITEM_CREATE: GRID NOT SET!", _gridRows];};
+private _gridRows = _ctrlInvGrid getVariable ["rows", -1];
+private _gridCols = _ctrlInvGrid getVariable ["cols", -1];
+if(_gridRows < 0)exitWith{systemchat str ["ITEM_CREATE: GRID NOT SET!", _gridRows];};
 
 (ctrlPosition _ctrlInvGrid)params["","","_gridW","_gridH"];
 private _tileW = _gridW / _gridCols;

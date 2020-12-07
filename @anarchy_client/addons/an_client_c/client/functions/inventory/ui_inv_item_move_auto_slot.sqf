@@ -62,7 +62,7 @@ if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _slots   :", _slots]; d
 if(_slots isEqualTo [])exitWith{systemchat "ERROR: item_move_auto: No free slots found.";};
 
 //convert from gridPos to uiPos
-([_ctrlGrid, _gridRows, (_slots#0) ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
+([_ctrlGrid, (_slots#0) ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
 if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _itemPosY, _itemPosX :", _itemPosY, _itemPosX]; diag_log _msg, systemchat str _msg;};
 
 

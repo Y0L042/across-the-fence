@@ -18,7 +18,7 @@ private _DEBUGON = false;
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
-params["_ctrlInvGrid","_posX","_posY","_itemClass","_usedSlots","_slotID"];
+params["_ctrlInvGrid","_posX","_posY","_itemClass","_usedSlots","_slotID","_parentData"];
 
 private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
 //create the Icon
@@ -27,7 +27,10 @@ private _ctrlItem = _disp ctrlCreate ["inv_icon",_itemIDC,_ctrlInvGrid];
 localNamespace setVariable ["an_Item_IDC_count",(_itemIDC + 1)];
 
 // Get the proper Size, related to Grid Size
+if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_ITEM_CREATE: PARENT DATA   : %1", _parentData];};
+if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_ITEM_CREATE: CTRL INV GRID : %1", _ctrlInvGrid];};
 ([_parentData, _ctrlInvGrid] call an_c_fnc_ui_inv_item_size_calc) params ["_ctrlItemW","_ctrlItemH"];
+if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_ITEM_CREATE: SIZE CALC     : %1", [_ctrlItemW, _ctrlItemH]];};
 
 //if needed -> "rotate" the main ctrlGroup and adjust the values to 4/3 (Arma Base Resolution)
 if(an_inv_move_placeHorizontal)then
@@ -86,6 +89,9 @@ private _itemPosCur = ENTRY_GET("invPos", _itemData);
 private _isSamePos = _itemPosCur isEqualTo (_usedSlots#0);
 // ... its subInventory ...
 private _itemInvSubCur = ENTRY_GET("invSub", _itemData);
+// Get the active Grid IDC - If it's the SlotID is > "0" (SLOT, not SubInv!)
+private _invSubActive = if(_slotID > 0)then{"0"}else{str(_gridActive-1000)};	// 12 = Uniform
+private _isSameSubInv = _itemInvSubCur isEqualTo _invSubActive;
 // ... its Position ...
 _itemInvIDCur = ENTRY_GET("curInv", _itemData);
 private _isSameInv = _itemInvIDCur in ["",_itemInvIDNew];
@@ -93,10 +99,9 @@ private _isSameInv = _itemInvIDCur in ["",_itemInvIDNew];
 private _itemInSlotCur = ENTRY_GET("inSlot", _itemData);
 private _isSameSlot = _itemInSlotCur == _slotID;
 
-// Get the active Grid IDC - If it's a Slot -> "0"
-private _invGearID = if(_slotID > 0)then{"0"}else{str(_gridActive-1000)};	// 12 = Uniform
-
 // Check if the position is the same as before AND if it is in the old Inventory (Short: Check if it was moved, or just added (e.g: inv_load)!)
+// if !(_isSamePos && _isSameInv && _isSameSlot && _isSameSubInv)then
+systemchat str["_isSameSubInv", _isSameSubInv, "---", _itemInvSubCur, _invSubActive];
 if !(_isSamePos && _isSameInv && _isSameSlot)then
 {
 	// if not -> Send a message to the backend, that you moved an Item.
@@ -114,6 +119,7 @@ if !(_isSamePos && _isSameInv && _isSameSlot)then
 	};
 	[_itemData, "curInv", _itemInvIDNew] call _updateItemVars;
 	[_itemData, "invPos", (_usedSlots#0)] call _updateItemVars;
+	[_itemData, "invSub", _invSubActive] call _updateItemVars;
 	// TODO: Update "inSlot", if put in or taken out of a Slot
 	[_itemData, "inSlot", _slotID] call _updateItemVars;
 	
@@ -149,12 +155,12 @@ if !(_isSamePos && _isSameInv && _isSameSlot)then
 	};
 	
 	// send command to the backend, to update its data.
-	if(_DEBUGON)then{diag_log ["DEBUG: item_create: MSG SEND Data:", ["inv_item_move", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID, _invGearID]]];};
+	if(_DEBUGON)then{diag_log ["DEBUG: item_create: MSG SEND Data:", ["inv_item_move", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID, _invSubActive]]];};
 	
-	["inv_item_move", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID, _invGearID]] call AN_G_fnc_msg_send;
+	["inv_item_move", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID, _invSubActive]] call AN_G_fnc_msg_send;
 	
 	// Update the local Inventory
-	[_itemInvIDCur,_itemInvIDNew,_itemData,_itemID, _invGearID] call an_c_fnc_ui_inv_data_update;
+	[_itemInvIDCur, _itemInvIDNew, _itemData, _itemID] call an_c_fnc_ui_inv_data_update;
 };
 
 if(_DEBUGON)then{diag_log ["CREATE _itemData: ", _itemData];};
