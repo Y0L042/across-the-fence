@@ -55,29 +55,6 @@ class para_vote_3
 	access = 1;
 };
 
-//--- Key up actions:
-class vn_mf_debug_monitor_action
-{
-	defaultKey = 41;
-	shift = "false";
-	ctrl = "false";
-	alt = "false";
-	function = "vn_mf_fnc_enable_debug_monitor";
-	down = 0;
-	displayName = $STR_vn_mf_keybindings_debug_monitor;
-	access = 1;
-};
-class vn_mf_task_roster_action
-{
-	defaultKey = 35;
-	shift = "false";
-	ctrl = "false";
-	alt = "false";
-	function = "vn_mf_fnc_enable_task_roster";
-	down = 0;
-	displayName = $STR_vn_mf_keybindings_task_roster;
-	access = 1;
-};
 class vn_mf_build_mode_action_up
 {
 	defaultKey = 49;

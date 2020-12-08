@@ -74,7 +74,7 @@ progressLoadingScreen 0.6;
 uiSleep 0.4;
 progressLoadingScreen 0.7;
 // create UI
-// 0 spawn vn_mf_fnc_ui_create;
+private _kbmId = call para_c_fnc_keybindingsMenu_init;
 [parseText format["<t font='tt2020base_vn' color='#F5F2D0'>%1</t>",localize "STR_vn_mf_loading7"]] call vn_an_fnc_update_loading_screen;
 
 uiSleep 0.4;

@@ -553,20 +553,11 @@
       <Key ID="STR_vn_mf_buildingMenu_conditions">
         <Original>Conditions</Original>
       </Key>
+      <Key ID="STR_vn_mf_keybindings_interactionOverlay_toggle">
+        <Original>Toggle Interaction Overlay</Original>
+      </Key>
       <Key ID="STR_vn_mf_keybindings_selector">
         <Original>Wheel Menu</Original>
-      </Key>
-      <Key ID="STR_vn_mf_keybindings_build_cycle1">
-        <Original>Bulding Menu: Cycle Up</Original>
-      </Key>
-      <Key ID="STR_vn_mf_keybindings_build_cycle2">
-        <Original>Bulding Menu: Cycle Down</Original>
-      </Key>
-      <Key ID="STR_vn_mf_keybindings_debug_monitor">
-        <Original>Toggle Debug Monitor</Original>
-      </Key>
-      <Key ID="STR_vn_mf_keybindings_task_roster">
-        <Original>Task Roster</Original>
       </Key>
       <Key ID="STR_vn_mf_keybindings_build_mode">
         <Original>Building Mode</Original>
@@ -753,10 +744,81 @@
         <Original>Medical Supplies</Original>
       </Key>
     </Container>
-    <!-- Keybindings menu -->
+    <Container name="WheelMenuActions">
+      <Key ID="STR_vn_mf_join_faction">
+        <Original>Join Faction</Original>
+      </Key>
+    </Container>
+  </Package>
+  <Package name="PARADIGM">
+    <Container name="default">
+    </Container>
+    <Container name="notifications">
+      <Key ID="STR_para_notification_building_non_functional_title">
+        <Original>Building Non-Functional</Original>
+      </Key>
+      <Key ID="STR_para_notification_building_non_functional_desc">
+        <Original>This building isn't functioning right now.</Original>
+      </Key>
+      <Key ID="STR_para_notification_insufficient_resources_title">
+        <Original>Insufficient Resources</Original>
+      </Key>
+      <Key ID="STR_para_notification_insufficient_resources_desc">
+        <Original>The building doesn't have enough resources to do that.</Original>
+      </Key>
+      <Key ID="STR_para_notification_spawn_position_blocked_title">
+        <Original>Area Blocked</Original>
+      </Key>
+      <Key ID="STR_para_notification_spawn_position_blocked_desc">
+        <Original>Clear the area where the vehicle will be created.</Original>
+      </Key>
+      <Key ID="STR_para_notification_vehicle_repaired_title">
+        <Original>Vehicle Repaired</Original>
+      </Key>
+      <Key ID="STR_para_notification_vehicle_repaired_desc">
+        <Original>%1 supplies consumed.</Original>
+      </Key>
+      <Key ID="STR_para_notification_vehicle_refueled_title">
+        <Original>Vehicle Refueled</Original>
+      </Key>
+      <Key ID="STR_para_notification_vehicle_refueled_desc">
+        <Original>%1 supplies consumed.</Original>
+      </Key>
+      <Key ID="STR_para_notification_vehicle_rearmed_title">
+        <Original>Vehicle Rearmed</Original>
+      </Key>
+      <Key ID="STR_para_notification_vehicle_rearmed_desc">
+        <Original>%1 supplies consumed.</Original>
+      </Key>
+      <Key ID="STR_para_notification_vehicle_spawn_cooldown_title">
+        <Original>Vehicle Created Recently</Original>
+      </Key>
+      <Key ID="STR_para_notification_vehicle_spawn_cooldown_desc">
+        <Original>The next vehicle will be available in %1 minutes.</Original>
+      </Key>
+    </Container>
+    <Container name="basebuilding">
+      <Key ID="STR_para_bf_maintenance_repair_action">
+        <Original>Repair Vehicle Using Supplies</Original>
+      </Key>
+      <Key ID="STR_para_bf_maintenance_refuel_action">
+        <Original>Refuel Vehicle Using Supplies</Original>
+      </Key>
+      <Key ID="STR_para_bf_maintenance_rearm_action">
+        <Original>Rearm Vehicle Using Supplies</Original>
+      </Key>
+    </Container>
+    <Container name="supplies">
+      <Key ID="STR_para_supply_buildingsupplies">
+        <Original>Building Supplies</Original>
+      </Key>
+      <Key ID="STR_para_supply_workshopsupplies">
+        <Original>Workshop Supplies</Original>
+      </Key>
+    </Container>
     <Container name="KeybindingsMenu">
       <Key ID="STR_vn_mf_keybindings_title">
-        <Original>Mikeforce Keybindings</Original>
+        <Original>Gamemode Keybindings</Original>
       </Key>
       <Key ID="STR_vn_mf_keybindings_header_action">
         <Original>Action</Original>
@@ -772,11 +834,6 @@
       </Key>
       <Key ID="STR_vn_mf_keybindings_cancel">
         <Original>Cancel</Original>
-      </Key>
-    </Container>
-    <Container name="WheelMenuActions">
-      <Key ID="STR_vn_mf_join_faction">
-        <Original>Join Faction</Original>
       </Key>
     </Container>
   </Package>
