@@ -1,7 +1,8 @@
 
 /*
-	just a wrapper for now.
+	get and return the Parent data from the hashmap
 */
 
 params["_item_name"];
-localNamespace getVariable [format["AN_ITEM_%1",_item_name], []]
+
+AN_data_items getOrDefault [_item_name, createHashmap]

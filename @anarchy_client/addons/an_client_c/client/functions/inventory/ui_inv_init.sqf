@@ -9,7 +9,6 @@ an_c_fnc_ui_inv_init = compile preprocessFileLineNumbers "\sgd\anarchy\an_client
 an_c_fnc_ui_inv_data_update = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_data_update.sqf";
 // Grid
 an_c_fnc_ui_inv_grid_check_freeTiles = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_grid_check_freeTiles.sqf";
-an_c_fnc_ui_inv_grid_create = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_grid_create.sqf";
 an_c_fnc_ui_inv_grid_getSize = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_grid_getSize.sqf";
 an_c_fnc_ui_inv_grid_posToGrid = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_grid_posToGrid.sqf";
 an_c_fnc_ui_inv_grid_gridToPos = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_grid_gridToPos.sqf";
@@ -34,7 +33,6 @@ an_c_fnc_ui_inv_item_getClass = compile preprocessFileLineNumbers "\sgd\anarchy\
 an_c_fnc_ui_inv_item_data_init = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_item_data_init.sqf";
 an_c_fnc_ui_inv_item_data_set = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_item_data_set.sqf";
 an_c_fnc_ui_inv_item_data_get = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_item_data_get.sqf";
-an_c_fnc_ui_inv_item_data_parent_set = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_item_data_parent_set.sqf";
 an_c_fnc_ui_inv_item_data_parent_get = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_item_data_parent_get.sqf";
 an_c_fnc_ui_inv_item_size_calc = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_item_size_calc.sqf";
 an_c_fnc_ui_inv_item_space_usage_get = compile preprocessFileLineNumbers "\sgd\anarchy\an_client_c\client\functions\inventory\ui_inv_item_space_usage_get.sqf";
@@ -117,165 +115,178 @@ an_fnc_MediKit_use =
 };
 AN_C_FNC_PLACEHOLDER = {systemChat str["FUNCTION CALLED: PLACEHOLDER"];};
 
+
 /////////////////////////////////////////////////
+
 /////////////////////////////////////////////////
-/////////////////////////////////////////////////
-private _DEBUGON = false;
+
+////////////////////////////////////////////////
+/*
+AN_data_inventory =
+[
+	 "crateID",
+		getPlayerUID player
+	,"inventory",
+		[
+			 ["1013",[ ["inv_rows",5],	["inv_cols",8]], ["invID",1013],	["invGrid","an_inv_vst_grid"],		["invArea","an_inv_vst_area"],		]
+			,["2202",[ ["inv_rows",3],	["inv_cols",6]], ["invID",202],		["invGrid","an_slot_wpn_b_grid"],	["invArea","an_slot_wpn_b_area"]	]
+			,["1012",[ ["inv_rows",16],	["inv_cols",8]], ["invID",1012],	["invGrid","an_inv_uni_grid"],		["invArea","an_inv_uni_area"]		]
+			,["1015",[ ["inv_rows",7],	["inv_cols",8]], ["invID",1015],	["invGrid","an_inv_bkp_grid"],		["invArea","an_inv_bkp_area"]		]
+			,["2010",[ ["inv_rows",3],	["inv_cols",3]], ["invID",10],		["invGrid","an_slot_hel_grid"],		["invArea","an_slot_hel_area"]		]
+			,["1014",[ ["inv_rows",6],	["inv_cols",8]], ["invID",1014],	["invGrid","an_inv_pch_grid"],		["invArea","an_inv_pch_area"]		]
+			,["2011",[ ["inv_rows",2],	["inv_cols",2]], ["invID",11],		["invGrid","an_slot_gog_grid"],		["invArea","an_slot_gog_area"]		]
+			,["2012",[ ["inv_rows",6],	["inv_cols",4]], ["invID",12],		["invGrid","an_slot_uni_grid"],		["invArea","an_slot_uni_area"]		]
+			,["2013",[ ["inv_rows",4],	["inv_cols",4]], ["invID",13],		["invGrid","an_slot_vst_grid"],		["invArea","an_slot_vst_area"]		]
+			,["2015",[ ["inv_rows",4],	["inv_cols",4]], ["invID",15],		["invGrid","an_slot_bkp_grid"],		["invArea","an_slot_bkp_area"]		]
+			,["2003",[ ["inv_rows",2],	["inv_cols",4]], ["invID",3],		["invGrid","an_slot_sec_grid"],		["invArea","an_slot_sec_area"]		]
+			,["2002",[ ["inv_rows",3],	["inv_cols",6]], ["invID",2],		["invGrid","an_slot_wpn_grid"],		["invArea","an_slot_wpn_area"]		]
+			,["2017",[ ["inv_rows",3],	["inv_cols",3]], ["invID",17],		["invGrid","an_slot_bin_grid"],		["invArea","an_slot_bin_area"]		]
+		]
+	,"itemData",
+		[
+			 ["MjAyMC0xMi0wOVQyMDo1Mjo0MS42NTc3MTYtMQ==",[["inSlot",12],["hp_cur",100],["hp_max",100],["parent","vn_b_uniform_macv_01_06"],["id","MjAyMC0xMi0wOVQyMDo1Mjo0MS42NTc3MTYtMQ=="],["curInv","01234567890123456"],["invPos",[0,0]],["attachments",[]],["isFlipped",0]]]
+			,["MjAyMC0xMi0wOVQyMDo1Mjo0MS42NTc3MTYtMg==",[["inSlot",10],["hp_cur",100],["hp_max",100],["parent","vn_b_bandana_03"],["id","MjAyMC0xMi0wOVQyMDo1Mjo0MS42NTc3MTYtMg=="],["curInv","01234567890123456"],["invPos",[0,0]],["attachments",[]],["isFlipped",0]]]
+		]
+];
+*/
+
+
+
+private _DEBUGON = true;
 // #include "\sgd\paradigm\client\configs\ui\ui_def_base.inc"
-#include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
+// #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
 if!(isNull objectParent player)exitWith{systemchat "DEBUG: Inventory currently blocked, while being in a vehicle!"};
 if!(alive player)exitWith{};
-params["_dataCrate"];
 
+params["_dataCrate_raw"];
 
+an_inv_move_placeHorizontal = true;	// init
+an_ui_inv_grabActive = false;		// init
+
+////////////////////////////////////////////////////////////////////////////////////////
 // Check, if inventory is already open. Close it, then reopen it again.
 private _disp_preCheck = uiNamespace getVariable ["an_inventory", displayNull];
 if !(isNull _disp_preCheck)then{_disp_preCheck closeDisplay 1;};
 private _disp = (findDisplay 46) createDisplay "an_inventory";
 
 
-// Set the names for all available Inventories... 
-AN_INVENTORY_LIST =
-[
-	 ["an_inv_external_area","an_inv_external_grid"]
-	,["an_inv_uni_area","an_inv_uni_grid"]
-	,["an_inv_vst_area","an_inv_vst_grid"]
-	,["an_inv_pch_area","an_inv_pch_grid"]
-	,["an_inv_bkp_area","an_inv_bkp_grid"]
-];
-// ...and Slots
-AN_SLOTS_LIST =
-[
-	 ["an_slot_wpn_area","an_slot_wpn_grid"]
-	,["an_slot_wpn_b_area","an_slot_wpn_b_grid"]
-	,["an_slot_sec_area","an_slot_sec_grid"]
-	,["an_slot_uni_area","an_slot_uni_grid"]
-	,["an_slot_vst_area","an_slot_vst_grid"]
-	,["an_slot_bkp_area","an_slot_bkp_grid"]
-	,["an_slot_hel_area","an_slot_hel_grid"]
-	,["an_slot_gog_area","an_slot_gog_grid"]
-	,["an_slot_bin_area","an_slot_bin_grid"]
-];
-// "Reset" the tileUsage Vars
-{
-	private _grid = uiNamespace getVariable [(_x#1),controlNull];
-	if(!isNull _grid)then
-	{
-		private _idc = ctrlIDC _grid;
-		localNamespace setVariable [(format["an_inv_tileUsage_%1",_idc]),[]];
-	};
-}forEach (AN_INVENTORY_LIST + AN_SLOTS_LIST);
-
-
-an_inv_move_placeHorizontal = true;	// init
-an_ui_inv_grabActive = false;		// init
-
-
-// Change the header Text of the Personal Area, by setting the playername as text
+////////////////////////////////////////////////////////////////////////////////////////
+// Set the Headers:
+// Personal Area (playername)
 private _ctrlPersonalHeader = uinamespace getvariable ["an_inv_header_personal", controlNull];
 _ctrlPersonalHeader ctrlSetText name player;
 
-// Load Inventory: Player (Uniform)
-private _invData = localNamespace getVariable ["an_cData_invData",[]];
-private _invData_crateID = ENTRY_GET("crateID",_invData);
-if(_DEBUGON)then{diag_log [" _invData_crateID", _invData_crateID];};
-private _invData_inventory = ENTRY_GET("inventory",_invData);
-if(_DEBUGON)then{diag_log [" _invData_inventory", _invData_inventory];};
-private _invData_itemData = ENTRY_GET("itemData",_invData);
-if(_DEBUGON)then{diag_log [" _invData_itemData", _invData_itemData];};
+// External Area (Ground/Crate)
+private _ctrlExternalHeader = uinamespace getvariable ["an_inv_header_external", controlNull];
+private _useGround = player getVariable["an_inv_dropActive",false];
+if(_useGround)then	{ _ctrlExternalHeader ctrlSetText "Ground"; }
+else				{ _ctrlExternalHeader ctrlSetText "Crate"; };
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+// Load up all vars, needed for Inventory UI
+////////////////////////////////////////////
+// PERSONAL:
+// The crateID (even needed? Me (Dscha) later: Yes, consistency between External and Player Inventories!)
+private _invData_crateID = AN_data_inventory get "crateID";
+if(_DEBUGON)then{diag_log [":::: DEBUG: UI_INV_INIT:  _invData_crateID", _invData_crateID];};
+// grid Data
+private _invData_inventory = AN_data_inventory get "inventory";
+if(_DEBUGON)then{diag_log [":::: DEBUG: UI_INV_INIT:  _invData_inventory", _invData_inventory];};
+// All Items, currently in the Inventories
+private _invData_itemData = AN_data_inventory get "itemData";
+if(_DEBUGON)then{diag_log [":::: DEBUG: UI_INV_INIT:  _invData_itemData", _invData_itemData];};
+
+// Load up the Inventory 
+{
+	private _invData = _invData_inventory get _x;
+	// Do not set the external Inventory! This will be done later!
+	if(_x != "1000")then
+	{
+		[_x, _invData] call an_c_fnc_ui_inv_load;
+	};
+}forEach (keys _invData_inventory);
+
+
+
+////////////////////////////////////////////
+// EXTERNAL:
+private _dataCrate = createHashmap;
+_dataCrate insert _dataCrate_raw;
+// diag_log [_dataCrate];
+
+// crateID
+private _crate_invData_crateID = _dataCrate get "crateID";
+if(_DEBUGON)then{diag_log [":::: DEBUG: UI_INV_INIT:  _crate_invData_crateID", _crate_invData_crateID];};
+// Grid Data
+private _crate_invData_inventory_raw = _dataCrate get "inventory";
+if(_DEBUGON)then{diag_log [":::: DEBUG: UI_INV_INIT:  _crate_invData_inventory_raw", _crate_invData_inventory_raw];};
+// All Items, currently in the Inventories
+private _crate_invData_itemData = _dataCrate get "itemData";
+if(_DEBUGON)then{diag_log [":::: DEBUG: UI_INV_INIT:  _crate_invData_itemData", _crate_invData_itemData];};
+
+// make the external Data a hashmap
+_crate_invData_inventory = createHashMap;
+{
+	_x params ["_invSubID","_invSubData"];
+	private _data = createHashMap;
+	_data insert _invSubData;
+	_crate_invData_inventory set [_invSubID, _data];
+}forEach _crate_invData_inventory_raw;
+
+// Load up the Inventory (atm: only "0" - but leaving it as forEach loop, in case we want to add more later!)
+{
+	private _invData = _crate_invData_inventory get _x;
+	[_x, _invData] call an_c_fnc_ui_inv_load;
+}forEach (keys _crate_invData_inventory);
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+if(true)exitWith{};
+// ToDo: Load Items
+
+
+
+
+
+
+
+
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////// DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV DEV
-////// Create all the Inventories on the Player and Ground
-if(_DEBUGON)then{diag_log "-----------------------------------------------";};
-{
-	_x params["_subGridID","_subGridName"];
-	private _invGridData = ENTRY_GET(_subGridID, _invData_inventory);
-	[_subGridName, false, false, _invGridData, _subGridID, 0, _invData_itemData] call an_c_fnc_ui_inv_load;
-	if(_DEBUGON)then{diag_log "-----------------------------------------------";};
-}forEach
-[
-	 ["12","an_inv_uni_grid"]
-	,["13","an_inv_vst_grid"]
-	,["14","an_inv_pch_grid"]
-	,["15","an_inv_bkp_grid"]
-];
-
-if(_DEBUGON)then{diag_log "----------------------------------------------";};
-//////////////////////////////////////////////////////////////////////
-// Set up Gear Slot(-inventories)
-if(_DEBUGON)then{diag_log "-------------------- GEAR --------------------";};
-if(_DEBUGON)then{diag_log "----------------------------------------------";};
-private _slotList = [
-//   [		VarName, rows, cols, SlotID]
-     ["an_slot_wpn_grid",3,6,2]
-	,["an_slot_wpn_b_grid",3,6,202]
-    ,["an_slot_sec_grid",2,4,3]
-    ,["an_slot_hel_grid",3,3,10]
-    ,["an_slot_gog_grid",2,2,11]
-    ,["an_slot_uni_grid",6,4,12]
-    ,["an_slot_vst_grid",4,4,13]
-    ,["an_slot_bkp_grid",4,4,15]
-    ,["an_slot_bin_grid",3,3,17]
-    // ,["pouch",""]
-    // ,["tool",""]
-    // ,["w_launch",""]
-];
-private _slottedItems = localNamespace getVariable ["an_cData_invData_slotted",[]];
-if(_DEBUGON)then{diag_log [":::: DEBUG: UI_INV_INIT: Slotted Items:", _slottedItems];};
-
-{
-    _x params["_gridName","_slotsRows","_slotsCols","_slotID"];
-	
-	private _data =
-		[
-			 ["crateID", getPlayerUID player]
-			,["inv_rows", _slotsRows]
-			,["inv_cols", _slotsCols]
-		];
-	
-	private _slotItem = _slottedItems findIf {(_x#0) isEqualTo _slotID};
-	private _slotItemData = [];
-	if(_slotItem != -1)then
-	{
-		private _itemData = (_slottedItems#_slotItem)#1;
-		private _itemID = ENTRY_GET("id",_itemData);
-		_slotItemData = [[_itemID, _itemData]];
-	};
-	
-	[_gridName, true, true, _data, "0", _slotID, _slotItemData] call an_c_fnc_ui_inv_load;
-	if(_DEBUGON)then{diag_log ["------------------------ GEAR ------------------------"];};
-}forEach _slotList;
-if(_DEBUGON)then{diag_log ["------------------------ GEAR ------------------------"];};
-
-
+////// Create all Inventories
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // External Inventory:
 
-private _dataCrate_crateID = ENTRY_GET("crateID",_dataCrate);
+
+private _dataCrate_crateID = _dataCrate get "crateID";
 if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_INIT: _dataCrate_crateID: %1", _dataCrate_crateID];};
-private _dataCrate_inventory = ENTRY_GET("inventory",_dataCrate);
+
+private _dataCrate_inventory_raw = _dataCrate get "inventory";
+private _dataCrate_inventory = createHashmap;
+_dataCrate_inventory insert _dataCrate_inventory_raw;
 if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_INIT: _dataCrate_inventory: %1", _dataCrate_inventory];};
-private _dataCrate_itemData = ENTRY_GET("itemData",_dataCrate);
+
+private _dataCrate_itemData = _dataCrate get "itemData";
 if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_INIT: _dataCrate_itemData: %1", _dataCrate_itemData];};
 
 // Store the ID of the active external Inventory
 localNamespace setVariable ["an_inv_external_active",_dataCrate_crateID];
 // Load Inventory: External
 // ToDo: Pass the invSub ID of the external Inventory, as additional entry!
-private _dataCrate_invGridData = ENTRY_GET("0", _dataCrate_inventory);
+private _dataCrate_invGridData_raw = _dataCrate_inventory get "0";
+private _dataCrate_invGridData = createHashmap;
+_dataCrate_invGridData insert _dataCrate_invGridData_raw;
 
-["an_inv_external_grid", true, false, _dataCrate_invGridData, "0", 0, _dataCrate_itemData] call an_c_fnc_ui_inv_load;
+["an_inv_external_grid", true, false, _dataCrate_invGridData, "0", _dataCrate_itemData] call an_c_fnc_ui_inv_load;
 if(_DEBUGON)then{diag_log "-----------------------------------------------";};
 
 // [_dataCrate_itemData, false] call an_c_fnc_inv_item_load_data;
-
-// Change the header Text of the External Area
-private _ctrlExternalHeader = uinamespace getvariable ["an_inv_header_external", controlNull];
-private _useGround = player getVariable["an_inv_dropActive",false];
-if(_useGround)then	{ _ctrlExternalHeader ctrlSetText "Ground"; }
-else				{ _ctrlExternalHeader ctrlSetText "Crate"; };

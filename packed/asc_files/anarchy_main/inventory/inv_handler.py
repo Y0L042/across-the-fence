@@ -95,7 +95,10 @@ def inv_data_create(sData, clientID: str = None, pos: list = None, crateID: str 
             "0": {
                 "inv_grid": inv_grid_create(inv_rows, inv_cols),
                 "inv_rows": inv_rows,
-                'inv_cols': inv_cols
+                'inv_cols': inv_cols,
+                "invID":    0,
+                "invArea":  "an_inv_external_area",
+                "invGrid":  "an_inv_external_grid"
                 }
             },
         "itemData":  {}
@@ -391,7 +394,7 @@ def inv_item_create(parent: str = "", slot=None, doSlot=False):
         "hp_cur":       100,         # Current HP
         "hp_max":       100,         # Max HP
         "curInv":       "-1",        # ID of Inventory, that the Item is in
-        "invSub":       "0",        # subInventory (in player Inv only!)
+        # "invSub":       "0",        # subInventory (in player Inv only!)
         "invPos":       [0, 0],      # TopLeft Position of the Item in the InventoryGrid
         "isFlipped":    0,           # 0/1 - Check if Item was flipped
         "inSlot":       0,           # 0-N - in which Slot is the Item in? (0 = normal inventory)
@@ -449,6 +452,7 @@ def inv_item_move(client=None, args=()):
     if itemID in oldInv["itemData"]:
         item = oldInv["itemData"][itemID]
         invGearID_old = oldInv["itemData"][itemID]["invSub"]
+    PRINT_ATTENTION(f"inv_item_move - PRE inv_data_get: invGearID_old: {invGearID_old}")
 
     # exit if item couldn't be added
     if item is None:
@@ -467,6 +471,7 @@ def inv_item_move(client=None, args=()):
 
     # also get the new inventory + grid
     PRINT_ATTENTION(f"inv_item_move - PRE inv_data_get: invID_new: {invID_new}")
+    PRINT_ATTENTION(f"inv_item_move - PRE inv_data_get: invGearID_new: {invGearID}")
     newInv, isPlayer = inv_data_get(client, invID_new)
     if len(newInv) == 0:
         PRINT_WARNING(f"ERROR: inv_items_get: data not found!")

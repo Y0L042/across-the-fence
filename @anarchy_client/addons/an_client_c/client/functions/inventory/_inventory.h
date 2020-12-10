@@ -5,7 +5,6 @@ class inventory
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_init);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_data_update);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_check_freeTiles);
-	// DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_create);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_getSize);	// placeholder
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_posToGrid);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_grid_gridToPos);
@@ -27,7 +26,6 @@ class inventory
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_data_init);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_data_set);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_data_get);
-	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_data_parent_set);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_data_parent_get);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_space_usage_get);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_space_find_free);

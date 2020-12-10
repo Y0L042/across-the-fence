@@ -24,35 +24,134 @@ def client_add(**kwargs):
 		"faction": "CIV",   # Standard start faction
 		'inv_usedSlots': [],
 		'inventory': {
-			"0": {
-				"inv_grid": inv_handler.inv_grid_create(20, 8),  # DEV VALUES
-				"inv_rows": 20,  # DEV VALUES
-				'inv_cols': 8  # DEV VALUES
+			"1000": {
+				"inv_grid": inv_handler.inv_grid_create(1, 1),
+				"inv_rows": 1,
+				'inv_cols': 1,
+				"invID":    0,
+				"invArea":  "an_inv_external_area",
+				"invGrid":  "an_inv_external_grid"
 				},
-			# Uniform
-			"12": {
+			"1012": {
 				"inv_grid": inv_handler.inv_grid_create(16, 8),  # DEV VALUES
 				"inv_rows": 16,  # DEV VALUES
-				'inv_cols': 8  # DEV VALUES
+				"inv_cols": 8,  # DEV VALUES
+				"invID": 1012,
+				"invArea": "an_inv_uni_area",
+				"invGrid": "an_inv_uni_grid"
 				},
 			# Vest
-			"13": {
-				"inv_grid": inv_handler.inv_grid_create(4, 8),  # DEV VALUES
-				"inv_rows": 4,  # DEV VALUES
-				'inv_cols': 8  # DEV VALUES
+			"1013": {
+				"inv_grid": inv_handler.inv_grid_create(5, 8),  # DEV VALUES
+				"inv_rows": 5,  # DEV VALUES
+				"inv_cols": 8,  # DEV VALUES
+				"invID": 1013,
+				"invArea": "an_inv_vst_area",
+				"invGrid": "an_inv_vst_grid"
 				},
 			# Pouch
-			"14": {
-				"inv_grid": inv_handler.inv_grid_create(4, 8),  # DEV VALUES
-				"inv_rows": 4,  # DEV VALUES
-				'inv_cols': 8  # DEV VALUES
+			"1014": {
+				"inv_grid": inv_handler.inv_grid_create(6, 8),  # DEV VALUES
+				"inv_rows": 6,  # DEV VALUES
+				"inv_cols": 8,  # DEV VALUES
+				"invID": 1014,
+				"invArea": "an_inv_pch_area",
+				"invGrid": "an_inv_pch_grid"
 				},
 			# Backpack
-			"15": {
-				"inv_grid": inv_handler.inv_grid_create(4, 8),  # DEV VALUES
-				"inv_rows": 4,  # DEV VALUES
-				'inv_cols': 8  # DEV VALUES
+			"1015": {
+				"inv_grid": inv_handler.inv_grid_create(7, 8),  # DEV VALUES
+				"inv_rows": 7,  # DEV VALUES
+				"inv_cols": 8,  # DEV VALUES
+				"invID": 1015,
+				"invArea": "an_inv_bkp_area",
+				"invGrid": "an_inv_bkp_grid"
+				},
+			# Slots:
+			# Slot - Weapon - Main
+			"2002": {
+				"inv_grid": inv_handler.inv_grid_create(3, 6),
+				"inv_rows": 3,
+				"inv_cols": 6,
+				"invID": 2,
+				"invArea": "an_slot_wpn_area",
+				"invGrid": "an_slot_wpn_grid"
+				},
+			# Slot - Weapon - Main (second slot)
+			"2202": {
+				"inv_grid": inv_handler.inv_grid_create(3, 6),
+				"inv_rows": 3,
+				"inv_cols": 6,
+				"invID": 202,
+				"invArea": "an_slot_wpn_b_area",
+				"invGrid": "an_slot_wpn_b_grid"
+				},
+			# Slot - Weapon - secondary
+			"2003": {
+				"inv_grid": inv_handler.inv_grid_create(2, 4),
+				"inv_rows": 2,
+				"inv_cols": 4,
+				"invID": 3,
+				"invArea": "an_slot_sec_area",
+				"invGrid": "an_slot_sec_grid"
+				},
+			# Slot - Helmet
+			"2010": {
+				"inv_grid": inv_handler.inv_grid_create(3, 3),
+				"inv_rows": 3,
+				"inv_cols": 3,
+				"invID": 10,
+				"invArea": "an_slot_hel_area",
+				"invGrid": "an_slot_hel_grid"
+				},
+			# Slot - Goggles
+			"2011": {
+				"inv_grid": inv_handler.inv_grid_create(2, 2),
+				"inv_rows": 2,
+				"inv_cols": 2,
+				"invID": 11,
+				"invArea": "an_slot_gog_area",
+				"invGrid": "an_slot_gog_grid"
+				},
+			# Slot - Uniform
+			"2012": {
+				"inv_grid": inv_handler.inv_grid_create(6, 4),
+				"inv_rows": 6,
+				"inv_cols": 4,
+				"invID": 12,
+				"invArea": "an_slot_uni_area",
+				"invGrid": "an_slot_uni_grid"
+				},
+			# Slot - Vest
+			"2013": {
+				"inv_grid": inv_handler.inv_grid_create(4, 4),
+				"inv_rows": 4,
+				"inv_cols": 4,
+				"invID": 13,
+				"invArea": "an_slot_vst_area",
+				"invGrid": "an_slot_vst_grid"
+				},
+			# Slot - Vest
+			"2015": {
+				"inv_grid": inv_handler.inv_grid_create(4, 4),
+				"inv_rows": 4,
+				"inv_cols": 4,
+				"invID": 15,
+				"invArea": "an_slot_bkp_area",
+				"invGrid": "an_slot_bkp_grid"
+				},
+			# Slot - Vest
+			"2017": {
+				"inv_grid": inv_handler.inv_grid_create(3, 3),
+				"inv_rows": 3,
+				"inv_cols": 3,
+				"invID": 17,
+				"invArea": "an_slot_bin_area",
+				"invGrid": "an_slot_bin_grid"
 				}
+			# ToDo: Slot - Pouch
+			# ToDo: Slot - Tool
+			# ToDo: Slot - Launcher
 			},
 		'itemData': {}
 		}
@@ -124,9 +223,9 @@ def client_init(self):
 	# Now send the data to the client:
 
 	# send itemParent Definitions
-	PRINT_DEBUG(f"SENDING: INIT_ITEMDATA TO {self.puid}... ")
-	asc_g_msg.sendMsg("INIT_ITEMDATA", self.sData.itemParentData, self.con_client)
-	PRINT_OK(f"SENDING: INIT_ITEMDATA TO {self.puid}... DONE")
+	PRINT_DEBUG(f"SENDING: PARENT DATA TO {self.puid}... ")
+	asc_g_msg.sendMsg("INIT_ITEM_PARENTDATA", self.sData.itemParentData, self.con_client)
+	PRINT_OK(f"SENDING: PARENT DATA TO {self.puid}... DONE")
 
 	# Gear:
 	PRINT_DEBUG(f"SENDING: INVENTORY ITEMDATA TO {self.puid}...")

@@ -3,7 +3,7 @@
 */
 private _DEBUGON = false;
 params[
-	["_itemClass",[],[[]]]
+	["_itemClass",[],[[]]]	// itemClass can have multiple entries. 1st Entry is the "main" info.
 ];
 
 if(_itemClass isEqualTo [])exitWith{""};
