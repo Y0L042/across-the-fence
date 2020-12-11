@@ -24,130 +24,139 @@ def client_add(**kwargs):
 		"faction": "CIV",   # Standard start faction
 		'inv_usedSlots': [],
 		'inventory': {
-			"1000": {
-				"inv_grid": inv_handler.inv_grid_create(1, 1),
+			1000: {     # External Grid - Default Values - needed!
 				"inv_rows": 1,
 				'inv_cols': 1,
 				"invID":    0,
 				"invArea":  "an_inv_external_area",
-				"invGrid":  "an_inv_external_grid"
+				"invGrid":  "an_inv_external_grid",
+				"slotsUsed": []
 				},
-			"1012": {
-				"inv_grid": inv_handler.inv_grid_create(16, 8),  # DEV VALUES
+			1012: {
 				"inv_rows": 16,  # DEV VALUES
 				"inv_cols": 8,  # DEV VALUES
 				"invID": 1012,
 				"invArea": "an_inv_uni_area",
-				"invGrid": "an_inv_uni_grid"
+				"invGrid": "an_inv_uni_grid",
+				"slotsUsed": []
 				},
 			# Vest
-			"1013": {
-				"inv_grid": inv_handler.inv_grid_create(5, 8),  # DEV VALUES
+			1013: {
 				"inv_rows": 5,  # DEV VALUES
 				"inv_cols": 8,  # DEV VALUES
 				"invID": 1013,
 				"invArea": "an_inv_vst_area",
-				"invGrid": "an_inv_vst_grid"
+				"invGrid": "an_inv_vst_grid",
+				"slotsUsed": []
 				},
 			# Pouch
-			"1014": {
-				"inv_grid": inv_handler.inv_grid_create(6, 8),  # DEV VALUES
+			1014: {
 				"inv_rows": 6,  # DEV VALUES
 				"inv_cols": 8,  # DEV VALUES
 				"invID": 1014,
 				"invArea": "an_inv_pch_area",
-				"invGrid": "an_inv_pch_grid"
+				"invGrid": "an_inv_pch_grid",
+				"slotsUsed": []
 				},
 			# Backpack
-			"1015": {
-				"inv_grid": inv_handler.inv_grid_create(7, 8),  # DEV VALUES
+			1015: {
 				"inv_rows": 7,  # DEV VALUES
 				"inv_cols": 8,  # DEV VALUES
 				"invID": 1015,
 				"invArea": "an_inv_bkp_area",
-				"invGrid": "an_inv_bkp_grid"
+				"invGrid": "an_inv_bkp_grid",
+				"slotsUsed": []
 				},
 			# Slots:
 			# Slot - Weapon - Main
-			"2002": {
-				"inv_grid": inv_handler.inv_grid_create(3, 6),
+			2002: {
 				"inv_rows": 3,
 				"inv_cols": 6,
-				"invID": 2,
+				"invID": 2002,
 				"invArea": "an_slot_wpn_area",
-				"invGrid": "an_slot_wpn_grid"
+				"invGrid": "an_slot_wpn_grid",
+				"slotsUsed": [],
+				"isSlot": 1
 				},
 			# Slot - Weapon - Main (second slot)
-			"2202": {
-				"inv_grid": inv_handler.inv_grid_create(3, 6),
+			2202: {
 				"inv_rows": 3,
 				"inv_cols": 6,
-				"invID": 202,
+				"invID": 2202,
 				"invArea": "an_slot_wpn_b_area",
-				"invGrid": "an_slot_wpn_b_grid"
+				"invGrid": "an_slot_wpn_b_grid",
+				"slotsUsed": [],
+				"isSlot": 1
 				},
 			# Slot - Weapon - secondary
-			"2003": {
-				"inv_grid": inv_handler.inv_grid_create(2, 4),
+			2003: {
 				"inv_rows": 2,
 				"inv_cols": 4,
-				"invID": 3,
+				"invID": 2003,
 				"invArea": "an_slot_sec_area",
-				"invGrid": "an_slot_sec_grid"
+				"invGrid": "an_slot_sec_grid",
+				"slotsUsed": [],
+				"isSlot": 1
 				},
 			# Slot - Helmet
-			"2010": {
-				"inv_grid": inv_handler.inv_grid_create(3, 3),
+			2010: {
 				"inv_rows": 3,
 				"inv_cols": 3,
-				"invID": 10,
+				"invID": 2010,
 				"invArea": "an_slot_hel_area",
-				"invGrid": "an_slot_hel_grid"
+				"invGrid": "an_slot_hel_grid",
+				"slotsUsed": [],
+				"isSlot": 1
 				},
 			# Slot - Goggles
-			"2011": {
-				"inv_grid": inv_handler.inv_grid_create(2, 2),
+			2011: {
 				"inv_rows": 2,
 				"inv_cols": 2,
-				"invID": 11,
+				"invID": 2011,
 				"invArea": "an_slot_gog_area",
-				"invGrid": "an_slot_gog_grid"
+				"invGrid": "an_slot_gog_grid",
+				"slotsUsed": [],
+				"isSlot": 1
 				},
 			# Slot - Uniform
-			"2012": {
-				"inv_grid": inv_handler.inv_grid_create(6, 4),
+			2012: {
 				"inv_rows": 6,
 				"inv_cols": 4,
-				"invID": 12,
+				"invID": 2012,
 				"invArea": "an_slot_uni_area",
-				"invGrid": "an_slot_uni_grid"
+				"invGrid": "an_slot_uni_grid",
+				"slotsUsed": [],
+				"isSlot": 1
 				},
 			# Slot - Vest
-			"2013": {
-				"inv_grid": inv_handler.inv_grid_create(4, 4),
+			2013: {
 				"inv_rows": 4,
 				"inv_cols": 4,
-				"invID": 13,
+				"invID": 2013,
 				"invArea": "an_slot_vst_area",
-				"invGrid": "an_slot_vst_grid"
+				"invGrid": "an_slot_vst_grid",
+				"slotsUsed": [],
+				"isSlot": 1
 				},
 			# Slot - Vest
-			"2015": {
-				"inv_grid": inv_handler.inv_grid_create(4, 4),
+			2015: {
 				"inv_rows": 4,
 				"inv_cols": 4,
-				"invID": 15,
+				"invID": 2015,
 				"invArea": "an_slot_bkp_area",
-				"invGrid": "an_slot_bkp_grid"
+				"invGrid": "an_slot_bkp_grid",
+				"slotsUsed": [],
+				"isSlot": 1
 				},
-			# Slot - Vest
-			"2017": {
-				"inv_grid": inv_handler.inv_grid_create(3, 3),
+			# Slot - Bino
+			2017: {
 				"inv_rows": 3,
 				"inv_cols": 3,
-				"invID": 17,
+				"invID": 2017,
 				"invArea": "an_slot_bin_area",
-				"invGrid": "an_slot_bin_grid"
+				"invGrid": "an_slot_bin_grid",
+				"slotsUsed": [],
+				"isSlot": 1
 				}
 			# ToDo: Slot - Pouch
 			# ToDo: Slot - Tool
@@ -170,7 +179,7 @@ def client_init(self):
 		player_data_set(self.sData, self.puid, self.cData)
 
 		# add Starter Gear:
-		startGear = [["vn_b_uniform_macv_01_06", [12]], ["vn_b_bandana_03", [10]]]
+		startGear = [["vn_b_uniform_macv_01_06", [2012]], ["vn_b_bandana_03", [2010]]]
 		for itemData in startGear:
 			item = inv_handler.inv_item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
 			item["curInv"] = self.cData["puid"]
@@ -319,13 +328,13 @@ def player_killed(sData, *data):
 		item["invSub"] = "0"
 
 	# reset the grid of the player to the Standard Value:
-	cData["inventory"]["12"]["inv_grid"] = inv_handler.inv_grid_create(16, 8)   # TODO: DEV VALUE - Needs .sqf adjustments first!
-	cData["inventory"]["13"]["inv_grid"] = inv_handler.inv_grid_create(4, 8)    # TODO: DEV VALUE - Needs .sqf adjustments first!
-	cData["inventory"]["14"]["inv_grid"] = inv_handler.inv_grid_create(4, 8)    # TODO: DEV VALUE - Needs .sqf adjustments first!
-	cData["inventory"]["15"]["inv_grid"] = inv_handler.inv_grid_create(4, 8)    # TODO: DEV VALUE - Needs .sqf adjustments first!
+	for inv in cData["inventory"]:
+		cData["inventory"][inv]["inv_rows"] = 0
+		cData["inventory"][inv]["inv_cols"] = 0
+		cData["inventory"][inv]["slotsUsed"] = []
 
 	# add Starter Gear:
-	startGear = [["vn_b_uniform_macv_01_06", [12]], ["vn_b_bandana_03", [10]]]
+	startGear = [["vn_b_uniform_macv_01_06", [2012]], ["vn_b_bandana_03", [2010]]]
 	for itemData in startGear:
 		item = inv_handler.inv_item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
 		item["curInv"] = cData["puid"]
