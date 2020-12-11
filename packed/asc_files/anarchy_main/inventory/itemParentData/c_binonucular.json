@@ -3,7 +3,7 @@
 	"vn_m19_binocs_grn":
 	{
 		"size": [3, 3],
-		"slot": [17],
+		"slot": [2017],
 		"class_name": "vn_m19_binocs_grn",
 		"name": "",
 		"image": "",
@@ -17,7 +17,7 @@
 	"vn_m19_binocs_grey":
 	{
 		"size": [3, 3],
-		"slot": [17],
+		"slot": [2017],
 		"class_name": "vn_m19_binocs_grey",
 		"name": "",
 		"image": "",
@@ -31,7 +31,7 @@
 	"vn_mk21_binocs":
 	{
 		"size": [3, 3],
-		"slot": [17],
+		"slot": [2017],
 		"class_name": "vn_mk21_binocs",
 		"name": "",
 		"image": "",
@@ -45,7 +45,7 @@
 	"vn_anpvs2_binoc":
 	{
 		"size": [3, 3],
-		"slot": [17],
+		"slot": [2017],
 		"class_name": "vn_anpvs2_binoc",
 		"name": "",
 		"image": "",

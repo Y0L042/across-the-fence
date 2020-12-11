@@ -3,7 +3,7 @@
 	"vn_b_boonie_02_01":
 	{
 		"size": [3, 3],
-		"slot": [10],
+		"slot": [2010],
 		"class_name": "vn_b_boonie_02_01",
 		"name": "",
 		"image": "",
@@ -17,7 +17,7 @@
 	"vn_b_bandana_01":
 	{
 		"size": [3, 3],
-		"slot": [10],
+		"slot": [2010],
 		"class_name": "vn_b_bandana_01",
 		"name": "",
 		"image": "",
@@ -31,7 +31,7 @@
 	"vn_b_bandana_03":
 	{
 		"size": [3, 3],
-		"slot": [10],
+		"slot": [2010],
 		"class_name": "vn_b_bandana_03",
 		"name": "",
 		"image": "",
@@ -45,7 +45,7 @@
 	"vn_b_beret_01_01":
 	{
 		"size": [3, 3],
-		"slot": [10],
+		"slot": [2010],
 		"class_name": "vn_b_beret_01_01",
 		"name": "",
 		"image": "",

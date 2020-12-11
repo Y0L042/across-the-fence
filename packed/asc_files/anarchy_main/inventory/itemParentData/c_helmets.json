@@ -3,7 +3,7 @@
 	"vn_o_helmet_nva_01":
 	{
 		"size": [3, 3],
-		"slot": [10],
+		"slot": [2010],
 		"class_name": "vn_o_helmet_nva_01",
 		"name": "",
 		"image": "",
@@ -17,7 +17,7 @@
 	"vn_o_helmet_vc_01":
 	{
 		"size": [3, 3],
-		"slot": [10],
+		"slot": [2010],
 		"class_name": "vn_o_helmet_vc_01",
 		"name": "",
 		"image": "",
@@ -31,7 +31,7 @@
 	"vn_b_helmet_aph6_01_01":
 	{
 		"size": [3, 3],
-		"slot": [10],
+		"slot": [2010],
 		"class_name": "vn_b_helmet_aph6_01_01",
 		"name": "",
 		"image": "",
@@ -45,7 +45,7 @@
 	"vn_b_helmet_m1_01_01":
 	{
 		"size": [3, 3],
-		"slot": [10],
+		"slot": [2010],
 		"class_name": "vn_b_helmet_m1_01_01",
 		"name": "",
 		"image": "",
@@ -59,7 +59,7 @@
 	"vn_b_helmet_t56_01_01":
 	{
 		"size": [3, 3],
-		"slot": [10],
+		"slot": [2010],
 		"class_name": "vn_b_helmet_t56_01_01",
 		"name": "",
 		"image": "",

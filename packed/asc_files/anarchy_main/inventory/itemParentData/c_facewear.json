@@ -3,7 +3,7 @@
 	"vn_b_aviator":
 	{
 		"size": [2, 2],
-		"slot": [11],
+		"slot": [2011],
 		"class_name": "vn_b_aviator",
 		"name": "",
 		"image": "",
@@ -17,7 +17,7 @@
 	"vn_b_scarf_01_01":
 	{
 		"size": [2, 2],
-		"slot": [11],
+		"slot": [2011],
 		"class_name": "vn_b_scarf_01_01",
 		"name": "",
 		"image": "",
@@ -31,7 +31,7 @@
 	"vn_o_acc_goggles_01":
 	{
 		"size": [2, 2],
-		"slot": [11],
+		"slot": [2011],
 		"class_name": "vn_o_acc_goggles_01",
 		"name": "",
 		"image": "",
@@ -45,7 +45,7 @@
 	"vn_o_bandana_b":
 	{
 		"size": [2, 2],
-		"slot": [11],
+		"slot": [2011],
 		"class_name": "vn_o_bandana_b",
 		"name": "",
 		"image": "",
@@ -59,7 +59,7 @@
 	"vn_o_poncho_01_01":
 	{
 		"size": [2, 2],
-		"slot": [11],
+		"slot": [2011],
 		"class_name": "vn_o_poncho_01_01",
 		"name": "",
 		"image": "",
