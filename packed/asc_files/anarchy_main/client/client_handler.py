@@ -30,7 +30,8 @@ def client_add(**kwargs):
 				"invID":    0,
 				"invArea":  "an_inv_external_area",
 				"invGrid":  "an_inv_external_grid",
-				"slotsUsed": []
+				"slotsUsed": [],
+				"isSlot": 0
 				},
 			1012: {
 				"inv_rows": 16,  # DEV VALUES
@@ -38,7 +39,8 @@ def client_add(**kwargs):
 				"invID": 1012,
 				"invArea": "an_inv_uni_area",
 				"invGrid": "an_inv_uni_grid",
-				"slotsUsed": []
+				"slotsUsed": [],
+				"isSlot": 0
 				},
 			# Vest
 			1013: {
@@ -47,7 +49,8 @@ def client_add(**kwargs):
 				"invID": 1013,
 				"invArea": "an_inv_vst_area",
 				"invGrid": "an_inv_vst_grid",
-				"slotsUsed": []
+				"slotsUsed": [],
+				"isSlot": 0
 				},
 			# Pouch
 			1014: {
@@ -56,7 +59,8 @@ def client_add(**kwargs):
 				"invID": 1014,
 				"invArea": "an_inv_pch_area",
 				"invGrid": "an_inv_pch_grid",
-				"slotsUsed": []
+				"slotsUsed": [],
+				"isSlot": 0
 				},
 			# Backpack
 			1015: {
@@ -65,7 +69,8 @@ def client_add(**kwargs):
 				"invID": 1015,
 				"invArea": "an_inv_bkp_area",
 				"invGrid": "an_inv_bkp_grid",
-				"slotsUsed": []
+				"slotsUsed": [],
+				"isSlot": 0
 				},
 			# Slots:
 			# Slot - Weapon - Main
