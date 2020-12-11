@@ -12,14 +12,6 @@ DEFAULT_loot_count = 2
 DEFAULT_loot_skill_multiplier = 2
 
 
-def inv_grid_create(rows, cols):
-    ret = []
-    for x in range(rows):
-        _line = [0] * cols
-        ret.append(_line)
-    return ret
-
-
 # try to get the Crate data. If not found -> Create a new one. We simply assume the Data, coming from the Game-server, is correct/valid.
 def inv_data_request(sData, clientID: str = None, pos: list = None, crateID: str = None, lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 16, inv_cols: int = 8, persistent: int = 0, model: str = "IG_supplyCrate_F"):
     # PRINT_DEBUG(f"clientID: {clientID}\n"
@@ -184,46 +176,6 @@ def inv_data_create(sData, clientID: str = None, pos: list = None, crateID: str 
 
 
 
-def inv_data_update_force(client, invID_old, invID_new):
-    """
-    cData       client Data
-    invID_old   "" - ID #1
-    invID_new:  "" - ID #2
-    """
-
-    # Since we want to send over the remote Inventory -> Check if invID_old is NOT the player Inv.
-    if invID_old != client.puid:
-        # PRINT_ATTENTION(f"inv_data_update_force - PRE inv_data_get: invID_old: {invID_old}")
-        inv_remote, isPlayer = inv_data_get(client, invID_old)
-    else:
-        # PRINT_ATTENTION(f"inv_data_update_force - PRE inv_data_get: invID_new: {invID_new}")
-        inv_remote, isPlayer = inv_data_get(client, invID_new)
-    # resending it, triggers a force-reopen of the Inventory (instantly)
-    if len(inv_remote) == 0:
-        PRINT_WARNING(f"ERROR: inv_data_update_force: inv_remote not found!")
-        return
-
-    dataset = {
-        "crateID": client.puid,
-        "itemData": client.cData["itemData"],
-        "inventory": client.cData["inventory"]
-        }
-    # update the player Gear
-    asc_g_msg.sendMsg("player_gear_set", dataset, client.con_client)
-    # Remove the dict entry: "inv_grid" (not needed on the client)
-    stripped_inv_remote = inv_remote["inventory"]
-    # send the stripped Remote Inventory back to the player and trigger the Inventory UI to be reopen, so it loads the new data
-    inv_data_send_toClient(stripped_inv_remote, client.con_client)
-
-
-def inv_item_check_size(size):
-    # if given, check if X/Y are not < 1
-    if size[0] < 1:
-        size[0] = 1
-    if size[1] < 1:
-        size[1] = 1
-    return size
-
 
 def inv_item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, invGearID: str = "0"):
     """
@@ -247,7 +199,7 @@ def inv_item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, in
         inv_itemData = invData["itemData"]
 
         # get the parent Data
-        item_parent_data = inv_item_parent_get(sData=sData, itemName=item["parent"])
+        item_parent_data = item_parent_get(sData=sData, itemName=item["parent"])
         # check if parent Data is a subclass of a main Item definition
         try:
             if "parent" in item_parent_data:
@@ -325,33 +277,25 @@ def inv_item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, in
         PRINT_WARNING(f"-------------\nERROR: item_add_list: EXCEPTION:\n{e}\n-------------")
 
 
-def inv_item_parent_get(sData, itemName: str = None):
-    if itemName is None:
-        PRINT_WARNING(f"ERROR: inv_item_parent_get: NO itemName given!")
-        return {}
-    # get the parent-itemData
-    try:
-        if itemName in sData.itemParentData:
-            return sData.itemParentData[itemName]
-        elif itemName in sData.itemSubTypes:
-            return sData.itemSubTypes[itemName]
-    except Exception as e:
-        PRINT_WARNING(f"ERROR: inv_item_parent_get: Exception:\nitemName: {itemName}\nException: {e}")
+# def inv_item_degrade(sData, user, itemType, *args):
+#     # slotID:
+#     # 0 Primary
+#     # 1 Handgun
+#     # 2 Secondary (launcher)
+#     if itemType == "wpn":
+#         slotID, ammoType, firemode, shots = args
+#         PRINT_DEBUG(f"DEBUG: inv_item_degrade - user: {user} - args: {args}"
+#               f"\nslotID   - {slotID}"
+#               f"\nfiremode - {firemode}"
+#               f"\nammoType - {ammoType}"
+#               f"\nshots - {shots}")
+#         PRINT_DEBUG(f"DEBUG: inv_item_degrade - userdata: {sData.database.players[user]}")
 
 
-def inv_item_degrade(sData, user, itemType, *args):
-    # slotID:
-    # 0 Primary
-    # 1 Handgun
-    # 2 Secondary (launcher)
-    if itemType == "wpn":
-        slotID, ammoType, firemode, shots = args
-        PRINT_DEBUG(f"DEBUG: inv_item_degrade - user: {user} - args: {args}"
-              f"\nslotID   - {slotID}"
-              f"\nfiremode - {firemode}"
-              f"\nammoType - {ammoType}"
-              f"\nshots - {shots}")
-        PRINT_DEBUG(f"DEBUG: inv_item_degrade - userdata: {sData.database.players[user]}")
+#
+
+
+#
 
 
 ########################################################################
@@ -361,6 +305,39 @@ def inv_item_degrade(sData, user, itemType, *args):
 ########################################################################
 # INV INV INV INV INV INV INV INV INV INV INV INV INV INV INV INV INV #
 ######################################################################
+
+
+def inv_data_update_force(client, invID_old: str, invID_new: str):
+    """
+    cData       client Data
+    invID_old   "" - ID #1
+    invID_new:  "" - ID #2
+    """
+
+    # Since we want to send over the remote Inventory -> Check if invID_old is NOT the player Inv.
+    if invID_old != client.puid:
+        # PRINT_ATTENTION(f"inv_data_update_force - PRE inv_data_get: invID_old: {invID_old}")
+        inv_remote, isPlayer = inv_data_get(client, invID_old)
+    else:
+        # PRINT_ATTENTION(f"inv_data_update_force - PRE inv_data_get: invID_new: {invID_new}")
+        inv_remote, isPlayer = inv_data_get(client, invID_new)
+    # resending it, triggers a force-reopen of the Inventory (instantly)
+    if len(inv_remote) == 0:
+        PRINT_WARNING(f"ERROR: inv_data_update_force: inv_remote not found!")
+        return
+
+    dataset = {
+        "crateID": client.puid,
+        "itemData": client.cData["itemData"],
+        "inventory": client.cData["inventory"]
+        }
+    # update the player Gear
+    asc_g_msg.sendMsg("player_gear_set", dataset, client.con_client)
+    # Remove the dict entry: "inv_grid" (not needed on the client)
+    stripped_inv_remote = inv_remote["inventory"]
+    # send the stripped Remote Inventory back to the player and trigger the Inventory UI to be reopen, so it loads the new data
+    inv_data_send_toClient(stripped_inv_remote, client.con_client)
+
 
 def inv_data_send_toClient(invData, conClient):
     # PRINT_ATTENTION(f"inv_data_send_toClient: invData: {invData}")
@@ -453,9 +430,27 @@ def inv_data_get(client, invID: str):
         PRINT_WARNING(f'ERROR: INV_HANDLER: inv_data_get - UNKNOWN ERROR - ID: {invID}:\n{e}')
         return [{}, False]
 
+
+#
+
+
 ##########################################################################
 # ITEM ITEM ITEM ITEM ITEM ITEM ITEM ITEM ITEM ITEM ITEM ITEM ITEM ITEM #
 ########################################################################
+
+
+def item_parent_get(sData, parentName: str):
+    """
+    :param sData:       Server Data
+    :param parentName:  uhm, the parentName?
+    """
+    if parentName in sData.itemParentData:
+        return sData.itemParentData[parentName]
+    elif parentName in sData.itemSubTypes:
+        return sData.itemSubTypes[parentName]
+    else:
+        PRINT_WARNING(f"ERROR: item_parent_get: PARENT NOT FOUND: parentName: {parentName}")
+        return {}
 
 def item_data_flip_canFlip(size):
     if size[0] == size[1]:  # if a square -> No need to be flippable, so "0"
@@ -607,7 +602,7 @@ def item_slots_used_calc(invDataSize: list, itemSize: list, slotStart: list, slo
     :param slotStart:       [0, 0]
     :param slotsUsed:       [[0, 0], [0, 1], ...]
     :param slotsIgnore:     [[0, 0], [0, 1], ...]
-    :param isFlipped:       True/False
+    :param isFlipped:       0/1
     :return:                [[0, 0], [0, 1], ...] OR [] (nothing found)
     """
     if slotsIgnore is None:
