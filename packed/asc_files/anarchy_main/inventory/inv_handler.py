@@ -12,38 +12,7 @@ DEFAULT_loot_count = 2
 DEFAULT_loot_skill_multiplier = 2
 
 
-# try to get the Crate data. If not found -> Create a new one. We simply assume the Data, coming from the Game-server, is correct/valid.
-def inv_data_request(sData, clientID: str = None, pos: list = None, crateID: str = None, lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 16, inv_cols: int = 8, persistent: int = 0, model: str = "IG_supplyCrate_F"):
-    # PRINT_DEBUG(f"clientID: {clientID}\n"
-    #       f"pos: {pos}\n"
-    #       f"crateID: {crateID}\n"
-    #       f"lootType: {lootType}\n"
-    #       f"isLootcrate: {isLootcrate}\n"
-    #       f"loot_count: {loot_count}\n"
-    #       f"inv_rows: {inv_rows}\n"
-    #       f"persistent: {persistent}\n"
-    #       f"model: {model}\n")
-    try:
-        if persistent > 0:
-            invData = sData.database.crates[crateID]
-        else:
-            invData = sData.database.sessionCrates[crateID]
 
-        # ToDo: Add an "in use"-check (players, currently having that Inventory open)
-        # send Inventory data back to the requesting client
-        conClient = sData.user_active[clientID]["con"]
-        PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_request: Crate found, sending Data to Client.")
-
-        # send the invData to the Client
-        inv_data_send_toClient(invData, conClient)
-        return
-
-    # No "Error", the crate was just not in the List. So let's create a new crate entry (Usage: loot/drop crates)
-    except KeyError:
-        PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_request: Creating new Crate")
-        inv_data_create(sData=sData, clientID=clientID, pos=pos, crateID=crateID, lootType=lootType, isLootcrate=isLootcrate, loot_count=loot_count, inv_rows=inv_rows, inv_cols=inv_cols, persistent=persistent)
-    except Exception:
-        PRINT_WARNING(f"ERROR: INV_HANDLER: inv_data_request: HUGE WOBBLE WOBBLE! Data:\nclientID: {clientID}\npos: {pos}\ncrateID: {crateID}\nlootType: {lootType}\npersistent {persistent}\ninv_rows {inv_rows}\n---------")
 
 # called by Server only!
 def inv_data_create(sData, clientID: str = None, pos: list = None, crateID: str = "", lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 16, inv_cols: int = 8, persistent: int = 0, model: str = "IG_supplyCrate_F"):
@@ -51,7 +20,7 @@ def inv_data_create(sData, clientID: str = None, pos: list = None, crateID: str 
     :param sData:       ServerData (auto-passed)
     :param clientID:    A3 playerUID
     :param pos:         list - [[x,y,z],dir]
-    :param crateID:
+    :param crateID:     "ID of the"
     :param lootType:    String - type of loot, passed by the gameserver
     :param isLootcrate: is the crate a newly created Loot-crate or not
     :param loot_count:  Int - amount of Items to add (can be altered by Loot-skill of the player)
@@ -172,9 +141,7 @@ def inv_data_create(sData, clientID: str = None, pos: list = None, crateID: str 
     conClient = sData.user_active[clientID]["con"]
     # send the invData to the Client
     inv_data_send_toClient(invData, conClient)
-
-
-
+    return {}
 
 
 def inv_item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, invGearID: str = "0"):
@@ -277,21 +244,6 @@ def inv_item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, in
         PRINT_WARNING(f"-------------\nERROR: item_add_list: EXCEPTION:\n{e}\n-------------")
 
 
-# def inv_item_degrade(sData, user, itemType, *args):
-#     # slotID:
-#     # 0 Primary
-#     # 1 Handgun
-#     # 2 Secondary (launcher)
-#     if itemType == "wpn":
-#         slotID, ammoType, firemode, shots = args
-#         PRINT_DEBUG(f"DEBUG: inv_item_degrade - user: {user} - args: {args}"
-#               f"\nslotID   - {slotID}"
-#               f"\nfiremode - {firemode}"
-#               f"\nammoType - {ammoType}"
-#               f"\nshots - {shots}")
-#         PRINT_DEBUG(f"DEBUG: inv_item_degrade - userdata: {sData.database.players[user]}")
-
-
 #
 
 
@@ -307,8 +259,39 @@ def inv_item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, in
 ######################################################################
 
 
+# try to get the Crate data. If not found -> Create a new one. We simply assume the Data, coming from the Game-server, is correct/valid.
+def inv_data_request(sData, clientID: str = None, pos: list = None, crateID: str = None, lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 16, inv_cols: int = 8, persistent: int = 0, model: str = "IG_supplyCrate_F"):
+    # clientID
+    # pos
+    # crateID
+    # lootType
+    # isLootcrate
+    # loot_count
+    # inv_rows
+    # inv_cols
+    # persistent
+    # model
+
+    if crateID in sData.database.crates:
+        invData = sData.database.crates[crateID]
+    elif crateID in sData.database.sessionCrates:
+        invData = sData.database.sessionCrates[crateID]
+    else:
+        # Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo
+        invData = inv_data_create(sData=sData, clientID=clientID, pos=pos, crateID=crateID, lootType=lootType, isLootcrate=isLootcrate, loot_count=loot_count, inv_rows=inv_rows, inv_cols=inv_cols, persistent=persistent)
+
+    # ToDo: Add an "in use"-check (players, currently having that Inventory open)
+    # send Inventory data back to the requesting client
+    conClient = sData.user_active[clientID]["con"]
+    PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_request: Crate found, sending Data to Client.")
+
+    # send the invData to the Client
+    inv_data_send_toClient(invData, conClient)
+
+
 def inv_data_update_force(client, invID_old: str, invID_new: str):
-    """
+    """ Trigger an update of the item- and Inventory Data on the Client! In case something went wrong with the dataSync.
+
     cData       client Data
     invID_old   "" - ID #1
     invID_new:  "" - ID #2
@@ -439,18 +422,126 @@ def inv_data_get(client, invID: str):
 ########################################################################
 
 
-def item_parent_get(sData, parentName: str):
+def item_create(sData, itemSubTypeName: str):
     """
-    :param sData:       Server Data
-    :param parentName:  uhm, the parentName?
+
+    :param sData: server Data
+    :param itemSubTypeName: STR - Name of the SubType?
+    :return:    {} - Dict with the item data
     """
-    if parentName in sData.itemParentData:
-        return sData.itemParentData[parentName]
-    elif parentName in sData.itemSubTypes:
-        return sData.itemSubTypes[parentName]
-    else:
-        PRINT_WARNING(f"ERROR: item_parent_get: PARENT NOT FOUND: parentName: {parentName}")
+    PRINT_DEBUG(f"DEBUG: item_create - Creating: {itemSubTypeName}")
+
+    item = item_data_create(itemSubTypeName)
+    parentData = item_baseData_get(sData=sData, subTypeName=item["subType"])
+
+    item["itemData"].update(parentData["itemData"])
+    # Example output: {'subType': 'SubTypeClassName', 'curInv': '-1', 'invSub': 0, 'invPos': [0, 0], 'isFlipped': 0, 'itemData': {'condition': 150, 'someStuff': 123}}
+    PRINT_DEBUG(f"DEBUG: item_create - item: {item}")
+
+    return item
+
+
+def item_subType_list_get(sData, typeData: dict, data: list = None) -> list:
+    """ Recursively search the item config, until we reach the SubType, that leads to the mainParent!
+    Returning a List/Array with classnames,	starting with the SubType, that has the mainParent defined, the leading to the starting subType
+
+    :param sData: Server Data
+    :param typeData:
+    :param data:        dict - ! Used ONLY, when searching recursively !
+    :return:            []
+    """
+    if data is None:
+        data = []
+
+    subTypeParent = typeData["subParent"]   # Data in: sData.itemSubTypes
+    subMainParent = typeData["mainParent"]  # Data in: sData.itemParentData
+
+    if not subTypeParent and not subMainParent:
+        print("HUGE WOBBLEWOBBLEWOBBLE!")
+        return []
+
+    # subMain is not set, so it links to a subType. Recursive fun begins.
+    # If BOTH were set -> Ignore the subType!
+    if not subMainParent:
+        subData = sData.itemSubTypes[subTypeParent]
+        item_subType_list_get(sData=sData, typeData=subData, data=data)
+        data.append(subTypeParent)
+
+    return data
+
+
+def item_baseData_create(sData, subTypeName: str):
+    # get subTypeData:
+    if subTypeName not in sData.itemSubTypes:
+        print(f"SUBTYPE NOT FOUND! - {subTypeName}")
         return {}
+
+    # get the "path" to the "base" config and return it, so we can cycle through it and fetch all the needed data
+    data_subType = sData.itemSubTypes[subTypeName]
+    parentData = item_subType_list_get(sData=sData, typeData=data_subType)
+    parentData.append(subTypeName)
+
+    baseData = {}
+    for x in parentData:
+        tmp_bData = copy.deepcopy(sData.itemSubTypes[x])
+        # if first run -> update with the base values
+        if not baseData:
+            print(f"tmp_bData: {x} - {tmp_bData}")
+            baseData.update(tmp_bData)
+            baseData.update({"parentData":{}, "itemData":{}})
+
+        if "parentData" in tmp_bData:
+            baseData["parentData"].update(copy.deepcopy(tmp_bData["parentData"]))
+
+        if "itemData" in tmp_bData:
+            baseData["itemData"].update(copy.deepcopy(tmp_bData["itemData"]))
+
+    #
+    mainParentData = copy.deepcopy(sData.itemParentData[baseData["mainParent"]])
+    baseParentData = copy.deepcopy(sData.itemParentData[mainParentData["baseClass"]])
+    baseData["baseData"] = mainParentData
+
+    # ! FAILSAFE ! - Do not let the parentBase overwrite the Slot data!
+    baseData["baseData"]["slot"] = baseParentData["slot"]
+
+    return baseData
+
+def item_baseData_get(sData, subTypeName: str):
+    """
+
+    :param sData: CLASS - ServerData Class
+    :param subTypeName: STR - Name of the SubType?
+    :return:    {} - Dict with the baseData
+    """
+    # get Baseclass Data:
+    if subTypeName not in sData.itemClasses:
+        print(f"SUBTYPE NOT FOUND! - {subTypeName}")
+        return {}
+
+    baseClass_baseData = copy.deepcopy(sData.itemClasses[subTypeName])
+
+    return baseClass_baseData
+
+
+def item_data_create(parent: str = ""):
+    """
+    :param parent:      parent name
+    :return:            itemData (dict)
+    """
+
+    # base item Data - Every Item will have these entries!
+    itemBase = {
+        # "id":          id_handler.create_id(),  # Item ID - Will ALWAYS be generated!
+        "subType":      parent,  # Base Item Data, the A3 UI can refer to (stored ItemData)
+        "curInv":       "-1",  # ID of Inventory, that the Item is in
+        "invSub":       0,  # subInventory (in player Inv only!)
+        "invPos":       [0, 0],  # TopLeft Position of the Item in the InventoryGrid
+        "isFlipped":    0,  # 0/1 - Check if Item was flipped
+        "itemData":     {}  # additional data
+    }
+
+    return itemBase
+
 
 def item_data_flip_canFlip(size):
     if size[0] == size[1]:  # if a square -> No need to be flippable, so "0"
@@ -459,36 +550,8 @@ def item_data_flip_canFlip(size):
         return True
 
 
-def item_data_create_base(parent: str = "", slot=0):
-    """
-    :param parent:      Base Item Data, the A3 UI can refer to
-    :param slot:        subInventory (ONLY in player Inventory, currently! - "0" == External)
-    :return:            itemData (dict)
-    """
-
-    item = {
-        "id":           id_handler.create_id(),        # Item ID - Will ALWAYS be generated!
-        "parent":       parent,      # Base Item Data, the A3 UI can refer to (stored ItemData)
-        "hp_cur":       100,         # Current HP
-        "hp_max":       100,         # Max HP
-        "curInv":       "-1",        # ID of Inventory, that the Item is in
-        "invSub":       slot,        # subInventory (ONLY in player Inventory, currently! - "0" == External)
-        "invPos":       [0, 0],      # TopLeft Position of the Item in the InventoryGrid
-        "isFlipped":    0,           # 0/1 - Check if Item was flipped
-        "attachments":  {
-            # "scope": "",            # TODO: determine what makes more sense: ItemID or full itemData?
-            # "magazine": "",         # TODO: determine what makes more sense: ItemID or full itemData?
-            # "muzzle": "",           # TODO: determine what makes more sense: ItemID or full itemData?
-            # "barrel": "",           # TODO: determine what makes more sense: ItemID or full itemData?
-            # "support": "",          # TODO: determine what makes more sense: ItemID or full itemData?
-            },
-        }
-
-    return item
-
-
-# def inv_item_move(client=None, args=()):
-def inv_item_move(client, itemID: str, invID_old: str, invSubID_old: int, invID_new: str, invSubID_new: int, invPos_new: list, isFlipped: int):
+# def item_move(client=None, args=()):
+def item_move(client, itemID: str, invID_old: str, invSubID_old: int, invID_new: str, invSubID_new: int, invPos_new: list, isFlipped: int):
     """
 
     :param client:          client Class
@@ -505,7 +568,7 @@ def inv_item_move(client, itemID: str, invID_old: str, invSubID_old: int, invID_
     invData_new, isPlayer_new = inv_data_get(client, invID_new)
     # Check: Both inventories were found
     if not invData_old or not isPlayer_new:
-        PRINT_WARNING(f"WARNING: INV_HANDLER: inv_item_move: INVENTORY NOT FOUND:\ninvData_old: {invData_old}\ninvData_new:{invData_new}")
+        PRINT_WARNING(f"WARNING: INV_HANDLER: item_move: INVENTORY NOT FOUND:\ninvData_old: {invData_old}\ninvData_new:{invData_new}")
         return False
 
     moveWithinInv = isPlayer_old == isPlayer_new
@@ -516,12 +579,12 @@ def inv_item_move(client, itemID: str, invID_old: str, invSubID_old: int, invID_
 
     # Check: If "player to player" transfer (not implemented - Security Reasons - Maybe overkill? idk.. something for later to check again)
     if isPlayer_old and isPlayer_new and not moveWithinInv:
-        PRINT_WARNING(f"WARNING: INV_HANDLER: inv_item_move: PLAYER TO PLAYER TRANSFER DETECTED:\nold: {invID_old}\nnew:{invID_new}")
+        PRINT_WARNING(f"WARNING: INV_HANDLER: item_move: PLAYER TO PLAYER TRANSFER DETECTED:\nold: {invID_old}\nnew:{invID_new}")
         return False
 
     # Check: Item in old Inventory
     if itemID not in invData_old["itemData"]:
-        PRINT_WARNING(f"WARNING: INV_HANDLER: inv_item_move: ITEM NOT FOUND IN OLD INVENTORY:\nold: {invID_old}\nnew:{invID_new}")
+        PRINT_WARNING(f"WARNING: INV_HANDLER: item_move: ITEM NOT FOUND IN OLD INVENTORY:\nold: {invID_old}\nnew:{invID_new}")
         return False
 
     #############################################

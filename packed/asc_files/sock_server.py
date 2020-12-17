@@ -8,6 +8,7 @@ from asc_client import *
 import time
 import sys
 import os
+from anarchy_main.inventory import inv_handler
 from anarchy_main.inventory.itemParentData import itemParentData
 from anarchy_main.inventory.itemParentData.subtypes import subtypeData
 from anarchy_main.inventory.loot_tables import loot_tables
@@ -65,10 +66,16 @@ def server_start():
 
     PRINT_DEBUG(f'#### Lootseed:\n#### -> {sData.lootData["globalseed"]}')
 
-    # ####### load all the Items
+    # ####### load all the Items to: sData.itemParentData
     itemParentData.load_files(sData=sData)
-    # ####### load all the Items subTypes
+    # ####### load all the Items subTypes to: sData.itemSubTypes
     subtypeData.load_files(sData=sData)
+    # ####### Create all existing subType BaseData once, so we don't have to search or build them later again
+    # ####### Stored in: sData.itemClasses
+    for subType in sData.itemSubTypes:
+        # Do it
+        data = inv_handler.item_baseData_create(sData=sData, subTypeName=subType)
+        sData.itemClasses[subType] = data
 
     # ####### load the loot tables
     loot_tables.load_files(sData=sData)

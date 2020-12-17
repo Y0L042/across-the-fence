@@ -24,8 +24,9 @@ class data_server:
         self.mainConnection = None
         self.database = None
         self.lootData = {"globalseed": "", "tables": {}}
-        self.itemParentData = {}
-        self.itemSubTypes = {}
+        self.itemParentData = dict()
+        self.itemSubTypes = dict()
+        self.itemClasses = dict()
 
     # ##################################################################################################
 

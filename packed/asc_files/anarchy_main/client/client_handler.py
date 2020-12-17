@@ -322,7 +322,7 @@ def player_killed(sData, *data):
 		itemData = cData["itemData"][itemID]
 
 		# "move" the Items to the newly created Crate
-		# ToDo: Recheck again later, if "inv_item_move" must be used here (rel: ItemStats)
+		# ToDo: Recheck again later, if "item_move" must be used here (rel: ItemStats)
 		invData, item = inv_handler.inv_item_add_to_inv(sData, invData=crateData, isLootcrate=1, item=itemData)
 
 		# remove the old Item cData
