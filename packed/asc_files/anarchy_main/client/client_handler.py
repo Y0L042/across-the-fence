@@ -24,59 +24,62 @@ def client_add(**kwargs):
 		"faction": "CIV",   # Standard start faction
 		'inv_usedSlots': [],
 		'inventory': {
-			1000: {     # External Grid - Default Values - needed!
+			# External Grid - Default Values - needed!
+			1000: {
 				"inv_rows": 1,
-				'inv_cols': 1,
+				'inv_cols': 8,
 				"invID":    0,
 				"invArea":  "an_inv_external_area",
 				"invGrid":  "an_inv_external_grid",
 				"slotsUsed": [],
 				"isSlot": 0
 				},
+			# Inventory - Uniform
 			1012: {
-				"inv_rows": 16,  # DEV VALUES
-				"inv_cols": 8,  # DEV VALUES
+				"inv_rows": 0,
+				"inv_cols": 8,
 				"invID": 1012,
 				"invArea": "an_inv_uni_area",
 				"invGrid": "an_inv_uni_grid",
 				"slotsUsed": [],
 				"isSlot": 0
 				},
-			# Vest
+			# Inventory - Vest
 			1013: {
-				"inv_rows": 5,  # DEV VALUES
-				"inv_cols": 8,  # DEV VALUES
+				"inv_rows": 0,
+				"inv_cols": 8,
 				"invID": 1013,
 				"invArea": "an_inv_vst_area",
 				"invGrid": "an_inv_vst_grid",
 				"slotsUsed": [],
 				"isSlot": 0
 				},
-			# Pouch
+			# Inventory - Pouch
 			1014: {
-				"inv_rows": 6,  # DEV VALUES
-				"inv_cols": 8,  # DEV VALUES
+				"inv_rows": 0,
+				"inv_cols": 8,
 				"invID": 1014,
 				"invArea": "an_inv_pch_area",
 				"invGrid": "an_inv_pch_grid",
 				"slotsUsed": [],
 				"isSlot": 0
 				},
-			# Backpack
+			# Inventory - Backpack
 			1015: {
-				"inv_rows": 7,  # DEV VALUES
-				"inv_cols": 8,  # DEV VALUES
+				"inv_rows": 0,
+				"inv_cols": 8,
 				"invID": 1015,
 				"invArea": "an_inv_bkp_area",
 				"invGrid": "an_inv_bkp_grid",
 				"slotsUsed": [],
 				"isSlot": 0
 				},
+
 			# Slots:
 			# Slot - Weapon - Main
 			2002: {
-				"inv_rows": 3,
-				"inv_cols": 6,
+				"inv_rows": 8,
+				"inv_cols": 8,
 				"invID": 2002,
 				"invArea": "an_slot_wpn_area",
 				"invGrid": "an_slot_wpn_grid",
@@ -85,8 +88,8 @@ def client_add(**kwargs):
 				},
 			# Slot - Weapon - Main (second slot)
 			2202: {
-				"inv_rows": 3,
-				"inv_cols": 6,
+				"inv_rows": 8,
+				"inv_cols": 8,
 				"invID": 2202,
 				"invArea": "an_slot_wpn_b_area",
 				"invGrid": "an_slot_wpn_b_grid",
@@ -95,8 +98,8 @@ def client_add(**kwargs):
 				},
 			# Slot - Weapon - secondary
 			2003: {
-				"inv_rows": 2,
-				"inv_cols": 4,
+				"inv_rows": 8,
+				"inv_cols": 8,
 				"invID": 2003,
 				"invArea": "an_slot_sec_area",
 				"invGrid": "an_slot_sec_grid",
@@ -105,8 +108,8 @@ def client_add(**kwargs):
 				},
 			# Slot - Helmet
 			2010: {
-				"inv_rows": 3,
-				"inv_cols": 3,
+				"inv_rows": 8,
+				"inv_cols": 8,
 				"invID": 2010,
 				"invArea": "an_slot_hel_area",
 				"invGrid": "an_slot_hel_grid",
@@ -115,8 +118,8 @@ def client_add(**kwargs):
 				},
 			# Slot - Goggles
 			2011: {
-				"inv_rows": 2,
-				"inv_cols": 2,
+				"inv_rows": 8,
+				"inv_cols": 8,
 				"invID": 2011,
 				"invArea": "an_slot_gog_area",
 				"invGrid": "an_slot_gog_grid",
@@ -125,8 +128,8 @@ def client_add(**kwargs):
 				},
 			# Slot - Uniform
 			2012: {
-				"inv_rows": 6,
-				"inv_cols": 4,
+				"inv_rows": 8,
+				"inv_cols": 8,
 				"invID": 2012,
 				"invArea": "an_slot_uni_area",
 				"invGrid": "an_slot_uni_grid",
@@ -135,8 +138,8 @@ def client_add(**kwargs):
 				},
 			# Slot - Vest
 			2013: {
-				"inv_rows": 4,
-				"inv_cols": 4,
+				"inv_rows": 8,
+				"inv_cols": 8,
 				"invID": 2013,
 				"invArea": "an_slot_vst_area",
 				"invGrid": "an_slot_vst_grid",
@@ -145,8 +148,8 @@ def client_add(**kwargs):
 				},
 			# Slot - Vest
 			2015: {
-				"inv_rows": 4,
-				"inv_cols": 4,
+				"inv_rows": 8,
+				"inv_cols": 8,
 				"invID": 2015,
 				"invArea": "an_slot_bkp_area",
 				"invGrid": "an_slot_bkp_grid",
@@ -155,8 +158,8 @@ def client_add(**kwargs):
 				},
 			# Slot - Bino
 			2017: {
-				"inv_rows": 3,
-				"inv_cols": 3,
+				"inv_rows": 8,
+				"inv_cols": 8,
 				"invID": 2017,
 				"invArea": "an_slot_bin_area",
 				"invGrid": "an_slot_bin_grid",
