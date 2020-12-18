@@ -1,0 +1,99 @@
+
+{
+	
+	"vn_izh54_base":
+	{
+		"baseClass": "base_wpn_primary",
+		"class_name": "vn_izh54",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: Shotgun"
+	},
+	"vn_izh54_shorty_base":
+	{
+		"baseClass": "base_wpn_primary",
+		"class_name": "vn_izh54_shorty",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: Shotgun"
+	},
+	
+	"vn_m1897_base":
+	{
+		"baseClass": "base_wpn_primary",
+		"class_name": "vn_m1897",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: Shotgun"
+	},
+	
+	"vn_m14_base":
+	{
+		"baseClass": "base_wpn_primary",
+		"class_name": "vn_m14",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: Rifle"
+	},
+	"vn_m16_base":
+	{
+		"baseClass": "base_wpn_primary",
+		"class_name": "vn_m16",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: Rifle"
+	},
+	
+	"vn_m38_base":
+	{
+		"baseClass": "base_wpn_primary",
+		"class_name": "vn_m38",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: Rifle/Sniper(?)"
+	},
+	
+	"vn_m4956_base":
+	{
+		"baseClass": "base_wpn_primary",
+		"class_name": "vn_m4956",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: Rifle/Sniper(?) - aka MAS-49"
+	}
+	
+	
+	
+	"vn_m60_base":
+	{
+		"baseClass": "base_wpn_primary",
+		"class_name": "vn_m60",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: LMG"
+	},
+	"vn_m60_shorty_base":
+	{
+		"baseClass": "base_wpn_primary",
+		"class_name": "vn_m60_shorty",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: LMG"
+	},
+	"vn_rpd_base":
+	{
+		"baseClass": "base_wpn_primary",
+		"class_name": "vn_rpd",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: LMG"
+	},
+	"vn_rpd_shorty_base":
+	{
+		"baseClass": "base_wpn_primary",
+		"class_name": "vn_rpd_shorty",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: LMG"
+	}
+}

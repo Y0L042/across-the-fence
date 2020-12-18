@@ -1,0 +1,79 @@
+
+{
+	"vn_b_boonie_02_01_base":
+	{
+		"baseClass": "base_gear_helmet",
+		"class_name": "vn_b_boonie_02_01",
+		"name": "",
+		"image": "",
+		"comment": "I am a comment"
+	},
+	"vn_b_bandana_01_base":
+	{
+		"baseClass": "base_gear_helmet",
+		"class_name": "vn_b_bandana_01",
+		"name": "",
+		"image": "",
+		"comment": "I am a comment"
+	},
+	"vn_b_bandana_03_base":
+	{
+		"baseClass": "base_gear_helmet",
+		"class_name": "vn_b_bandana_03",
+		"name": "",
+		"image": "",
+		"comment": "I am a comment"
+	},
+	"vn_b_beret_01_01_base":
+	{
+		"baseClass": "base_gear_helmet",
+		"class_name": "vn_b_beret_01_01",
+		"name": "",
+		"image": "",
+		"comment": "I am a comment"
+	},
+	
+	
+	
+	"vn_o_helmet_nva_01_base":
+	{
+		"baseClass": "base_gear_helmet",
+		"class_name": "vn_o_helmet_nva_01",
+		"name": "",
+		"image": "",
+		"comment": "I am a comment"
+	},
+	"vn_o_helmet_vc_01_base":
+	{
+		"baseClass": "base_gear_helmet",
+		"class_name": "vn_o_helmet_vc_01",
+		"name": "",
+		"image": "",
+		"comment": "I am a comment"
+	},
+	
+	"vn_b_helmet_aph6_01_01_base":
+	{
+		"baseClass": "base_gear_helmet",
+		"class_name": "vn_b_helmet_aph6_01_01",
+		"name": "",
+		"image": "",
+		"comment": "I am a comment"
+	},
+	"vn_b_helmet_m1_01_01_base":
+	{
+		"baseClass": "base_gear_helmet",
+		"class_name": "vn_b_helmet_m1_01_01",
+		"name": "",
+		"image": "",
+		"comment": "I am a comment"
+	},
+	"vn_b_helmet_t56_01_01_base":
+	{
+		"baseClass": "base_gear_helmet",
+		"class_name": "vn_b_helmet_t56_01_01",
+		"name": "",
+		"image": "",
+		"comment": "I am a comment"
+	}
+}

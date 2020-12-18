@@ -1,0 +1,30 @@
+
+{
+	"bandage_base":
+	{
+		"size": [1, 2],
+		"baseClass": "base_item",
+		"class_name": "",
+		"name": "STR_Bandage",
+		"image": "\\A3\\Weapons_F\\Items\\data\\UI\\gear_gps_CA.paa",
+		"comment": "This Item overwrites the size"
+	},
+	"FirstAidKit_base":
+	{
+		"size": [2, 2],
+		"baseClass": "base_item",
+		"class_name": "",
+		"name": "STR_FirstAidKit",
+		"image": "\\A3\\Weapons_F\\Items\\data\\UI\\gear_FirstAidKit_CA.paa",
+		"comment": "This Item overwrites the size"
+	},
+	"Medikit_base":
+	{
+		"size": [3, 3],
+		"baseClass": "base_item",
+		"class_name": "",
+		"name": "STR_MediKit",
+		"image": "\\A3\\Weapons_F\\Items\\data\\UI\\gear_Medikit_CA.paa",
+		"comment": "This Item overwrites the size"
+	}
+}

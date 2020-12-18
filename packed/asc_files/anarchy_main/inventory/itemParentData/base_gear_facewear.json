@@ -1,0 +1,43 @@
+
+{
+	"vn_b_aviator_base":
+	{
+		"baseClass": "base_gear_head",
+		"class_name": "vn_b_aviator",
+		"name": "",
+		"image": "",
+		"comment": "I am a comment"
+	},
+	"vn_b_scarf_01_01_base":
+	{
+		"baseClass": "base_gear_head",
+		"class_name": "vn_b_scarf_01_01",
+		"name": "",
+		"image": "",
+		"comment": "I am a comment"
+	},
+	"vn_o_acc_goggles_01_base":
+	{
+		"baseClass": "base_gear_head",
+		"class_name": "vn_o_acc_goggles_01",
+		"name": "",
+		"image": "",
+		"comment": "I am a comment"
+	},
+	"vn_o_bandana_b_base":
+	{
+		"baseClass": "base_gear_head",
+		"class_name": "vn_o_bandana_b",
+		"name": "",
+		"image": "",
+		"comment": "I am a comment"
+	},
+	"vn_o_poncho_01_01_base":
+	{
+		"baseClass": "base_gear_head",
+		"class_name": "vn_o_poncho_01_01",
+		"name": "",
+		"image": "",
+		"comment": "I am a comment"
+	}
+}

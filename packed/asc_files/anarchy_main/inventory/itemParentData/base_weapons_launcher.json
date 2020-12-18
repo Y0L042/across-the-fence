@@ -1,0 +1,20 @@
+
+{
+	"launch_RPG32_F_base":
+	{
+		"baseClass": "base_wpn_launcher",
+		"class_name": "launch_RPG32_F",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: Launcher - Big pewboomcrashboing"
+	},
+	
+	"launch_NLAW_F_base":
+	{
+		"baseClass": "base_wpn_launcher",
+		"class_name": "launch_NLAW_F",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: Launcher - Big pewboomcrashboing"
+	}
+}

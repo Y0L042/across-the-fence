@@ -1,0 +1,19 @@
+
+{
+	"vn_s_m14_base":
+	{
+		"baseClass": "base_att_muzzle",
+		"class_name": "vn_s_m14",
+		"name": "",
+		"image": "",
+		"comment": "Muzzle: for M14"
+	},
+	"vn_s_m16_base":
+	{
+		"baseClass": "base_att_muzzle",
+		"class_name": "vn_s_m16",
+		"name": "",
+		"image": "",
+		"comment": "Muzzle: for M16"
+	}
+}

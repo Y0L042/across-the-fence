@@ -1,0 +1,27 @@
+
+{
+	"vn_o_9x_m14_base":
+	{
+		"baseClass": "base_att_scope",
+		"class_name": "vn_o_9x_m14",
+		"name": "",
+		"image": "",
+		"comment": "Scope: M14"
+	},
+	"vn_o_anpvs2_m14_base":
+	{
+		"baseClass": "base_att_scope",
+		"class_name": "vn_o_anpvs2_m14",
+		"name": "",
+		"image": "",
+		"comment": "Scope: M14"
+	},
+	"vn_o_4x_m16_base":
+	{
+		"baseClass": "base_att_scope",
+		"class_name": "vn_o_4x_m16",
+		"name": "",
+		"image": "",
+		"comment": "Scope: M16"
+	}
+}

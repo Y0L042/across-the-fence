@@ -1,0 +1,39 @@
+
+{
+	"oldSock_base":
+	{
+		"size": [2, 1],
+		"baseClass": "base_item",
+		"class_name": "",
+		"name": "Old Socks",
+		"image": "\\a3\\drones_f\\Weapons_F_Gamma\\Items\\data\\UI\\gear_UAV_controller_oli_CA.paa",
+		"comment": "This Item overwrites the size"
+	},
+	"trashItem_base":
+	{
+		"size": [2, 2],
+		"baseClass": "base_item",
+		"class_name": "",
+		"name": "Trash item",
+		"image": "\\a3\\weapons_f_orange\\Explosives\\Data\\UI\\gear_TrainingMine_CA.paa",
+		"comment": "This Item overwrites the size"
+	},
+	"boxershorts_base":
+	{
+		"size": [3, 2],
+		"baseClass": "base_item",
+		"class_name": "",
+		"name": "Boxershorts",
+		"image": "\\a3\\weapons_f_mark\\Data\\UI\\gear_laserdesignator_03_X_ca.paa",
+		"comment": "This Item overwrites the size"
+	},
+	"ubertrash_base":
+	{
+		"size": [3, 2],
+		"baseClass": "base_item",
+		"class_name": "",
+		"name": "Dscha's will to do all the configs",
+		"image": "\\a3\\weapons_f_mark\\Data\\UI\\gear_laserdesignator_03_X_ca.paa",
+		"comment": "This Item overwrites the size"
+	}
+}

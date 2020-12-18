@@ -1,0 +1,38 @@
+
+{
+	"vn_hd_base":
+	{
+		"baseClass": "base_wpn_secondary",
+		"class_name": "vn_hd",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: Handgun? I guess"
+	},
+	
+	"vn_hp_base":
+	{
+		"baseClass": "base_wpn_secondary",
+		"class_name": "vn_hp",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: Handgun? I guess"
+	},
+	
+	"vn_m1895_base":
+	{
+		"baseClass": "base_wpn_secondary",
+		"class_name": "vn_m1895",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: Handgun? I guess"
+	},
+	
+	"vn_m1911_base":
+	{
+		"baseClass": "base_wpn_secondary",
+		"class_name": "vn_m1911",
+		"name": "",
+		"image": "",
+		"comment": "Weapontype: Handgun? I guess"
+	}
+}

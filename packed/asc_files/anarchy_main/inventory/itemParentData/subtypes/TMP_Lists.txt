@@ -1,0 +1,26 @@
+NOTE: No Clue where to put them atm :thonk:
+
+
+"list_muzzle":
+{
+	"vn_m14": ["vn_s_m14"],
+	"vn_m14_alternative": ["vn_s_m14"],
+	"vn_m14_lessTearNoScopes": ["vn_s_m14"],
+	"megauberm14": ["vn_s_m14"],
+	"vn_m16": ["vn_s_m16"],
+	"vn_m38": [],
+	"vn_m4956": []
+},
+
+
+"list_scope":
+{
+	"vn_m14": ["vn_o_9x_m14"],
+	"vn_m14_alternative": ["vn_o_9x_m14","vn_o_anpvs2_m14"],
+	"vn_m14_lessTearNoScopes": [],
+	"megauberm14": ["vn_o_9x_m14","vn_o_anpvs2_m14"],
+	"vn_m16": ["vn_o_4x_m16"],
+	"vn_m38": [],
+	"vn_m4956": []
+},
+

@@ -1,0 +1,51 @@
+
+{
+	"vn_b_uniform_macv_01_01_base":
+	{
+		"baseClass": "base_gear_uniform",
+		"class_name": "vn_b_uniform_macv_01_01",
+		"name": "",
+		"image": "",
+		"comment": "Uniform, Side: whatever"
+	},
+	"vn_b_uniform_sog_01_01_base":
+	{
+		"baseClass": "base_gear_uniform",
+		"class_name": "vn_b_uniform_sog_01_01",
+		"name": "",
+		"image": "",
+		"comment": "Uniform, Side: whatever"
+	},
+	"vn_b_uniform_sog_02_04_base":
+	{
+		"baseClass": "base_gear_uniform",
+		"class_name": "vn_b_uniform_sog_02_04",
+		"name": "",
+		"image": "",
+		"comment": "Uniform, Side: whatever"
+	},
+	"vn_o_uniform_vc_03_02_base":
+	{
+		"baseClass": "base_gear_uniform",
+		"class_name": "vn_o_uniform_vc_03_02",
+		"name": "",
+		"image": "",
+		"comment": "Uniform, Side: whatever"
+	},
+	"vn_o_uniform_vc_mf_01_07_base":
+	{
+		"baseClass": "base_gear_uniform",
+		"class_name": "vn_o_uniform_vc_mf_01_07",
+		"name": "",
+		"image": "",
+		"comment": "Uniform, Side: whatever"
+	},
+	"vn_b_uniform_macv_01_06_base":
+	{
+		"baseClass": "base_gear_uniform",
+		"class_name": "vn_b_uniform_macv_01_06",
+		"name": "",
+		"image": "",
+		"comment": "Uniform, Side: whatever"
+	}
+}

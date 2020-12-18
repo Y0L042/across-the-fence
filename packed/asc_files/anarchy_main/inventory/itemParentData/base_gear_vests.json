@@ -1,0 +1,44 @@
+
+{
+	"vn_b_vest_sog_01_base":
+	{
+		"baseClass": "base_gear_vest",
+		"class_name": "vn_b_vest_sog_01",
+		"name": "",
+		"image": "",
+		"comment": "Vest - B"
+	},
+	"vn_b_vest_usarmy_01_base":
+	{
+		"baseClass": "base_gear_vest",
+		"class_name": "vn_b_vest_usarmy_01",
+		"name": "",
+		"image": "",
+		"comment": "Vest - B"
+	},
+	"vn_b_vest_aircrew_01_base":
+	{
+		"baseClass": "base_gear_vest",
+		"class_name": "vn_b_vest_aircrew_01",
+		"name": "",
+		"image": "",
+		"comment": "Vest - B"
+	},
+	
+	"vn_o_vest_04_base":
+	{
+		"baseClass": "base_gear_vest",
+		"class_name": "vn_o_vest_04",
+		"name": "",
+		"image": "",
+		"comment": "Vest - O"
+	},
+	"vn_o_vest_vc_01_base":
+	{
+		"baseClass": "base_gear_vest",
+		"class_name": "vn_o_vest_vc_01",
+		"name": "",
+		"image": "",
+		"comment": "Vest - O"
+	}
+}

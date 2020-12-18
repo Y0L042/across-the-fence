@@ -1,0 +1,45 @@
+
+{
+	"vn_b_pack_01_base":
+	{
+		"baseClass": "base_gear_backpack",
+		"class_name": "vn_b_pack_01",
+		"name": "",
+		"image": "",
+		"comment": "Backpack - B"
+	},
+	"vn_b_pack_02_base":
+	{
+		"baseClass": "base_gear_backpack",
+		"class_name": "vn_b_pack_02",
+		"name": "",
+		"image": "",
+		"comment": "Backpack - B"
+	},
+	
+	"vn_o_pack_01_base":
+	{
+		"baseClass": "base_gear_backpack",
+		"class_name": "vn_o_pack_01",
+		"name": "",
+		"image": "",
+		"comment": "Backpack - O"
+	},
+	"vn_o_pack_02_base":
+	{
+		"baseClass": "base_gear_backpack",
+		"class_name": "vn_o_pack_02",
+		"name": "",
+		"image": "",
+		"comment": "Backpack - O"
+	},
+	
+	"vn_c_pack_01_base":
+	{
+		"baseClass": "base_gear_backpack",
+		"class_name": "vn_c_pack_01",
+		"name": "",
+		"image": "",
+		"comment": "Backpack - C"
+	}
+}
