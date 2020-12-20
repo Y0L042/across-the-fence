@@ -1,5 +1,4 @@
 import random
-import string
 from _thread import *
 from threading import Thread
 import asc_server
@@ -10,7 +9,7 @@ import sys
 import os
 from anarchy_main.inventory import inv_handler
 from anarchy_main.inventory.itemParentData import itemParentData
-from anarchy_main.inventory.itemParentData.subtypes import subtypeData
+from anarchy_main.inventory.subtypes import subtypeData
 from anarchy_main.inventory.loot_tables import loot_tables
 
 
