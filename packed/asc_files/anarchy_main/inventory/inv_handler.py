@@ -14,136 +14,6 @@ DEFAULT_loot_skill_multiplier = 2
 
 
 
-# called by Server only!
-def inv_data_create(sData, clientID: str = None, pos: list = None, crateID: str = "", lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 16, inv_cols: int = 8, persistent: int = 0, model: str = "IG_supplyCrate_F"):
-    """
-    :param sData:       ServerData (auto-passed)
-    :param clientID:    A3 playerUID
-    :param pos:         list - [[x,y,z],dir]
-    :param crateID:     "ID of the"
-    :param lootType:    String - type of loot, passed by the gameserver
-    :param isLootcrate: is the crate a newly created Loot-crate or not
-    :param loot_count:  Int - amount of Items to add (can be altered by Loot-skill of the player)
-    :param inv_rows:    Int - Rows
-    :param inv_cols:    Int - Columns
-    The following arguments are ONLY for creating persistent crates:
-    :param persistent:  Save to Database or not (persistent crates only)
-    :param model:       A3 typeOf Class (persistent crates only)
-    :return:
-    """
-
-    if None in [clientID, pos]:
-        PRINT_WARNING(f"ERROR: INV_HANDLER: inv_data_create: clientID or Pos not transmitted: clientID: {clientID} | pos: {pos}")
-        return
-
-    if persistent > 0:
-        # only persistent Crates store the model
-        model = model
-    else:
-        model = ""
-
-    if isLootcrate == 0:
-        # Player created Crates (e.g: Opening Inventory to drop things)
-        inv_rows = 20
-        inv_cols = 8
-
-    invData = {
-        "crateID":   crateID,
-        "model":     model,
-        "pos":       pos,
-        "type":      lootType,
-        'inventory': {
-            0: {
-                "inv_rows": inv_rows,
-                'inv_cols': inv_cols,
-                "invID":    0,
-                "invArea":  "an_inv_external_area",
-                "invGrid":  "an_inv_external_grid",
-                "slotsUsed": []
-                }
-            },
-        "itemData":  {}
-        }
-
-    # PRINT_DEBUG(f"CRATE ADD:\n"
-    #       f"crateID     : {crateID}\n"
-    #       f"Model       : {model}\n"
-    #       f"Pos         : {pos}\n"
-    #       f"type        : {lootType}\n"
-    #       f"inv_rows    : {inv_rows}\n"
-    #       f"invData     : {invData}\n")
-
-    # create the Inventory
-    if persistent > 0:
-        sData.database.crates[crateID] = invData
-        asc_db.db_save(sData.database)
-    else:
-        # fill the lootcrate (if crate/Inventory is a lootcrate)
-        if isLootcrate == 1:
-            # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create: isLootcrate: {isLootcrate}")
-
-            skill_scavenging = sData.database.players[clientID]["skills"]["scavenging"]
-            # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create: skill_scavenging: {skill_scavenging}")
-
-            # ToDo: recalculate the loot_count properly, based on the scavenging skill!
-            # check if skill is high enough, otherwise randRange will complain, that the "end"-number isn't high enough... (must be "start < end")
-            if skill_scavenging > 0:
-                loot_count = random.randrange(loot_count, int(loot_count + (skill_scavenging * DEFAULT_loot_skill_multiplier)))
-            # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create: loot_count: {loot_count}")
-
-            # get the list of Item names
-            items_list = loot_handler.loot_item_list_create(sData=sData, crate_id=crateID, loot_count=loot_count, loot_type=lootType)
-            # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create: items_list_raw: {items_list}\n----------------")
-
-            # cycle through all the parents (parent can either be full itemData or a subType)
-            for parent in items_list:
-                try:
-                    # Check if the "parent" is a subType. If so: Get the parent-name from the subType
-                    if parent in sData.itemSubTypes:
-                        # create the Item Data structure
-                        subType_parent = sData.itemSubTypes[parent]["parent"]
-                        # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create: subType_class: {parent} - subType_parent: {subType_parent}")
-
-                        # create and get the Item Data structure
-                        item = inv_item_create(parent=subType_parent)
-                        # get the subTypeData of the desired Item
-                        subType = sData.itemSubTypes[parent]
-                        # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create: subType: {subType} -  item: {item}")
-                        # update the parentData with the subTypeData
-                        item.update(subType)
-                        # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create -> inv_item_create: item #2: {item}")
-                        # ToDo: call a function in item_handler to update/calc stats like hp_cur, depending on... something
-
-                    else:
-                        item = inv_item_create(parent=parent)
-                    # Add item to Inventory and update the invData
-#############################################################
-                    invData, item = inv_item_add_to_inv(sData=sData, invData=invData, isLootcrate=isLootcrate, item=item)
-#############################################################
-                # in case the item wasn't defined in parentData -> Create a default/fallback item
-                except TypeError as e:
-                    PRINT_WARNING(f'ERROR: INV_HANDLER: inv_data_create: ITEM DEFINITION NOT FOUND: Parent: "{parent}" - Creating dummy Icon')
-                    # PRINT_WARNING(f"ERROR: INV_HANDLER: inv_data_create: Error: {e}")
-                    item = inv_item_create(parent="PLACEHOLDER")
-#############################################################
-                    invData, item = inv_item_add_to_inv(sData=sData, invData=invData, isLootcrate=isLootcrate, item=item)
-#############################################################
-                except Exception as e:
-                    PRINT_WARNING(f"ERROR: INV_HANDLER: inv_data_create: Error (HUGE WOBBLE WOBBLE): {e}")
-
-            # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_create: invData: {invData}")
-
-        # store in database, under temporary crates
-        sData.database.sessionCrates[crateID] = invData
-        # done
-
-    # send Inventory data back to the requesting client
-    conClient = sData.user_active[clientID]["con"]
-    # send the invData to the Client
-    inv_data_send_toClient(invData, conClient)
-    return {}
-
-
 def inv_item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, invGearID: str = "0"):
     """
 
@@ -259,26 +129,155 @@ def inv_item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, in
 ######################################################################
 
 
-# try to get the Crate data. If not found -> Create a new one. We simply assume the Data, coming from the Game-server, is correct/valid.
+def inv_crate_create(sData, clientID: str = None, pos: list = None, crateID: str = "", lootType: str = None, isLootcrate: int = 0, persistent: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 20, inv_cols: int = 8, model: str = "IG_supplyCrate_F"):
+    """
+    :param sData:       ServerData (auto-passed)
+    :param clientID:    A3 playerUID
+    :param pos:         list - [[x,y,z],dir]
+    :param crateID:     "ID of the"
+    :param lootType:    String - type of loot, passed by the gameserver
+    :param isLootcrate: is the crate a newly created Loot-crate or not
+    :param loot_count:  Int - amount of Items to add (can be altered by Loot-skill of the player)
+    :param inv_rows:    Int - Rows
+    :param inv_cols:    Int - Columns
+    The following arguments are ONLY for creating persistent crates:
+    :param persistent:  Save to Database or not (persistent crates only)
+    :param model:       A3 typeOf Class (persistent crates only)
+    :return:
+    """
+
+    if None in [clientID, pos]:
+        PRINT_WARNING(f"ERROR: INV_HANDLER: inv_crate_create: clientID or Pos not transmitted: clientID: {clientID} | pos: {pos}")
+        return
+
+    if persistent > 0:
+        # only persistent Crates store the model
+        model = model
+    else:
+        model = ""
+
+    if isLootcrate == 0:
+        # Player created Crates (e.g: Opening Inventory to drop things)
+        inv_rows = 20
+        inv_cols = 8
+
+    invData = inv_data_create(crateID=crateID, model=model, pos=pos, lootType=lootType, inv_rows=inv_rows, inv_cols=inv_cols)
+
+    # store the Inventory
+    if persistent > 0:
+        # Add to the "crates" (permanent) Database. Since it is no lootcrate, don't fill it.
+        sData.database.crates[crateID] = invData
+        asc_db.db_save(sData.database)
+    else:
+        # Check if loot needs to be created for this crate:
+        if isLootcrate > 0:
+            # ToDo: Do a recheck, when the Skill-system is properly added
+            # Get the scavenging Skill from the requesting player:
+            if "scavenging" in sData.database.players[clientID]["skills"]:
+                skill_scavenging = sData.database.players[clientID]["skills"]["scavenging"]
+            else:
+                skill_scavenging = 0
+            # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_crate_create: skill_scavenging: {skill_scavenging}")
+            # Fill the crate:
+            inv_crate_loot_fill(sData=sData, invData=invData, lootType=lootType, loot_count=loot_count, skill_scavenging=skill_scavenging)
+
+        # Add to the "sessionCrates" Database. They won't be saved into the database files.
+        sData.database.sessionCrates[crateID] = invData
+
+    # Get the connection of the requesting client
+    conClient = sData.user_active[clientID]["con"]
+    # send the invData to the Client
+    inv_data_send_toClient(invData, conClient)
+    return invData
+
+
+def inv_crate_loot_fill(sData, invData: dict = None, lootType: str = None, loot_count: int = DEFAULT_loot_count,  skill_scavenging: int = 0):
+    """Fill the given invData with loot items? Yeah, i guess that's what this one does.
+
+    :param sData:
+    :param invData:
+    :param lootType:
+    :param loot_count:
+    :param skill_scavenging:
+    :return:
+    """
+    if not invData:
+        PRINT_WARNING(f"DEBUG: inv_crate_loot_fill: INVDATA WAS NOT PASSED/CREATED EARLIER!")
+        return
+    # ToDo: recalculate the loot_count properly, based on the scavenging skill! (chance-based?)
+    # check if skill is high enough, otherwise randRange will complain, that the "end"-number isn't high enough... (must be "start < end")
+    if skill_scavenging > 0:
+        loot_count = random.randrange(loot_count, int(loot_count + (skill_scavenging * DEFAULT_loot_skill_multiplier)))
+    # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_crate_create: loot_count: {loot_count}")
+
+    # get the list of Item names
+    items_list = loot_handler.loot_item_list_create(sData=sData, loot_count=loot_count, loot_type=lootType)
+    # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_crate_create: items_list_raw: {items_list}\n----------------")
+
+    # cycle through all the itemsSubTypes
+    for itemName in items_list:
+        item = item_create(sData=sData, itemSubTypeName=itemName)
+        # ToDo: update/calc stats, depending on... something... skill? Random? idk
+        PRINT_DEBUG(f"DEBUG: inv_crate_loot_fill: Item: {item}")
+        # ToDo: Add Item to Inventory
+
+
+def inv_data_create(crateID: str = "", model: str = "", pos: list = None, lootType: str = "", inv_rows: int = 0, inv_cols: int = 0):
+    """Create the base data structure for all Inventories
+
+    :param crateID:
+    :param model:
+    :param pos:
+    :param lootType:
+    :param inv_rows:
+    :param inv_cols:
+    :return:
+    """
+    pos = pos or [[], 0]    # if pos = None (false) -> select the default value
+
+    invData = {
+        "crateID":   crateID,
+        "model":     model,
+        "pos":       pos,
+        "type":      lootType,
+        'inventory': {
+            0: {
+                "inv_rows": inv_rows,
+                'inv_cols': inv_cols,
+                "invID":    0,
+                "invArea":  "an_inv_external_area",
+                "invGrid":  "an_inv_external_grid",
+                "slotsUsed": []
+                }
+            },
+        "itemData":  {}
+        }
+    return invData
+
+
 def inv_data_request(sData, clientID: str = None, pos: list = None, crateID: str = None, lootType: str = None, isLootcrate: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 16, inv_cols: int = 8, persistent: int = 0, model: str = "IG_supplyCrate_F"):
-    # clientID
-    # pos
-    # crateID
-    # lootType
-    # isLootcrate
-    # loot_count
-    # inv_rows
-    # inv_cols
-    # persistent
-    # model
+    """Try to get the Crate data. If not found -> Create a new one. We simply assume the Data, coming from the Game-server, is correct/valid.
+
+    :param sData:
+    :param clientID:
+    :param pos:
+    :param crateID:
+    :param lootType:
+    :param isLootcrate:
+    :param loot_count:
+    :param inv_rows:
+    :param inv_cols:
+    :param persistent:
+    :param model:
+    :return:
+    """
 
     if crateID in sData.database.crates:
         invData = sData.database.crates[crateID]
     elif crateID in sData.database.sessionCrates:
         invData = sData.database.sessionCrates[crateID]
     else:
-        # Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo Todo
-        invData = inv_data_create(sData=sData, clientID=clientID, pos=pos, crateID=crateID, lootType=lootType, isLootcrate=isLootcrate, loot_count=loot_count, inv_rows=inv_rows, inv_cols=inv_cols, persistent=persistent)
+        invData = inv_crate_create(sData=sData, clientID=clientID, pos=pos, crateID=crateID, lootType=lootType, isLootcrate=isLootcrate, loot_count=loot_count, inv_rows=inv_rows, inv_cols=inv_cols, persistent=persistent)
 
     # ToDo: Add an "in use"-check (players, currently having that Inventory open)
     # send Inventory data back to the requesting client

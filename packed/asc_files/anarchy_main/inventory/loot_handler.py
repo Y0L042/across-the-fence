@@ -18,10 +18,13 @@ def loot_item_type_select(sData, x_dict, DEBUG_itemInfo=None):
         return selected_type
 
 
-def loot_item_list_create(sData, crate_id, loot_type, loot_count):
+def loot_item_list_create(sData, loot_type, loot_count):
     """
+    WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
+    WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
+    WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
+
     :param sData:       OBJ - Main serverData
-    :param crate_id:    STR - ID of given Crate
     :param loot_type:   STR - Which loot-table should be loaded
     :param loot_count:  INT - Amount of Items to be created
     :return:            Array with itemNames. Example: ["item1", "item2"]

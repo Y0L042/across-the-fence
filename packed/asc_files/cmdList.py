@@ -59,7 +59,7 @@ cmdList = {
 
 
 				# Inventory
-				"inv_data_create":                {"fnc": "AN_S_fnc_crate_add", "spawn": 0}
+				"inv_crate_create":                {"fnc": "AN_S_fnc_crate_add", "spawn": 0}
 			},
 		'client': {
 				# ""Tag" send from Arma" : Function in the backend
