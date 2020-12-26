@@ -181,26 +181,30 @@ def client_add(**kwargs):
 # Note: called from asc_client
 def client_init(self):
 	self.cData = player_data_get(self.sData, self.puid)
-	if len(self.cData) == 0:
+	if not self.cData:
 		PRINT_ATTENTION(f"ASC: CLIENT HANDLER: PUID NOT FOUND. CREATING NEW ENTRY FOR PUID: {self.puid}")
 		self.cData = client_add(puid=self.puid)
 		player_data_set(self.sData, self.puid, self.cData)
 
 		# add Starter Gear:
-		startGear = [["vn_b_uniform_macv_01_06", [2012]], ["vn_b_bandana_03", [2010]]]
-		for itemData in startGear:
-			item = inv_handler.inv_item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
-			item["curInv"] = self.cData["puid"]
-			# Add it to the itemData (inventory) - Since those Items are already "equipped", they won't take any slots.
-			self.cData["itemData"][item["id"]] = item
+		startGear = ["vn_b_uniform_macv_01_06", "vn_b_bandana_03"]
+		for itemName in startGear:
+			item = inv_handler.item_create(sData=self.sData, itemSubTypeName=itemName)
+			# PRINT_ATTENTION(f"item: {item}")
+
+			parentData = inv_handler.item_baseData_get(sData=self.sData, subTypeName=item["subType"])
+			# PRINT_ATTENTION(f"parentData: {parentData}")
+			slot = parentData["baseData"]["slot"][0]
+
+			inv_handler.inv_item_new_add(sData=self.sData, invData=self.cData, item=item, invSubID=slot, crateID=self.puid)
 
 	# filter out all the equipped Gear and send it as a "special" set to the Server, so the Client can be equipped
-	listGear = []
-	for x in self.cData["itemData"]:
-		# noinspection PyTypeChecker
-		slotID = self.cData["itemData"][x]["inSlot"]
-		if slotID > 0:
-			listGear.append(self.cData["itemData"][x])
+	# listGear = []
+	# for x in self.cData["itemData"]:
+	# 	# noinspection PyTypeChecker
+	# 	slotID = self.cData["itemData"][x]["inSlot"]
+	# 	if slotID > 0:
+	# 		listGear.append(self.cData["itemData"][x])
 
 	# Server:
 	# send Player Dataset over to the Server, so it can set up the player:
@@ -214,11 +218,11 @@ def client_init(self):
 	asc_g_msg.sendMsg("player_faction_set", dataset, self.sData.con_gameServer)
 
 	# submit: loadout
-	dataset = {
-		"data_puid": self.puid,
-		"data_gear": listGear
-		}
-	asc_g_msg.sendMsg("player_loadout_set", dataset, self.sData.con_gameServer)
+	# dataset = {
+	# 	"data_puid": self.puid,
+	# 	"data_gear": listGear
+	# 	}
+	# asc_g_msg.sendMsg("player_loadout_set", dataset, self.sData.con_gameServer)
 
 	# submit: pos/dir/stance
 	dataset = {
@@ -248,7 +252,7 @@ def client_init(self):
 	PRINT_DEBUG(f"SENDING: INVENTORY ITEMDATA TO {self.puid}...")
 	dataset = {
 			"itemData": self.cData["itemData"],
-			"inventory": inv_handler.inv_data_strip_inventory_invGrid(self.cData["inventory"])
+			"inventory": self.cData["inventory"]
 		}
 	# remove the grid from the data, passed to the client.
 	asc_g_msg.sendMsg("player_gear_set", dataset, self.con_client)
@@ -357,7 +361,7 @@ def player_killed(sData, *data):
 	# ToDo: finally add some proper "DB-saver"
 	database.asc_db.db_save(sData.database)
 
-
+# ToDo: Recheck - Inventory Handling updated!
 def player_respawned(sData, puid):
 	PRINT_ATTENTION(f"DEBUG: PLAYER_RESPAWNED: puid: {puid}")
 	cData = player_data_get(sData, puid)

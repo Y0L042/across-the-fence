@@ -12,118 +12,6 @@ DEFAULT_loot_count = 2
 DEFAULT_loot_skill_multiplier = 2
 
 
-
-
-def inv_item_add_to_inv(sData, invData=None, isLootcrate: int = 0, item=None, invGearID: str = "0"):
-    """
-
-    :param sData:
-    :param invData:
-    :param isLootcrate:
-    :param item:
-    :param invGearID:
-    :return:
-    """
-    try:
-        if None in [item, invData]:
-            PRINT_WARNING(f"ERROR: inv_item_add_to_inv: item NOT found.\ninvID: {invData}\nitem: {item}------")
-            return
-
-        invGrid = invData["inventory"][invGearID]["inv_grid"]
-        invSlotsUsed = invData["inventory"][invGearID]["slotsUsed"]
-        inv_rows = invData["inventory"][invGearID]["inv_rows"]
-        inv_cols = invData["inventory"][invGearID]["inv_cols"]
-        inv_itemData = invData["itemData"]
-
-        # get the parent Data
-        item_parent_data = item_parent_get(sData=sData, itemName=item["parent"])
-        # check if parent Data is a subclass of a main Item definition
-        try:
-            if "parent" in item_parent_data:
-                mainParentData = sData.itemParentData[item_parent_data["parent"]]
-                mainParentData.update(item_parent_data)
-                item_parent_data = mainParentData
-        except TypeError:
-            # Parent definition not found. Exit here and re-add a dummy/fallback Item instead (triggered by returning "none")
-            return
-
-        #########################################################
-        # check if the DataSize is correct (e.g.: values > 0)
-        if len(item_parent_data) == 0:
-            PRINT_WARNING(f"ERROR: item_handler: inv_item_add_to_inv: item_parent_data NOT FOUND - item['parent']: {item['parent']}")
-            return invData["inventory"][invGearID]
-
-        x_size = inv_item_check_size(item_parent_data["size"])
-
-        # keep count of how many rows will be added in the end (IF isLootcrate == 1)
-        grid_rows_final = len(invGrid)
-
-        # find free slots for the Item (if (AND ONLY IF) it is a temp Inventory -> Add more rows, if needed!)
-        while True:
-            slot_usage = inv_slots_free_get(invGrid=invGrid, item_size=x_size)
-            if len(slot_usage) == 0:
-                # PRINT_DEBUG(f"DEBUG: item_handler: inv_item_add_to_inv: No free slots found.")
-                if isLootcrate > 0:
-                    # PRINT_DEBUG(f"DEBUG: item_handler: inv_item_add_to_inv: It's a lootcrate -> Adding new row. Count: {grid_rows_final}\n-------------")
-                    # add a new row to the tempInventory
-                    newRow = [0] * inv_cols
-                    invGrid.append(newRow)
-                    grid_rows_final = len(invGrid)
-
-                    if grid_rows_final > 75:
-                        # seems like, that something went pretty wrong there
-                        grid_rows_final = inv_rows
-                        break
-                else:
-                    break
-            else:
-                # PRINT_DEBUG(f"DEBUG: item_handler: inv_item_add_to_inv: slot_usage: {slot_usage}")
-                break
-
-        # check if there were slots found
-        if len(slot_usage) > 0:
-            # update the Inventory Grid, its gridSize ...
-            inv_slots_used_set(slots_used=slot_usage, invGrid=invGrid, isAdd=True)
-            invData["inventory"][invGearID]["inv_grid"] = invGrid
-            invData["inventory"][invGearID]["inv_rows"] = grid_rows_final
-            invData["itemData"] = inv_itemData
-
-            # ... and add the item to its itemData
-            inv_itemData[item["id"]] = item
-
-            # also update the items InventoryPosition. Set the first entry (top left corner) as inventoryPos...
-            item["invPos"] = slot_usage[0]
-            # ... and set the ID of the "crate"
-            item["curInv"] = invData["crateID"]
-        else:
-            PRINT_WARNING(f"ERROR: item_add_list: No free slots found for x_ItemData:\n{item}\n inv_rows: {inv_rows}\n-------------")
-        #########################################################
-
-        # return the updated invData!
-        # PRINT_DEBUG(f"DEBUG: item_handler: inv_item_add_to_inv: invData:\nDEBUG: {invData}\n----------------------")
-        return [invData, item]
-
-        # client.cData["itemData"][newItem["id"]] = newItem
-        # PRINT_DEBUG(client.cData["itemData"])
-        # # ToDo: TEMP! Saving will be done by an extra Thread from the Server! e.g. every 10 "pushes" OR every 10s -> save data to file
-        # client.sData.database.db_save()
-    except TypeError:
-        PRINT_WARNING(f'--------------\nERROR: inv_item_add_to_inv: Error while getting parent definition for {item["parent"]} (undefined baseItem?) - Creating Dummy Item\n--------------')
-        return
-    except Exception as e:
-        PRINT_WARNING(f"-------------\nERROR: item_add_list: EXCEPTION:\n{e}\n-------------")
-
-
-#
-
-
-#
-
-
-########################################################################
-# NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW NEW #
-######################################################################
-
 ########################################################################
 # INV INV INV INV INV INV INV INV INV INV INV INV INV INV INV INV INV #
 ######################################################################
@@ -171,15 +59,17 @@ def inv_crate_create(sData, clientID: str = None, pos: list = None, crateID: str
     else:
         # Check if loot needs to be created for this crate:
         if isLootcrate > 0:
+            playerData = sData.database.players[clientID]
             # ToDo: Do a recheck, when the Skill-system is properly added
             # Get the scavenging Skill from the requesting player:
-            if "scavenging" in sData.database.players[clientID]["skills"]:
+            if "scavenging" in playerData["skills"]:
                 skill_scavenging = sData.database.players[clientID]["skills"]["scavenging"]
             else:
                 skill_scavenging = 0
             # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_crate_create: skill_scavenging: {skill_scavenging}")
-            # Fill the crate:
-            inv_crate_loot_fill(sData=sData, invData=invData, lootType=lootType, loot_count=loot_count, skill_scavenging=skill_scavenging)
+            # Fill the crate (also updates invData):
+            inv_crate_loot_fill(sData=sData, invData=invData, lootType=lootType, loot_count=loot_count, crateID=crateID, skill_scavenging=skill_scavenging)
+            PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_crate_create: invData: {invData}")
 
         # Add to the "sessionCrates" Database. They won't be saved into the database files.
         sData.database.sessionCrates[crateID] = invData
@@ -191,13 +81,14 @@ def inv_crate_create(sData, clientID: str = None, pos: list = None, crateID: str
     return invData
 
 
-def inv_crate_loot_fill(sData, invData: dict = None, lootType: str = None, loot_count: int = DEFAULT_loot_count,  skill_scavenging: int = 0):
+def inv_crate_loot_fill(sData, invData: dict = None, lootType: str = None, loot_count: int = DEFAULT_loot_count, crateID: str = "", skill_scavenging: int = 0):
     """Fill the given invData with loot items? Yeah, i guess that's what this one does.
 
     :param sData:
     :param invData:
     :param lootType:
     :param loot_count:
+    :param crateID:
     :param skill_scavenging:
     :return:
     """
@@ -219,7 +110,49 @@ def inv_crate_loot_fill(sData, invData: dict = None, lootType: str = None, loot_
         item = item_create(sData=sData, itemSubTypeName=itemName)
         # ToDo: update/calc stats, depending on... something... skill? Random? idk
         PRINT_DEBUG(f"DEBUG: inv_crate_loot_fill: Item: {item}")
-        # ToDo: Add Item to Inventory
+        # Add Item to Inventory
+        inv_item_new_add(sData=sData, invData=invData, item=item, invSubID=0, crateID=crateID)
+
+
+def inv_item_new_add(sData, invData, item: dict = None, invSubID: int = 0, crateID: str = ""):
+    """
+
+    :param sData:
+    :param invData:
+    :param item:
+    :param invSubID:
+    :param crateID:
+    :return:
+    """
+    if not item:
+        PRINT_WARNING(f"ERROR: inv_item_new_add - Item not passed! item: {item}")
+        return
+
+    isFlipped = 0
+    parentData = item_baseData_get(sData=sData, subTypeName=item["subType"])
+    # PRINT_ATTENTION(f"inv_item_new_add - parentData: {parentData}")
+    # get the usedSlots
+    usedSlots_cur = inv_slots_used_get(invData=invData["inventory"], invSubID=invSubID)
+
+    # get Inventory sizes and make it an [row,col]-list
+    invSize = [invData["inventory"][invSubID]["inv_rows"], invData["inventory"][invSubID]["inv_cols"]]
+    # PRINT_ATTENTION(f'inv_item_new_add - parentData["baseData"]: {parentData["baseData"]}')
+
+    # "Find free slot"
+    invPos = item_slots_free_find(invDataSize=invSize, itemSize=parentData["baseData"]["size"], slotsUsed=usedSlots_cur, slotsIgnore=[], isFlipped=isFlipped)
+    if not invPos:
+        PRINT_WARNING(f"ERROR: inv_item_new_add - Item could not be added: No free slot found! Item: {item}")
+        return
+    # check the new Inv, if there are enough slots free and return the newly blocked slots.
+    slotsUsed_item = item_slots_used_calc(invDataSize=invSize, itemSize=parentData["baseData"]["size"], slotStart=invPos[0], slotsUsed=usedSlots_cur, slotsIgnore=[], isFlipped=isFlipped)
+
+    # update the new usedSlots
+    inv_slots_used_add(invData=invData["inventory"], invSubID=invSubID, slotsUsed=slotsUsed_item)
+    # Update the invSub Data and curInv data
+    item["invSub"] = invSubID
+    item["curInv"] = crateID
+    # Add the Item to the "itemData":
+    invData["itemData"][item["id"]] = item
 
 
 def inv_data_create(crateID: str = "", model: str = "", pos: list = None, lootType: str = "", inv_rows: int = 0, inv_cols: int = 0):
@@ -428,14 +361,14 @@ def item_create(sData, itemSubTypeName: str):
     :param itemSubTypeName: STR - Name of the SubType?
     :return:    {} - Dict with the item data
     """
-    PRINT_DEBUG(f"DEBUG: item_create - Creating: {itemSubTypeName}")
+    # PRINT_DEBUG(f"DEBUG: item_create - Creating: {itemSubTypeName}")
 
     item = item_data_create(itemSubTypeName)
     parentData = item_baseData_get(sData=sData, subTypeName=item["subType"])
 
     item["itemData"].update(parentData["itemData"])
     # Example output: {'subType': 'SubTypeClassName', 'curInv': '-1', 'invSub': 0, 'invPos': [0, 0], 'isFlipped': 0, 'itemData': {'condition': 150, 'someStuff': 123}}
-    PRINT_DEBUG(f"DEBUG: item_create - item: {item}")
+    # PRINT_DEBUG(f"DEBUG: item_create - item: {item}")
 
     return item
 
@@ -485,9 +418,8 @@ def item_baseData_create(sData, subTypeName: str):
         tmp_bData = copy.deepcopy(sData.itemSubTypes[x])
         # if first run -> update with the base values
         if not baseData:
-            print(f"tmp_bData: {x} - {tmp_bData}")
             baseData.update(tmp_bData)
-            baseData.update({"parentData":{}, "itemData":{}})
+            baseData.update({"parentData": {}, "itemData": {}})
 
         if "parentData" in tmp_bData:
             baseData["parentData"].update(copy.deepcopy(tmp_bData["parentData"]))
@@ -495,13 +427,15 @@ def item_baseData_create(sData, subTypeName: str):
         if "itemData" in tmp_bData:
             baseData["itemData"].update(copy.deepcopy(tmp_bData["itemData"]))
 
-    #
+    # Make a "deepcopy" of the data, so the original data won't be overwritten. Despite being costly, but we just execute this at start.
     mainParentData = copy.deepcopy(sData.itemParentData[baseData["mainParent"]])
     baseParentData = copy.deepcopy(sData.itemParentData[mainParentData["baseClass"]])
     baseData["baseData"] = mainParentData
 
     # ! FAILSAFE ! - Do not let the parentBase overwrite the Slot data!
     baseData["baseData"]["slot"] = baseParentData["slot"]
+    if "size" not in baseData["baseData"]:
+        baseData["baseData"]["size"] = baseParentData["size"]
 
     return baseData
 
@@ -530,14 +464,14 @@ def item_data_create(parent: str = ""):
 
     # base item Data - Every Item will have these entries!
     itemBase = {
-        # "id":          id_handler.create_id(),  # Item ID - Will ALWAYS be generated!
+        "id":          id_handler.create_id(),  # Item ID - Will ALWAYS be generated!
         "subType":      parent,  # Base Item Data, the A3 UI can refer to (stored ItemData)
         "curInv":       "-1",  # ID of Inventory, that the Item is in
         "invSub":       0,  # subInventory (in player Inv only!)
         "invPos":       [0, 0],  # TopLeft Position of the Item in the InventoryGrid
         "isFlipped":    0,  # 0/1 - Check if Item was flipped
         "itemData":     {}  # additional data
-    }
+        }
 
     return itemBase
 
@@ -703,7 +637,7 @@ def item_slots_used_calc(invDataSize: list, itemSize: list, slotStart: list, slo
     return ret
 
 
-def item_slots_free_find(invDataSize: list, itemSize: list, slotsUsed: list, slotsIgnore: list, isFlipped: bool):
+def item_slots_free_find(invDataSize: list, itemSize: list, slotsUsed: list, slotsIgnore: list = None, isFlipped: int = 0):
     """ Auto-find free slots for the given Item. Return the slots as list.
 
     If no Slots were found, return an empty list.
@@ -712,12 +646,13 @@ def item_slots_free_find(invDataSize: list, itemSize: list, slotsUsed: list, slo
     :param itemSize:        [4, 4]
     :param slotsUsed:       [[0, 0], [0, 1], ...]
     :param slotsIgnore:     [[0, 0], [0, 1], ...]
-    :param isFlipped:       True/False
+    :param isFlipped:       0/1
     :return:                [[0, 0], [0, 1], ...] OR [] (nothing found)
     """
+
     invRows, invCols = invDataSize
     # in case the item was flipped 90° -> Col=Row, Row=Col
-    if isFlipped:
+    if isFlipped > 0:
         itemSize = [itemSize[1], itemSize[0]]
 
     ret = []
@@ -725,12 +660,14 @@ def item_slots_free_find(invDataSize: list, itemSize: list, slotsUsed: list, slo
     for row in range(invRows):
         for col in range(invCols):
             invSlot = [row, col]
-            ret = item_slots_used_calc(invDataSize=invDataSize, itemSize=itemSize, slotStart=invSlot, slotsUsed=slotsUsed, slotsIgnore=slotsIgnore, isFlipped=isFlipped)
-            # if free slot found (filled list) -> exit for-loop
-            if len(ret):
-                slotFound = True
-                break
-
+            if invSlot in slotsUsed:
+                pass
+            else:
+                ret = item_slots_used_calc(invDataSize=invDataSize, itemSize=itemSize, slotStart=invSlot, slotsUsed=slotsUsed, slotsIgnore=slotsIgnore, isFlipped=isFlipped)
+                # if free slot found (filled list) -> exit for-loop
+                if len(ret):
+                    slotFound = True
+                    break
         if slotFound:
             # print(f"free slots found - {ret}")
             break

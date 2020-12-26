@@ -27,7 +27,7 @@ cmdList = {
 
 				# Item Handling:
 				# # Degradation (WIP)
-				"player_fired": inv_handler.inv_item_degrade,
+				# "player_fired": inv_handler.inv_item_degrade,
 
 				# Player:
 				"update_players": client_handler.players_stats_update,

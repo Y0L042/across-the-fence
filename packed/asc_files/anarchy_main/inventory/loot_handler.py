@@ -1,18 +1,13 @@
 import random
 from printHandler import *
 
-def loot_item_type_select(sData, x_dict, DEBUG_itemInfo=None):
-    if DEBUG_itemInfo is None:
-        DEBUG_itemInfo = []
-
+def loot_item_type_select(sData, x_dict):
     # select random item
     selected_type = random.choices(list(x_dict), weights=list(x_dict.values()), k=1)[0]
-    # PRINT_DEBUG(f"DEBUG: loot_item_type_select: selected_type: {selected_type}")
-    DEBUG_itemInfo.append(selected_type)
+    PRINT_DEBUG(f"DEBUG: loot_item_type_select: selected_type: {selected_type}")
     # check if selected_type exists other wise return class
     if selected_type in sData.lootData["tables"]:
-        # PRINT_DEBUG(f"DEBUG: DEBUG_itemInfo: {DEBUG_itemInfo}")
-        return loot_item_type_select(sData, sData.lootData["tables"][selected_type], DEBUG_itemInfo)
+        return loot_item_type_select(sData, sData.lootData["tables"][selected_type])
     else:
         # PRINT_DEBUG(f"DEBUG: loot_item_type_select: selected_type: {selected_type}")
         return selected_type

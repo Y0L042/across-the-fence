@@ -1,26 +1,68 @@
 
 {
-	"m14":
+	"vn_m14":
 	{
-		"parent": "vn_m14",
-		"hp_max": 100
+		"mainParent": "vn_m14_base",
+		"subParent": "",
+		"parentData":
+		{
+			"actions":
+			{
+				"unjam": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []],
+				"repair": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []]
+			},
+			"attachments": {"scope": "", "muzzle": ""},
+			"wear": 1
+		},
+		"itemData":
+		{
+			"condition": 100
+		}
 	},
-	"Special_M14_spoffy":
+
+	"vn_m14_BetterCondition":
 	{
-		"parent": "vn_m14",
-		"attachments": {"scope": "", "muzzle":  ""},
-		"hp_max": 140
+		"mainParent": "",
+		"subParent": "vn_m14",
+		"itemData":
+		 {
+			"condition": 150
+		 }
 	},
-	"dscha_burp":
+
+
+	"vn_b_uniform_macv_01_06":
 	{
-		"parent": "vn_m14_alternative",
-		"attachments": {"scope": ""},
-		"hp_max": 180
+		"mainParent": "vn_b_uniform_macv_01_06_base",
+		"subParent": "",
+		"parentData":
+		{
+			"actions":
+			{
+				"repair": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []]
+			},
+			"wear": 1
+		},
+		"itemData":
+		{
+			"condition": 100
+		}
 	},
-	"megauberm14":
+	"vn_b_bandana_03":
 	{
-		"parent": "dildozer9000",
-		"attachments": {"scope": "", "muzzle":  ""},
-		"hp_max": 9000
+		"mainParent": "vn_b_bandana_03_base",
+		"subParent": "",
+		"parentData":
+		{
+			"actions":
+			{
+				"repair": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []]
+			},
+			"wear": 1
+		},
+		"itemData":
+		{
+			"condition": 100
+		}
 	}
 }

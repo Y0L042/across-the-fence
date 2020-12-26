@@ -74,6 +74,7 @@ def server_start():
     for subType in sData.itemSubTypes:
         # Do it
         data = inv_handler.item_baseData_create(sData=sData, subTypeName=subType)
+        # PRINT_DEBUG(f"DEBUG: sock_server init: item baseData: subType data: {data}")
         sData.itemClasses[subType] = data
 
     # ####### load the loot tables
