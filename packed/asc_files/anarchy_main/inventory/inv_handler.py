@@ -35,7 +35,7 @@ def inv_crate_create(sData, clientID: str = None, pos: list = None, crateID: str
     """
 
     if None in [clientID, pos]:
-        PRINT_WARNING(f"ERROR: INV_HANDLER: inv_crate_create: clientID or Pos not transmitted: clientID: {clientID} | pos: {pos}")
+        PRINT_WARNING(f"INV_HANDLER: inv_crate_create: clientID or Pos not transmitted: clientID: {clientID} | pos: {pos}")
         return
 
     if persistent > 0:
@@ -66,10 +66,10 @@ def inv_crate_create(sData, clientID: str = None, pos: list = None, crateID: str
                 skill_scavenging = sData.database.players[clientID]["skills"]["scavenging"]
             else:
                 skill_scavenging = 0
-            # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_crate_create: skill_scavenging: {skill_scavenging}")
+            # PRINT_DEBUG(f"INV_HANDLER: inv_crate_create: skill_scavenging: {skill_scavenging}")
             # Fill the crate (also updates invData):
             inv_crate_loot_fill(sData=sData, invData=invData, lootType=lootType, loot_count=loot_count, crateID=crateID, skill_scavenging=skill_scavenging)
-            PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_crate_create: invData: {invData}")
+            PRINT_DEBUG(f"INV_HANDLER: inv_crate_create: invData: {invData}")
 
         # Add to the "sessionCrates" Database. They won't be saved into the database files.
         sData.database.sessionCrates[crateID] = invData
@@ -93,28 +93,28 @@ def inv_crate_loot_fill(sData, invData: dict = None, lootType: str = None, loot_
     :return:
     """
     if not invData:
-        PRINT_WARNING(f"DEBUG: inv_crate_loot_fill: INVDATA WAS NOT PASSED/CREATED EARLIER!")
+        PRINT_WARNING(f"inv_crate_loot_fill: INVDATA WAS NOT PASSED/CREATED EARLIER!")
         return
     # ToDo: recalculate the loot_count properly, based on the scavenging skill! (chance-based?)
     # check if skill is high enough, otherwise randRange will complain, that the "end"-number isn't high enough... (must be "start < end")
     if skill_scavenging > 0:
         loot_count = random.randrange(loot_count, int(loot_count + (skill_scavenging * DEFAULT_loot_skill_multiplier)))
-    # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_crate_create: loot_count: {loot_count}")
+    # PRINT_DEBUG(f"INV_HANDLER: inv_crate_create: loot_count: {loot_count}")
 
     # get the list of Item names
     items_list = loot_handler.loot_item_list_create(sData=sData, loot_count=loot_count, loot_type=lootType)
-    # PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_crate_create: items_list_raw: {items_list}\n----------------")
+    # PRINT_DEBUG(f"INV_HANDLER: inv_crate_create: items_list_raw: {items_list}\n----------------")
 
     # cycle through all the itemsSubTypes
     for itemName in items_list:
         item = item_create(sData=sData, itemSubTypeName=itemName)
         # ToDo: update/calc stats, depending on... something... skill? Random? idk
-        PRINT_DEBUG(f"DEBUG: inv_crate_loot_fill: Item: {item}")
+        PRINT_DEBUG(f"inv_crate_loot_fill: Item: {item}")
         # Add Item to Inventory
-        inv_item_new_add(sData=sData, invData=invData, item=item, invSubID=0, crateID=crateID)
+        inv_item_new_add(sData=sData, invData=invData, item=item, invSubID="0", crateID=crateID)
 
 
-def inv_item_new_add(sData, invData, item: dict = None, invSubID: int = 0, crateID: str = ""):
+def inv_item_new_add(sData, invData, item: dict = None, invSubID: str = "0", crateID: str = ""):
     """
 
     :param sData:
@@ -125,7 +125,7 @@ def inv_item_new_add(sData, invData, item: dict = None, invSubID: int = 0, crate
     :return:
     """
     if not item:
-        PRINT_WARNING(f"ERROR: inv_item_new_add - Item not passed! item: {item}")
+        PRINT_WARNING(f"inv_item_new_add - Item not passed! item: {item}")
         return
 
     isFlipped = 0
@@ -141,7 +141,7 @@ def inv_item_new_add(sData, invData, item: dict = None, invSubID: int = 0, crate
     # "Find free slot"
     invPos = item_slots_free_find(invDataSize=invSize, itemSize=parentData["baseData"]["size"], slotsUsed=usedSlots_cur, slotsIgnore=[], isFlipped=isFlipped)
     if not invPos:
-        PRINT_WARNING(f"ERROR: inv_item_new_add - Item could not be added: No free slot found! Item: {item}")
+        PRINT_WARNING(f"inv_item_new_add - Item could not be added: No free slot found! Item: {item}")
         return
     # check the new Inv, if there are enough slots free and return the newly blocked slots.
     slotsUsed_item = item_slots_used_calc(invDataSize=invSize, itemSize=parentData["baseData"]["size"], slotStart=invPos[0], slotsUsed=usedSlots_cur, slotsIgnore=[], isFlipped=isFlipped)
@@ -174,13 +174,14 @@ def inv_data_create(crateID: str = "", model: str = "", pos: list = None, lootTy
         "pos":       pos,
         "type":      lootType,
         'inventory': {
-            0: {
+            "0": {
                 "inv_rows": inv_rows,
                 'inv_cols': inv_cols,
                 "invID":    0,
                 "invArea":  "an_inv_external_area",
                 "invGrid":  "an_inv_external_grid",
-                "slotsUsed": []
+                "slotsUsed": [],
+                "isSlot": 0
                 }
             },
         "itemData":  {}
@@ -215,7 +216,7 @@ def inv_data_request(sData, clientID: str = None, pos: list = None, crateID: str
     # ToDo: Add an "in use"-check (players, currently having that Inventory open)
     # send Inventory data back to the requesting client
     conClient = sData.user_active[clientID]["con"]
-    PRINT_DEBUG(f"DEBUG: INV_HANDLER: inv_data_request: Crate found, sending Data to Client.")
+    PRINT_DEBUG(f"INV_HANDLER: inv_data_request: Crate found, sending Data to Client.")
 
     # send the invData to the Client
     inv_data_send_toClient(invData, conClient)
@@ -236,9 +237,10 @@ def inv_data_update_force(client, invID_old: str, invID_new: str):
     else:
         # PRINT_ATTENTION(f"inv_data_update_force - PRE inv_data_get: invID_new: {invID_new}")
         inv_remote, isPlayer = inv_data_get(client, invID_new)
+
     # resending it, triggers a force-reopen of the Inventory (instantly)
-    if len(inv_remote) == 0:
-        PRINT_WARNING(f"ERROR: inv_data_update_force: inv_remote not found!")
+    if not inv_remote:
+        PRINT_WARNING(f"inv_data_update_force: inv_remote not found!")
         return
 
     dataset = {
@@ -249,13 +251,12 @@ def inv_data_update_force(client, invID_old: str, invID_new: str):
     # update the player Gear
     asc_g_msg.sendMsg("player_gear_set", dataset, client.con_client)
     # Remove the dict entry: "inv_grid" (not needed on the client)
-    stripped_inv_remote = inv_remote["inventory"]
     # send the stripped Remote Inventory back to the player and trigger the Inventory UI to be reopen, so it loads the new data
-    inv_data_send_toClient(stripped_inv_remote, client.con_client)
+    inv_data_send_toClient(inv_remote, client.con_client)
 
 
 def inv_data_send_toClient(invData, conClient):
-    # PRINT_ATTENTION(f"inv_data_send_toClient: invData: {invData}")
+    PRINT_ATTENTION(f"inv_data_send_toClient: invData: {invData}")
     dataset = {
         "crateID": invData["crateID"],
         "itemData": invData["itemData"],
@@ -264,43 +265,43 @@ def inv_data_send_toClient(invData, conClient):
     asc_g_msg.sendMsg("ret_inv_crateData", dataset, conClient)
 
 
-def inv_slots_used_get(invData: dict, invSubID: int):
+def inv_slots_used_get(invData: dict, invSubID: str):
     """
     :param invData:     invData["inventory"]
-    :param invSubID:    0
+    :param invSubID:    "0"
     :return:            [[0, 0], [0, 1], ...]
     """
     return invData[invSubID]["slotsUsed"]
 
-def inv_slots_used_set(invData: dict, invSubID: int, slotsUsed: list):
+def inv_slots_used_set(invData: dict, invSubID: str, slotsUsed: list):
     """
     :param invData:     invData["inventory"]
-    :param invSubID:    0
+    :param invSubID:    "0"
     :param slotsUsed:   [[0, 0], [0, 1], ...]
     :return:            None
     """
     invData[invSubID]["slotsUsed"] = slotsUsed
 
-def inv_slots_used_add(invData: dict, invSubID: int, slotsUsed: list):
+def inv_slots_used_add(invData: dict, invSubID: str, slotsUsed: list):
     """
     :param invData:     invData["inventory"]
-    :param invSubID:    0
+    :param invSubID:    "0"
     :param slotsUsed:   [[0, 0], [0, 1], ...]
     :return:            None
     """
     invData[invSubID]["slotsUsed"].extend(slotsUsed)
 
-def inv_slots_used_remove(invData: dict, invSubID: int, slotsUsed: list):
+def inv_slots_used_remove(invData: dict, invSubID: str, slotsUsed: list):
     """
     :param invData:     invData["inventory"]
-    :param invSubID:    0
+    :param invSubID:    "0"
     :param slotsUsed:   [[0, 0], [0, 1], ...]
     :return:            None
     """
     slotsUsed_cur = invData[invSubID]["slotsUsed"]
     for slot in slotsUsed:
         if slot in slotsUsed_cur:
-            print(invData[invSubID]["slotsUsed"])
+            # print(invData[invSubID]["slotsUsed"])
             slotsUsed_cur.remove(slot)
 
     return invData[invSubID]["slotsUsed"]
@@ -315,34 +316,34 @@ def inv_data_remove(sData, crateID: str = ""):
     elif crateID in sData.database.crates:
         del sData.database.crates[crateID]
     else:
-        PRINT_WARNING(f'ERROR: INV_HANDLER: inv_data_remove crateID NOT FOUND - crateID: {crateID}')
+        PRINT_WARNING(f'INV_HANDLER: inv_data_remove crateID NOT FOUND - crateID: {crateID}')
     return
 
 
 def inv_data_get(client, invID: str):
-    # PRINT_ATTENTION(f"DEBUG: INV_HANDLER: inv_data_get invID : {invID}")
+    # PRINT_ATTENTION(f"INV_HANDLER: inv_data_get invID : {invID}")
     try:
         # check if player Inventory (mostly used)
         if invID == client.puid:
-            # PRINT_DEBUG(f"DEBUG: inv_data_get: isPlayer: True")
+            # PRINT_DEBUG(f"inv_data_get: isPlayer: True")
             return [client.cData, True]
         else:
             # Check if temporary/Session Crates (used while looting, so 2nd place)
             if invID in client.sData.database.sessionCrates:
-                # PRINT_DEBUG(f"DEBUG: inv_data_get: isPlayer: False")
+                # PRINT_DEBUG(f"inv_data_get: isPlayer: False")
                 return [client.sData.database.sessionCrates[invID], False]
             # Last chance: Check the persistent Inventories (most likely the less used from the 3 options)
             elif invID in client.sData.database.crates:
-                # PRINT_DEBUG(f"DEBUG: inv_data_get: isPlayer: False")
+                # PRINT_DEBUG(f"inv_data_get: isPlayer: False")
                 return [client.sData.database.crates[invID], False]
             else:
-                PRINT_WARNING(f'ERROR: INV_HANDLER: inv_data_get invID NOT FOUND #1 - ID: {invID}')
+                PRINT_WARNING(f'INV_HANDLER: inv_data_get invID NOT FOUND #1 - ID: {invID}')
                 return [{}, False]
     except KeyError:
-        PRINT_WARNING(f'ERROR: INV_HANDLER: inv_data_get invID NOT FOUND #2 - ID: {invID}')
+        PRINT_WARNING(f'INV_HANDLER: inv_data_get invID NOT FOUND #2 - ID: {invID}')
         return [{}, False]
     except Exception as e:
-        PRINT_WARNING(f'ERROR: INV_HANDLER: inv_data_get - UNKNOWN ERROR - ID: {invID}:\n{e}')
+        PRINT_WARNING(f'INV_HANDLER: inv_data_get - UNKNOWN ERROR - ID: {invID}:\n{e}')
         return [{}, False]
 
 
@@ -361,14 +362,14 @@ def item_create(sData, itemSubTypeName: str):
     :param itemSubTypeName: STR - Name of the SubType?
     :return:    {} - Dict with the item data
     """
-    # PRINT_DEBUG(f"DEBUG: item_create - Creating: {itemSubTypeName}")
+    # PRINT_DEBUG(f"item_create - Creating: {itemSubTypeName}")
 
     item = item_data_create(itemSubTypeName)
     parentData = item_baseData_get(sData=sData, subTypeName=item["subType"])
 
     item["itemData"].update(parentData["itemData"])
     # Example output: {'subType': 'SubTypeClassName', 'curInv': '-1', 'invSub': 0, 'invPos': [0, 0], 'isFlipped': 0, 'itemData': {'condition': 150, 'someStuff': 123}}
-    # PRINT_DEBUG(f"DEBUG: item_create - item: {item}")
+    # PRINT_DEBUG(f"item_create - item: {item}")
 
     return item
 
@@ -483,8 +484,7 @@ def item_data_flip_canFlip(size):
         return True
 
 
-# def item_move(client=None, args=()):
-def item_move(client, itemID: str, invID_old: str, invSubID_old: int, invID_new: str, invSubID_new: int, invPos_new: list, isFlipped: int):
+def item_move(client, itemID: str, invID_old: str, invSubID_old: str, invID_new: str, invSubID_new: str, invPos_new: list, isFlipped: int):
     """
 
     :param client:          client Class
@@ -496,12 +496,15 @@ def item_move(client, itemID: str, invID_old: str, invSubID_old: int, invID_new:
     :param invPos_new:      [0,0]
     :param isFlipped:       0/1
     """
-
+    PRINT_DEBUG(f"invID_old: {invID_old}")
+    PRINT_DEBUG(f"invID_new: {invID_new}")
     invData_old, isPlayer_old = inv_data_get(client, invID_old)
     invData_new, isPlayer_new = inv_data_get(client, invID_new)
+    PRINT_DEBUG(f"invData_old: {invData_old}")
+    PRINT_DEBUG(f"invData_new: {invData_new}")
     # Check: Both inventories were found
-    if not invData_old or not isPlayer_new:
-        PRINT_WARNING(f"WARNING: INV_HANDLER: item_move: INVENTORY NOT FOUND:\ninvData_old: {invData_old}\ninvData_new:{invData_new}")
+    if not invData_old or not invData_new:
+        PRINT_WARNING(f"INV_HANDLER: item_move: INVENTORY NOT FOUND:\ninvData_old: {invData_old}\ninvData_new:{invData_new}")
         return False
 
     moveWithinInv = isPlayer_old == isPlayer_new
@@ -509,25 +512,26 @@ def item_move(client, itemID: str, invID_old: str, invSubID_old: int, invID_new:
     if moveWithinInv:
         if invSubID_old == invSubID_new:
             moveWithinInvSub = True
-
+    PRINT_DEBUG(f"item_move: moveWithinInv: {moveWithinInv}")
     # Check: If "player to player" transfer (not implemented - Security Reasons - Maybe overkill? idk.. something for later to check again)
     if isPlayer_old and isPlayer_new and not moveWithinInv:
-        PRINT_WARNING(f"WARNING: INV_HANDLER: item_move: PLAYER TO PLAYER TRANSFER DETECTED:\nold: {invID_old}\nnew:{invID_new}")
+        PRINT_WARNING(f"INV_HANDLER: item_move: PLAYER TO PLAYER TRANSFER DETECTED:\nold: {invID_old}\nnew:{invID_new}")
         return False
 
     # Check: Item in old Inventory
     if itemID not in invData_old["itemData"]:
-        PRINT_WARNING(f"WARNING: INV_HANDLER: item_move: ITEM NOT FOUND IN OLD INVENTORY:\nold: {invID_old}\nnew:{invID_new}")
+        PRINT_WARNING(f"INV_HANDLER: item_move: ITEM NOT FOUND IN OLD INVENTORY:\nold: {invID_old}\nnew:{invID_new}")
         return False
 
     #############################################
     # get itemData
     itemData_old = invData_old["itemData"][itemID]
     itemData_isFlipped = itemData_old["isFlipped"]
+    parentData = item_baseData_get(sData=client.sData, subTypeName=itemData_old["subType"])
 
     # get Inventory sizes and make it an [row,col]-list
-    invSize_old = [invData_old["inv_rows"], invData_old["inv_cols"]]
-    invSize_new = [invData_new["inv_rows"], invData_new["inv_cols"]]
+    invSize_old = [invData_old["inventory"][invSubID_old]["inv_rows"], invData_old["inventory"][invSubID_old]["inv_cols"]]
+    invSize_new = [invData_new["inventory"][invSubID_new]["inv_rows"], invData_new["inventory"][invSubID_new]["inv_cols"]]
 
     #############################################
     # get the usedSlots
@@ -535,7 +539,7 @@ def item_move(client, itemID: str, invID_old: str, invSubID_old: int, invID_new:
     usedSlots_new = inv_slots_used_get(invData=invData_new["inventory"], invSubID=invSubID_new)
 
     # get the currently used slots:
-    invOld_usedSlots = item_slots_used_calc(invDataSize=invSize_old, itemSize=itemData_old["size"], slotStart=itemData_old["invPos"], slotsUsed=usedSlots_old, slotsIgnore=usedSlots_old, isFlipped=itemData_isFlipped)
+    invOld_usedSlots = item_slots_used_calc(invDataSize=invSize_old, itemSize=parentData["baseData"]["size"], slotStart=itemData_old["invPos"], slotsUsed=usedSlots_old, slotsIgnore=usedSlots_old, isFlipped=itemData_isFlipped)
 
     # Check if Client just moves the Item around, inside the own Inventory
     if moveWithinInv and moveWithinInvSub:
@@ -543,7 +547,7 @@ def item_move(client, itemID: str, invID_old: str, invSubID_old: int, invID_new:
     else:
         slotsIgnore = []
     # check the new Inv, if there are enough slots free and return the newly blocked slots.
-    invNew_usedSlots = item_slots_used_calc(invDataSize=invSize_new, itemSize=itemData_old["size"], slotStart=invPos_new, slotsUsed=usedSlots_new, slotsIgnore=slotsIgnore, isFlipped=isFlipped)
+    invNew_usedSlots = item_slots_used_calc(invDataSize=invSize_new, itemSize=parentData["baseData"]["size"], slotStart=invPos_new, slotsUsed=usedSlots_new, slotsIgnore=slotsIgnore, isFlipped=isFlipped)
 
     #############################################
     # I guess all checks are done. Let's move it.
@@ -564,19 +568,23 @@ def item_move(client, itemID: str, invID_old: str, invSubID_old: int, invID_new:
     # ... and add it to the new one
     invData_new["itemData"][itemData_old["id"]] = itemData_old
 
+    PRINT_ATTENTION(f'item_move: invData_old["itemData"]: {invData_old["itemData"]}')
+    PRINT_ATTENTION(f'item_move: invData_new["itemData"]: {invData_new["itemData"]}')
+    PRINT_OK(f'PlayerInv: {inv_data_get(client, invID_old)[0]}')
+
     # We are done with the movement. Now check if it was an (un)equip
     # TODO: Only check for the changed stuff - Need .sqf adjustment
     # prepare the "active gear" list
     listGear = []
     for itemKey in invData_new["itemData"]:
-        invID_check = invData_new["itemData"][itemKey]["curInv"]
-        invIsSlot = invData_new["inventory"][invID_check]["isSlot"]
-        if invIsSlot > 0:
+        # invID_check = invData_new["itemData"][itemKey]["curInv"]
+        invIsSlot = invData_new["inventory"][invSubID_new]["isSlot"]
+        if invIsSlot != "0":
             listGear.append(invData_new["itemData"][itemKey])
 
-    isEquip = invData_new["inventory"][invID_new]["isSlot"]
+    isEquip = invData_new["inventory"][invSubID_new]["isSlot"]
     print(f"isEquip: {isEquip}")
-    isUnEquip = invData_new["inventory"][invID_old]["isSlot"]
+    isUnEquip = invData_old["inventory"][invSubID_old]["isSlot"]
     print(f"isUnEquip: {isUnEquip}")
 
     # submit: loadout
@@ -618,7 +626,7 @@ def item_slots_used_calc(invDataSize: list, itemSize: list, slotStart: list, slo
 
     ret = []
     if offset_row > invRows or offset_col > invCols:
-        PRINT_WARNING(f"ERROR: INV_HANDLER: inv_slots_free_find: ITEM EXCEEDS INVENTORY GRIDSPACE!")
+        PRINT_WARNING(f"INV_HANDLER: item_slots_used_calc: ITEM EXCEEDS INVENTORY GRIDSPACE!")
         return ret
 
     isBlocked = False
@@ -626,7 +634,7 @@ def item_slots_used_calc(invDataSize: list, itemSize: list, slotStart: list, slo
         for col in range(slotStartCol, offset_col):
             invSlot = [row, col]
             if invSlot in slotsUsed and invSlot not in slotsIgnore:
-                PRINT_WARNING(f"ERROR: INV_HANDLER: inv_slots_free_find: SLOT IS BLOCKED!")
+                PRINT_WARNING(f"INV_HANDLER: item_slots_used_calc: SLOT IS BLOCKED!")
                 isBlocked = True
                 break
             ret.append(invSlot)

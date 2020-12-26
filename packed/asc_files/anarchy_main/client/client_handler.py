@@ -25,50 +25,50 @@ def client_add(**kwargs):
 		'inv_usedSlots': [],
 		'inventory': {
 			# External Grid - Default Values - needed!
-			1000: {
+			"1000": {
 				"inv_rows": 1,
 				'inv_cols': 8,
-				"invID":    0,
+				"invID":    "0",
 				"invArea":  "an_inv_external_area",
 				"invGrid":  "an_inv_external_grid",
 				"slotsUsed": [],
 				"isSlot": 0
 				},
 			# Inventory - Uniform
-			1012: {
+			"1012": {
 				"inv_rows": 0,
 				"inv_cols": 8,
-				"invID": 1012,
+				"invID": "1012",
 				"invArea": "an_inv_uni_area",
 				"invGrid": "an_inv_uni_grid",
 				"slotsUsed": [],
 				"isSlot": 0
 				},
 			# Inventory - Vest
-			1013: {
+			"1013": {
 				"inv_rows": 0,
 				"inv_cols": 8,
-				"invID": 1013,
+				"invID": "1013",
 				"invArea": "an_inv_vst_area",
 				"invGrid": "an_inv_vst_grid",
 				"slotsUsed": [],
 				"isSlot": 0
 				},
 			# Inventory - Pouch
-			1014: {
+			"1014": {
 				"inv_rows": 0,
 				"inv_cols": 8,
-				"invID": 1014,
+				"invID": "1014",
 				"invArea": "an_inv_pch_area",
 				"invGrid": "an_inv_pch_grid",
 				"slotsUsed": [],
 				"isSlot": 0
 				},
 			# Inventory - Backpack
-			1015: {
+			"1015": {
 				"inv_rows": 0,
 				"inv_cols": 8,
-				"invID": 1015,
+				"invID": "1015",
 				"invArea": "an_inv_bkp_area",
 				"invGrid": "an_inv_bkp_grid",
 				"slotsUsed": [],
@@ -77,90 +77,90 @@ def client_add(**kwargs):
 
 			# Slots:
 			# Slot - Weapon - Main
-			2002: {
+			"2002": {
 				"inv_rows": 8,
 				"inv_cols": 8,
-				"invID": 2002,
+				"invID": "2002",
 				"invArea": "an_slot_wpn_area",
 				"invGrid": "an_slot_wpn_grid",
 				"slotsUsed": [],
 				"isSlot": 1
 				},
 			# Slot - Weapon - Main (second slot)
-			2202: {
+			"2202": {
 				"inv_rows": 8,
 				"inv_cols": 8,
-				"invID": 2202,
+				"invID": "2202",
 				"invArea": "an_slot_wpn_b_area",
 				"invGrid": "an_slot_wpn_b_grid",
 				"slotsUsed": [],
 				"isSlot": 1
 				},
 			# Slot - Weapon - secondary
-			2003: {
+			"2003": {
 				"inv_rows": 8,
 				"inv_cols": 8,
-				"invID": 2003,
+				"invID": "2003",
 				"invArea": "an_slot_sec_area",
 				"invGrid": "an_slot_sec_grid",
 				"slotsUsed": [],
 				"isSlot": 1
 				},
 			# Slot - Helmet
-			2010: {
+			"2010": {
 				"inv_rows": 8,
 				"inv_cols": 8,
-				"invID": 2010,
+				"invID": "2010",
 				"invArea": "an_slot_hel_area",
 				"invGrid": "an_slot_hel_grid",
 				"slotsUsed": [],
 				"isSlot": 1
 				},
 			# Slot - Goggles
-			2011: {
+			"2011": {
 				"inv_rows": 8,
 				"inv_cols": 8,
-				"invID": 2011,
+				"invID": "2011",
 				"invArea": "an_slot_gog_area",
 				"invGrid": "an_slot_gog_grid",
 				"slotsUsed": [],
 				"isSlot": 1
 				},
 			# Slot - Uniform
-			2012: {
+			"2012": {
 				"inv_rows": 8,
 				"inv_cols": 8,
-				"invID": 2012,
+				"invID": "2012",
 				"invArea": "an_slot_uni_area",
 				"invGrid": "an_slot_uni_grid",
 				"slotsUsed": [],
 				"isSlot": 1
 				},
 			# Slot - Vest
-			2013: {
+			"2013": {
 				"inv_rows": 8,
 				"inv_cols": 8,
-				"invID": 2013,
+				"invID": "2013",
 				"invArea": "an_slot_vst_area",
 				"invGrid": "an_slot_vst_grid",
 				"slotsUsed": [],
 				"isSlot": 1
 				},
 			# Slot - Vest
-			2015: {
+			"2015": {
 				"inv_rows": 8,
 				"inv_cols": 8,
-				"invID": 2015,
+				"invID": "2015",
 				"invArea": "an_slot_bkp_area",
 				"invGrid": "an_slot_bkp_grid",
 				"slotsUsed": [],
 				"isSlot": 1
 				},
 			# Slot - Bino
-			2017: {
+			"2017": {
 				"inv_rows": 8,
 				"inv_cols": 8,
-				"invID": 2017,
+				"invID": "2017",
 				"invArea": "an_slot_bin_area",
 				"invGrid": "an_slot_bin_grid",
 				"slotsUsed": [],
@@ -190,12 +190,8 @@ def client_init(self):
 		startGear = ["vn_b_uniform_macv_01_06", "vn_b_bandana_03"]
 		for itemName in startGear:
 			item = inv_handler.item_create(sData=self.sData, itemSubTypeName=itemName)
-			# PRINT_ATTENTION(f"item: {item}")
-
 			parentData = inv_handler.item_baseData_get(sData=self.sData, subTypeName=item["subType"])
-			# PRINT_ATTENTION(f"parentData: {parentData}")
 			slot = parentData["baseData"]["slot"][0]
-
 			inv_handler.inv_item_new_add(sData=self.sData, invData=self.cData, item=item, invSubID=slot, crateID=self.puid)
 
 	# filter out all the equipped Gear and send it as a "special" set to the Server, so the Client can be equipped
@@ -301,7 +297,7 @@ def players_stats_update(sData, *datalist):
 				stat_type, stat_value = stat
 				pData[stat_type] = stat_value
 		except Exception as e:
-			PRINT_WARNING(f"ERROR: players_stat_update: ERROR: {e}")
+			PRINT_WARNING(f"players_stat_update: ERROR: {e}")
 
 	database.asc_db.db_save(sData.database)
 
@@ -309,7 +305,7 @@ def players_stats_update(sData, *datalist):
 def player_update_faction(sData, *data):
 	puid, faction = data
 	pData = player_data_get(sData, puid)
-	PRINT_ATTENTION(f"DEBUG: player_update_faction: {puid} joined faction {faction} (previous: {pData['faction']})")
+	PRINT_DEBUG(f"player_update_faction: {puid} joined faction {faction} (previous: {pData['faction']})")
 	pData["faction"] = faction
 	# save to file
 	database.asc_db.db_save(sData.database)
@@ -317,41 +313,53 @@ def player_update_faction(sData, *data):
 
 def player_killed(sData, *data):
 	puid, dropCrateID = data
-	# move all Items from the Client to the newly created "dropCrate"
+	# move all Items from the Client to the newly created "dropCrate" - crate was created earlier by the Server
 	cData = player_data_get(sData, puid)
 	client = sData.userlist[puid]
 	crateData = sData.database.sessionCrates[dropCrateID]
+	PRINT_DEBUG(f"crateData: {crateData}")
+	# inv_crate_create(sData, clientID: str = None, pos: list = None, crateID: str = "", lootType: str = None, isLootcrate: int = 0, persistent: int = 0, loot_count: int = DEFAULT_loot_count, inv_rows: int = 20, inv_cols: int = 8, model: str = "IG_supplyCrate_F")
 
 	# avoid runtime Error (due to dict changing, during the for loop)
 	items_cData = list(cData["itemData"])
 	for itemID in items_cData:
-
 		itemData = cData["itemData"][itemID]
 
 		# "move" the Items to the newly created Crate
-		# ToDo: Recheck again later, if "item_move" must be used here (rel: ItemStats)
-		invData, item = inv_handler.inv_item_add_to_inv(sData, invData=crateData, isLootcrate=1, item=itemData)
+		invSubID_old = itemData["invSub"]
+		isFlipped = itemData["isFlipped"]
 
-		# remove the old Item cData
-		cData["itemData"].pop(itemID)
+		parentData = inv_handler.item_baseData_get(sData=sData, subTypeName=itemData["subType"])
+		# PRINT_ATTENTION(f"player_killed - parentData: {parentData}")
+		# get the usedSlots
+		# usedSlots_cur = inv_handler.inv_slots_used_get(invData=crateData["inventory"], invSubID="0")
+		PRINT_ATTENTION(f'crateData["inventory"] - {crateData["inventory"]}')
+		usedSlots_cur = crateData["inventory"]["0"]["slotsUsed"]
 
-		# Reset the Item back to an Inventory Slot, inside a crate
-		item["inSlot"] = 0
-		item["invSub"] = "0"
+		# get Inventory sizes and make it an [row,col]-list
+		invSize = [crateData["inventory"]["0"]["inv_rows"], crateData["inventory"]["0"]["inv_cols"]]
+		# PRINT_ATTENTION(f'player_killed - parentData["baseData"]: {parentData["baseData"]}')
 
+		# "Find free slot"
+		invPos_new = inv_handler.item_slots_free_find(invDataSize=invSize, itemSize=parentData["baseData"]["size"], slotsUsed=usedSlots_cur, slotsIgnore=[], isFlipped=isFlipped)
+		inv_handler.item_move(client=client, itemID=itemID, invID_old=puid, invSubID_old=invSubID_old, invID_new=dropCrateID, invSubID_new="0", invPos_new=invPos_new[0], isFlipped=isFlipped)
+
+	cData["itemData"] = {}
 	# reset the grid of the player to the Standard Value:
 	for inv in cData["inventory"]:
-		cData["inventory"][inv]["inv_rows"] = 0
-		cData["inventory"][inv]["inv_cols"] = 0
-		cData["inventory"][inv]["slotsUsed"] = []
+		invData_tmp = cData["inventory"][inv]
+		if invData_tmp["isSlot"] == 0:
+			invData_tmp["inv_rows"] = 0
+			invData_tmp["inv_cols"] = 0
+			invData_tmp["slotsUsed"] = []
 
 	# add Starter Gear:
-	startGear = [["vn_b_uniform_macv_01_06", [2012]], ["vn_b_bandana_03", [2010]]]
-	for itemData in startGear:
-		item = inv_handler.inv_item_create(parent=itemData[0], slot=itemData[1], doSlot=True)
-		item["curInv"] = cData["puid"]
-		# Add it to the itemData (inventory) - Since those Items are already "equipped", they won't take any slots.
-		cData["itemData"][item["id"]] = item
+	startGear = ["vn_b_uniform_macv_01_06", "vn_b_bandana_03"]
+	for itemName in startGear:
+		item = inv_handler.item_create(sData=sData, itemSubTypeName=itemName)
+		parentData = inv_handler.item_baseData_get(sData=sData, subTypeName=item["subType"])
+		slot = parentData["baseData"]["slot"][0]
+		inv_handler.inv_item_new_add(sData=sData, invData=cData, item=item, invSubID=slot, crateID=puid)
 
 	# force-update the player Inventory, so all the values will be reset
 	# Does NOT trigger the reopening of the Inventory, since player is dead!
@@ -363,13 +371,14 @@ def player_killed(sData, *data):
 
 # ToDo: Recheck - Inventory Handling updated!
 def player_respawned(sData, puid):
-	PRINT_ATTENTION(f"DEBUG: PLAYER_RESPAWNED: puid: {puid}")
+	PRINT_ATTENTION(f"PLAYER_RESPAWNED: puid: {puid}")
 	cData = player_data_get(sData, puid)
 	listGear = []
 	for x in cData["itemData"]:
 		# noinspection PyTypeChecker
-		slotID = cData["itemData"][x]["inSlot"]
-		if slotID > 0:
+		slotID = cData["itemData"][x]["invSub"]
+
+		if cData["inventory"][slotID]["isSlot"] == "1":
 			listGear.append(cData["itemData"][x])
 	# submit: loadout
 	dataset = {

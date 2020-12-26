@@ -48,6 +48,7 @@ class asc_db:
 		self.players = data["players"]
 		self.crates = data["crates"]
 
+
 	def _db_updTime_(self):
 		self.lastUpdate = timestamp.timestamp_get()
 

@@ -15,7 +15,7 @@ def message_handler_c(client=None, code: str = "None", args=None):
 	if args is None:
 		args = ()
 
-	# PRINT_DEBUG(f"DEBUG: MSG_HANDLER_C: Code: {code} - args: {args}")
+	PRINT_DEBUG(f"DEBUG: MSG_HANDLER_C: Code: {code} - args: {args}")
 
 	if code in cmdList["client"]:
 		if len(args) > 0:
@@ -43,7 +43,7 @@ def message_handler_s(sData=None, code: str = "None", args=None):
 	if args is None:
 		args = ()
 
-	# PRINT_DEBUG(f"DEBUG: MSG_HANDLER_S: Code: {code} - args: {args}")
+	PRINT_DEBUG(f"DEBUG: MSG_HANDLER_S: Code: {code} - args: {args}")
 
 	if code in cmdList["server"]:
 		if len(args) > 0:

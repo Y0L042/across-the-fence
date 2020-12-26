@@ -53,16 +53,19 @@ class asc_colors:
 
 
 def PRINT_ATTENTION(text):
-	print(f"{asc_colors.YELLOW2}{text}{asc_colors.ENDC}")
+	print(f"{asc_colors.YELLOW2}ATTENTION: {text}{asc_colors.ENDC}")
 
 def PRINT_OK(text):
 	print(f"{asc_colors.GREEN2}{text}{asc_colors.ENDC}")
 
 def PRINT_WARNING(text):
-	print(f"{asc_colors.RED2}{text}{asc_colors.ENDC}")
+	print(f"{asc_colors.RED2}WARNING: {text}{asc_colors.ENDC}")
 
 def PRINT_DEBUG(text):
-	print(f"{asc_colors.WHITE2}{text}{asc_colors.ENDC}")
+	print(f"{asc_colors.WHITE2}DEBUG: {text}{asc_colors.ENDC}")
 
 def PRINT_STATUS(text):
 	print(f"{asc_colors.BLUE2}{text}{asc_colors.ENDC}")
+
+def PRINT_NEUTRAL(text):
+	print(f"{text}")

@@ -15,7 +15,7 @@ from anarchy_main.inventory.loot_tables import loot_tables
 
 def server_start():
     PRINT_OK("PRE: Starting Main Thread... done")
-    PRINT_DEBUG("\n########################################################")
+    PRINT_NEUTRAL("\n########################################################")
     PRINT_STATUS("\nMAIN: Loading config...")
     # load the config.cfg values
     try:
@@ -44,16 +44,16 @@ def server_start():
 
     # start the socket Server
     sock_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    PRINT_DEBUG("\n########################################################")
-    PRINT_DEBUG(f"#### Path to Backend:\n#### - {params['path']}")
+    PRINT_NEUTRAL("\n########################################################")
+    PRINT_DEBUG(f"Path to Backend:\n##### - {params['path']}")
     databasePath = params["databasePath"]
     databaseName = params["databaseName"]
-    PRINT_DEBUG(f'#### Path to Database:\n#### - {params["databasePath"]}{params["databaseName"]}')
-    PRINT_DEBUG(f"#### IP:Port:\n#### - {params['ip']}:{params['port']}")
+    PRINT_DEBUG(f'Path to Database:\n##### - {params["databasePath"]}{params["databaseName"]}')
+    PRINT_DEBUG(f"IP:Port:\n##### - {params['ip']}:{params['port']}")
     ip = (params["ip"], int(params["port"]))
     server_key = params["server_key"]
     server_ip = params["server_ip"]
-    PRINT_DEBUG(f'#### Server key:\n#### -> {server_key}')
+    PRINT_DEBUG(f'Server key:\n##### -> {server_key}')
 
     # ############# Loot/Item data thingy stuff burp
     # ####### set the main lootseed ...
@@ -63,7 +63,7 @@ def server_start():
         PRINT_WARNING(f'!!!! WARNING:\n!!!! NO INTEGERS FOUND IN CONFIG.CFG - GENERATING RANDOM SEED\n!!!!')
         sData.lootData["globalseed"] = random.randint(0, 999999)
 
-    PRINT_DEBUG(f'#### Lootseed:\n#### -> {sData.lootData["globalseed"]}')
+    PRINT_DEBUG(f'Lootseed:\n##### -> {sData.lootData["globalseed"]}')
 
     # ####### load all the Items to: sData.itemParentData
     itemParentData.load_files(sData=sData)
@@ -80,7 +80,7 @@ def server_start():
     # ####### load the loot tables
     loot_tables.load_files(sData=sData)
 
-    PRINT_DEBUG("########################################################\n")
+    PRINT_NEUTRAL("########################################################\n")
 
     try:
         sock_server.bind(ip)
@@ -171,7 +171,7 @@ def server_start():
 
 
 if __name__ == "__main__":
-    PRINT_DEBUG("########################################################")
+    PRINT_NEUTRAL("########################################################")
     PRINT_STATUS(f"PRE: loading data_server... ")
     sData = asc_server.data_server()
     PRINT_OK(f"PRE: loading data_server... done")
