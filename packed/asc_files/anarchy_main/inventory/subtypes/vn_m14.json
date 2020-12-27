@@ -48,9 +48,125 @@
 			"condition": 100
 		}
 	},
+
+
 	"vn_b_bandana_03":
 	{
 		"mainParent": "vn_b_bandana_03_base",
+		"subParent": "",
+		"parentData":
+		{
+			"actions":
+			{
+				"repair": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []]
+			},
+			"wear": 1
+		},
+		"itemData":
+		{
+			"condition": 100
+		}
+	},
+
+
+	"vn_m19_binocs_grey":
+	{
+		"mainParent": "vn_m19_binocs_grey_base",
+		"subParent": "",
+		"parentData":
+		{
+			"actions":
+			{
+				"repair": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []]
+			},
+			"wear": 1
+		},
+		"itemData":
+		{
+			"condition": 100
+		}
+	},
+
+
+	"vn_hp":
+	{
+		"mainParent": "vn_hp_base",
+		"subParent": "",
+		"parentData":
+		{
+			"actions":
+			{
+				"repair": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []]
+			},
+			"wear": 1
+		},
+		"itemData":
+		{
+			"condition": 100
+		}
+	},
+
+
+	"launch_RPG32_F":
+	{
+		"mainParent": "launch_RPG32_F_base",
+		"subParent": "",
+		"parentData":
+		{
+			"actions":
+			{
+				"repair": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []]
+			},
+			"wear": 1
+		},
+		"itemData":
+		{
+			"condition": 100
+		}
+	},
+
+
+	"vn_b_vest_aircrew_01":
+	{
+		"mainParent": "vn_b_vest_aircrew_01_base",
+		"subParent": "",
+		"parentData": {
+			"actions": {
+				"repair": [
+					"STR_PLACEHOLDER",
+					"AN_C_FNC_PLACEHOLDER",
+					0,
+					[]
+				]
+			},
+			"wear": 1
+		},
+		"itemData": {
+			"condition": 100
+		}
+	},
+
+	"vn_b_pack_02":
+	{
+		"mainParent": "vn_b_pack_02_base",
+		"subParent": "",
+		"parentData":
+		{
+			"actions":
+			{
+				"repair": ["STR_PLACEHOLDER", "AN_C_FNC_PLACEHOLDER", 0, []]
+			},
+			"wear": 1
+		},
+		"itemData":
+		{
+			"condition": 100
+		}
+	},
+
+	"vn_b_aviator":
+	{
+		"mainParent": "vn_b_aviator_base",
 		"subParent": "",
 		"parentData":
 		{
