@@ -11,6 +11,9 @@
 // Seconday (Handgun)
 #define EQUIP_SLOT_SEC_ROWS 2
 #define EQUIP_SLOT_SEC_COLS EQUIP_SLOT_SEC_ROWS * 2
+// Launcher
+#define EQUIP_SLOT_LAU_ROWS 2
+#define EQUIP_SLOT_LAU_COLS EQUIP_SLOT_LAU_ROWS * 2
 // Uniform
 #define EQUIP_SLOT_UNI_COLS 3	// <--- !!! COLS !!!
 #define EQUIP_SLOT_UNI_ROWS (EQUIP_SLOT_UNI_COLS * 1.5)
@@ -189,6 +192,8 @@ TILEGRIDBG(an_slot_wpn_grid,EQUIP_SLOT_WPN_COLS,EQUIP_SLOT_WPN_ROWS,"a3\ui_f\dat
 TILEGRIDBG(an_slot_wpn_b_grid,EQUIP_SLOT_WPN_COLS,EQUIP_SLOT_WPN_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_gun_gs.paa");
 // Secondary / Handgun
 TILEGRIDBG(an_slot_sec_grid,EQUIP_SLOT_SEC_COLS,EQUIP_SLOT_SEC_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_hgun_gs.paa");
+// Launcher
+TILEGRIDBG(an_slot_lau_grid,EQUIP_SLOT_LAU_COLS,EQUIP_SLOT_LAU_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_sec_gs.paa");
 // Uniform
 TILEGRIDBG(an_slot_uni_grid,EQUIP_SLOT_UNI_COLS,EQUIP_SLOT_UNI_ROWS,"a3\ui_f\data\GUI\Rsc\RscDisplayGear\ui_gear_uniform_gs.paa");
 // Vest
@@ -377,6 +382,9 @@ class an_inventory
 		
 		// Inventory: Slot: Secondary
 		CREATESLOT(slot_sec, 2103,2003, UIX_CR((10 + EQUIP_SLOT_WPN_COLS + 0.5)),UIY_CU(10),UIW(EQUIP_SLOT_SEC_COLS),UIH(EQUIP_SLOT_SEC_ROWS), UIW(0),UIH(0),UIW(EQUIP_SLOT_SEC_COLS),UIH(EQUIP_SLOT_SEC_ROWS));
+		
+		// Inventory: Slot: Launcher
+		CREATESLOT(slot_lau, 2104,2004, UIX_CR((10 + EQUIP_SLOT_WPN_COLS + EQUIP_SLOT_SEC_COLS + 0.5)),UIY_CU(10),UIW(EQUIP_SLOT_LAU_COLS),UIH(EQUIP_SLOT_LAU_ROWS), UIW(0),UIH(0),UIW(EQUIP_SLOT_LAU_COLS),UIH(EQUIP_SLOT_LAU_ROWS));
 		
 		
 		// Inventory: Slot: Uniform
