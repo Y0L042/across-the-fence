@@ -34,24 +34,46 @@ private _playerUID = _dataset get "data_puid";
 private _player = [_playerUID] call AN_S_fnc_player_get_by_puid;
 if(isNull _player)exitWith{diag_log "LOADOUT SET: NO PLAYER FOUND!";};
 
-an_s_fnc_player_gear_uniform_set = {params ["_player","_item"]; removeUniform _player; _player forceAddUniform _item};
-an_s_fnc_player_gear_headgear_set = {params ["_player","_item"]; removeHeadgear _player; _player addHeadgear _item};
-as_s_fnc_player_gear_weapon_main_set = {params ["_player","_item"]; _player removeWeaponGlobal (primaryWeapon _player); _player addWeaponGlobal _item};
+an_s_fnc_player_gear_uniform_set = {params ["_player","_item"]; removeUniform _player; _player forceAddUniform _item;};
+an_s_fnc_player_gear_vest_set = {params ["_player","_item"]; removeVest _player; _player addVest _item;};
+an_s_fnc_player_gear_backpack_set = {params ["_player","_item"]; removeBackpack _player; _player addBackpackGlobal _item;};
+an_s_fnc_player_gear_headgear_set = {params ["_player","_item"]; removeHeadgear _player; _player addHeadgear _item;};
+an_s_fnc_player_gear_facewear_set = {params ["_player","_item"]; removeGoggles _player; _player addGoggles _item;};
+as_s_fnc_player_gear_binocular_set = {params ["_player","_item"]; private _binoCur = binocular _player; _player unassignItem _binoCur; _player removeWeaponGlobal _binoCur; _player addWeaponGlobal _item; _player assignItem _item;};
+
+/*
+	ToDo: Weapon attachments
+*/
+
+as_s_fnc_player_gear_weapon_main_set = {params ["_player","_item"]; _player removeWeaponGlobal (primaryWeapon _player); _player addWeaponGlobal _item;};
+as_s_fnc_player_gear_weapon_handgun_set = {params ["_player","_item"]; _player removeWeaponGlobal (handgunWeapon _player); _player addWeaponGlobal _item;};
+as_s_fnc_player_gear_weapon_launcher_set = {params ["_player","_item"]; _player removeWeaponGlobal (secondaryWeapon _player); _player addWeaponGlobal _item;};
+
+
 
 private _itemList = _dataset getOrDefault ["data_gear",[]];
-_slotHandling = createHashmap;
-{
-	_x params ["_slot", "_code"];
-	_slotHandling set [_slot, _code];
-} forEach
+// Temp
+private _slotHandling = createHashmap;
+_slotHandling insert
 [
-	 ["2010",an_s_fnc_player_gear_headgear_set]
-	,["2012",an_s_fnc_player_gear_uniform_set]
+	 ["2012",an_s_fnc_player_gear_uniform_set]
+	,["2013",an_s_fnc_player_gear_vest_set]
+	,["2015",an_s_fnc_player_gear_backpack_set]
+	,["2010",an_s_fnc_player_gear_headgear_set]
+	,["2011",an_s_fnc_player_gear_facewear_set]
+	,["2017",as_s_fnc_player_gear_binocular_set]
+	/*
+		ToDo: Weapon attachments
+	*/
+	
 	,["2002",as_s_fnc_player_gear_weapon_main_set]
+	,["2003",as_s_fnc_player_gear_weapon_handgun_set]
+	,["2004",as_s_fnc_player_gear_weapon_launcher_set]
 ];
 
 {
 	_x params ["_slot", "_classname"];
+	diag_log ["DEBUG: LOADOUT SET: Add Item: ", _classname];
 	[_player, _classname] call (_slotHandling getOrDefault [_slot,{}]);
 }forEach _itemList;
 
