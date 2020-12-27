@@ -106,6 +106,16 @@ def client_add(**kwargs):
 				"slotsUsed": [],
 				"isSlot": 1
 				},
+			# Slot - Weapon - Launcher
+			"2004": {
+				"inv_rows": 8,
+				"inv_cols": 8,
+				"invID": "2004",
+				"invArea": "an_slot_lau_area",
+				"invGrid": "an_slot_lau_grid",
+				"slotsUsed": [],
+				"isSlot": 1
+				},
 			# Slot - Helmet
 			"2010": {
 				"inv_rows": 8,
@@ -168,7 +178,6 @@ def client_add(**kwargs):
 				}
 			# ToDo: Slot - Pouch
 			# ToDo: Slot - Tool
-			# ToDo: Slot - Launcher
 			},
 		'itemData': {}
 		}
@@ -187,7 +196,17 @@ def client_init(self):
 		player_data_set(self.sData, self.puid, self.cData)
 
 		# add Starter Gear:
-		startGear = ["vn_b_uniform_macv_01_06", "vn_b_bandana_03", "vn_m14_BetterCondition"]
+		startGear = [
+				"vn_b_uniform_macv_01_06",
+				"vn_b_vest_aircrew_01",
+				"vn_b_pack_02",
+				"vn_b_bandana_03",
+				"vn_b_aviator",
+				"vn_m19_binocs_grey",
+				"vn_m14_BetterCondition",
+				"vn_hp",
+				"launch_RPG32_F"
+			]
 		for itemName in startGear:
 			item = inv_handler.item_create(sData=self.sData, itemSubTypeName=itemName)
 			parentData = inv_handler.item_baseData_get(sData=self.sData, subTypeName=item["subType"])
