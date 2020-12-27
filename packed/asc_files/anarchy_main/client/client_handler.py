@@ -187,24 +187,13 @@ def client_init(self):
 		player_data_set(self.sData, self.puid, self.cData)
 
 		# add Starter Gear:
-		startGear = ["vn_b_uniform_macv_01_06", "vn_b_bandana_03"]
+		startGear = ["vn_b_uniform_macv_01_06", "vn_b_bandana_03", "vn_m14_BetterCondition"]
 		for itemName in startGear:
 			item = inv_handler.item_create(sData=self.sData, itemSubTypeName=itemName)
 			parentData = inv_handler.item_baseData_get(sData=self.sData, subTypeName=item["subType"])
+			# "slot" can have multiple entries, first entry is always the "main equip-slot"!
 			slot = parentData["baseData"]["slot"][0]
 			inv_handler.inv_item_new_add(sData=self.sData, invData=self.cData, item=item, invSubID=slot, crateID=self.puid)
-
-	# filter out all the equipped Gear and send it as a "special" set to the Server, so the Client can be equipped
-	# listGear = []
-	# for x in self.cData["itemData"]:
-	# 	# noinspection PyTypeChecker
-	# 	slotID = self.cData["itemData"][x]["inSlot"]
-	# 	if slotID > 0:
-	# 		listGear.append(self.cData["itemData"][x])
-
-	# Server:
-	# send Player Dataset over to the Server, so it can set up the player:
-	PRINT_DEBUG(f"SENDING: DATASET FROM {self.puid} TO GAMESERVER...")
 
 	# submit: faction
 	dataset = {
@@ -213,12 +202,36 @@ def client_init(self):
 		}
 	asc_g_msg.sendMsg("player_faction_set", dataset, self.sData.con_gameServer)
 
+	# filter out all the equipped Gear and send it as a "special" set to the Server, so the Client can be equipped
+	listGear = []
+	for itemID in self.cData["itemData"]:
+		item = self.cData["itemData"][itemID]
+		# noinspection PyTypeChecker
+		parentData = inv_handler.item_baseData_get(sData=self.sData, subTypeName=item["subType"])
+		slot = parentData["baseData"]["slot"][0]
+		PRINT_ATTENTION(f"parentData: {parentData}")
+
+		inv = self.cData["inventory"][slot]
+		# noinspection PyTypeChecker
+		isSlot = inv["isSlot"]
+		if isSlot != "0":
+			# noinspection PyTypeChecker
+			if inv["slotsUsed"]:
+				className = parentData["baseData"]["class_name"]
+				PRINT_ATTENTION(f"[slot, className]: {[slot, className]}")
+				listGear.append([slot, className])
+	PRINT_ATTENTION(f"listGear: {listGear}")
+
+	# Server:
+	# send Player Dataset over to the Server, so it can set up the player:
+	PRINT_DEBUG(f"SENDING: DATASET FROM {self.puid} TO GAMESERVER...")
+
 	# submit: loadout
-	# dataset = {
-	# 	"data_puid": self.puid,
-	# 	"data_gear": listGear
-	# 	}
-	# asc_g_msg.sendMsg("player_loadout_set", dataset, self.sData.con_gameServer)
+	dataset = {
+		"data_puid": self.puid,
+		"data_gear": listGear
+		}
+	asc_g_msg.sendMsg("player_loadout_set", dataset, self.sData.con_gameServer)
 
 	# submit: pos/dir/stance
 	dataset = {
