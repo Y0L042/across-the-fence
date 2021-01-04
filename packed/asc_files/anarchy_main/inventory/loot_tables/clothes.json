@@ -12,60 +12,36 @@
 	
 	"vests":
 	{
-		"vn_b_vest_sog_01": 1,
-		"vn_b_vest_usarmy_01": 1,
-		"vn_b_vest_aircrew_01": 1,
-		"vn_o_vest_04": 1,
-		"vn_o_vest_vc_01": 1
+		"vn_b_vest_aircrew_01": 1
 	},
 	
 	"headgear":
 	{
-		"vn_b_boonie_02_01": 1,
-		"vn_b_bandana_01": 1,
-		"vn_b_beret_01_01": 1
-	},
-
-	"facewear":
-	{
-		"vn_b_aviator": 1,
-		"vn_b_scarf_01_01": 1,
-		"vn_o_acc_goggles_01": 1,
-		"vn_o_bandana_b": 1,
-		"vn_o_poncho_01_01": 1
+		"vn_b_bandana_03": 1
 	},
 	
 	"helmets":
 	{
-		"vn_o_helmet_nva_01": 1,
-		"vn_o_helmet_vc_01": 1,
-		"vn_b_helmet_aph6_01_01": 1,
-		"vn_b_helmet_m1_01_01": 1,
-		"vn_b_helmet_t56_01_01": 1
+		"vn_b_helmet_aph6_01_01": 1
 	},
 	
 	"uniforms":
 	{
-		"vn_b_uniform_macv_01_01": 1,
-		"vn_b_uniform_sog_01_01": 1,
-		"vn_b_uniform_sog_02_04": 1,
-		"vn_o_uniform_vc_03_02": 1,
-		"vn_o_uniform_vc_mf_01_07": 1
+		"vn_b_uniform_macv_01_06": 1
 	},
 	
 	"backpacks":
 	{
-		"vn_b_pack_01": 1,
-		"vn_b_pack_02": 1,
-		"vn_o_pack_01": 1,
-		"vn_o_pack_02": 1
+		"vn_b_pack_02": 1
+	},
+
+	"facewear":
+	{
+		"vn_b_aviator": 1
 	},
 
 	"binonucular":
 	{
-		"vn_m19_binocs_grn": 1,
-		"vn_m19_binocs_grey": 1,
-		"vn_mk21_binocs": 1,
-		"vn_anpvs2_binoc": 1
+		"vn_m19_binocs_grey": 1
 	}
 }

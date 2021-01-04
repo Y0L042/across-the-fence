@@ -3,23 +3,27 @@
 	"base_item":
 	{
 		"size": [1, 1],
-		"slot": ["0"]
+		"class_type": "CfgMagazines",
+		"slot": ["1000"]
 	},
 	
 	
 	"base_wpn_primary":
 	{
 		"size": [3,6],
+		"class_type": "CfgWeapons",
 		"slot": ["2002","2202"]
 	},
 	"base_wpn_secondary":
 	{
-		"size": [3,6],
+		"size": [2,4],
+		"class_type": "CfgWeapons",
 		"slot": ["2003"]
 	},
 	"base_wpn_launcher":
 	{
 		"size": [3,6],
+		"class_type": "CfgWeapons",
 		"slot": ["2004"]
 	},
 	
@@ -27,16 +31,19 @@
 	"base_att_scope":
 	{
 		"size": [1,2],
+		"class_type": "CfgWeapons",
 		"slot": ["999"]
 	},
 	"base_att_muzzle":
 	{
 		"size": [1,2],
+		"class_type": "CfgWeapons",
 		"slot": ["999"]
 	},
 	"base_att_pod":
 	{
 		"size": [1,2],
+		"class_type": "CfgWeapons",
 		"slot": ["999"]
 	},
 	
@@ -44,21 +51,25 @@
 	"base_gear_helmet":
 	{
 		"size": [3,3],
+		"class_type": "CfgWeapons",
 		"slot": ["2010"]
 	},
 	"base_gear_uniform":
 	{
 		"size": [6,4],
+		"class_type": "CfgWeapons",
 		"slot": ["2012"]
 	},
 	"base_gear_vest":
 	{
 		"size": [4,4],
+		"class_type": "CfgWeapons",
 		"slot": ["2013"]
 	},
 	"base_gear_backpack":
 	{
 		"size": [4,4],
+		"class_type": "CfgVehicles",
 		"slot": ["2015"]
 	},
 	
@@ -66,11 +77,13 @@
 	"base_gear_head":
 	{
 		"size": [2,2],
+		"class_type": "CfgGlasses",
 		"slot": ["2011"]
 	},
 	"base_gear_bino":
 	{
 		"size": [3,3],
+		"class_type": "CfgWeapons",
 		"slot": ["2017"]
 	}
 }

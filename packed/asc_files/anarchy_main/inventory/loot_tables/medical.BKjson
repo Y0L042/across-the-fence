@@ -1,0 +1,8 @@
+{
+	"medical":
+	{
+		"bandage": 3,
+		"FirstAidKit": 3,
+		"Medikit": 3
+	}
+}

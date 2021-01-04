@@ -1,8 +1,8 @@
 {
 	"medical":
 	{
-		"bandage": 3,
-		"FirstAidKit": 3,
-		"Medikit": 3
+		"med_bandage": 3,
+		"med_FirstAidKit": 3,
+		"med_Medikit": 3
 	}
 }

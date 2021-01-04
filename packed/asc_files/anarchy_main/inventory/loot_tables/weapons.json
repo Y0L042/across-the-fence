@@ -1,38 +1,35 @@
 {
 	"weapons":
 	{
-		"pistols": 3,
+		"pistols": 2,
 		"rifles": 2,
 		"shotguns": 2,
-		"lmg": 2
+		"lmg": 2,
+		"launcher": 2
 	},
 
 	"pistols":
 	{
-		"vn_hd": 1,
-		"vn_hp": 1,
-		"vn_m1895": 1,
-		"vn_m1911": 1
+		"vn_hp": 1
 	},
 
 	"rifles":
 	{
-		"vn_m16": 1,
-		"vn_m38": 1,
-		"vn_m4956": 1
+		"vn_m14_BetterCondition": 1
 	},
 
 	"shotguns":
 	{
-		"vn_izh54": 3,
-		"vn_izh54_shorty": 3,
-		"vn_m1897": 1
+		"vn_m14_BetterCondition": 3
 	},
+	
 	"lmg":
 	{
-		"vn_m60": 3,
-		"vn_m60_shorty": 3,
-		"vn_rpd": 3,
-		"vn_rpd_shorty": 3
+		"vn_m14_BetterCondition": 3
+	},
+	
+	"launcher":
+	{
+		"launch_RPG32_F": 3
 	}
 }

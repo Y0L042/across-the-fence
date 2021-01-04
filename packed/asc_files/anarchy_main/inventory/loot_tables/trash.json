@@ -1,8 +1,7 @@
 {
 	"trash":
 	{
-		"oldSock": 3,
-		"trashItem2": 3,
-		"boxershorts": 3
+		"trash_oldSock": 3,
+		"trash_boxershorts": 3
 	}
 }

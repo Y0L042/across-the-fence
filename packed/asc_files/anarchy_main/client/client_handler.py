@@ -26,9 +26,10 @@ def client_add(**kwargs):
 		'inventory': {
 			# External Grid - Default Values - needed!
 			"1000": {
+				"crateID": "-1",
 				"inv_rows": 1,
 				'inv_cols': 8,
-				"invID":    "0",
+				"invID":    "1000",
 				"invArea":  "an_inv_external_area",
 				"invGrid":  "an_inv_external_grid",
 				"slotsUsed": [],
@@ -36,7 +37,8 @@ def client_add(**kwargs):
 				},
 			# Inventory - Uniform
 			"1012": {
-				"inv_rows": 0,
+				"crateID": "-1",
+				"inv_rows": 8,
 				"inv_cols": 8,
 				"invID": "1012",
 				"invArea": "an_inv_uni_area",
@@ -46,6 +48,7 @@ def client_add(**kwargs):
 				},
 			# Inventory - Vest
 			"1013": {
+				"crateID": "-1",
 				"inv_rows": 0,
 				"inv_cols": 8,
 				"invID": "1013",
@@ -56,6 +59,7 @@ def client_add(**kwargs):
 				},
 			# Inventory - Pouch
 			"1014": {
+				"crateID": "-1",
 				"inv_rows": 0,
 				"inv_cols": 8,
 				"invID": "1014",
@@ -66,6 +70,7 @@ def client_add(**kwargs):
 				},
 			# Inventory - Backpack
 			"1015": {
+				"crateID": "-1",
 				"inv_rows": 0,
 				"inv_cols": 8,
 				"invID": "1015",
@@ -78,8 +83,9 @@ def client_add(**kwargs):
 			# Slots:
 			# Slot - Weapon - Main
 			"2002": {
-				"inv_rows": 8,
-				"inv_cols": 8,
+				"crateID": "-1",
+				"inv_rows": 4,
+				"inv_cols": 6,
 				"invID": "2002",
 				"invArea": "an_slot_wpn_area",
 				"invGrid": "an_slot_wpn_grid",
@@ -88,8 +94,9 @@ def client_add(**kwargs):
 				},
 			# Slot - Weapon - Main (second slot)
 			"2202": {
-				"inv_rows": 8,
-				"inv_cols": 8,
+				"crateID": "-1",
+				"inv_rows": 4,
+				"inv_cols": 6,
 				"invID": "2202",
 				"invArea": "an_slot_wpn_b_area",
 				"invGrid": "an_slot_wpn_b_grid",
@@ -98,8 +105,9 @@ def client_add(**kwargs):
 				},
 			# Slot - Weapon - secondary
 			"2003": {
-				"inv_rows": 8,
-				"inv_cols": 8,
+				"crateID": "-1",
+				"inv_rows": 2,
+				"inv_cols": 4,
 				"invID": "2003",
 				"invArea": "an_slot_sec_area",
 				"invGrid": "an_slot_sec_grid",
@@ -108,8 +116,9 @@ def client_add(**kwargs):
 				},
 			# Slot - Weapon - Launcher
 			"2004": {
-				"inv_rows": 8,
-				"inv_cols": 8,
+				"crateID": "-1",
+				"inv_rows": 4,
+				"inv_cols": 6,
 				"invID": "2004",
 				"invArea": "an_slot_lau_area",
 				"invGrid": "an_slot_lau_grid",
@@ -118,8 +127,9 @@ def client_add(**kwargs):
 				},
 			# Slot - Helmet
 			"2010": {
-				"inv_rows": 8,
-				"inv_cols": 8,
+				"crateID": "-1",
+				"inv_rows": 3,
+				"inv_cols": 3,
 				"invID": "2010",
 				"invArea": "an_slot_hel_area",
 				"invGrid": "an_slot_hel_grid",
@@ -128,8 +138,9 @@ def client_add(**kwargs):
 				},
 			# Slot - Goggles
 			"2011": {
-				"inv_rows": 8,
-				"inv_cols": 8,
+				"crateID": "-1",
+				"inv_rows": 2,
+				"inv_cols": 2,
 				"invID": "2011",
 				"invArea": "an_slot_gog_area",
 				"invGrid": "an_slot_gog_grid",
@@ -138,8 +149,9 @@ def client_add(**kwargs):
 				},
 			# Slot - Uniform
 			"2012": {
-				"inv_rows": 8,
-				"inv_cols": 8,
+				"crateID": "-1",
+				"inv_rows": 6,
+				"inv_cols": 4,
 				"invID": "2012",
 				"invArea": "an_slot_uni_area",
 				"invGrid": "an_slot_uni_grid",
@@ -148,18 +160,20 @@ def client_add(**kwargs):
 				},
 			# Slot - Vest
 			"2013": {
-				"inv_rows": 8,
-				"inv_cols": 8,
+				"crateID": "-1",
+				"inv_rows": 4,
+				"inv_cols": 4,
 				"invID": "2013",
 				"invArea": "an_slot_vst_area",
 				"invGrid": "an_slot_vst_grid",
 				"slotsUsed": [],
 				"isSlot": 1
 				},
-			# Slot - Vest
+			# Slot - Backpack
 			"2015": {
-				"inv_rows": 8,
-				"inv_cols": 8,
+				"crateID": "-1",
+				"inv_rows": 4,
+				"inv_cols": 4,
 				"invID": "2015",
 				"invArea": "an_slot_bkp_area",
 				"invGrid": "an_slot_bkp_grid",
@@ -168,8 +182,9 @@ def client_add(**kwargs):
 				},
 			# Slot - Bino
 			"2017": {
-				"inv_rows": 8,
-				"inv_cols": 8,
+				"crateID": "-1",
+				"inv_rows": 3,
+				"inv_cols": 3,
 				"invID": "2017",
 				"invArea": "an_slot_bin_area",
 				"invGrid": "an_slot_bin_grid",
@@ -213,6 +228,9 @@ def client_init(self):
 			# "slot" can have multiple entries, first entry is always the "main equip-slot"!
 			slot = parentData["baseData"]["slot"][0]
 			inv_handler.inv_item_new_add(sData=self.sData, invData=self.cData, item=item, invSubID=slot, crateID=self.puid)
+	# update the mainID:
+	for subInv in self.cData["inventory"]:
+		self.cData["inventory"][subInv]["crateID"] = self.puid
 
 	# submit: faction
 	dataset = {
@@ -233,7 +251,7 @@ def client_init(self):
 		inv = self.cData["inventory"][slot]
 		# noinspection PyTypeChecker
 		isSlot = inv["isSlot"]
-		if isSlot != "0":
+		if isSlot != "1000":
 			# noinspection PyTypeChecker
 			if inv["slotsUsed"]:
 				className = parentData["baseData"]["class_name"]
@@ -271,10 +289,16 @@ def client_init(self):
 	#################################
 	# Now send the data to the client:
 
-	# send itemParent Definitions
-	PRINT_DEBUG(f"SENDING: PARENT DATA TO {self.puid}... ")
-	asc_g_msg.sendMsg("INIT_ITEM_PARENTDATA", self.sData.itemParentData, self.con_client)
-	PRINT_OK(f"SENDING: PARENT DATA TO {self.puid}... DONE")
+	# send the item definitions
+	PRINT_DEBUG(f"SENDING: ITEM BASE DATA TO {self.puid}... ")
+	# send the base item Data
+	asc_g_msg.sendMsg("INIT_ITEM_DATA", self.sData.itemParentData, self.con_client)
+	PRINT_OK(f"SENDING: ITEM BASE DATA TO {self.puid}... DONE")
+
+	PRINT_DEBUG(f"SENDING: ITEM CLASS DATA TO {self.puid}... ")
+	# Send the formatted ItemClasses (Base+SubType merged together)
+	asc_g_msg.sendMsg("INIT_ITEM_DATA", self.sData.itemClasses, self.con_client)
+	PRINT_OK(f"SENDING: ITEM CLASS DATA TO {self.puid}... DONE")
 
 	# Gear:
 	PRINT_DEBUG(f"SENDING: INVENTORY ITEMDATA TO {self.puid}...")
@@ -364,17 +388,17 @@ def player_killed(sData, *data):
 		parentData = inv_handler.item_baseData_get(sData=sData, subTypeName=itemData["subType"])
 		# PRINT_ATTENTION(f"player_killed - parentData: {parentData}")
 		# get the usedSlots
-		# usedSlots_cur = inv_handler.inv_slots_used_get(invData=crateData["inventory"], invSubID="0")
+		# usedSlots_cur = inv_handler.inv_slots_used_get(invData=crateData["inventory"], invSubID="1000")
 		PRINT_ATTENTION(f'crateData["inventory"] - {crateData["inventory"]}')
-		usedSlots_cur = crateData["inventory"]["0"]["slotsUsed"]
+		usedSlots_cur = crateData["inventory"]["1000"]["slotsUsed"]
 
 		# get Inventory sizes and make it an [row,col]-list
-		invSize = [crateData["inventory"]["0"]["inv_rows"], crateData["inventory"]["0"]["inv_cols"]]
+		invSize = [crateData["inventory"]["1000"]["inv_rows"], crateData["inventory"]["1000"]["inv_cols"]]
 		# PRINT_ATTENTION(f'player_killed - parentData["baseData"]: {parentData["baseData"]}')
 
 		# "Find free slot"
 		invPos_new = inv_handler.item_slots_free_find(invDataSize=invSize, itemSize=parentData["baseData"]["size"], slotsUsed=usedSlots_cur, slotsIgnore=[], isFlipped=isFlipped)
-		inv_handler.item_move(client=client, itemID=itemID, invID_old=puid, invSubID_old=invSubID_old, invID_new=dropCrateID, invSubID_new="0", invPos_new=invPos_new[0], isFlipped=isFlipped)
+		inv_handler.item_move(client=client, itemID=itemID, invID_old=puid, invSubID_old=invSubID_old, invID_new=dropCrateID, invSubID_new="1000", invPos_new=invPos_new[0], isFlipped=isFlipped)
 
 	cData["itemData"] = {}
 	# reset the grid of the player to the Standard Value:
