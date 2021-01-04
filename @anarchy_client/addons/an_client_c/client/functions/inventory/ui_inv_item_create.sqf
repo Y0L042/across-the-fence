@@ -4,7 +4,7 @@
 	an_c_fnc_ui_inv_item_create
 	[
 		CTRL	ctrlGrp to add to	//an_inv_(uni|vst|pch|bkp|external)_grid
-		FLOAT	pos inside ctrlGrp
+		FLOAT	x pos inside ctrlGrp
 		FLOAT	y pos inside ctrlGrp
 		[
 			STRING	item name (Classname) //DEV: Currently STRING path to icon!!
@@ -14,11 +14,10 @@
 		ARRAY	currently used slots (NOT THE OFFSET of the Item itself!) ( e.g: [[0,1],[0,2],[0,3],...] )
 	]
 */
-private _DEBUGON = false;
-#include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
+private _DEBUGON = true;
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
-params["_ctrlInvGrid","_posX","_posY","_itemClass","_usedSlots","_slotID","_parentData"];
+params["_ctrlInvGrid","_posX","_posY","_itemID"];
 
 private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
 //create the Icon
@@ -26,11 +25,18 @@ private _itemIDC = localNamespace getVariable ["an_Item_IDC_count",107441];
 private _ctrlItem = _disp ctrlCreate ["inv_icon",_itemIDC,_ctrlInvGrid];
 localNamespace setVariable ["an_Item_IDC_count",(_itemIDC + 1)];
 
+
+private _itemData = [_itemID] call an_c_fnc_ui_inv_item_data_get;
+if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_ITEM_CREATE: _itemData     :", _itemData];};
+private _parentData = [_itemData] call an_c_fnc_ui_inv_item_data_parent_get;
+if(isNil "_parentData")exitWith{diag_log format["ERROR: UI_INV_ITEM_CREATE: PARENTDATA NOT FOUND : _itemID: %1 - _itemData: %2", _itemID, _itemData];};
+
 // Get the proper Size, related to Grid Size
-if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_ITEM_CREATE: PARENT DATA   : %1", _parentData];};
-if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_ITEM_CREATE: CTRL INV GRID : %1", _ctrlInvGrid];};
-([_parentData, _ctrlInvGrid] call an_c_fnc_ui_inv_item_size_calc) params ["_ctrlItemW","_ctrlItemH"];
-if(_DEBUGON)then{diag_log format["DEBUG: UI_INV_ITEM_CREATE: SIZE CALC     : %1", [_ctrlItemW, _ctrlItemH]];};
+if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_ITEM_CREATE: _parentData   :", _parentData];};
+if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_ITEM_CREATE: _ctrlInvGrid  :", _ctrlInvGrid];};
+private _itemSize = _parentData get "baseData" get "size";
+([_itemSize, _ctrlInvGrid] call an_c_fnc_ui_inv_item_size_calc) params ["_ctrlItemW","_ctrlItemH"];
+if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_ITEM_CREATE: ITEM_W/H      :", [_ctrlItemW, _ctrlItemH]];};
 
 //if needed -> "rotate" the main ctrlGroup and adjust the values to 4/3 (Arma Base Resolution)
 if(an_inv_move_placeHorizontal)then
@@ -40,6 +46,7 @@ if(an_inv_move_placeHorizontal)then
 	_ctrlItem ctrlSetposition [_posX,_posY,(_ctrlItemW*0.75),(_ctrlItemH/0.75)];
 };
 _ctrlItem ctrlCommit 0;
+_ctrlItem setVariable ["itemID", _itemID];
 
 //Adjust the image and background of the Item
 {
@@ -48,15 +55,22 @@ _ctrlItem ctrlCommit 0;
 	_ctrl ctrlCommit 0;
 	if(_x == 200)then
 	{
-		private _itemImg = ENTRY_GET("image",_parentData);
+		private _itemImg = _parentData get "baseData" get "image";
 		// If no image is set -> Its most likely an Item, defined in the config. So try to get the image from there.
 		if(_itemImg isEqualTo "")then
 		{
-			private _cfgBase = [ENTRY_GET("slot",_parentData)] call an_c_fnc_ui_inv_item_getClass;
-			_itemImg = getText(configFile >> _cfgBase >> _itemClass >> "picture");
+			if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_ITEM_CREATE: _parentData   :", _parentData];};
+			private _baseData = _parentData get "baseData";
+			private _cfgBase = _baseData get "class_type";
+			private _cfgName = _baseData get "class_name";
+			if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_ITEM_CREATE: _cfgBase      :", _cfgBase];};
+			if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_ITEM_CREATE: _cfgName      :", _cfgName];};
+			_itemImg = getText(configFile >> _cfgBase >> _cfgName >> "picture");
 		};
 		
+		if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_ITEM_CREATE: _itemImg      :", _itemImg];};
 		_ctrl ctrlSetText _itemImg;
+		
 	};
 	//if flipped/roated by 90° -> do other stuff
 	if !(an_inv_move_placeHorizontal)then
@@ -70,6 +84,14 @@ _ctrlItem ctrlCommit 0;
 	};
 }forEach[100,200];
 
+
+
+if(true)exitWith{};
+
+
+
+
+#include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 ////////////////////////////////
 //ToDo: Rework needed, when multiple Inventories were added!
 private _invExternalID = localNamespace getVariable ["an_inv_external_active",""];	// Is set during the opening init the Inventory
@@ -157,6 +179,9 @@ if !(_isSamePos && _isSameInv && _isSameSlot)then
 	// send command to the backend, to update its data.
 	if(_DEBUGON)then{diag_log ["DEBUG: item_create: MSG SEND Data:", ["inv_item_move", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID, _invSubActive]]];};
 	
+	// NEW Backend Vars:
+	// itemID, invID_old, invSubID_old, invID_new, invSubID_new, invPos_new, isFlipped
+	// OLD:
 	["inv_item_move", [_itemID, _itemInvIDCur, _itemInvIDNew, ENTRY_GET("isFlipped", _itemData), (_usedSlots#0), _slotID, _invSubActive]] call AN_G_fnc_msg_send;
 	
 	// Update the local Inventory

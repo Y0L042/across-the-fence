@@ -22,14 +22,17 @@
 params ["_displayorcontrol", "_scroll"];
 
 // determine, if the mousePos is inside an Inventory or Slot Area
-(call an_c_fnc_ui_inv_get) params ["_area","_grid","_isSlot"];
+private _invData = call an_c_fnc_ui_inv_get;
+private _areaName = _invData get "invArea";
+private _gridName = _invData get "invGrid";
+private _isSlot = _invData get "isSlot";
 
 // either nothing was found or it's a slot. Since Slots can't be scrolled in, exit too (for now at least, unless we find another use for it).
-if(!_isSlot && !(_area isEqualTo ""))then
+if((_isSlot == 0) && !(_areaName isEqualTo ""))then
 {
-	// systemchat str ["mouse_Z", _area, diag_tickTime];
-	private _ctrlGrp_parent = uinamespace getvariable [_area, controlNull];
-	private _ctrlGrp = uinamespace getvariable [_grid, controlNull];
+	// systemchat str ["mouse_Z", _areaName, diag_tickTime];
+	private _ctrlGrp_parent = uinamespace getvariable [_areaName, controlNull];
+	private _ctrlGrp = uinamespace getvariable [_gridName, controlNull];
 	
 	// Get the base size values
 	private _ctrl_h_max = (ctrlPosition _ctrlGrp_parent)#3;

@@ -1,6 +1,14 @@
 /*
 	Auto move the Item the correct Slot (Ctrl+LMB on an Item)
 */
+
+/////////////////////////////////////// TODO: REWORK
+/////////////////////////////////////// TODO: REWORK
+/////////////////////////////////////// TODO: REWORK
+/////////////////////////////////////// TODO: REWORK
+/////////////////////////////////////// TODO: REWORK
+
+
 private _DEBUGON = false;
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
@@ -12,10 +20,10 @@ _itemData params ["_posData","_itemUsedSlots","_itemClass","_itemId"];
 // Note: _itemUsedSlots == slots in current Inventory
 
 // Get the Parent Data for the selected Item
-private _parentData = [_itemClass] call an_c_fnc_ui_inv_item_data_parent_get;
-private _parentSize = ENTRY_GET("size",_parentData);
+private _parentData = [_itemData] call an_c_fnc_ui_inv_item_data_parent_get;
+private _parentSize = _parentData getOrDefault ["size",[2,2]];
 // Get the parent slot data.
-private _parentSlotID_list = ENTRY_GET("slot",_parentData);
+private _parentSlotID_list = _parentData getOrDefault ["slot",[]];
 _parentSlotID = _parentSlotID_list#_slotIndexCheck;
 if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _parentSize     :", _parentSize]; diag_log _msg, systemchat str _msg;};
 if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _parentSlotID   :", _parentSlotID]; diag_log _msg, systemchat str _msg;};

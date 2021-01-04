@@ -4,17 +4,18 @@
 	[2,1]	-	item size [rows, colums]
 */
 private _DEBUGON = false;
-params["_ctrl", ["_item_pos",[],[[]]]];
+params["_invData", ["_item_pos",[],[[]]]];
 
 if(_item_pos isEqualTo [])exitWith{private _text = "ERROR: ui_inv_grid_gridToPos: NO POS FOUND"; systemchat _text; diag_log _text; []};
 
-_grid_rows = _ctrl getVariable ["rows",-1];
-_grid_cols = _ctrl getVariable ["cols",-1];
-if(-1 in [_grid_rows,_grid_cols])exitWith{diag_log "ERROR: GRIDTOPOS: _grid_rows < 0"; []};
+private _grid_rows = _invData get "inv_rows";
+private _grid_cols = _invData get "inv_cols";
+
+private _ctrlGrid = uiNamespace getVariable [(_invData get "invGrid"), controlNull];
 _item_pos params ["_item_pos_row","_item_pos_col"];
 
 //get the width and height of the passed Inventory
-(ctrlPosition _ctrl) params["","","_ctrl_w","_ctrl_h"];
+(ctrlPosition _ctrlGrid) params["","","_ctrl_w","_ctrl_h"];
 
 //calc the width and height of each slot in the control
 private _grid_w_tile = _ctrl_w / _grid_cols;

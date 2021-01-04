@@ -22,7 +22,6 @@ class inventory
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_grab);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_move_auto);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_remove);
-	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_getClass);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_data_init);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_data_set);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_data_get);

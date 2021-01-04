@@ -23,7 +23,7 @@
 */
 
 private _isIn = false;
-private _inv = ["","",false];
+private _inv = "";
 
 // Check all Inventories
 {
@@ -31,7 +31,7 @@ private _inv = ["","",false];
 	_isIn = [(AN_data_inventory get "inventory" get _x get "invArea")] call an_c_fnc_ui_inv_get_check;
 	if(_isIn)exitWith
 	{
-		systemchat str [diag_tickTime, _x, _isIn];
+		// systemchat str [diag_tickTime, _x, _isIn];
 		_inv = AN_data_inventory get "inventory" get _x;
 	};
 // }forEach (keys (AN_data_inventory get "inventory_list"));

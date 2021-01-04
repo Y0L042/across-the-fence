@@ -72,7 +72,7 @@ AN_data_inventory insert
 	,["inventory",_inventoryData]			// 
 	,["itemData", _itemDataPlayer ]
 ];
-diag_log "DEBUG: PLAYER GEAR SET: Setting Inventory MainData... FINISHED";
+diag_log "DEBUG: PLAYER GEAR SET: Setting Inventory MainData... Done";
 diag_log "DEBUG: PLAYER GEAR SET: ... Done";
 diag_log "------------------";
 

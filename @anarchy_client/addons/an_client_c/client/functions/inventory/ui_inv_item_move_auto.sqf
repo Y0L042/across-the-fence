@@ -1,6 +1,13 @@
 /*
 	Auto move the Item the opposite Inventory (Shift+LMB on an Item)
 */
+
+/////////////////////////////////////// TODO: REWORK
+/////////////////////////////////////// TODO: REWORK
+/////////////////////////////////////// TODO: REWORK
+/////////////////////////////////////// TODO: REWORK
+/////////////////////////////////////// TODO: REWORK
+
 private _DEBUGON = false;
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
@@ -24,8 +31,8 @@ _itemData params ["_posData","_itemUsedSlots","_itemClass","_itemId"];
 // Note: _itemUsedSlots == slots in current Inventory
 
 // Get the Parent Data for the selected Item
-private _parentData = [_itemClass] call an_c_fnc_ui_inv_item_data_parent_get;
-private _parentSize = ENTRY_GET("size",_parentData);
+private _parentData = [_itemData] call an_c_fnc_ui_inv_item_data_parent_get;
+private _parentSize = _parentData getOrDefault ["size",[2,2]];
 if(_DEBUGON)then{diag_log ["DEBUG: MOVE_AUTO: _parentSize    :", _parentSize];};
 
 // Get the inventory Gridsize (rows only, since width is fixed) of the Inventory target
