@@ -60,7 +60,10 @@ p_drive = Path('P:\\')
 root_directory = Path(path.realpath(__file__)).parent.parent
 addon_prefix = "\\sgd\\anarchy"
 output_directory = root_directory / 'packed'
-log_directory = root_directory / 'build_logs' / (datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+# Old: Saving each buildlog into seperate folder
+# log_directory = root_directory / 'build_logs' / (datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
+# Put logs into the mainFolder
+log_directory = root_directory / 'build_logs'
 prefix_directory = p_drive / addon_prefix
 missions_directory = root_directory / "missions"
 arma_mod_folder_name = "anarchy"
