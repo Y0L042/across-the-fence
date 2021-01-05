@@ -10,8 +10,10 @@ private _itemDataPlayer = AN_data_inventory get "itemData";
 if(_itemInvIDNew isEqualTo (getPlayerUID player))then
 {
 	_itemDataPlayer set [_itemID, _itemData];
+	AN_data_items_ext deleteAt _itemID;
 }
 else
 {
 	_itemDataPlayer deleteAt _itemID;
+	AN_data_items_ext set [_itemID, _itemData];
 };

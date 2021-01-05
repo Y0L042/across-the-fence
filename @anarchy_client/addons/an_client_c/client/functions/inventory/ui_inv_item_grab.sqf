@@ -19,7 +19,6 @@ if(an_ui_inv_grabActive)exitWith{systemchat "an_ui_inv_grabActive already active
 an_ui_inv_grabActive = true;
 
 private _itemData = [_itemID] call an_c_fnc_ui_inv_item_data_get;
-
 if(_DEBUGON)then{diag_log ["DEBUG: ITEM_GRAB: _itemData     :", _itemData];};
 
 // Get the Parent Data for the selected Item
@@ -46,18 +45,37 @@ if(_btn in [1])exitWith
 };
 
 
+// ToDo: Move to seperate function?
+private _invSubIdCur = _itemData get "invSub";
+private _invData = AN_data_inventory get "inventory" get _invSubIdCur;
+(_itemData get "invPos") params ["_tileRow","_tileCol"];
+private _parentSize = _parentData get "baseData" get "size";
+private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_space_usage_get;
 
-(ctrlPosition _ctrl) params["_pX","_pY","",""];
+private _isFlipped = _itemData get "isFlipped";
+private _offsetPos = [[_tileRow, _tileCol]];	//store first Pos (needed, since the offset will determined from this position)
+{
+	_x params["_posRow","_posCol"];
+	if(_isFlipped == 0)then
+	{
+		_offsetPos pushbackUnique [ (_tileRow + _posRow), (_tileCol + _posCol) ];
+	}else{
+		_offsetPos pushbackUnique [ (_tileRow + _posCol), (_tileCol + _posRow) ];
+	};
+}forEach _itemSlotUsage;
+
+// Remove the currently used slots, so it can be placed at the same Slots it has used before:
+[_invSubIdCur,_offsetPos] call an_c_fnc_ui_inv_grid_tiles_used_remove;
+
+
+// Create the ItemIcon:
+private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
+private _ctrlGrpItem = _disp ctrlCreate ["inv_icon",32123];
 
 // Recalculate the Size of the Item, in case it was taken from a Slot (Slot == different Width/Height, than normal Grid)
 private _ctrlInvGrid = uinamespace getvariable ["an_inv_uni_grid", controlNull];
-private _parentSize = _parentData get "baseData" get "size";
 ([_parentSize, _ctrlInvGrid] call an_c_fnc_ui_inv_item_size_calc) params ["_ctrlItemW","_ctrlItemH"];
 if(_DEBUGON)then{diag_log ["DEBUG: ITEM_GRAB: ctrl W/H      :", [_ctrlItemW, _ctrlItemH]];};
-
-
-private _disp = uinamespace getvariable ["an_inventory", DisplayNull];
-private _ctrlGrpItem = _disp ctrlCreate ["inv_icon",32123];
 
 _ctrlGrpItem ctrlSetPosition[0,0, _ctrlItemW, _ctrlItemH];
 _ctrlGrpItem ctrlCommit 0;
@@ -83,43 +101,6 @@ _ctrl spawn {ctrlDelete _this;};
 // "Attach" the newly created ItemControl to the Mouse
 uinamespace setVariable ["an_ctrl_active", _ctrlGrpItem];
 addMissionEventHandler ["Draw3D",{[] call an_c_fnc_ui_inv_item_attachToMouse;}];
-
-
-// ToDo: Move to seperate function
-// remove the previous used tileslots
-private _itemSlotCur = _itemData get "invSub";
-private _invData = AN_data_inventory get "inventory" get _itemSlotCur;
-(_itemData get "invPos") params ["_tileRow","_tileCol"];
-private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_space_usage_get;
-
-private _isFlipped = _itemData get "isFlipped";
-private _offsetPos = [[_tileRow, _tileCol]];	//store first Pos (needed, since the offset will determined from this position)
-{
-	_x params["_posRow","_posCol"];
-	if(_isFlipped == 0)then
-	{
-		_offsetPos pushbackUnique [ (_tileRow + _posRow), (_tileCol + _posCol) ];
-	}else{
-		_offsetPos pushbackUnique [ (_tileRow + _posCol), (_tileCol + _posRow) ];
-	};
-}forEach _itemSlotUsage;
-
-an_c_fnc_ui_inv_grid_tiles_used_remove =
-{
-	params["_subInvID","_removeTiles"];
-	private _invSlotsUsed = [_subInvID] call an_c_fnc_ui_inv_grid_tiles_used_get;
-	// _invSlotsUsed sort true;
-	{
-		_slot = _x;
-		private _index = _invSlotsUsed findIf{_x isEqualTo _slot};
-		if(_index >= 0)then{_invSlotsUsed deleteAt _index};
-	}forEach _removeTiles;
-	// _invSlotsUsed is referenced! So it is instantly updating the hashMap data! Nothing else needs to be done here.
-};
-
-[_itemSlotCur,_offsetPos] call an_c_fnc_ui_inv_grid_tiles_used_remove;
-	
-
 
 
 

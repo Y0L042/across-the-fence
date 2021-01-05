@@ -14,6 +14,7 @@ if(_btn == 0)exitWith
 {
 	// determine, if the mousePos is inside an Inventory or Slot Area
 	private _invData = call an_c_fnc_ui_inv_get;
+	if(_invData isEqualTo "")exitWith{};
 	_gridName = _invData get "invGrid";
 	if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS_CHECK: _gridName    : ",_gridName];};
 	
