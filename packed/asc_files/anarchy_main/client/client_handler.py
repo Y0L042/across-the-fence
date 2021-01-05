@@ -49,7 +49,7 @@ def client_add(**kwargs):
 			# Inventory - Vest
 			"1013": {
 				"crateID": "-1",
-				"inv_rows": 0,
+				"inv_rows": 8,
 				"inv_cols": 8,
 				"invID": "1013",
 				"invArea": "an_inv_vst_area",
@@ -60,7 +60,7 @@ def client_add(**kwargs):
 			# Inventory - Pouch
 			"1014": {
 				"crateID": "-1",
-				"inv_rows": 0,
+				"inv_rows": 8,
 				"inv_cols": 8,
 				"invID": "1014",
 				"invArea": "an_inv_pch_area",
@@ -71,7 +71,7 @@ def client_add(**kwargs):
 			# Inventory - Backpack
 			"1015": {
 				"crateID": "-1",
-				"inv_rows": 0,
+				"inv_rows": 8,
 				"inv_cols": 8,
 				"invID": "1015",
 				"invArea": "an_inv_bkp_area",
@@ -230,6 +230,7 @@ def client_init(self):
 			inv_handler.inv_item_new_add(sData=self.sData, invData=self.cData, item=item, invSubID=slot, crateID=self.puid)
 	# update the mainID:
 	for subInv in self.cData["inventory"]:
+		# noinspection PyTypeChecker
 		self.cData["inventory"][subInv]["crateID"] = self.puid
 
 	# submit: faction
@@ -239,24 +240,22 @@ def client_init(self):
 		}
 	asc_g_msg.sendMsg("player_faction_set", dataset, self.sData.con_gameServer)
 
-	# filter out all the equipped Gear and send it as a "special" set to the Server, so the Client can be equipped
+	# filter out all the equipped Gear and send it as a "special" Set to the Server, so the Client can be equipped
 	listGear = []
 	for itemID in self.cData["itemData"]:
 		item = self.cData["itemData"][itemID]
 		# noinspection PyTypeChecker
-		parentData = inv_handler.item_baseData_get(sData=self.sData, subTypeName=item["subType"])
-		slot = parentData["baseData"]["slot"][0]
-		PRINT_ATTENTION(f"parentData: {parentData}")
+		itemCurSubInv = item["invSub"]
 
-		inv = self.cData["inventory"][slot]
 		# noinspection PyTypeChecker
-		isSlot = inv["isSlot"]
-		if isSlot != "1000":
+		isSlot = self.cData["inventory"][itemCurSubInv]["isSlot"]
+		# noinspection PyTypeChecker
+		if isSlot > 0:
 			# noinspection PyTypeChecker
-			if inv["slotsUsed"]:
-				className = parentData["baseData"]["class_name"]
-				PRINT_ATTENTION(f"[slot, className]: {[slot, className]}")
-				listGear.append([slot, className])
+			parentData = inv_handler.item_baseData_get(sData=self.sData, subTypeName=item["subType"])
+			className = parentData["baseData"]["class_name"]
+			# PRINT_DEBUG(f"[slot, className]: {[itemCurSubInv, className]}")
+			listGear.append([itemCurSubInv, className])
 	PRINT_ATTENTION(f"listGear: {listGear}")
 
 	# Server:

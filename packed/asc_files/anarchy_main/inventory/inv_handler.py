@@ -493,24 +493,25 @@ def item_data_flip_canFlip(size):
 
 def item_move(client, args):
     """
-
     :param client:          client Class
-    :param itemID:          erm, the itemID? Like: "123456"?
-    :param invID_old:       ID of the Inventory, the Item is taken off
-    :param invSubID_old:    ID of the SubInventory, in the MainInv (e.g.: external (0) - Uniform (1012) - Vest (1013) - Pouch (1014) - Backpack (1015)
-    :param invID_new:       ID of the Inventory, where the Item is put in to
-    :param invSubID_new:    ID of the SubInventory, in the MainInv (e.g.: external (0) - Uniform (1012) - Vest (1013) - Pouch (1014) - Backpack (1015)
-    :param invPos_new:      [0,0]
-    :param isFlipped:       0/1
+    :param args:          list with following entries:
+        :itemID:          erm, the itemID? Like: "123456"?
+        :invID_old:       ID of the Inventory, the Item is taken off
+        :invSubID_old:    ID of the SubInventory, in the MainInv (e.g.: external (0) - Uniform (1012) - Vest (1013) - Pouch (1014) - Backpack (1015)
+        :invID_new:       ID of the Inventory, where the Item is put in to
+        :invSubID_new:    ID of the SubInventory, in the MainInv (e.g.: external (0) - Uniform (1012) - Vest (1013) - Pouch (1014) - Backpack (1015)
+        :invPos_new:      [0,0]
+        :isFlipped:       0/1
     """
+    PRINT_ATTENTION(f"item_move: args: {args}")
     itemID, invID_old, invSubID_old, invID_new, invSubID_new, invPos_new, isFlipped = args
 
     PRINT_DEBUG(f"invID_old: {invID_old}")
     PRINT_DEBUG(f"invID_new: {invID_new}")
     invData_old, isPlayer_old = inv_data_get(client, invID_old)
     invData_new, isPlayer_new = inv_data_get(client, invID_new)
-    PRINT_DEBUG(f"invData_old: {invData_old}")
-    PRINT_DEBUG(f"invData_new: {invData_new}")
+    # PRINT_DEBUG(f"invData_old: {invData_old}")
+    # PRINT_DEBUG(f"invData_new: {invData_new}")
     # Check: Both inventories were found
     if not invData_old or not invData_new:
         PRINT_WARNING(f"INV_HANDLER: item_move: INVENTORY NOT FOUND:\ninvData_old: {invData_old}\ninvData_new:{invData_new}")
@@ -577,24 +578,25 @@ def item_move(client, args):
     # ... and add it to the new one
     invData_new["itemData"][itemData_old["id"]] = itemData_old
 
-    PRINT_ATTENTION(f'item_move: invData_old["itemData"]: {invData_old["itemData"]}')
-    PRINT_ATTENTION(f'item_move: invData_new["itemData"]: {invData_new["itemData"]}')
+    # PRINT_ATTENTION(f'item_move: invData_old["itemData"]: {invData_old["itemData"]}')
+    # PRINT_ATTENTION(f'item_move: invData_new["itemData"]: {invData_new["itemData"]}')
     PRINT_OK(f'PlayerInv: {inv_data_get(client, invID_old)[0]}')
 
     # We are done with the movement. Now check if it was an (un)equip
-    # TODO: Only check for the changed stuff - Need .sqf adjustment
-    # prepare the "active gear" list
+    # Check if the Item was equipped or not
     listGear = []
-    for itemKey in invData_new["itemData"]:
-        # invID_check = invData_new["itemData"][itemKey]["curInv"]
-        invIsSlot = invData_new["inventory"][invSubID_new]["isSlot"]
-        if invIsSlot != "1000":
-            listGear.append(invData_new["itemData"][itemKey])
 
-    isEquip = invData_new["inventory"][invSubID_new]["isSlot"]
-    print(f"isEquip: {isEquip}")
     isUnEquip = invData_old["inventory"][invSubID_old]["isSlot"]
-    print(f"isUnEquip: {isUnEquip}")
+    PRINT_DEBUG(f"isUnEquip: {isUnEquip}")
+    isEquip = invData_new["inventory"][invSubID_new]["isSlot"]
+    PRINT_DEBUG(f"isEquip: {isEquip}")
+    if isUnEquip > 0 or isEquip > 0:
+        if isUnEquip:
+            listGear.append([invSubID_old, ""])
+        if isEquip:
+            parentData = item_baseData_get(sData=client.sData, subTypeName=invData_new["itemData"][itemData_old["id"]]["subType"])
+            className = parentData["baseData"]["class_name"]
+            listGear.append([invSubID_new, className])
 
     # submit: loadout
     dataset = {

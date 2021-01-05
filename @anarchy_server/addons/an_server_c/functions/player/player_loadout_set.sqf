@@ -36,7 +36,7 @@ if(isNull _player)exitWith{diag_log "LOADOUT SET: NO PLAYER FOUND!";};
 
 an_s_fnc_player_gear_uniform_set = {params ["_player","_item"]; removeUniform _player; _player forceAddUniform _item;};
 an_s_fnc_player_gear_vest_set = {params ["_player","_item"]; removeVest _player; _player addVest _item;};
-an_s_fnc_player_gear_backpack_set = {params ["_player","_item"]; removeBackpack _player; _player addBackpackGlobal _item;};
+an_s_fnc_player_gear_backpack_set = {params ["_player","_item"]; removeBackpackGlobal _player; _player addBackpackGlobal _item;};
 an_s_fnc_player_gear_headgear_set = {params ["_player","_item"]; removeHeadgear _player; _player addHeadgear _item;};
 an_s_fnc_player_gear_facewear_set = {params ["_player","_item"]; removeGoggles _player; _player addGoggles _item;};
 as_s_fnc_player_gear_binocular_set = {params ["_player","_item"]; private _binoCur = binocular _player; _player unassignItem _binoCur; _player removeWeaponGlobal _binoCur; _player addWeaponGlobal _item; _player assignItem _item;};
