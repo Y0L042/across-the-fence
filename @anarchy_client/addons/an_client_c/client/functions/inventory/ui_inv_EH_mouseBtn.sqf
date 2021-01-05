@@ -1,5 +1,5 @@
 
-private _DEBUGON = true;
+private _DEBUGON = false;
 //executed from grabbed Item ctrl
 disableSerialization;
 params ["_ctrl", "_btn", "_xPos", "_yPos", "_btn_shift", "_btn_ctrl", "_btn_alt"];

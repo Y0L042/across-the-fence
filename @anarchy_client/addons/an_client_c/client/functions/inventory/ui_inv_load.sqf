@@ -10,7 +10,7 @@ private _invID = _invData get "invID";		// gridID == IDC == entry inside (AN_dat
 private _isSlot = _invData get "isSlot";	//0 = Inventory | 1 == Slot
 
 // Reset the used Slots, they will be rebuild later, when the items being added to it.
-_invData set ["slotsUsed", []];
+[_invID, []] call an_c_fnc_ui_inv_grid_tiles_used_set;
 
 if(_DEBUGON)then{private _msg = ["DEBUG: INV_LOAD: _invID             :", _invID]; diag_log _msg, systemchat str _msg;};
 if(_DEBUGON)then{private _msg = ["DEBUG: INV_LOAD: invData            :", _invData]; diag_log _msg, systemchat str _msg;};

@@ -1,8 +1,6 @@
 
-private _DEBUGON = false;
-// #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 // Update player Inventory
-// NOTE: The remote Inventory will never be saved localy! So only the player Inventory needs to be updated!:
+// Note: Only the player Inventory will be saved permanentely! External Inv will be reset, when closing the Inventory!
 params["_itemInvIDNew","_itemData","_itemID"];
 
 // get Current Item data
@@ -17,6 +15,3 @@ else
 {
 	_itemDataPlayer deleteAt _itemID;
 };
-
-// Update ItemData
-AN_data_inventory set ["itemData",_itemDataPlayer];

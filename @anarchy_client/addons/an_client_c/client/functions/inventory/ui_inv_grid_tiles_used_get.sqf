@@ -1,6 +1,13 @@
-private _DEBUGON = false;
-params["_grid_idc"];
-// get used slots from the given grid IDC
-if(_DEBUGON)then{diag_log ["DEBUG: GRID_TILES_USED_GET: _grid_idc : ",_grid_idc];};
+/*
+	"wrapper" to get the used Slots of given inventory
+*/
 
-(AN_data_inventory get "inventory" get str(_grid_idc) get "slotsUsed")
+private _DEBUGON = false;
+
+params[["_subInvID","",[""]]];
+
+if(_DEBUGON)then{diag_log ["DEBUG: GRID_TILES_USED_GET: _subInvID : ",_subInvID];};
+if(_subInvID isEqualTo "")exitWith{};
+
+// get used slots from the given grid IDC (STRING'd)
+(AN_data_inventory get "inventory" get _subInvID get "slotsUsed")

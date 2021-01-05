@@ -153,7 +153,7 @@ AN_data_inventory =
 
 
 
-private _DEBUGON = true;
+private _DEBUGON = false;
 // #include "\sgd\paradigm\client\configs\ui\ui_def_base.inc"
 // #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 
@@ -161,7 +161,7 @@ if!(isNull objectParent player)exitWith{systemchat "DEBUG: Inventory currently b
 if!(alive player)exitWith{};
 
 params["_dataCrate_raw"];
-
+private _DEBUG_TimeStart = diag_tickTime;
 an_inv_move_placeHorizontal = true;	// init
 an_ui_inv_grabActive = false;		// init
 
@@ -190,9 +190,9 @@ else				{ _ctrlExternalHeader ctrlSetText "Crate"; };
 ////////////////////////////////////////////////////////////////////////////////////////
 
 // PERSONAL:
-diag_log "--------------------------------";
-diag_log "----------- PERSONAL -----------";
-diag_log "--------------------------------";
+if(_DEBUGON)then{diag_log "--------------------------------";};
+if(_DEBUGON)then{diag_log "----------- PERSONAL -----------";};
+if(_DEBUGON)then{diag_log "--------------------------------";};
 
 // The crateID (even needed? Me (Dscha) later: Yes, consistency between External and Player Inventories!)
 private _invData_crateID = AN_data_inventory get "crateID";
@@ -217,20 +217,20 @@ if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_INIT:  _invData_itemData", _invData_it
 }forEach (keys _invData_inventory);
 
 {
-	diag_log "--------------------------------";
+	// diag_log "--------------------------------";
 	private _itemData = [_x] call an_c_fnc_ui_inv_item_data_get;
-	diag_log ["DEBUG: UI_INV_INIT: ITEM: _itemData    :", _itemData];
+	// diag_log ["DEBUG: UI_INV_INIT: ITEM: _itemData    :", _itemData];
 	private _itemSlotCur = _itemData get "invSub";
 	private _invData = AN_data_inventory get "inventory" get _itemSlotCur;
-	diag_log ["DEBUG: UI_INV_INIT: ITEM: _itemSlotCur : ", _itemSlotCur];
-	diag_log ["DEBUG: UI_INV_INIT: ITEM: _invData     : ", _invData];
+	// diag_log ["DEBUG: UI_INV_INIT: ITEM: _itemSlotCur : ", _itemSlotCur];
+	// diag_log ["DEBUG: UI_INV_INIT: ITEM: _invData     : ", _invData];
 	
 	private _itemPos = _itemData get "invPos";
 	private _gridName = _invData get "invGrid";
 	
 	private _ctrlGrid = uinamespace getvariable [_gridName, controlNull];
 	([_invData, _itemPos ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
-	diag_log ["DEBUG: UI_INV_INIT: ITEM: itemPos      : ", [_itemPosY, _itemPosX]];
+	// diag_log ["DEBUG: UI_INV_INIT: ITEM: itemPos      : ", [_itemPosY, _itemPosX]];
 	
 	[_ctrlGrid, [_itemPosY,_itemPosX], (_itemData get "id")] call an_c_fnc_ui_inv_mPos;
 }foreach (keys _invData_itemData);
@@ -240,13 +240,12 @@ if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_INIT:  _invData_itemData", _invData_it
 ////////////////////////////////////////////////////////////////////////////////////////
 
 // EXTERNAL:
-diag_log "--------------------------------";
-diag_log "----------- EXTERNAL -----------";
-diag_log "--------------------------------";
+if(_DEBUGON)then{diag_log "--------------------------------";};
+if(_DEBUGON)then{diag_log "----------- EXTERNAL -----------";};
+if(_DEBUGON)then{diag_log "--------------------------------";};
 
 private _dataCrate = createHashmap;
 _dataCrate insert _dataCrate_raw;
-// diag_log [_dataCrate];
 
 // crateID
 private _crate_invData_crateID = _dataCrate get "crateID";
@@ -271,13 +270,6 @@ _crate_invData_inventory = createHashMap;
 	if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_INIT: _invData     :", _invData];};
 	[_invData] call an_c_fnc_ui_inv_load;
 }forEach _crate_invData_inventory_raw;
-
-// Load up the External Inventory (atm: only "1000" - but leaving it as forEach loop, in case we want to add more later!)
-// {
-	// private _invData = _crate_invData_inventory get _x;
-	// if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_INIT: _invData     :", _invData];};
-	// [_invData] call an_c_fnc_ui_inv_load;
-// }forEach (keys _crate_invData_inventory);
 
 if(_DEBUGON)then{diag_log "--------------------------------";};
 
@@ -311,6 +303,8 @@ AN_data_items_ext = createHashMap;
 	[_ctrlGrid, [_itemPosY,_itemPosX], (_itemData get "id")] call an_c_fnc_ui_inv_mPos;
 }foreach AN_data_items_ext;
 
+private _DEBUG_TimeEnd = diag_tickTime;
+diag_log format["DEBUG: UI_INV_INIT LOADED in %1s - creating: %2 Items",((_DEBUG_TimeEnd - _DEBUG_TimeStart) toFixed 9), ((count AN_data_items_ext)+(count _invData_itemData))];
 
 if(_DEBUGON)then{diag_log "--------------------------------";};
 if(_DEBUGON)then{diag_log "--------------------------------";};

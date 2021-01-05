@@ -1,4 +1,4 @@
-private _DEBUGON = true;
+private _DEBUGON = false;
 #include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
 #include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
 
@@ -22,7 +22,7 @@ if(_gridRows < 0)exitWith
 
 //Check if given pos is valid in the Grid. If so -> Return [y,x] pos in Grid
 ([_ctrlGrid, _mPosX, _mPosY, _gridRows] call an_c_fnc_ui_inv_grid_posToGrid) params["_tileRow","_tileCol"];
-if([_tileRow,_tileCol] isEqualto [-1,-1])exitWith{/* DEV */ systemchat str["gridPos - out of Bounds",[_tileRow, _tileCol]];};
+if([_tileRow,_tileCol] isEqualto [-1,-1])exitWith{/* DEV */ private _text = ["gridPos - out of Bounds",[_tileRow, _tileCol]]; diag_log _text; systemchat str _text; };
 
 
 //Check if DragAndDrop is active. If so -> a suitable pos was found, so we can delete the temp Item, "attached" to the Mouse
@@ -67,7 +67,7 @@ private _offsetPos = [[_tileRow, _tileCol]];	//store first Pos (needed, since th
 	_x params["_posRow","_posCol"];
 	if(an_inv_move_placeHorizontal)then
 	{
-		_offsetPos pushbackUnique [ (_tileRow + _posRow), (_tileCol - (_posCol*-1)) ];
+		_offsetPos pushbackUnique [ (_tileRow + _posRow), (_tileCol + _posCol) ];
 	}else{
 		_offsetPos pushbackUnique [ (_tileRow + _posCol), (_tileCol + _posRow) ];
 	};
@@ -76,12 +76,12 @@ if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: _offsetPos     : ",_offsetPos];}
 
 //Check if all tiles are free
 //get used slots from grid
-private _gridTilesUsed = [_gridIDC] call an_c_fnc_ui_inv_grid_tiles_used_get;
-if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: _gridTilesUsed : ",_gridTilesUsed];};
+private _gridUsedSlots = [str(_gridIDC)] call an_c_fnc_ui_inv_grid_tiles_used_get;
+if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: _gridUsedSlots : ",_gridUsedSlots];};
 
 // Check if tiles in the targeted Grid are free. If not -> Return empty Array and trigger a "re-add" to the old position
 // if free -> Return the used Tiles
-private _itemTileUsage = [_ctrlGrid,_gridRows,_offsetPos,_gridTilesUsed] call an_c_fnc_ui_inv_grid_check_freeTiles;
+private _itemTileUsage = [_ctrlGrid,_gridRows,_offsetPos,_gridUsedSlots] call an_c_fnc_ui_inv_grid_check_freeTiles;
 if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: _itemTileUsage : ",_itemTileUsage];};
 
 // Check if its a failed attemp
@@ -118,7 +118,7 @@ else
 {
 	// If everything was fine, add the Item to the selected grid
 	// add all tiles to the "slotsUsed"-array and update the hashmap invData
-	[_ctrlGrid,_gridTilesUsed,_itemTileUsage] call an_c_fnc_ui_inv_grid_tiles_used_update;
+	[_gridUsedSlots,_itemTileUsage] call an_c_fnc_ui_inv_grid_tiles_used_update;
 	
 	// get the grid pos of the first entry (TopLeft Slot)
 	private _invPos_new = _itemTileUsage#0;
@@ -140,9 +140,6 @@ else
 	private _isFlipped = _itemData get "isFlipped";
 	
 	
-	private _data = [_itemID ,_itemInvID_cur ,_invSubCur ,_itemInvID_new ,_invSubID_new ,_invPos_new ,_isFlipped];
-	if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: ITEM_MOVE DATA : ",_data];};
-	
 	_sameInv = _itemInvID_cur isEqualto _itemInvID_new;
 	if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: MOVING ID      : ",_itemInvID_cur, _itemInvID_new];};
 	_sameSub = _invSubCur isEqualto _invSubID_new;
@@ -150,21 +147,23 @@ else
 	_sameSpot = _invPos_cur isEqualto _invPos_new;
 	if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: MOVING invPos  : ",_invPos_cur, _invPos_new];};
 	
+	if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: MOVING ITEM    : ",(!_sameInv || !_sameSpot || !_sameSub)];};
 	if(!_sameInv || !_sameSpot || !_sameSub)then
 	{
-		// diag_log "YEP";
+		private _data = [_itemID ,_itemInvID_cur ,_invSubCur ,_itemInvID_new ,_invSubID_new ,_invPos_new ,_isFlipped];
+		if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: ITEM_MOVE DATA : ",_data];};
+		// Send an update-request to the Backend.
 		["item_move", _data] call AN_G_fnc_msg_send;
-	}else{
-		// diag_log "NOPE";
+		
+		// Updating the Item:
+		_itemData set ["curInv", _itemInvID_new];
+		_itemData set ["invPos", _invPos_new];
+		_itemData set ["invSub", _invSubID_new];
+		_itemData set ["isFlipped", _isFlipped];
+		
+		// Update "itemData"
+		[_itemInvID_new, _itemData, _itemID] call an_c_fnc_ui_inv_data_update;
 	};
-	if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: MOVING ITEM    : ",(!_sameInv || !_sameSpot || !_sameSub)];};
-	
-	// Updating the Item:
-	_itemData set ["curInv", _itemInvID_new];
-	_itemData set ["invPos", _invPos_new];
-	_itemData set ["invSub", _invSubID_new];
-	_itemData set ["isFlipped", _isFlipped];
-	// Update the invData usedSlots:
 	
 };
 

@@ -23,13 +23,16 @@ params ["_displayorcontrol", "_scroll"];
 
 // determine, if the mousePos is inside an Inventory or Slot Area
 private _invData = call an_c_fnc_ui_inv_get;
-private _areaName = _invData get "invArea";
-private _gridName = _invData get "invGrid";
-private _isSlot = _invData get "isSlot";
 
-// either nothing was found or it's a slot. Since Slots can't be scrolled in, exit too (for now at least, unless we find another use for it).
-if((_isSlot == 0) && !(_areaName isEqualTo ""))then
+// either nothing was found or it's a slot. Since Slots can't be scrolled in, exit too.
+if !(_invData isEqualTo "")then
 {
+	private _isSlot = _invData get "isSlot";
+	// Don't "scroll" in Slots
+	if(_isSlot == 1)exitWith{};
+	
+	private _areaName = _invData get "invArea";
+	private _gridName = _invData get "invGrid";
 	// systemchat str ["mouse_Z", _areaName, diag_tickTime];
 	private _ctrlGrp_parent = uinamespace getvariable [_areaName, controlNull];
 	private _ctrlGrp = uinamespace getvariable [_gridName, controlNull];

@@ -1,10 +1,13 @@
 
+/*
+	NOTE:
+	!!
+		_grid_usedSlots is referenced! So it is instantly updated in the hashMap
+	!!
+*/
 
-params["_ctrlGrid","_grid_usedSlots","_item_tiles_used"];
+params["_gridUsedSlots","_itemTileUsage"];
 
 {
-	_grid_usedSlots pushbackUnique _x;	
-}forEach _item_tiles_used;
-// !!
-// _grid_usedSlots is referenced! So it is instantly updated in the hashMap
-// !!
+	_gridUsedSlots pushbackUnique _x;
+}forEach _itemTileUsage;

@@ -2,7 +2,7 @@
 	Used for Drag&Drop Events! (EH MB Down/UP don't work/trigger propery while MB is keeping pressed)
 
 */
-private _DEBUGON = true;
+private _DEBUGON = false;
 
 params ["_ctrl_item", "_btn", "_mPos_x", "_mPos_y", "_btn_shift", "_btn_ctrl", "_btn_alt"];
 
