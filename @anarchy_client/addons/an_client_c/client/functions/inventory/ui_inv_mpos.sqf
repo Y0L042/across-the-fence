@@ -88,7 +88,7 @@ if(_itemTileUsage isEqualto [] || !_slotValidCheck)then
 {
 	if(!_slotValidCheck)then{systemchat "Can't be placed in that Slot";}
 	else					{systemchat "Slot is already occupied";};
-	// if failed attemp -> readd the Item and its used slots in its previously used grid
+	// if failed attemp -> readd the Item to its previous Inventory
 	
 	private _ctrl = uinamespace getVariable ["an_ctrl_active",controlNull];
 	if(isNull _ctrl)exitWith{systemchat "ERROR: UI_INV_MPOS: (isNull _ctrl)";};
@@ -97,10 +97,6 @@ if(_itemTileUsage isEqualto [] || !_slotValidCheck)then
 	if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: _itemID        : ",_itemID];};
 	private _itemData = [_itemID] call an_c_fnc_ui_inv_item_data_get;
 	if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: _itemData      : ",_itemData];};
-	private _parentData = [_itemData] call an_c_fnc_ui_inv_item_data_parent_get;
-	if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: _parentData    : ",_parentData];};
-	private _itemPosPrev = _itemData get "invPos";
-	if(_DEBUGON)then{diag_log ["DEBUG: EH_MouseBTN: _itemPosPrev   : ",_itemPosPrev];};
 	
 	private _invPrev = _itemData get "invSub";
 	if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: _invPrev       : ",_invPrev];};
@@ -109,9 +105,9 @@ if(_itemTileUsage isEqualto [] || !_slotValidCheck)then
 	private _ctrlInvGrid = uinamespace getVariable [(_invDataPrev get "invGrid"), controlNull];
 	if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: _ctrlInvGrid   : ",_ctrlInvGrid];};
 	
-	([_invDataPrev, _itemPosPrev] call an_c_fnc_ui_inv_grid_gridToPos)params["_itemGridPosRow", "_itemGridPosCol"];
-	// create it again
-	[_ctrlInvGrid,_itemGridPosRow,_itemGridPosCol,_itemID] call an_c_fnc_ui_inv_item_create;
+	private _itemPosPrev = [_invDataPrev, (_itemData get "invPos") ]call an_c_fnc_ui_inv_grid_gridToPos;
+	// create it again, by calling inv_mPos again
+	[_ctrlInvGrid, _itemPosPrev, _itemID] call an_c_fnc_ui_inv_mPos;
 }
 else
 {
@@ -123,7 +119,7 @@ else
 	private _invPos_new = _itemTileUsage#0;
 	([_invData, _invPos_new] call an_c_fnc_ui_inv_grid_gridToPos)params["_itemGridPosRow", "_itemGridPosCol"];
 	if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_MPOS: gridToPos      : ",[_itemGridPosRow, _itemGridPosCol]];};
-
+	
 	
 	// add the Item to the passed position
 	[ _ctrlGrid, _itemGridPosRow, _itemGridPosCol, _itemID] call an_c_fnc_ui_inv_item_create;
