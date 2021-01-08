@@ -10,7 +10,7 @@ params ["_ctrl", "_btn", "_xPos", "_yPos", "_btnShift", "_btnCtrl", "_btnAlt"];
 // Shift = Move to the other Inventory (incl. finding a suitable position in the Grid)
 if(_btnShift && _btn == 0)exitWith{[_ctrl] call an_c_fnc_ui_inv_item_move_auto};
 // Ctrl = Automove to Slot, if free.
-// if(_btnCtrl && _btn == 0)exitWith{[_ctrl] call an_c_fnc_ui_inv_item_move_auto_slot};
+if(_btnCtrl && _btn == 0)exitWith{[_ctrl] call an_c_fnc_ui_inv_item_move_auto_slot};
 
 
 if(an_ui_inv_grabActive)exitWith{systemchat "an_ui_inv_grabActive already active";};

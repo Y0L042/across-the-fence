@@ -31,13 +31,9 @@ if(_autoMoveTargetID != "")then
 {
 	_invSubIndicator = _autoMoveTargetID select [0,1];
 	// 1xxx = Inventories | 2xxx = Slots
-	if(_invSubIndicator isEqualTo "2")then
+	if(_invSubIndicator isEqualTo "1")then
 	{
-		private _playerInv_autoTarget = AN_data_inventory get "invAutoTarget_slots";
-		_playerInv_autoTarget pushback _autoMoveTargetID;
-		// values are auto-updated (since referenced) in the hashmap, nothing else needs to be done here!
-	}else{
-		private _playerInv_autoTarget = AN_data_inventory get "invAutoTarget_inv";
+		private _playerInv_autoTarget = AN_data_inventory get "invAutoTarget";
 		_playerInv_autoTarget pushback _autoMoveTargetID;
 		// values are auto-updated (since referenced) in the hashmap, nothing else needs to be done here!
 	};

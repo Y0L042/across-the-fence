@@ -1,84 +1,85 @@
 /*
-	Auto move the Item the correct Slot (Ctrl+LMB on an Item)
+	Auto move the Item the correct Equipment Slot (Ctrl+LMB on an Item)
 */
 
-/////////////////////////////////////// TODO: REWORK
-/////////////////////////////////////// TODO: REWORK
-/////////////////////////////////////// TODO: REWORK
-/////////////////////////////////////// TODO: REWORK
-/////////////////////////////////////// TODO: REWORK
+params ["_ctrl"];
 
-
-private _DEBUGON = false;
-#include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
-
-params ["_ctrl", "_btn", "_xPos", "_yPos", "_btnShift", "_btnCtrl", "_btnAlt",["_slotIndexCheck",0,[0]]];
-
-
-private _itemData = [_ctrl] call an_c_fnc_ui_inv_item_data_get;
-_itemData params ["_posData","_itemUsedSlots","_itemClass","_itemId"];
-// Note: _itemUsedSlots == slots in current Inventory
-
-// Get the Parent Data for the selected Item
+private _itemID = _ctrl getVariable ["itemID",""];
+if(_itemID isEqualTo "")exitWith{systemchat "ERROR: ITEM_MOVE_AUTO: ITEM ID NOT FOUND";};
+// Get the Item Data:
+private _itemData = [_itemID] call an_c_fnc_ui_inv_item_data_get;
+private _itemInvID_cur = _itemData get "invSub";
 private _parentData = [_itemData] call an_c_fnc_ui_inv_item_data_parent_get;
-private _parentSize = _parentData getOrDefault ["size",[2,2]];
-// Get the parent slot data.
-private _parentSlotID_list = _parentData getOrDefault ["slot",[]];
-_parentSlotID = _parentSlotID_list#_slotIndexCheck;
-if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _parentSize     :", _parentSize]; diag_log _msg, systemchat str _msg;};
-if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _parentSlotID   :", _parentSlotID]; diag_log _msg, systemchat str _msg;};
-// If multiple entries, check the first one first.
-
-// Get the Slot Grid, by using the slotID + 2100/2000 (IDC + SlotID == Slot Grid control))
-private _disp = uiNamespace getVariable ["an_inventory",displayNull];
-private _ctrlGrid = _disp displayCtrl (2100+_parentSlotID) controlsGroupCtrl (2000+_parentSlotID);
-if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _ctrlGrid   :", _ctrlGrid]; diag_log _msg, systemchat str _msg;};
-if(isNull _ctrlGrid)exitWith{};
-
-// Get all the blocked Slots of the target Inventory
-private _gridUsedSlots = [(ctrlIDC _ctrlGrid)] call an_c_fnc_ui_inv_grid_tiles_used_get;
-if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _gridUsedSlots   :", _gridUsedSlots]; diag_log _msg, systemchat str _msg;};
-// In case of multiple Slots possible (e.g. WeaponMain) -> Check the next Slot
-
-if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _slotsUsed  :", !(_gridUsedSlots isEqualTo [])]; diag_log _msg, systemchat str _msg;};
-if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: All checked :", (_slotIndexCheck < ((count _parentSlotID_list)-1))]; diag_log _msg, systemchat str _msg;};
-if(!(_gridUsedSlots isEqualTo []) && (_slotIndexCheck < ((count _parentSlotID_list)-1)) )exitWith
-{
-	[_ctrl, _btn, _xPos, _yPos, _btnShift, _btnCtrl, _btnAlt, (_slotIndexCheck+1)] call an_c_fnc_ui_inv_item_move_auto_slot;
-};
-// If still nothing found -> Exit here.
-if!(_gridUsedSlots isEqualTo [])exitWith{systemchat "Slot is already occupied";};
-
-// Get the inventory Gridsize (rows only, since width is fixed) of the Inventory target
-private _gridSize = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrid)], [-1,-1]];
-if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _gridSize   :", _gridSize]; diag_log _msg, systemchat str _msg;};
-_gridSize params["_gridRows","_gridCols"];
-
-// We only need to check those Slots, which would be still inside Grid. e.g.: Column > (GridWidthSlots-ItemWidthSlots) == Don't even check that.
-private _rowMax = _gridRows-(_parentSize#0);
-private _colMax = _gridCols-(_parentSize#1);
-if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _rowMax, _colMax :", _rowMax, _colMax]; diag_log _msg, systemchat str _msg;};
-
-// Currently used Slots:
+private _parentSize = _parentData get "baseData" get "size";
 private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_space_usage_get;
-if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _itemSlotUsage   :", _itemSlotUsage]; diag_log _msg, systemchat str _msg;};
 
-_slots = [_rowMax, _colMax, _itemSlotUsage, _gridUsedSlots] call an_c_fnc_ui_inv_item_space_find_free;
-if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _slots   :", _slots]; diag_log _msg, systemchat str _msg;};
-
-// No free slots found, exiting.
-if(_slots isEqualTo [])exitWith{systemchat "ERROR: item_move_auto: No free slots found.";};
-
-//convert from gridPos to uiPos
-([_ctrlGrid, (_slots#0) ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
-if(_DEBUGON)then{private _msg = ["DEBUG: MOVE_AUTO_SLOT: _itemPosY, _itemPosX :", _itemPosY, _itemPosX]; diag_log _msg, systemchat str _msg;};
+// Check if the Item is already in a slot:
+_itemSlotIDList = _parentData get "baseData" get "slot";
+// Check if the Item can be slotted. If it has "1000" in it -> It can't be slotted anywhere!
+if("1000" in _itemSlotIDList)exitWith{};
+// First entry will always be the primary Equip Slot
+if(_itemInvID_cur isEqualTo (_itemSlotIDList#0))exitWith{systemchat "DEV: Item already in it's Slot!";};
 
 
-// set the ID and Classname, to create the Item
-[_itemClass] call an_c_fnc_ui_inv_item_active_class_set;
-[_itemId] call an_c_fnc_ui_inv_item_active_id_set;
+// Prepare the Data we need for "inv_mPos"
+private _invSubIDCur = str(ctrlIDC ctrlParentControlsGroup _ctrl);
+private _itemPosY = -1;
+private _itemPosX = -1;
+private _ctrlGrid_new = controlNull;
 
-[_ctrlGrid, 0, [_itemPosY,_itemPosX]] call an_c_fnc_ui_inv_mPos;
 
-// delete the old control
-[_ctrl] call an_c_fnc_ui_inv_item_remove;
+// get the slot invData:
+// Note: Since some Items (for example "primary weapons") can have multiple Slots, we do an forEach and check all them.
+private _slotsFound = false;
+{
+	_slotID = _x;
+	private _invData = AN_data_inventory get "inventory" get _slotID;
+	private _gridUsedSlots = _invData get "slotsUsed";
+	// Check if Slot has already something in it
+	// Note: Slots are basically Inventories, but can have max one Item in it! So if there are Slots taken -> Something is already equipped in there.
+	if(_gridUsedSlots isEqualTo [])exitWith
+	{
+		_slotsFound = true;
+		
+		// Nothing in that slot? Okay, let's prepare the rest for "inv_mPos".
+		_ctrlGrid_new = uinamespace getvariable [(_invData get "invGrid"), controlNull];
+		
+		// Slotted Items will ALWAYS be in position [0,0]
+		private _itemPosNew = [_invData, [0,0] ]call an_c_fnc_ui_inv_grid_gridToPos;
+		_itemPosY = _itemPosNew#0;
+		_itemPosX = _itemPosNew#1;
+	};
+}forEach _itemSlotIDList;
+
+// If nothing was found, _itemPosY is still -1, so exit here (no free slots found)
+if(!_slotsFound)exitWith{systemchat "NO FREE SLOTS FOUND!";};
+
+/////////////////////////////////////////////////////////////////
+// !! REMOVE PREVIOUSLY USED SLOTS FROM CURRENT GRID BEFORE CALLING "INV_MPOS" !!
+(_itemData get "invPos") params ["_tileRow","_tileCol"];
+private _isFlipped = _itemData get "isFlipped";
+private _offsetPos = [[_tileRow, _tileCol]];	//store first Pos (needed, since the offset will determined from this position)
+{
+	_x params["_posRow","_posCol"];
+	if(_isFlipped == 0)then
+	{
+		_offsetPos pushbackUnique [ (_tileRow + _posRow), (_tileCol + _posCol) ];
+	}else{
+		_offsetPos pushbackUnique [ (_tileRow + _posCol), (_tileCol + _posRow) ];
+	};
+}forEach _itemSlotUsage;
+
+// Remove the currently used slots, so it can be placed at the same Slots it has used before:
+[_invSubIDCur, _offsetPos] call an_c_fnc_ui_inv_grid_tiles_used_remove;
+// !! REMOVE PREVIOUSLY USED SLOTS FROM CURRENT GRID !!
+/////////////////////////////////////////////////////////////////
+
+[_ctrlGrid_new, [_itemPosY,_itemPosX], _itemID] call an_c_fnc_ui_inv_mPos;
+
+_ctrl spawn {ctrlDelete _this;};
+
+
+
+
+
+

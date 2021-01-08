@@ -208,8 +208,7 @@ private _invData_itemData = AN_data_inventory get "itemData";
 if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_INIT:  _invData_itemData", _invData_itemData];};
 
 // Reset the autoTarget data (will be rebuild by inv_load)
-AN_data_inventory set ["invAutoTarget_slots",[]];
-AN_data_inventory set ["invAutoTarget_inv",[]];
+AN_data_inventory set ["invAutoTarget",[]];
 
 
 // Load up the Inventory 
@@ -319,4 +318,4 @@ if(_DEBUGON)then{diag_log "--------------------------------";};
 
 // Sort the Inventories, so the order to auto-place items would be:
 // Uniform > Vest > Pouch > Backpack
-(AN_data_inventory get "invAutoTarget_inv") sort true;
+(AN_data_inventory get "invAutoTarget") sort true;

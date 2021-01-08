@@ -16,17 +16,20 @@ private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_space_usage_get
 private _invSubIDCur = str(ctrlIDC ctrlParentControlsGroup _ctrl);
 private _itemPosY = -1;
 private _itemPosX = -1;
-private _ctrlGrid = controlNull;
-// If Item is in External Inventory -> get a player Inventory, otherwise... erm, get the external?
-private _activeInvList = if (_invSubIDCur isEqualTo "1000")then	{ AN_data_inventory get "invAutoTarget_inv" }
-else															{ ["1000"] };
+private _ctrlGrid_new = controlNull;
+// Check if current Inv is a slot
+private _isSlot = (AN_data_inventory get "inventory" get _invSubIDCur get "isSlot") isEqualTo 1;
 
-private _itemPos = [-1,-1];
+// If Item is in External Inventory or a Slot. If so: get the player Inventories, otherwise... erm, get the external? I mean... that's the only one left.
+private _activeInvList = if (_invSubIDCur isEqualTo "1000" || _isSlot)then	{ AN_data_inventory get "invAutoTarget" }
+else																		{ ["1000"] };
+
+private _slotsFound = false;
 {
 	_invSubIDNew = _x;
 	private _invData = AN_data_inventory get "inventory" get _invSubIDNew;
 	private _gridName = _invData get "invGrid";
-	_ctrlGrid = uinamespace getvariable [_gridName, controlNull];	// DO NOT "PRIVATE"
+	private _ctrlGrid = uinamespace getvariable [_gridName, controlNull];
 
 	private _rowMax = (_invData get "inv_rows") - _parentSize#0;
 	private _colMax = (_invData get "inv_cols") - _parentSize#1;
@@ -34,22 +37,27 @@ private _itemPos = [-1,-1];
 	private _gridUsedSlots = _invData get "slotsUsed";
 
 	// !! Recursive function, to find a suitable spot in the Inventory !!
-	_slotsUsed_new = [_rowMax, _colMax, _itemSlotUsage, _gridUsedSlots] call an_c_fnc_ui_inv_item_space_find_free;
+	private _slotsUsed_new = [_rowMax, _colMax, _itemSlotUsage, _gridUsedSlots] call an_c_fnc_ui_inv_item_space_find_free;
 	
 	// Exit if free slots WERE found
 	if!(_slotsUsed_new isEqualTo [])exitWith
 	{
+		_slotsFound = true;
+		
+		_ctrlGrid_new = _ctrlGrid;
+		// Update the itemData
 		// first position (topLeft) == invPos of the Item.
-		_itemPos = _slotsUsed_new#0;
-		_itemPosNew = [_invData, _itemPos ]call an_c_fnc_ui_inv_grid_gridToPos;
+		private _itemPos = _slotsUsed_new#0;
+		private _itemPosNew = [_invData, _itemPos ]call an_c_fnc_ui_inv_grid_gridToPos;
 		_itemPosY = _itemPosNew#0;
 		_itemPosX = _itemPosNew#1;
+		
 	};
 }forEach _activeInvList;
 
 
 // If nothing was found, _itemPosY is still -1, so exit here (no free slots found)
-if(_itemPos isEqualTo [-1,-1])exitWith{systemchat "NO FREE SLOTS FOUND!";};
+if(!_slotsFound)exitWith{ systemchat "NO FREE SLOTS FOUND!"; };
 
 /////////////////////////////////////////////////////////////////
 // !! REMOVE PREVIOUSLY USED SLOTS FROM CURRENT GRID BEFORE CALLING "INV_MPOS" !!
@@ -71,8 +79,7 @@ private _offsetPos = [[_tileRow, _tileCol]];	//store first Pos (needed, since th
 // !! REMOVE PREVIOUSLY USED SLOTS FROM CURRENT GRID !!
 /////////////////////////////////////////////////////////////////
 
-
-[_ctrlGrid, [_itemPosY,_itemPosX], _itemID] call an_c_fnc_ui_inv_mPos;
+[_ctrlGrid_new, [_itemPosY,_itemPosX], _itemID] call an_c_fnc_ui_inv_mPos;
 
 _ctrl spawn {ctrlDelete _this;};
 
