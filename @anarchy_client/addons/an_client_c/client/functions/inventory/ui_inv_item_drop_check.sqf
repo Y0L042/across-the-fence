@@ -4,6 +4,12 @@
 	Triggers the creation of the droppedCrate on the Server.
 */
 
+// re-enable the ActionMenu (ScrollWheelMenu)
+inGameUISetEventHandler ["PrevAction", ""];
+inGameUISetEventHandler ["NextAction", ""];
+inGameUISetEventHandler ["Action", ""];
+
+// Check if something was dropped/left in the "External" Inventory
 private _gridExt = uinamespace getvariable ["an_inv_external_grid",controlNull];
 private _gridUsedSlots = [str(ctrlIDC _gridExt)] call an_c_fnc_ui_inv_grid_tiles_used_get;
 

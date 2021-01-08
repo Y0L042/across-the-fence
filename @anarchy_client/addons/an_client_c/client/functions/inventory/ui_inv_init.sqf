@@ -170,6 +170,10 @@ private _disp_preCheck = uiNamespace getVariable ["an_inventory", displayNull];
 if !(isNull _disp_preCheck)then{_disp_preCheck closeDisplay 1;};
 private _disp = (findDisplay 46) createDisplay "an_inventory";
 
+// Disable ActionMenu (ScrollWheelMenu)
+inGameUISetEventHandler ["PrevAction", "true"];
+inGameUISetEventHandler ["NextAction", "true"];
+inGameUISetEventHandler ["Action", "true"];
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // Set the Headers:
