@@ -203,6 +203,11 @@ if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_INIT:  _invData_inventory", _invData_i
 private _invData_itemData = AN_data_inventory get "itemData";
 if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_INIT:  _invData_itemData", _invData_itemData];};
 
+// Reset the autoTarget data (will be rebuild by inv_load)
+AN_data_inventory set ["invAutoTarget_slots",[]];
+AN_data_inventory set ["invAutoTarget_inv",[]];
+
+
 // Load up the Inventory 
 {
 	private _invData = _invData_inventory get _x;
@@ -210,10 +215,11 @@ if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_INIT:  _invData_itemData", _invData_it
 	// Do not set the "external" Inventory! This will be done later!
 	if(_x != "1000")then
 	{
-		[_invData] call an_c_fnc_ui_inv_load;
+		[_invData, _x] call an_c_fnc_ui_inv_load;
 		if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_INIT:  _invData_inventory ID - ",_x, " - loaded"];};
 	};
 }forEach (keys _invData_inventory);
+
 
 {
 	// diag_log "--------------------------------";
@@ -255,7 +261,6 @@ if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_INIT: _crate_invData_inventory_raw :",
 // Load up and create the items in the EXTERNAL-inventories:
 private _crate_invData_itemData_raw = _dataCrate get "itemData";
 if(_DEBUGON)then{diag_log ["DEBUG: UI_INV_INIT: _crate_invData_itemData_raw  :", _crate_invData_itemData_raw];};
-
 
 
 // make the external Data a hashmap and update the external Data (atm only "1000").
@@ -303,7 +308,11 @@ AN_data_items_ext = createHashMap;
 }foreach AN_data_items_ext;
 
 private _DEBUG_TimeEnd = diag_tickTime;
-diag_log format["DEBUG: UI_INV_INIT LOADED in %1s - creating: %2 Items",((_DEBUG_TimeEnd - _DEBUG_TimeStart) toFixed 9), ((count AN_data_items_ext)+(count _invData_itemData))];
+diag_log format["DEBUG: UI_INV_INIT LOADED in %1s - creating: %2 Inventory Items",((_DEBUG_TimeEnd - _DEBUG_TimeStart) toFixed 9), ((count AN_data_items_ext)+(count _invData_itemData))];
 
 if(_DEBUGON)then{diag_log "--------------------------------";};
 if(_DEBUGON)then{diag_log "--------------------------------";};
+
+// Sort the Inventories, so the order to auto-place items would be:
+// Uniform > Vest > Pouch > Backpack
+(AN_data_inventory get "invAutoTarget_inv") sort true;

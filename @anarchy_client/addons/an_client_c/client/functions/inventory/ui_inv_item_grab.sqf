@@ -7,16 +7,17 @@ private _DEBUGON = false;
 params ["_ctrl", "_btn", "_xPos", "_yPos", "_btnShift", "_btnCtrl", "_btnAlt"];
 
 
-private _itemID = _ctrl getVariable "itemID";
-if(_DEBUGON)then{diag_log ["DEBUG: ITEM_GRAB: _itemID       :", _itemID];};
-
 // Shift = Move to the other Inventory (incl. finding a suitable position in the Grid)
-if(_btnShift && _btn == 0)exitWith{[_itemID] call an_c_fnc_ui_inv_item_move_auto};
+if(_btnShift && _btn == 0)exitWith{[_ctrl] call an_c_fnc_ui_inv_item_move_auto};
 // Ctrl = Automove to Slot, if free.
-if(_btnCtrl && _btn == 0)exitWith{[_itemID] call an_c_fnc_ui_inv_item_move_auto_slot};
+// if(_btnCtrl && _btn == 0)exitWith{[_ctrl] call an_c_fnc_ui_inv_item_move_auto_slot};
+
 
 if(an_ui_inv_grabActive)exitWith{systemchat "an_ui_inv_grabActive already active";};
 an_ui_inv_grabActive = true;
+
+private _itemID = _ctrl getVariable "itemID";
+if(_DEBUGON)then{diag_log ["DEBUG: ITEM_GRAB: _itemID       :", _itemID];};
 
 private _itemData = [_itemID] call an_c_fnc_ui_inv_item_data_get;
 if(_DEBUGON)then{diag_log ["DEBUG: ITEM_GRAB: _itemData     :", _itemData];};
@@ -45,7 +46,7 @@ if(_btn in [1])exitWith
 };
 
 
-// ToDo: Move to seperate function?
+// ToDo: Move to separate function?
 private _invSubIdCur = _itemData get "invSub";
 private _invData = AN_data_inventory get "inventory" get _invSubIdCur;
 (_itemData get "invPos") params ["_tileRow","_tileCol"];

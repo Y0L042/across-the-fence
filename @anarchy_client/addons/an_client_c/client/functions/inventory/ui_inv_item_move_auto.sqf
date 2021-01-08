@@ -2,70 +2,78 @@
 	Auto move the Item the opposite Inventory (Shift+LMB on an Item)
 */
 
-/////////////////////////////////////// TODO: REWORK
-/////////////////////////////////////// TODO: REWORK
-/////////////////////////////////////// TODO: REWORK
-/////////////////////////////////////// TODO: REWORK
-/////////////////////////////////////// TODO: REWORK
+params ["_ctrl"];
 
-private _DEBUGON = false;
-#include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
-
-params ["_ctrl", "_btn", "_xPos", "_yPos", "_btnShift", "_btnCtrl", "_btnAlt"];
-
-// Get the ctrlGroupParent, to determine in which Inventory the selected Item is, then select the opposite Inventory
-// In case of a slot -> Select the Personal Inventory!
-////////////////////////////////
-// If "gridAutoTgt" is not set -> "External" or a Slot is selected. So let's move the Item to the Uniform Inventory (for now)
-private _gridName = (ctrlParentControlsGroup _ctrl) getVariable ["gridAutoTgt",""];
-if(_gridName isEqualTo "")then{_gridName = "an_inv_uni_grid"};
-private _ctrlGrid = uinamespace getvariable [_gridName, ControlNull];
-if(isNull _ctrlGrid)exitWith{systemchat "ERROR: item_move_auto: GRID NOT FOUND!";};
-
-// Get all the blocked Slots of the target Inventory
-private _gridUsedSlots = [(ctrlIDC _ctrlGrid)] call an_c_fnc_ui_inv_grid_tiles_used_get;
-if(_DEBUGON)then{diag_log ["DEBUG: MOVE_AUTO: _gridUsedSlots :", _gridUsedSlots];};
-
-private _itemData = [_ctrl] call an_c_fnc_ui_inv_item_data_get;
-_itemData params ["_posData","_itemUsedSlots","_itemClass","_itemId"];
-// Note: _itemUsedSlots == slots in current Inventory
-
-// Get the Parent Data for the selected Item
+private _itemID = _ctrl getVariable ["itemID",""];
+if(_itemID isEqualTo "")exitWith{systemchat "ERROR: ITEM_MOVE_AUTO: ITEM ID NOT FOUND";};
+// Get the Item Data:
+private _itemData = [_itemID] call an_c_fnc_ui_inv_item_data_get;
 private _parentData = [_itemData] call an_c_fnc_ui_inv_item_data_parent_get;
-private _parentSize = _parentData getOrDefault ["size",[2,2]];
-if(_DEBUGON)then{diag_log ["DEBUG: MOVE_AUTO: _parentSize    :", _parentSize];};
-
-// Get the inventory Gridsize (rows only, since width is fixed) of the Inventory target
-private _gridSize = localNamespace getVariable [format["an_inv_grid_size_%1",(ctrlIDC _ctrlGrid)], [-1,-1]];
-_gridSize params["_gridRows","_gridCols"];
-
-// We only need to check those Slots, which would be still inside Grid. e.g.: Column > (GridWidthSlots-ItemWidthSlots) == Don't even check that.
-private _rowMax = _gridRows-(_parentSize#0);
-private _colMax = _gridCols-(_parentSize#1);
-if(_DEBUGON)then{diag_log [_rowMax, _colMax];};
-
-
-// Currently used Slots:
+private _parentSize = _parentData get "baseData" get "size";
 private _itemSlotUsage = [_parentSize] call an_c_fnc_ui_inv_item_space_usage_get;
-if(_DEBUGON)then{diag_log ["DEBUG: MOVE_AUTO: _itemSlotUsage:", _itemSlotUsage];};
-if(_DEBUGON)then{systemchat str ["DEBUG: MOVE_AUTO: _itemSlotUsage:", _itemSlotUsage];};
 
-_slots = [_rowMax, _colMax, _itemSlotUsage, _gridUsedSlots] call an_c_fnc_ui_inv_item_space_find_free;
-if(_DEBUGON)then{diag_log ["DEBUG: MOVE_AUTO: _slots          : ", _slots];};
-if(_DEBUGON)then{systemchat str ["DEBUG: MOVE_AUTO: _slots          : ", _slots];};
+// Prepare the Data we need for "inv_mPos"
+private _invSubIDCur = str(ctrlIDC ctrlParentControlsGroup _ctrl);
+private _itemPosY = -1;
+private _itemPosX = -1;
+private _ctrlGrid = controlNull;
+// If Item is in External Inventory -> get a player Inventory, otherwise... erm, get the external?
+private _activeInvList = if (_invSubIDCur isEqualTo "1000")then	{ AN_data_inventory get "invAutoTarget_inv" }
+else															{ ["1000"] };
 
-// No free slots found, exiting.
-if(_slots isEqualTo [])exitWith{systemchat "ERROR: item_move_auto: No free slots found.";};
+private _itemPos = [-1,-1];
+{
+	_invSubIDNew = _x;
+	private _invData = AN_data_inventory get "inventory" get _invSubIDNew;
+	private _gridName = _invData get "invGrid";
+	_ctrlGrid = uinamespace getvariable [_gridName, controlNull];	// DO NOT "PRIVATE"
+
+	private _rowMax = (_invData get "inv_rows") - _parentSize#0;
+	private _colMax = (_invData get "inv_cols") - _parentSize#1;
+
+	private _gridUsedSlots = _invData get "slotsUsed";
+
+	// !! Recursive function, to find a suitable spot in the Inventory !!
+	_slotsUsed_new = [_rowMax, _colMax, _itemSlotUsage, _gridUsedSlots] call an_c_fnc_ui_inv_item_space_find_free;
+	
+	// Exit if free slots WERE found
+	if!(_slotsUsed_new isEqualTo [])exitWith
+	{
+		// first position (topLeft) == invPos of the Item.
+		_itemPos = _slotsUsed_new#0;
+		_itemPosNew = [_invData, _itemPos ]call an_c_fnc_ui_inv_grid_gridToPos;
+		_itemPosY = _itemPosNew#0;
+		_itemPosX = _itemPosNew#1;
+	};
+}forEach _activeInvList;
 
 
-//convert from gridPos to uiPos
-([_ctrlGrid, (_slots#0) ]call an_c_fnc_ui_inv_grid_gridToPos) params["_itemPosY","_itemPosX"];
+// If nothing was found, _itemPosY is still -1, so exit here (no free slots found)
+if(_itemPos isEqualTo [-1,-1])exitWith{systemchat "NO FREE SLOTS FOUND!";};
 
-// set the ID and Classname, to create the Item
-[_itemClass] call an_c_fnc_ui_inv_item_active_class_set;
-[_itemId] call an_c_fnc_ui_inv_item_active_id_set;
+/////////////////////////////////////////////////////////////////
+// !! REMOVE PREVIOUSLY USED SLOTS FROM CURRENT GRID BEFORE CALLING "INV_MPOS" !!
+(_itemData get "invPos") params ["_tileRow","_tileCol"];
+private _isFlipped = _itemData get "isFlipped";
+private _offsetPos = [[_tileRow, _tileCol]];	//store first Pos (needed, since the offset will determined from this position)
+{
+	_x params["_posRow","_posCol"];
+	if(_isFlipped == 0)then
+	{
+		_offsetPos pushbackUnique [ (_tileRow + _posRow), (_tileCol + _posCol) ];
+	}else{
+		_offsetPos pushbackUnique [ (_tileRow + _posCol), (_tileCol + _posRow) ];
+	};
+}forEach _itemSlotUsage;
 
-[_ctrlGrid, 0, [_itemPosY,_itemPosX]] call an_c_fnc_ui_inv_mPos;
+// Remove the currently used slots, so it can be placed at the same Slots it has used before:
+[_invSubIDCur, _offsetPos] call an_c_fnc_ui_inv_grid_tiles_used_remove;
+// !! REMOVE PREVIOUSLY USED SLOTS FROM CURRENT GRID !!
+/////////////////////////////////////////////////////////////////
 
-// delete the old control
-[_ctrl] call an_c_fnc_ui_inv_item_remove;
+
+[_ctrlGrid, [_itemPosY,_itemPosX], _itemID] call an_c_fnc_ui_inv_mPos;
+
+_ctrl spawn {ctrlDelete _this;};
+
+

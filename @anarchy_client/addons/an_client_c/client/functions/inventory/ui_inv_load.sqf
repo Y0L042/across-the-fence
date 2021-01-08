@@ -1,6 +1,6 @@
 
 private _DEBUGON = false;
-params["_invData"];
+params["_invData", ["_autoMoveTargetID","",[""]]];
 
 private _gridName = _invData get "invGrid";
 private _areaName = _invData get "invArea";
@@ -24,6 +24,23 @@ if(_gridRows == 0)exitWith
 	_ctrlGrid ctrlShow false;
 	_ctrlArea ctrlShow false;
 	if(_DEBUGON)then{private _msg = ["DEBUG: INV_LOAD: NO ROWS IN INV     :", _gridName]; diag_log _msg, systemchat str _msg;};
+};
+
+// store the active (player) Inventories and Slots, so we can get them later more easily and determine where we can move stuff in.
+if(_autoMoveTargetID != "")then
+{
+	_invSubIndicator = _autoMoveTargetID select [0,1];
+	// 1xxx = Inventories | 2xxx = Slots
+	if(_invSubIndicator isEqualTo "2")then
+	{
+		private _playerInv_autoTarget = AN_data_inventory get "invAutoTarget_slots";
+		_playerInv_autoTarget pushback _autoMoveTargetID;
+		// values are auto-updated (since referenced) in the hashmap, nothing else needs to be done here!
+	}else{
+		private _playerInv_autoTarget = AN_data_inventory get "invAutoTarget_inv";
+		_playerInv_autoTarget pushback _autoMoveTargetID;
+		// values are auto-updated (since referenced) in the hashmap, nothing else needs to be done here!
+	};
 };
 
 private _gridW = (ctrlPosition _ctrlGrid)#2;
