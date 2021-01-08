@@ -37,7 +37,8 @@ if(_btn == 1 && an_ui_inv_grabActive)then
 	// transform from grid to ui-pos
 	([_invDataPrev, _itemPos ]call an_c_fnc_ui_inv_grid_gridToPos) params["_posX","_posY"];
 	// create it again
-	[_ctrlInvGrid,_posX,_posY,_itemID] call an_c_fnc_ui_inv_item_create;
+	
+	[_ctrlInvGrid, [_posX,_posY], _itemID] call an_c_fnc_ui_inv_mPos;
 	
 	// trigger the deletion of the temp Item, AFTER mPos crated the "final" Item!
 	an_ui_inv_grabActive = false;
