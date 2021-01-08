@@ -15,8 +15,6 @@ class inventory
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_load);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_active_class_set);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_active_class_get);
-	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_active_id_set);
-	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_active_id_get);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_attachToMouse);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_create);
 	// DECLARE_CLIENT_FUNC(inventory,ui_inv_item_grab);
