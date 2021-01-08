@@ -1,6 +1,5 @@
 private _DEBUGON = false;
-#include "\sgd\anarchy\an_client_c\global\asc_macros.inc"
-#include "\vn\ui_f_vietnam_c\ui\vn_uiDefines.inc"
+
 
 // _btn used by mPos_check_inInv
 params ["_ctrlGrid", "_mPos", "_itemID"];
