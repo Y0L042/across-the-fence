@@ -1,0 +1,163 @@
+/*%FSM<COMPILE "F:\Steam\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, ZombieBrain">*/
+/*%FSM<HEAD>*/
+/*
+item0[] = {"Start_state",0,250,-243.084473,340.285858,-153.084473,390.286011,0.000000,"Start state"};
+item1[] = {"Not_valid_zombie",4,218,-42.740906,334.086884,69.932739,404.169189,99.000000,"Not valid zombie"};
+item2[] = {"_",1,250,192.027893,344.063293,282.027924,394.063263,0.000000,""};
+item3[] = {"True",8,218,-242.498169,436.455841,-152.498169,486.455811,0.000000,"True"};
+item4[] = {"Base_state",2,250,-241.023254,551.829224,-151.023254,601.829224,0.000000,"Base state"};
+item5[] = {"Has_nearby_target",4,4314,-387.547272,571.745728,-297.547302,621.745728,0.000000,"Has nearby target?"};
+item6[] = {"Chase_target",2,250,-513.879089,580.112061,-423.879089,630.112061,0.000000,"Chase target"};
+item7[] = {"No_chase_target",4,218,-465.354279,683.854797,-375.354309,733.854736,0.000000,"No chase target"};
+item8[] = {"Emergency_abort",4,218,-65.442932,559.196228,24.557068,609.196228,0.000000,"Emergency abort"};
+item9[] = {"__1",1,250,123.423828,578.321045,213.423859,628.320984,0.000000,""};
+link0[] = {0,1};
+link1[] = {0,3};
+link2[] = {1,2};
+link3[] = {3,4};
+link4[] = {4,5};
+link5[] = {4,8};
+link6[] = {5,6};
+link7[] = {6,7};
+link8[] = {7,4};
+link9[] = {8,9};
+globals[] = {0.000000,0,0,0,0,640,480,1,24,6316128,1,-797.676514,235.567261,990.800720,251.215637,1235,884,1};
+window[] = {2,-1,-1,-1,-1,785,26,1466,26,3,1253};
+*//*%FSM</HEAD>*/
+class FSM
+{
+        fsmName = "ZombieBrain";
+        class States
+        {
+                /*%FSM<STATE "Start_state">*/
+                class Start_state
+                {
+                        name = "Start_state";
+                        itemno = 0;
+                        init = /*%FSM<STATEINIT""">*/"params [""_zombie""];" \n
+                         "" \n
+                         ""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Not_valid_zombie">*/
+                                class Not_valid_zombie
+                                {
+                                        itemno = 1;
+                                        priority = 99.000000;
+                                        to="_";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!alive _zombie"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "True">*/
+                                class True
+                                {
+                                        itemno = 3;
+                                        priority = 0.000000;
+                                        to="Base_state";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "_">*/
+                class _
+                {
+                        name = "_";
+                        itemno = 2;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Base_state">*/
+                class Base_state
+                {
+                        name = "Base_state";
+                        itemno = 4;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Emergency_abort">*/
+                                class Emergency_abort
+                                {
+                                        itemno = 8;
+                                        priority = 0.000000;
+                                        to="__1";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"missionNamespace getVariable [""vgm_endZombies"", false]"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Has_nearby_target">*/
+                                class Has_nearby_target
+                                {
+                                        itemno = 5;
+                                        priority = 0.000000;
+                                        to="Chase_target";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"private _nearestTargets = [_zombie] call vgm_g_fnc_zombie_nearestTargets;" \n
+                                         "" \n
+                                         "_nearestTargets findIf { [_zombie, _x, _zombie getVariable ""vgm_l_zombie_aggroRange""] call vgm_g_fnc_zombie_canSee } > -1"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Chase_target">*/
+                class Chase_target
+                {
+                        name = "Chase_target";
+                        itemno = 6;
+                        init = /*%FSM<STATEINIT""">*/"private _nearestTarget = _nearestTargets # 0;" \n
+                         "" \n
+                         "if (!isNil ""_nearestTarget"") then {" \n
+                         "	[_zombie, _nearestTarget] call vgm_g_fnc_zombie_setChaseTarget;" \n
+                         "};"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/"[_zombie] call vgm_g_fnc_zombie_chase;"/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "No_chase_target">*/
+                                class No_chase_target
+                                {
+                                        itemno = 7;
+                                        priority = 0.000000;
+                                        to="Base_state";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!([_zombie] call vgm_g_fnc_zombie_hasChaseTarget)"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/"[_zombie] call vgm_g_fnc_zombie_clearChaseTarget;"/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "__1">*/
+                class __1
+                {
+                        name = "__1";
+                        itemno = 9;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                        };
+                };
+                /*%FSM</STATE>*/
+        };
+        initState="Start_state";
+        finalStates[] =
+        {
+                "_",
+                "__1",
+        };
+};
+/*%FSM</COMPILE>*/
