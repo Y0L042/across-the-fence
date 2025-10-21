@@ -20,7 +20,10 @@
 
 params ["_zombie"];
 
-// TODO - Add caching to speed this up?
+if (time < (_zombie getVariable ["vgm_l_zombie_lastTargetScan", 0]) + 0.5) exitWith {
+    _zombie getVariable ["vgm_l_zombie_lastTargetScanResults", []]
+};
+_zombie setVariable ["vgm_l_zombie_lastTargetScan", time];
 
 private _targetsWithDist =
     (_zombie targets [true, _zombie getVariable "vgm_l_zombie_aggroRange", [west, east, civilian, resistance]])
@@ -29,7 +32,11 @@ private _targetsWithDist =
 
 _targetsWithDist sort true;
 
-_targetsWithDist apply {_x # 1}
+private _results = _targetsWithDist apply {_x # 1};
+
+_zombie setVariable ["vgm_l_zombie_lastTargetScanResults", _results];
+
+_results
 
 
 

@@ -21,15 +21,18 @@
 params ["_zombie"];
 
 if (time < _zombie getVariable ["vgm_l_zombie_chaseNextTick", 0]) exitWith {};
-_zombie setVariable ["vgm_l_zombie_chaseNextTick", time + 0.1];
 
 private _chaseTarget = _zombie getVariable ["vgm_l_zombie_chaseTarget", objNull];
+
 if !([_zombie, _chaseTarget] call vgm_g_fnc_zombie_isValidTarget) exitWith {};
+
+private _delay = linearConversion [10, 30, _zombie distance2D _chaseTarget, 0.1, 1];
+
+_zombie setVariable ["vgm_l_zombie_chaseNextTick", time + _delay];
 
 if (_zombie getVariable ["vgm_l_zombie_chaseNextRepath", 0] < time) then {
     _zombie doMove getPosATL _chaseTarget;
-    // TODO - Make this variable based on distance. Longer distance = slower repath frequency.
-    _zombie setVariable ["vgm_l_zombie_chaseNextRepath", time + 0.2];
+    _zombie setVariable ["vgm_l_zombie_chaseNextRepath", time + _delay];
 };
 
 // TODO - Victim change
