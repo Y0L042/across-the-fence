@@ -388,6 +388,9 @@ class vgm_g
     class zombie {
         VGM_GLOBAL_PATH(\systems\zombie\global);
 
+        class zombie_attack {};
+        class zombie_canAttack {};
+        class zombie_canAttackTarget {};
         class zombie_canSee {};
         class zombie_chase {};
         class zombie_clearChaseTarget {};
@@ -395,6 +398,7 @@ class vgm_g
         class zombie_init {};
         class zombie_isValidTarget {};
         class zombie_nearestTargets {};
+        class zombie_onAttackEnd {};
         class zombie_setChaseTarget {};
     };
 };

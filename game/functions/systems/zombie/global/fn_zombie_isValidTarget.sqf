@@ -2,7 +2,7 @@
     File: fn_zombie_isValidTarget.sqf
     Author:
     Date: 2025-10-20
-    Last Update: 2025-10-20
+    Last Update: 2025-10-21
     Public: No
 
     Description:
@@ -25,3 +25,4 @@ alive _possibleTarget
     // TODO - Make valid targets range consider target movement speed
     && (_possibleTarget distance _zombie < (_zombie getVariable "vgm_l_zombie_aggroRange"))
     && _possibleTarget getUnitTrait "camouflageCoef" > 0
+    && !(_possibleTarget getVariable ["vgm_g_zombie_isZombie", false])

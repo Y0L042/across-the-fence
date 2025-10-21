@@ -6,11 +6,17 @@ item1[] = {"Not_valid_zombie",4,218,-42.740906,334.086884,69.932739,404.169189,9
 item2[] = {"_",1,250,192.027893,344.063293,282.027924,394.063263,0.000000,""};
 item3[] = {"True",8,218,-242.498169,436.455841,-152.498169,486.455811,0.000000,"True"};
 item4[] = {"Base_state",2,250,-241.023254,551.829224,-151.023254,601.829224,0.000000,"Base state"};
-item5[] = {"Has_nearby_target",4,4314,-387.547272,571.745728,-297.547302,621.745728,0.000000,"Has nearby target?"};
-item6[] = {"Chase_target",2,250,-513.879089,580.112061,-423.879089,630.112061,0.000000,"Chase target"};
-item7[] = {"No_chase_target",4,218,-465.354279,683.854797,-375.354309,733.854736,0.000000,"No chase target"};
+item5[] = {"Has_nearby_target",4,218,-531.448181,547.483276,-407.983093,623.418945,0.000000,"Has nearby target?"};
+item6[] = {"Chase_target",2,250,-515.552307,677.161682,-425.552368,727.161682,0.000000,"Chase target"};
+item7[] = {"No_chase_target",4,218,-319.779846,677.161682,-229.779877,727.161621,0.000000,"No chase target"};
 item8[] = {"Emergency_abort",4,218,-65.442932,559.196228,24.557068,609.196228,0.000000,"Emergency abort"};
 item9[] = {"__1",1,250,123.423828,578.321045,213.423859,628.320984,0.000000,""};
+item10[] = {"Can_attack_",4,4314,-516.039673,856.948853,-426.039795,906.948792,20.000000,"Can attack?"};
+item11[] = {"Post_attack",2,250,-252.355042,785.761475,-162.355026,835.761475,0.000000,"Post-attack"};
+item12[] = {"Has_chase_target",4,218,-405.487518,758.443909,-282.888855,819.782471,10.000000,"Has chase target?"};
+item13[] = {"True",8,218,-162.354126,715.603394,-72.354126,765.603394,0.000000,"True"};
+item14[] = {"Finished_attacki",4,218,-256.607056,857.337097,-166.607056,907.337097,0.000000,"Finished attacking"};
+item15[] = {"Attack",2,250,-390.545197,858.045715,-300.545166,908.045715,0.000000,"Attack"};
 link0[] = {0,1};
 link1[] = {0,3};
 link2[] = {1,2};
@@ -19,9 +25,18 @@ link4[] = {4,5};
 link5[] = {4,8};
 link6[] = {5,6};
 link7[] = {6,7};
-link8[] = {7,4};
-link9[] = {8,9};
-globals[] = {0.000000,0,0,0,0,640,480,1,24,6316128,1,-797.676514,235.567261,990.800720,251.215637,1235,884,1};
+link8[] = {6,10};
+link9[] = {7,4};
+link10[] = {8,9};
+link11[] = {10,15};
+link12[] = {11,10};
+link13[] = {11,12};
+link14[] = {11,13};
+link15[] = {12,6};
+link16[] = {13,4};
+link17[] = {14,11};
+link18[] = {15,14};
+globals[] = {0.000000,0,0,0,0,640,480,1,39,6316128,1,-790.942566,84.262238,1041.590820,415.128235,1235,884,1};
 window[] = {2,-1,-1,-1,-1,785,26,1466,26,3,1253};
 *//*%FSM</HEAD>*/
 class FSM
@@ -126,6 +141,18 @@ class FSM
                         precondition = /*%FSM<STATEPRECONDITION""">*/"[_zombie] call vgm_g_fnc_zombie_chase;"/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
+                                /*%FSM<LINK "Can_attack_">*/
+                                class Can_attack_
+                                {
+                                        itemno = 10;
+                                        priority = 20.000000;
+                                        to="Attack";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"[_zombie] call vgm_g_fnc_zombie_canAttack " \n
+                                         "	&& [_zombie, _zombie getVariable [""vgm_l_zombie_chaseTarget"", objNull]] call vgm_g_fnc_zombie_canAttackTarget"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
                                 /*%FSM<LINK "No_chase_target">*/
                                 class No_chase_target
                                 {
@@ -149,6 +176,75 @@ class FSM
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Post_attack">*/
+                class Post_attack
+                {
+                        name = "Post_attack";
+                        itemno = 11;
+                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Can_attack_">*/
+                                class Can_attack_
+                                {
+                                        itemno = 10;
+                                        priority = 20.000000;
+                                        to="Attack";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"[_zombie] call vgm_g_fnc_zombie_canAttack " \n
+                                         "	&& [_zombie, _zombie getVariable [""vgm_l_zombie_chaseTarget"", objNull]] call vgm_g_fnc_zombie_canAttackTarget"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Has_chase_target">*/
+                                class Has_chase_target
+                                {
+                                        itemno = 12;
+                                        priority = 10.000000;
+                                        to="Chase_target";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"[_zombie] call vgm_g_fnc_zombie_hasChaseTarget"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "True">*/
+                                class True
+                                {
+                                        itemno = 13;
+                                        priority = 0.000000;
+                                        to="Base_state";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Attack">*/
+                class Attack
+                {
+                        name = "Attack";
+                        itemno = 15;
+                        init = /*%FSM<STATEINIT""">*/"[_zombie, _zombie getVariable [""vgm_l_zombie_chaseTarget"", objNull]] call vgm_g_fnc_zombie_attack;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Finished_attacki">*/
+                                class Finished_attacki
+                                {
+                                        itemno = 14;
+                                        priority = 0.000000;
+                                        to="Post_attack";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"[_zombie] call vgm_g_fnc_zombie_canAttack"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
                         };
                 };
                 /*%FSM</STATE>*/

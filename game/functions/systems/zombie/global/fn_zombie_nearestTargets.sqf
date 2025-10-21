@@ -2,7 +2,7 @@
     File: fn_zombie_nearestTarget.sqf
     Author:
     Date: 2025-10-19
-    Last Update: 2025-10-20
+    Last Update: 2025-10-21
     Public: No
 
     Description:
@@ -23,7 +23,7 @@ params ["_zombie"];
 // TODO - Add caching to speed this up?
 
 private _targetsWithDist =
-    (_zombie targets [true, _zombie getVariable "vgm_l_zombie_aggroRange"])
+    (_zombie targets [true, _zombie getVariable "vgm_l_zombie_aggroRange", [west, east, civilian, resistance]])
     select { [_zombie, _x] call vgm_g_fnc_zombie_isValidTarget }
     apply { [_zombie distance2D _x, _x] };
 
