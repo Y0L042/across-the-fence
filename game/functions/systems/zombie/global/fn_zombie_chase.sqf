@@ -26,13 +26,18 @@ private _chaseTarget = _zombie getVariable ["vgm_l_zombie_chaseTarget", objNull]
 
 if !([_zombie, _chaseTarget] call vgm_g_fnc_zombie_isValidTarget) exitWith {};
 
-private _delay = linearConversion [10, 30, _zombie distance2D _chaseTarget, 0.1, 1];
+private _distance = _zombie distance2D _chaseTarget;
+private _delay = linearConversion [10, 30, _distance , 0.2, 2, true];
 
 _zombie setVariable ["vgm_l_zombie_chaseNextTick", time + _delay];
 
-if (_zombie getVariable ["vgm_l_zombie_chaseNextRepath", 0] < time) then {
-    _zombie doMove getPosATL _chaseTarget;
-    _zombie setVariable ["vgm_l_zombie_chaseNextRepath", time + _delay];
+private _prevDest = _zombie getVariable ["vgm_l_zombie_chaseDest", [-9999, -9999, 0]];
+private _dest = getPosATL _chaseTarget;
+private _tolerance = linearConversion [5, 30, _distance, 0.5, 10, true];
+
+if (_tolerance < _dest distance _prevDest) then {
+    _zombie doMove _dest;
+    _zombie setVariable ["vgm_l_zombie_chaseDest", _dest];
 };
 
 // TODO - Victim change
