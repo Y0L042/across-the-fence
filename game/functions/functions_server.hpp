@@ -104,6 +104,7 @@ class vgm_s
         };
         class director_getDirectorForMissionId {};
         class director_getEnemySquadTemplate {};
+        class director_getZombieSquadTemplate {};
         class director_onPlayerNoiseEvent {};
         class director_processMission {};
         class director_spawnInitialPatrols {};
@@ -146,6 +147,7 @@ class vgm_s
         class missions_endMission {};
         class missions_getAssignedMission {};
         class missions_getById {};
+        class missions_getFullness {};
         class missions_joinMission {};
         class missions_leaveMission {};
         class missions_preInit {

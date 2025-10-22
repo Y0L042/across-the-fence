@@ -18,7 +18,7 @@
         [parameter] call vgm_X_fnc_component_myFunction
  */
 
-params ["_zombie"];
+params ["_zombie", ["_runBrain", true]];
 
 {_zombie disableAI _x} forEach ["AIMINGERROR", "AUTOTARGET", "TARGET", "FSM", "AUTOCOMBAT", "COVER", "SUPPRESSION", "LIGHTS", "MINEDETECTION", "NVG", "RADIOPROTOCOL", "WEAPONAIM", "FIREWEAPON"];
 _zombie setVariable ["BIS_fnc_animalBehaviour_disable", true];
@@ -123,3 +123,7 @@ private _handleDamageEH = _zombie addEventHandler ["HandleDamage", {
 }];
 
 _zombie setVariable ["vgm_l_zombie_handleDamageEH", _handleDamageEH];
+
+if (_runBrain) then {
+    [_zombie] execFSM "functions\systems\zombie\zombie_brain.fsm";
+};

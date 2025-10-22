@@ -3,7 +3,7 @@
     File: fn_director_preinit.sqf
     Author: Savage Game Design
     Date: 2023-09-23
-    Last Update: 2025-09-19
+    Last Update: 2025-10-22
     Public: No
 
     Description:
@@ -41,6 +41,14 @@ vgm_s_director_defenseSquadSizeRanges = createHashMapFromArray [
 ];
 
 // TODO - Replace these with Mike Force's squad generator
+vgm_s_director_zombie_weightings = [
+    "_zombie_medium_nobrain", 0.5,
+    "_zombie_fast_nobrain", 0.1,
+    "_zombie_slow_nobrain", 0.15,
+    "_zombie_slow2_nobrain", 0.15,
+    "_zombie_crawler_nobrain", 0.1
+];
+
 vgm_s_director_patrol_classes = [
     'vn_o_men_nva_02',
     'vn_o_men_nva_04',
