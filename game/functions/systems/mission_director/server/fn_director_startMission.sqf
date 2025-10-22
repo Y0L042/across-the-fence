@@ -88,4 +88,18 @@ private _locEventHandler = [
     }
 ] call vgm_g_fnc_locEvents_onNearbyEvent;
 
-_directorData set ["locEventHandlers", [_locEventHandler]];
+private _zombieLocEventHandler = [
+    // Event group for players on a mission is the mission id
+    _missionId,
+    // Listen globally - no location restriction, the event group already filters it to this mission.
+    "",
+    ["zombie_alert"],
+    [_mission],
+    {
+        params ["_pos", "_type", "_listener", "_details", "_args"];
+        _args params ["_mission"];
+        [_mission, _pos] call vgm_s_fnc_director_handleReinforcementRequest;
+    }
+] call vgm_g_fnc_locEvents_onNearbyEvent;
+
+_directorData set ["locEventHandlers", [_locEventHandler, _zombieLocEventHandler]];

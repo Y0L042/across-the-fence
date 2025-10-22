@@ -7,7 +7,7 @@ item2[] = {"End",1,250,192.027893,344.063293,282.027924,394.063263,0.000000,"End
 item3[] = {"True",8,218,-242.498169,436.455841,-152.498169,486.455811,0.000000,"True"};
 item4[] = {"Base_state",2,250,-225.356659,550.088501,-135.356659,600.088501,0.000000,"Base state"};
 item5[] = {"Has_nearby_target",4,218,-429.925995,718.406677,-306.460938,794.342346,100.000000,"Has nearby target?"};
-item6[] = {"Chase_target",2,250,-415.170288,835.275452,-325.170349,885.275452,0.000000,"Chase target"};
+item6[] = {"Chase_target",2,4346,-415.170288,835.275452,-325.170349,885.275452,0.000000,"Chase target"};
 item7[] = {"No_chase_target",4,218,-596.173279,839.355103,-506.173340,889.355042,0.000000,"No chase target"};
 item8[] = {"New_investigation",4,218,-2.117004,642.685974,87.882996,692.685974,10.000000,"New investigation" \n "point?"};
 item9[] = {"Investigate_poin",2,250,-0.798340,727.910767,89.201675,777.910767,0.000000,"Investigate point"};
@@ -59,7 +59,7 @@ link29[] = {21,22};
 link30[] = {22,23};
 link31[] = {23,4};
 link32[] = {24,4};
-globals[] = {0.000000,0,0,0,0,640,480,1,58,6316128,1,-609.492493,265.121643,1070.691162,444.651855,1235,884,1};
+globals[] = {0.000000,0,0,0,0,640,480,1,58,6316128,1,-829.504028,244.673065,1189.341797,420.457642,1235,884,1};
 window[] = {2,-1,-1,-1,-1,785,26,1466,26,3,1253};
 *//*%FSM</HEAD>*/
 class FSM
@@ -181,6 +181,14 @@ class FSM
                         init = /*%FSM<STATEINIT""">*/"private _nearestTarget = _nearestTargets # 0;" \n
                          "" \n
                          "if (!isNil ""_nearestTarget"") then {" \n
+                         "	private _isScreamer = _zombie getVariable [""vgm_l_zombie_isScreamer"", false];" \n
+                         "	private _nextScream = _zombie getVariable [""vgm_l_zombie_nextScream"", 0];" \n
+                         "	if (_isScreamer && _nextScream < time && isPlayer _nearestTarget) then {" \n
+                         "		[_zombie] call vgm_g_fnc_zombie_screamAlert;" \n
+                         "		_zombie setVariable [""vgm_l_zombie_nextScream"", time + vgm_g_zombie_screamCooldown];" \n
+                         "	};" \n
+                         "" \n
+                         "" \n
                          "	[_zombie, _nearestTarget] call vgm_g_fnc_zombie_setChaseTarget;" \n
                          "};"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/"_zombie setVariable [""vgm_l_zombie_state"", ""chase""];" \n

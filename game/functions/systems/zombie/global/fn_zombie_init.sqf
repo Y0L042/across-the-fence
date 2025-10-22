@@ -46,6 +46,7 @@ _zombie setVariable ["vgm_l_zombie_aggroRange", 30];
 _zombie setVariable ["vgm_l_zombie_idleSoundWait", time + 5 + random 20];
 _zombie setVariable ["vgm_l_zombie_loiterTimeout", time + 5 + random 15];
 _zombie setVariable ["vgm_l_zombie_attackDelay", 2];
+_zombie setVariable ["vgm_l_zombie_isScreamer", random 1 < vgm_g_zombie_screamerChance];
 
 _zombie setVariable ["vgm_g_zombie_isZombie", true, true];
 
@@ -105,8 +106,6 @@ _zombie setVariable ["vgm_l_zombie_locEventHandlers", _locEventHandlers];
 
 private _handleDamageEH = _zombie addEventHandler ["HandleDamage", {
 	params ["_zombie", "_selection", "_damage", "_source", "_projectile", "_hitPartIndex", "_instigator", "_hitPoint", "_directHit", "_context"];
-
-    hintSilent str [_zombie, _directHit, _instigator];
 
     if (!_directHit || isNull _instigator) exitWith { nil };
 

@@ -397,11 +397,13 @@ class vgm_g
         class zombie_hasChaseTarget {};
         class zombie_init {};
         class zombie_isValidTarget {};
+        class zombie_makeNoise {};
         class zombie_nearestTargets {};
         class zombie_onAttackEnd {};
         class zombie_preInit {
             preInit = 1;
         };
+        class zombie_screamAlert {};
         class zombie_setChaseTarget {};
     };
 };

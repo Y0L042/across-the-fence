@@ -1,6 +1,6 @@
 /*
-    File: fn_zombie_preInit.sqf
-    Author: Savage Game Design
+    File: fn_zombie_makeNoise.sqf
+    Author:
     Date: 2025-10-22
     Last Update: 2025-10-22
     Public: No
@@ -18,11 +18,9 @@
         [parameter] call vgm_X_fnc_component_myFunction
  */
 
-vgm_g_zombie_screamerChance = 1 / 3;
+params ["_zombie", "_soundFile", "_volume"];
 
-vgm_g_zombie_screamAlertRadius = 150;
-vgm_g_zombie_screamCooldown = 20;
+// TODO - Switch to say3D, but CfgSounds needs all off Ryan's sounds re-adding with the right volume...
+playSound3D [_soundFile, _zombie, false, getPosASL _zombie, 1, 1, 100]
 
-vgm_g_zombie_alertEventPriorities = createHashMapFromArray [
-    ["zombie_alert", 1.25]
-];
+
