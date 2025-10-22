@@ -4,7 +4,7 @@
     File: fn_zombie_onAttackEnd.sqf
     Author:
     Date: 2025-10-21
-    Last Update: 2025-10-21
+    Last Update: 2025-10-22
     Public: No
 
     Description:
@@ -35,15 +35,20 @@ if !([_zombie, _target] call vgm_g_fnc_zombie_canAttackTarget) exitWith {};
 private _hitSound = selectRandom RZ_ZombieHitArray;
 playSound3D [_hitSound, _target, false, getPosASL _target, 1, pitch _zombie];
 
-private _bodyPartHit = selectRandomWeighted [BODY_PART_HEAD, 1, BODY_PART_ARMS, 5, BODY_PART_TORSO, 2.5, BODY_PART_LEGS, 2.5];
-private _damageLevel = selectRandomWeighted [
-    // 80% of the time, do only 1 damage.
-    1, 4,
-    // 20% of the time, hit harder
-    2, 1
-];
+if (isPlayer _target) then {
+    private _bodyPartHit = selectRandomWeighted [BODY_PART_HEAD, 1, BODY_PART_ARMS, 5, BODY_PART_TORSO, 2.5, BODY_PART_LEGS, 2.5];
+    private _damageLevel = selectRandomWeighted [
+        // 80% of the time, do only 1 damage.
+        1, 4,
+        // 20% of the time, hit harder
+        2, 1
+    ];
 
-[_target, _bodyPartHit, _damageLevel] remoteExecCall ["vgm_c_fnc_medical_addWound", _target];
+    [_target, _bodyPartHit, _damageLevel] remoteExecCall ["vgm_c_fnc_medical_addWound", _target];
+} else {
+    _target setDamage (damage _target + 0.35);
+};
+
 
 // TODO - Consider resurrection and infection
 
