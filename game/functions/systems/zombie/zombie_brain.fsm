@@ -2,41 +2,45 @@
 /*%FSM<HEAD>*/
 /*
 item0[] = {"Start_state",0,250,-243.084473,340.285858,-153.084473,390.286011,0.000000,"Start state"};
-item1[] = {"Not_valid_zombie",4,218,-42.740906,334.086884,69.932739,404.169189,99.000000,"Not valid zombie"};
-item2[] = {"_",1,250,192.027893,344.063293,282.027924,394.063263,0.000000,""};
+item1[] = {"Not_valid_zombie",4,218,-54.625671,426.618408,58.047974,496.700714,99.000000,"Not valid zombie"};
+item2[] = {"End",1,250,192.027893,344.063293,282.027924,394.063263,0.000000,"End"};
 item3[] = {"True",8,218,-242.498169,436.455841,-152.498169,486.455811,0.000000,"True"};
-item4[] = {"Base_state",2,250,-241.023254,551.829224,-151.023254,601.829224,0.000000,"Base state"};
-item5[] = {"Has_nearby_target",4,218,-531.448181,547.483276,-407.983093,623.418945,0.000000,"Has nearby target?"};
-item6[] = {"Chase_target",2,250,-515.552307,677.161682,-425.552368,727.161682,0.000000,"Chase target"};
-item7[] = {"No_chase_target",4,218,-319.779846,677.161682,-229.779877,727.161621,0.000000,"No chase target"};
-item8[] = {"Emergency_abort",4,218,-65.442932,559.196228,24.557068,609.196228,0.000000,"Emergency abort"};
-item9[] = {"__1",1,250,123.423828,578.321045,213.423859,628.320984,0.000000,""};
-item10[] = {"Can_attack_",4,218,-516.039673,856.948853,-426.039795,906.948792,20.000000,"Can attack?"};
-item11[] = {"Post_attack",2,250,-252.355042,785.761475,-162.355026,835.761475,0.000000,"Post-attack"};
-item12[] = {"Has_chase_target",4,218,-405.487518,758.443909,-282.888855,819.782471,10.000000,"Has chase target?"};
-item13[] = {"True",8,218,-162.354126,715.603394,-72.354126,765.603394,0.000000,"True"};
-item14[] = {"Finished_attacki",4,218,-256.607056,857.337097,-166.607056,907.337097,0.000000,"Finished attacking"};
-item15[] = {"Attack",2,250,-390.545197,858.045715,-300.545166,908.045715,0.000000,"Attack"};
+item4[] = {"Base_state",2,250,-225.356659,550.088501,-135.356659,600.088501,0.000000,"Base state"};
+item5[] = {"Has_nearby_target",4,218,-505.073395,645.789124,-381.608337,721.724792,0.000000,"Has nearby target?"};
+item6[] = {"Chase_target",2,250,-489.177551,775.467529,-399.177612,825.467529,0.000000,"Chase target"};
+item7[] = {"No_chase_target",4,218,-293.405090,775.467529,-203.405121,825.467468,0.000000,"No chase target"};
+item8[] = {"New_investigation",4,218,-2.117004,642.685974,87.882996,692.685974,0.000000,"New investigation" \n "point?"};
+item9[] = {"Investigate_poin",2,250,-0.798340,727.910767,89.201675,777.910767,0.000000,"Investigate point"};
+item10[] = {"Can_attack_",4,218,-489.664917,955.254700,-399.665039,1005.254517,20.000000,"Can attack?"};
+item11[] = {"Post_attack",2,250,-225.980286,884.067322,-135.980270,934.067322,0.000000,"Post-attack"};
+item12[] = {"Has_chase_target",4,218,-379.112762,856.749756,-256.514099,918.088318,10.000000,"Has chase target?"};
+item13[] = {"True",8,218,-135.979370,813.909241,-45.979370,863.909241,0.000000,"True"};
+item14[] = {"Finished_attacki",4,218,-230.232300,955.642944,-140.232300,1005.642883,0.000000,"Finished attacking"};
+item15[] = {"Attack",2,250,-364.170441,956.351563,-274.170410,1006.351379,0.000000,"Attack"};
+item16[] = {"True",8,218,-131.992798,641.064392,-41.992798,691.064392,0.000000,"True"};
 link0[] = {0,1};
 link1[] = {0,3};
 link2[] = {1,2};
 link3[] = {3,4};
-link4[] = {4,5};
-link5[] = {4,8};
-link6[] = {5,6};
-link7[] = {6,7};
-link8[] = {6,10};
-link9[] = {7,4};
-link10[] = {8,9};
-link11[] = {10,15};
-link12[] = {11,10};
-link13[] = {11,12};
-link14[] = {11,13};
-link15[] = {12,6};
-link16[] = {13,4};
-link17[] = {14,11};
-link18[] = {15,14};
-globals[] = {0.000000,0,0,0,0,640,480,1,39,6316128,1,-765.430481,109.774323,1050.804443,424.341797,1235,884,1};
+link4[] = {4,1};
+link5[] = {4,5};
+link6[] = {4,8};
+link7[] = {5,6};
+link8[] = {6,7};
+link9[] = {6,10};
+link10[] = {7,4};
+link11[] = {8,9};
+link12[] = {9,16};
+link13[] = {10,15};
+link14[] = {11,10};
+link15[] = {11,12};
+link16[] = {11,13};
+link17[] = {12,6};
+link18[] = {13,4};
+link19[] = {14,11};
+link20[] = {15,14};
+link21[] = {16,4};
+globals[] = {0.000000,0,0,0,0,640,480,1,46,6316128,1,-769.190796,505.557495,1194.530396,282.078918,1235,884,1};
 window[] = {2,-1,-1,-1,-1,785,26,1466,26,3,1253};
 *//*%FSM</HEAD>*/
 class FSM
@@ -49,9 +53,9 @@ class FSM
                 {
                         name = "Start_state";
                         itemno = 0;
-                        init = /*%FSM<STATEINIT""">*/"params [""_zombie""];" \n
+                        init = /*%FSM<STATEINIT""">*/"params [[""_zombie"", objNull]];" \n
                          "" \n
-                         ""/*%FSM</STATEINIT""">*/;
+                         "_zombie setVariable [""vgm_l_zombie_state"", ""init""];"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -60,7 +64,7 @@ class FSM
                                 {
                                         itemno = 1;
                                         priority = 99.000000;
-                                        to="_";
+                                        to="End";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"!alive _zombie"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
@@ -80,10 +84,10 @@ class FSM
                         };
                 };
                 /*%FSM</STATE>*/
-                /*%FSM<STATE "_">*/
-                class _
+                /*%FSM<STATE "End">*/
+                class End
                 {
-                        name = "_";
+                        name = "End";
                         itemno = 2;
                         init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -97,18 +101,29 @@ class FSM
                 {
                         name = "Base_state";
                         itemno = 4;
-                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        init = /*%FSM<STATEINIT""">*/"_zombie setVariable [""vgm_l_zombie_state"", ""base""];"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
-                                /*%FSM<LINK "Emergency_abort">*/
-                                class Emergency_abort
+                                /*%FSM<LINK "Not_valid_zombie">*/
+                                class Not_valid_zombie
+                                {
+                                        itemno = 1;
+                                        priority = 99.000000;
+                                        to="End";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!alive _zombie"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "New_investigation">*/
+                                class New_investigation
                                 {
                                         itemno = 8;
                                         priority = 0.000000;
-                                        to="__1";
+                                        to="Investigate_poin";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"missionNamespace getVariable [""vgm_endZombies"", false]"/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!isNil {_zombie getVariable ""vgm_l_zombie_nextAlertEvent""}"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -138,7 +153,8 @@ class FSM
                          "if (!isNil ""_nearestTarget"") then {" \n
                          "	[_zombie, _nearestTarget] call vgm_g_fnc_zombie_setChaseTarget;" \n
                          "};"/*%FSM</STATEINIT""">*/;
-                        precondition = /*%FSM<STATEPRECONDITION""">*/"[_zombie] call vgm_g_fnc_zombie_chase;"/*%FSM</STATEPRECONDITION""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/"_zombie setVariable [""vgm_l_zombie_state"", ""chase""];" \n
+                         "[_zombie] call vgm_g_fnc_zombie_chase;"/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
                                 /*%FSM<LINK "Can_attack_">*/
@@ -167,15 +183,32 @@ class FSM
                         };
                 };
                 /*%FSM</STATE>*/
-                /*%FSM<STATE "__1">*/
-                class __1
+                /*%FSM<STATE "Investigate_poin">*/
+                class Investigate_poin
                 {
-                        name = "__1";
+                        name = "Investigate_poin";
                         itemno = 9;
-                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        init = /*%FSM<STATEINIT""">*/"_zombie setVariable [""vgm_l_zombie_state"", ""investigate""];" \n
+                         "" \n
+                         "private _event = _zombie getVariable ""vgm_l_zombie_nextAlertEvent"";" \n
+                         "" \n
+                         "_zombie setVariable [""vgm_l_zombie_lastAlertEvent"", _event];" \n
+                         "_zombie setVariable [""vgm_l_zombie_nextAlertEvent"", nil];" \n
+                         "_zombie doMove (_event # 1);"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
+                                /*%FSM<LINK "True">*/
+                                class True
+                                {
+                                        itemno = 16;
+                                        priority = 0.000000;
+                                        to="Base_state";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
                         };
                 };
                 /*%FSM</STATE>*/
@@ -184,7 +217,7 @@ class FSM
                 {
                         name = "Post_attack";
                         itemno = 11;
-                        init = /*%FSM<STATEINIT""">*/""/*%FSM</STATEINIT""">*/;
+                        init = /*%FSM<STATEINIT""">*/"_zombie setVariable [""vgm_l_zombie_state"", ""post-attack""];"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -230,7 +263,8 @@ class FSM
                 {
                         name = "Attack";
                         itemno = 15;
-                        init = /*%FSM<STATEINIT""">*/"[_zombie, _zombie getVariable [""vgm_l_zombie_chaseTarget"", objNull]] call vgm_g_fnc_zombie_attack;"/*%FSM</STATEINIT""">*/;
+                        init = /*%FSM<STATEINIT""">*/"_zombie setVariable [""vgm_l_zombie_state"", ""attack""];" \n
+                         "[_zombie, _zombie getVariable [""vgm_l_zombie_chaseTarget"", objNull]] call vgm_g_fnc_zombie_attack;"/*%FSM</STATEINIT""">*/;
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
@@ -252,8 +286,7 @@ class FSM
         initState="Start_state";
         finalStates[] =
         {
-                "_",
-                "__1",
+                "End",
         };
 };
 /*%FSM</COMPILE>*/

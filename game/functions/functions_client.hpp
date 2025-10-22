@@ -399,6 +399,9 @@ class vgm_g
         class zombie_isValidTarget {};
         class zombie_nearestTargets {};
         class zombie_onAttackEnd {};
+        class zombie_preInit {
+            preInit = 1;
+        };
         class zombie_setChaseTarget {};
     };
 };

@@ -2,7 +2,7 @@
     File: fn_zombie_isValidTarget.sqf
     Author:
     Date: 2025-10-20
-    Last Update: 2025-10-21
+    Last Update: 2025-10-22
     Public: No
 
     Description:
