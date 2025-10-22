@@ -7,25 +7,30 @@ item2[] = {"End",1,250,192.027893,344.063293,282.027924,394.063263,0.000000,"End
 item3[] = {"True",8,218,-242.498169,436.455841,-152.498169,486.455811,0.000000,"True"};
 item4[] = {"Base_state",2,250,-225.356659,550.088501,-135.356659,600.088501,0.000000,"Base state"};
 item5[] = {"Has_nearby_target",4,218,-429.925995,718.406677,-306.460938,794.342346,100.000000,"Has nearby target?"};
-item6[] = {"Chase_target",2,4346,-415.170288,835.275452,-325.170349,885.275452,0.000000,"Chase target"};
+item6[] = {"Chase_target",2,250,-415.170288,835.275452,-325.170349,885.275452,0.000000,"Chase target"};
 item7[] = {"No_chase_target",4,218,-596.173279,839.355103,-506.173340,889.355042,0.000000,"No chase target"};
-item8[] = {"New_investigation",4,218,-2.117004,642.685974,87.882996,692.685974,10.000000,"New investigation" \n "point?"};
-item9[] = {"Investigate_poin",2,250,-0.798340,727.910767,89.201675,777.910767,0.000000,"Investigate point"};
+item8[] = {"New_investigation",4,218,-2.117004,642.685974,87.882996,692.685974,50.000000,"New investigation" \n "point?"};
+item9[] = {"Investigate_poin",2,250,-3.776093,743.543884,86.223923,793.543884,0.000000,"Investigate point"};
 item10[] = {"Can_attack_",4,218,-415.657654,1015.062988,-325.657776,1065.062988,20.000000,"Can attack?"};
 item11[] = {"Post_attack",2,250,-729.379333,924.412109,-639.379333,974.412048,0.000000,"Post-attack"};
 item12[] = {"Has_chase_target",4,218,-609.216980,910.880920,-486.618286,972.219421,10.000000,"Has chase target?"};
 item13[] = {"True",8,218,-728.407104,841.309814,-638.407104,891.309814,0.000000,"True"};
 item14[] = {"Finished_attacki",4,218,-727.954529,1003.286682,-637.954529,1053.286865,0.000000,"Finished attacking"};
 item15[] = {"Attack",2,250,-587.786865,1008.861023,-497.786865,1058.861084,0.000000,"Attack"};
-item16[] = {"Finshed_investigating",4,218,-3.492737,812.641113,86.507263,862.641052,0.000000,"Finshed investigating?"};
-item17[] = {"Wander_",4,218,170.197021,638.923706,260.197021,688.923706,0.000000,"Wander?"};
-item18[] = {"Wander_aimlessly",2,250,169.258362,729.415649,259.258362,779.415649,0.000000,"Wander aimlessly"};
-item19[] = {"True",8,218,173.088074,812.731689,263.088074,862.731689,0.000000,"True"};
-item20[] = {"",7,210,37.914612,916.037048,45.914612,924.037048,0.000000,""};
-item21[] = {"",7,210,213.023376,914.661743,221.023376,922.661743,0.000000,""};
-item22[] = {"",7,210,318.193665,914.099365,326.193665,922.099365,0.000000,""};
-item23[] = {"",7,210,320.443115,560.345642,328.443115,568.345642,0.000000,""};
+item16[] = {"Finshed_investigating",4,218,-4.169525,813.317871,85.830475,863.317810,0.000000,"Finshed investigating?"};
+item17[] = {"Wander_",4,218,329.235535,641.630737,419.235535,691.630737,0.000000,"Wander?"};
+item18[] = {"Wander_aimlessly",2,250,328.296875,732.122681,418.296875,782.122681,0.000000,"Wander aimlessly"};
+item19[] = {"True",8,218,332.126587,815.438721,422.126587,865.438721,0.000000,"True"};
+item20[] = {"",7,210,36.425720,910.825989,44.425720,918.825989,0.000000,""};
+item21[] = {"",7,210,204.834534,914.661743,212.834534,922.661743,0.000000,""};
+item22[] = {"",7,210,445.633728,917.543701,453.633728,925.543701,0.000000,""};
+item23[] = {"",7,210,447.883179,563.789978,455.883179,571.789978,0.000000,""};
 item24[] = {"",7,210,-555.168884,757.872314,-547.168884,765.872314,0.000000,""};
+item25[] = {"Go_to_",4,218,160.170105,642.686096,250.170105,692.686096,20.000000,"Go to?"};
+item26[] = {"Go_to",2,250,161.488678,705.577759,251.488708,755.577759,0.000000,"Go to"};
+item27[] = {"At_destination_",4,4314,164.073029,816.295715,254.073029,866.295654,0.000000,"At destination?"};
+item28[] = {"",7,210,372.041199,916.806213,380.041199,924.806152,0.000000,""};
+item29[] = {"",7,210,-165.498306,749.151367,-157.498306,757.151367,0.000000,""};
 link0[] = {0,1};
 link1[] = {0,3};
 link2[] = {1,2};
@@ -34,32 +39,40 @@ link4[] = {4,1};
 link5[] = {4,5};
 link6[] = {4,8};
 link7[] = {4,17};
-link8[] = {5,6};
-link9[] = {6,7};
-link10[] = {6,10};
-link11[] = {7,24};
-link12[] = {8,9};
-link13[] = {9,5};
+link8[] = {4,25};
+link9[] = {5,6};
+link10[] = {6,7};
+link11[] = {6,10};
+link12[] = {7,24};
+link13[] = {8,9};
 link14[] = {9,8};
 link15[] = {9,16};
-link16[] = {10,15};
-link17[] = {11,10};
-link18[] = {11,12};
-link19[] = {11,13};
-link20[] = {12,6};
-link21[] = {13,24};
-link22[] = {14,11};
-link23[] = {15,14};
-link24[] = {16,20};
-link25[] = {17,18};
-link26[] = {18,19};
-link27[] = {19,21};
-link28[] = {20,21};
-link29[] = {21,22};
-link30[] = {22,23};
-link31[] = {23,4};
-link32[] = {24,4};
-globals[] = {0.000000,0,0,0,0,640,480,1,58,6316128,1,-829.504028,244.673065,1189.341797,420.457642,1235,884,1};
+link16[] = {9,29};
+link17[] = {10,15};
+link18[] = {11,10};
+link19[] = {11,12};
+link20[] = {11,13};
+link21[] = {12,6};
+link22[] = {13,24};
+link23[] = {14,11};
+link24[] = {15,14};
+link25[] = {16,20};
+link26[] = {17,18};
+link27[] = {18,19};
+link28[] = {19,28};
+link29[] = {20,21};
+link30[] = {21,28};
+link31[] = {22,23};
+link32[] = {23,4};
+link33[] = {24,4};
+link34[] = {25,26};
+link35[] = {26,8};
+link36[] = {26,27};
+link37[] = {26,29};
+link38[] = {27,21};
+link39[] = {28,22};
+link40[] = {29,5};
+globals[] = {0.000000,0,0,0,0,640,480,1,66,6316128,1,-538.391296,371.793152,1103.437500,451.936707,1235,884,1};
 window[] = {2,-1,-1,-1,-1,785,26,1466,26,3,1253};
 *//*%FSM</HEAD>*/
 class FSM
@@ -152,10 +165,21 @@ class FSM
                                 class New_investigation
                                 {
                                         itemno = 8;
-                                        priority = 10.000000;
+                                        priority = 50.000000;
                                         to="Investigate_poin";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"!isNil {_zombie getVariable ""vgm_l_zombie_nextAlertEvent""}"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "Go_to_">*/
+                                class Go_to_
+                                {
+                                        itemno = 25;
+                                        priority = 20.000000;
+                                        to="Go_to";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!isNil {_zombie getVariable ""vgm_l_zombie_goToPos""}"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -255,7 +279,7 @@ class FSM
                                 class New_investigation
                                 {
                                         itemno = 8;
-                                        priority = 10.000000;
+                                        priority = 50.000000;
                                         to="Investigate_poin";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"!isNil {_zombie getVariable ""vgm_l_zombie_nextAlertEvent""}"/*%FSM</CONDITION""">*/;
@@ -372,6 +396,64 @@ class FSM
                                         to="Base_state";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/""/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                        };
+                };
+                /*%FSM</STATE>*/
+                /*%FSM<STATE "Go_to">*/
+                class Go_to
+                {
+                        name = "Go_to";
+                        itemno = 26;
+                        init = /*%FSM<STATEINIT""">*/"_zombie setVariable [""vgm_l_zombie_state"", ""go to""];" \n
+                         "_zombie setVariable [""vgm_l_zombie_goToTimeout"", time + 300];" \n
+                         "" \n
+                         "private _goToPos = _zombie getVariable ""vgm_l_zombie_goToPos"";" \n
+                         "" \n
+                         "_zombie setVariable [""vgm_l_zombie_currentGoToPos"", _goToPos];" \n
+                         "_zombie setVariable [""vgm_l_zombie_goToPos"", nil];" \n
+                         "_zombie doMove _goToPos;"/*%FSM</STATEINIT""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        class Links
+                        {
+                                /*%FSM<LINK "Has_nearby_target">*/
+                                class Has_nearby_target
+                                {
+                                        itemno = 5;
+                                        priority = 100.000000;
+                                        to="Chase_target";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"private _nearestTargets = [_zombie] call vgm_g_fnc_zombie_nearestTargets;" \n
+                                         "" \n
+                                         "_nearestTargets findIf { [_zombie, _x, _zombie getVariable ""vgm_l_zombie_aggroRange""] call vgm_g_fnc_zombie_canSee } > -1"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "New_investigation">*/
+                                class New_investigation
+                                {
+                                        itemno = 8;
+                                        priority = 50.000000;
+                                        to="Investigate_poin";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!isNil {_zombie getVariable ""vgm_l_zombie_nextAlertEvent""}"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
+                                /*%FSM<LINK "At_destination_">*/
+                                class At_destination_
+                                {
+                                        itemno = 27;
+                                        priority = 0.000000;
+                                        to="Base_state";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"private _zombiePos = getPosATL _zombie;" \n
+                                         "private _goToPos = _zombie getVariable [""vgm_l_zombie_currentGoToPos"", _zombiePos];" \n
+                                         "" \n
+                                         "" \n
+                                         "_zombiePos distance2D _goToPos < 10 || (_zombie getVariable ""vgm_l_zombie_goToTimeout"" < time)"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
