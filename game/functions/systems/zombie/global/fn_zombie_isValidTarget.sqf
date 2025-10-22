@@ -21,8 +21,9 @@
 params ["_zombie", "_possibleTarget"];
 
 // Start with `alive` check as it filters out objNull early
-alive _possibleTarget
+alive _possibleTarget && {
     // TODO - Make valid targets range consider target movement speed
-    && (_possibleTarget distance _zombie < (_zombie getVariable "vgm_l_zombie_aggroRange"))
+       (_possibleTarget distance _zombie < (_zombie getVariable "vgm_l_zombie_aggroRange"))
     && _possibleTarget getUnitTrait "camouflageCoef" > 0
     && !(_possibleTarget getVariable ["vgm_g_zombie_isZombie", false])
+}

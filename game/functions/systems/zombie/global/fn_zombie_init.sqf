@@ -108,7 +108,7 @@ private _handleDamageEH = _zombie addEventHandler ["HandleDamage", {
 
     hintSilent str [_zombie, _directHit, _instigator];
 
-    if (!_directHit) exitWith { nil };
+    if (!_directHit || isNull _instigator) exitWith { nil };
 
     private _lastDamageAlertDetails = _zombie getVariable ["vgm_l_zombie_lastDamageAlertDetails", [-9999, [-9999, -9999, 0], objNull]];
 
