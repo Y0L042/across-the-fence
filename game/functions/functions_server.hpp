@@ -102,6 +102,7 @@ class vgm_s
         class director_addAlertness {
             headerType = -1;
         };
+        class director_attemptReinforcements {};
         class director_getDirectorForMissionId {};
         class director_getEnemySquadTemplate {};
         class director_getZombieSquadTemplate {};
@@ -148,6 +149,7 @@ class vgm_s
         class missions_getAssignedMission {};
         class missions_getById {};
         class missions_getFullness {};
+        class missions_getPlayers {};
         class missions_joinMission {};
         class missions_leaveMission {};
         class missions_preInit {
