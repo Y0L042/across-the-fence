@@ -2,7 +2,7 @@
     File: fn_zombie_init.sqf
     Author:
     Date: 2025-10-19
-    Last Update: 2025-10-23
+    Last Update: 2025-10-24
     Public: No
 
     Description:
@@ -50,7 +50,22 @@ _zombie setVariable ["vgm_l_zombie_isScreamer", random 1 < vgm_g_zombie_screamer
 
 _zombie setVariable ["vgm_g_zombie_isZombie", true, true];
 
-// TODO - Anim speed coef
+private _zombieClassName = typeOf _zombie;
+
+private _zombieType = switch (true) do {
+    case ("walker" in _zombieClassName): { "walker" };
+    case ("slow" in _zombieClassName): { "slow" };
+    case ("medium" in _zombieClassName): { "medium" };
+    case ("fast" in _zombieClassName): { "fast" };
+    case ("player" in _zombieClassName): { "player" };
+    case ("crawler" in _zombieClassName): { "crawler" };
+    case ("spider" in _zombieClassName): { "spider" };
+    default { "unknown" };
+};
+
+_zombie setVariable ["vgm_g_zombie_type", _zombieType, true];
+
+_zombie setAnimSpeedCoef (vgm_g_zombie_animCoefs getOrDefault [_zombieType, 1]);
 
 _zombie addEventHandler ["AnimDone", {
     params ["_unit", "_anim"];

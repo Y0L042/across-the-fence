@@ -2,7 +2,7 @@
     File: fn_zombie_preInit.sqf
     Author: Savage Game Design
     Date: 2025-10-22
-    Last Update: 2025-10-23
+    Last Update: 2025-10-24
     Public: No
 
     Description:
@@ -27,4 +27,10 @@ vgm_g_zombie_screamCooldown = 20;
 
 vgm_g_zombie_alertEventPriorities = createHashMapFromArray [
     ["zombie_alert", 1.25]
+];
+
+vgm_g_zombie_animCoefs = createHashMapFromArray [
+    ["slow", 1.12],
+    ["medium", 0.7],
+    ["crawler", 1.4]
 ];
