@@ -2,7 +2,7 @@
     File: fn_director_spawnReinforcements.sqf
     Author: Savage Game Design
     Date: 2024-11-02
-    Last Update: 2025-10-23
+    Last Update: 2025-10-24
     Public: Yes
 
     Description:
@@ -69,7 +69,7 @@ private _maxSquadSize = 6;
 private _squadSizeVariation = _maxSquadSize - _minSquadSize;
 while {_unitsRemaining > 0} do {
     private _template = if (_reinforcementType isEqualTo "ZOMBIES") then {
-        private _zombieClass = (selectRandom vgm_s_director_attack_classes) + (selectRandomWeighted vgm_s_director_quick_zombie_weightings);
+        private _zombieClass = (selectRandom vgm_s_director_attack_classes) + (selectRandomWeighted vgm_s_director_reinforcementZombieWeightings);
         private _newTemplate = [[_zombieClass], _spawnPos, _missionId] call vgm_s_fnc_director_getZombieSquadTemplate;
         _newTemplate set ["deleteOnDespawn", true];
         _newTemplate get "groupVars" set ["vgm_l_zombie_goToPosInitial", [_attackPos, true]];

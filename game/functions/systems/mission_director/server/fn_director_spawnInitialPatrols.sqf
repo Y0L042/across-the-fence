@@ -2,7 +2,7 @@
     File: fn_director_spawnInitialPatrols.sqf
     Author:
     Date: 2023-09-29
-    Last Update: 2025-10-23
+    Last Update: 2025-10-24
     Public: No
 
     Description:
@@ -51,7 +51,7 @@ private _zombieSiteTypeChances = _mission get "director" get "zombieSiteTypeChan
         private _quantity = linearConversion [0, 1, _missionFullness, 4, 8 + random 4];
         for "_i" from 1 to _quantity do {
             _zombieTemplate set ["pos", _spawnPos];
-            private _zombieClass = (selectRandom vgm_s_director_patrol_classes) + (selectRandomWeighted vgm_s_director_zombie_weightings);
+            private _zombieClass = (selectRandom vgm_s_director_patrol_classes) + (selectRandomWeighted vgm_s_director_staticZombieWeightings);
             _zombieTemplate set ["composition", [_zombieClass]];
             private _zombieSquad = [_zombieTemplate] call vgm_s_fnc_virtsquad_create;
             _squads pushBack _zombieSquad;
@@ -85,7 +85,7 @@ private _zombieSiteTypeChances = _mission get "director" get "zombieSiteTypeChan
         private _quantity = linearConversion [0, 1, _missionFullness, 4, 8 + random 4];
         for "_i" from 1 to _quantity do {
             _zombieTemplate set ["pos", _x get "pos"];
-            private _zombieClass = (selectRandom vgm_s_director_defense_classes) + (selectRandomWeighted vgm_s_director_zombie_weightings);
+            private _zombieClass = (selectRandom vgm_s_director_defense_classes) + (selectRandomWeighted vgm_s_director_staticZombieWeightings);
             _zombieTemplate set ["composition", [_zombieClass]];
             private _zombieSquad = [_zombieTemplate] call vgm_s_fnc_virtsquad_create;
             _squads pushBack _zombieSquad;
