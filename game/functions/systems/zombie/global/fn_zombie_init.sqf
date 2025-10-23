@@ -2,7 +2,7 @@
     File: fn_zombie_init.sqf
     Author:
     Date: 2025-10-19
-    Last Update: 2025-10-22
+    Last Update: 2025-10-23
     Public: No
 
     Description:
@@ -36,7 +36,7 @@ _zombie setCombatMode "BLUE";
 _zombie setBehaviour "CARELESS";
 _zombie setUnitPos "UP";
 _zombie allowFleeing 0;
-_zombie setDamage 0.45;
+_zombie setDamage vgm_g_zombie_initialDamage;
 
 [_zombie, selectRandom RZ_FaceArray] remoteExecCall ["setFace", 0];
 [_zombie, "NoVoice"] remoteExecCall ["setSpeaker", 0];
