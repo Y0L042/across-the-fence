@@ -69,7 +69,8 @@ private _maxSquadSize = 6;
 private _squadSizeVariation = _maxSquadSize - _minSquadSize;
 while {_unitsRemaining > 0} do {
     private _template = if (_reinforcementType isEqualTo "ZOMBIES") then {
-        private _template = [vgm_s_director_attack_classes select [0, _squadSize], _spawnPos, _missionId] call vgm_s_fnc_director_getEnemySquadTemplate;
+        private _zombieClass = (selectRandom vgm_s_director_attack_classes) + (selectRandomWeighted vgm_s_director_quick_zombie_weightings);
+        private _template = [[_zombieClass], _spawnPos, _missionId] call vgm_s_fnc_director_getEnemySquadTemplate;
         _template set ["deleteOnDespawn", true];
         _template get "groupVars" set ["vgm_l_zombie_goToPosInitial", [_attackPos, true]];
         _template
