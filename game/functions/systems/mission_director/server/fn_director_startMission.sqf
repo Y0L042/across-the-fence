@@ -43,6 +43,11 @@ _directorData set ["virtualSquadGroups", createHashMap];
 _directorData set ["lastTrackerSent", -9999];
 
 // REINFORCEMENTS SYSTEM
+// Reinforcement type chances
+_directorData set ["reinforcementTypeChances", createHashMapFromArray [
+    ["OPFOR", 0.5],
+    ["ZOMBIES", 1]
+]];
 // Chance that a reinforcement check spawns reinforcements
 _directorData set ["reinforcementChance", 0.75];
 // How often the check runs after the start of an engagement - scales with alertness

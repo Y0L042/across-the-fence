@@ -2,7 +2,7 @@
     File: fn_ai_getZombieSquadTemplate.sqf
     Author: Savage Game Design
     Date: 2024-02-10
-    Last Update: 2025-10-22
+    Last Update: 2025-10-23
     Public: Yes
 
     Description:
@@ -33,8 +33,10 @@ createHashMapFromArray [
     ["sizeRange", [1, 1]],
     ["onSpawn", {
         params ["_squad"];
+        private _group = _squad get "group";
         {
+            _x setVariable ["vgm_l_zombie_goToPos", _group getVariable "vgm_l_zombie_goToPosInitial", true];
             [_x] remoteExecCall ["vgm_g_fnc_zombie_init", _x];
-        } forEach units (_squad get "group");
+        } forEach units _group;
     }]
 ]

@@ -2,7 +2,7 @@
     File: fn_director_spawnReinforcements.sqf
     Author: Savage Game Design
     Date: 2024-11-02
-    Last Update: 2025-09-22
+    Last Update: 2025-10-23
     Public: Yes
 
     Description:
@@ -34,19 +34,33 @@ for "_i" from 1 to 3 do {
 
 if (_spawnPos isEqualTo []) exitWith { nil };
 
+private _director = _mission get "director";
+
+private _reinforcementType = keys (_director get "reinforcementTypeChances") selectRandomWeighted values (_director get "reinforcementTypeChances");
+
 // Based on player count and alertness
 private _missionPlayers = (_missionPublic get "players") call para_g_fnc_netmap_count;
-private _alertness = _mission get "director" get "alertness";
-private _baseUnits = linearConversion [0, 90, _alertness, 2, 6, true];
+private _alertness = _director get "alertness";
+
 // Scale with mission player count, not target player count (_players).
 // This is to make it more punishing going solo in a group setting.
-private _playerCountScaling = linearConversion [1, 6, _missionPlayers, 1, 4];
+private _baseUnits = if (_reinforcementType isEqualTo "ZOMBIES") then {
+    linearConversion [0, 90, _alertness, 5, 10, true]
+} else {
+    linearConversion [0, 90, _alertness, 2, 6, true]
+};
+
+private _playerCountScaling = if (_reinforcementType isEqualTo "ZOMBIES") then {
+    linearConversion [1, 6, _missionPlayers, 1, 3]
+} else {
+    linearConversion [1, 6, _missionPlayers, 1, 4]
+};
+
 private _unitQuantity = floor (_baseUnits * _playerCountScaling);
 private _unitsRemaining = _unitQuantity;
 
-
-[format ["[Reinforcements - Mission: %1, Players: %2] Reinforcing with %3 units (%4 base, %5x player scaling)",
-    _missionId, _players, _unitQuantity, _baseUnits, _playerCountScaling
+[format ["[Reinforcements - Mission: %1, Players: %2] Reinforcing with %3 %6 units (%4 base, %5x player scaling)",
+    _missionId, _players, _unitQuantity, _baseUnits, _playerCountScaling, _reinforcementType
 ]] call vgm_g_fnc_logDebug;
 
 private _squads = [];
@@ -54,22 +68,32 @@ private _minSquadSize = 3;
 private _maxSquadSize = 6;
 private _squadSizeVariation = _maxSquadSize - _minSquadSize;
 while {_unitsRemaining > 0} do {
-    // Spawns X units, + Y extra units, where Y is between 1 and 3, but Y is always less than or equal to _unitsRemaining
-    private _squadSize = _minSquadSize + (( 1 + floor random _squadSizeVariation) min (_unitsRemaining - _minSquadSize) max 0);
+    private _template = if (_reinforcementType isEqualTo "ZOMBIES") then {
+        private _template = [vgm_s_director_attack_classes select [0, _squadSize], _spawnPos, _missionId] call vgm_s_fnc_director_getEnemySquadTemplate;
+        _template set ["deleteOnDespawn", true];
+        _template get "groupVars" set ["vgm_l_zombie_goToPosInitial", [_attackPos, true]];
+        _template
+    } else {
+        // Spawns X units, + Y extra units, where Y is between 1 and 3, but Y is always less than or equal to _unitsRemaining
+        private _squadSize = _minSquadSize + (( 1 + floor random _squadSizeVariation) min (_unitsRemaining - _minSquadSize) max 0);
 
-    private _template = [vgm_s_director_attack_classes select [0, _squadSize], _spawnPos, _missionId] call vgm_s_fnc_director_getEnemySquadTemplate;
-    _template set ["deleteOnDespawn", true];
-    _template get "groupVars" set ["vgm_g_order", [
-        createHashMapFromArray [
-            ["type", "ASSAULT"],
-            ["pos", _attackPos]
-        ]
-    ]];
+        private _template = [vgm_s_director_attack_classes select [0, _squadSize], _spawnPos, _missionId] call vgm_s_fnc_director_getEnemySquadTemplate;
+        _template set ["deleteOnDespawn", true];
+        _template get "groupVars" set ["vgm_g_order", [
+            createHashMapFromArray [
+                ["type", "ASSAULT"],
+                ["pos", _attackPos]
+            ]
+        ]];
+        _template
+    };
+
+    private _squadSize = count (_template get "composition");
 
     _unitsRemaining = _unitsRemaining - _squadSize;
 
-    [format ["[Reinforcements - Mission: %1, Players: %2] Creating reinforcement squad (%3 units, %4 remaining)",
-        _missionId, _players, _squadSize, _unitsRemaining
+    [format ["[Reinforcements - Mission: %1, Players: %2] Creating reinforcement %5 squad (%3 units, %4 remaining)",
+        _missionId, _players, _squadSize, _unitsRemaining, _reinforcementType
     ]] call vgm_g_fnc_logDebug;
 
     _squads pushBack ([_template] call vgm_s_fnc_virtsquad_create);
