@@ -45,8 +45,8 @@ _directorData set ["lastTrackerSent", -9999];
 // REINFORCEMENTS SYSTEM
 // Reinforcement type chances
 _directorData set ["reinforcementTypeChances", createHashMapFromArray [
-    ["OPFOR", 0.5],
-    ["ZOMBIES", 1]
+    ["OPFOR", 1],
+    ["ZOMBIES", 3]
 ]];
 // Chance that a reinforcement check spawns reinforcements
 _directorData set ["reinforcementChance", 0.75];
@@ -68,7 +68,7 @@ _directorData set ["reinforcementRequestsExpirySecs", 60];
 
 // ZOMBIE SETTINGS
 _directorData set ["zombieSiteTypeChances", createHashMapFromArray [
-    ["ALL_ZOMBIES", 1],
+    ["ALL_ZOMBIES", 4],
     ["ALL_OPFOR", 1],
     ["MIXED", 1]
 ]];

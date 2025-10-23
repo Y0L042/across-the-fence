@@ -70,23 +70,23 @@ private _squadSizeVariation = _maxSquadSize - _minSquadSize;
 while {_unitsRemaining > 0} do {
     private _template = if (_reinforcementType isEqualTo "ZOMBIES") then {
         private _zombieClass = (selectRandom vgm_s_director_attack_classes) + (selectRandomWeighted vgm_s_director_quick_zombie_weightings);
-        private _template = [[_zombieClass], _spawnPos, _missionId] call vgm_s_fnc_director_getEnemySquadTemplate;
-        _template set ["deleteOnDespawn", true];
-        _template get "groupVars" set ["vgm_l_zombie_goToPosInitial", [_attackPos, true]];
-        _template
+        private _newTemplate = [[_zombieClass], _spawnPos, _missionId] call vgm_s_fnc_director_getZombieSquadTemplate;
+        _newTemplate set ["deleteOnDespawn", true];
+        _newTemplate get "groupVars" set ["vgm_l_zombie_goToPosInitial", [_attackPos, true]];
+        _newTemplate
     } else {
         // Spawns X units, + Y extra units, where Y is between 1 and 3, but Y is always less than or equal to _unitsRemaining
         private _squadSize = _minSquadSize + (( 1 + floor random _squadSizeVariation) min (_unitsRemaining - _minSquadSize) max 0);
 
-        private _template = [vgm_s_director_attack_classes select [0, _squadSize], _spawnPos, _missionId] call vgm_s_fnc_director_getEnemySquadTemplate;
-        _template set ["deleteOnDespawn", true];
-        _template get "groupVars" set ["vgm_g_order", [
+        private _newTemplate = [vgm_s_director_attack_classes select [0, _squadSize], _spawnPos, _missionId] call vgm_s_fnc_director_getEnemySquadTemplate;
+        _newTemplate set ["deleteOnDespawn", true];
+        _newTemplate get "groupVars" set ["vgm_g_order", [
             createHashMapFromArray [
                 ["type", "ASSAULT"],
                 ["pos", _attackPos]
             ]
         ]];
-        _template
+        _newTemplate
     };
 
     private _squadSize = count (_template get "composition");
