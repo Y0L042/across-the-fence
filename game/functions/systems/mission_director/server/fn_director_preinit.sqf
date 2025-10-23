@@ -33,6 +33,8 @@ vgm_s_director_noiseEventAlertness = createHashMapFromArray [
     ["suppressedShots", 0.75]
 ];
 
+vgm_s_director_zombieAlertAlertness = 5;
+
 vgm_s_director_defenseSquadSizeRanges = createHashMapFromArray [
     //[Site size, [ Min, Max ]]
     [SITE_FOOTPRINT_SMALL, [2, 4]],

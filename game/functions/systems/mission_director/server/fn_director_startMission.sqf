@@ -59,7 +59,7 @@ _directorData set ["lastReinforcementSentPerPlayer", createHashMap];
 
 // REINFORCEMENT REQUESTS
 // Number of requests in an area required to trigger a reinforcement wave
-_directorData set ["reinforcementRequestsRequired", 3];
+_directorData set ["reinforcementRequestsRequired", 1];
 // Size of the catchment area for reinforcement requests.
 // This is currently used for checking players to attack too. If this is made smaller, that code will need updating!
 _directorData set ["reinforcementRequestsArea", 100];
@@ -111,6 +111,7 @@ private _zombieLocEventHandler = [
         params ["_pos", "_type", "_listener", "_details", "_args"];
         _args params ["_mission"];
         [_mission, _pos] call vgm_s_fnc_director_handleReinforcementRequest;
+        [_mission get "director", vgm_s_director_zombieAlertAlertness] call vgm_s_fnc_director_addAlertness;
     }
 ] call vgm_g_fnc_locEvents_onNearbyEvent;
 
