@@ -2,7 +2,7 @@
     File: fn_director_spawnInitialPatrols.sqf
     Author:
     Date: 2023-09-29
-    Last Update: 2025-10-22
+    Last Update: 2025-10-23
     Public: No
 
     Description:
@@ -35,7 +35,7 @@ private _defenseTemplate = [[], [0,0,0], _missionPublic get "id"] call vgm_s_fnc
 
 private _zombieTemplate = [[], [0,0,0], _missionPublic get "id"] call vgm_s_fnc_director_getZombieSquadTemplate;
 
-private _spawnZombies = true;
+private _zombieSiteTypeChances = _mission get "director" get "zombieSiteTypeChances";
 [_missionPublic] call vgm_s_fnc_missions_getFullness params ["_playerCount", "_maxPlayers", "_missionFullness"];
 
 {
@@ -45,13 +45,14 @@ private _spawnZombies = true;
     private _defenseUnitSizeRange = vgm_s_director_defenseSquadSizeRanges get (_x get "type" get "size");
     private _spawnPos = _sitePos getPos [_siteRadius + random 30, random 360];
 
-    if (_spawnZombies) then {
+    private _zombieSiteType = keys _zombieSiteTypeChances selectRandomWeighted values _zombieSiteTypeChances;
+
+    if (_zombieSiteType in ["ALL_ZOMBIES", "MIXED"]) then {
         private _quantity = linearConversion [0, 1, _missionFullness, 4, 8 + random 4];
         for "_i" from 1 to _quantity do {
             _zombieTemplate set ["pos", _spawnPos];
             private _zombieClass = (selectRandom vgm_s_director_patrol_classes) + (selectRandomWeighted vgm_s_director_zombie_weightings);
             _zombieTemplate set ["composition", [_zombieClass]];
-            diag_log str _zombieTemplate;
             private _zombieSquad = [_zombieTemplate] call vgm_s_fnc_virtsquad_create;
             _squads pushBack _zombieSquad;
         };
@@ -64,7 +65,7 @@ private _spawnZombies = true;
     };
 
     private _nearbySiteIndexes = (_sitePositions inAreaArrayIndexes [_sitePos, INTERSITE_PATROL_MAX_DIST, INTERSITE_PATROL_MAX_DIST]) - [_forEachIndex];
-    if (_nearbySiteIndexes isNotEqualTo []) then {
+    if (_zombieSiteType in ["MIXED", "ALL_OPFOR"] && _nearbySiteIndexes isNotEqualTo []) then {
         // Try to spawn the intersite patrol just outside of the site.
         private _targetSite = _sites select (selectRandom _nearbySiteIndexes);
         _intersitePatrolTemplate set ["pos", _sitePos getPos [_siteRadius + 15, random 360]];
@@ -80,17 +81,28 @@ private _spawnZombies = true;
         _squads pushBack _intersitePatrolSquad;
     };
 
-    _defenseTemplate set ["pos", _x get "pos"];
-    _defenseTemplate set ["composition", vgm_s_director_defense_classes];
-    _defenseTemplate set ["sizeRange", _defenseUnitSizeRange];
-    _defenseTemplate get "groupVars" set ["vgm_g_order", [
-        createHashMapFromArray [
-            ["type", "DEFEND"],
-            ["pos", _x get "pos"]
-        ]
-    ]];
+    if (_zombieSiteType isEqualto "ALL_ZOMBIES") then {
+        private _quantity = linearConversion [0, 1, _missionFullness, 4, 8 + random 4];
+        for "_i" from 1 to _quantity do {
+            _zombieTemplate set ["pos", _x get "pos"];
+            private _zombieClass = (selectRandom vgm_s_director_defense_classes) + (selectRandomWeighted vgm_s_director_zombie_weightings);
+            _zombieTemplate set ["composition", [_zombieClass]];
+            private _zombieSquad = [_zombieTemplate] call vgm_s_fnc_virtsquad_create;
+            _squads pushBack _zombieSquad;
+        };
+    } else {
+        _defenseTemplate set ["pos", _x get "pos"];
+        _defenseTemplate set ["composition", vgm_s_director_defense_classes];
+        _defenseTemplate set ["sizeRange", _defenseUnitSizeRange];
+        _defenseTemplate get "groupVars" set ["vgm_g_order", [
+            createHashMapFromArray [
+                ["type", "DEFEND"],
+                ["pos", _x get "pos"]
+            ]
+        ]];
 
-    private _defenseSquad = [_defenseTemplate] call vgm_s_fnc_virtsquad_create;
+        private _defenseSquad = [_defenseTemplate] call vgm_s_fnc_virtsquad_create;
 
-    _squads pushBack _defenseSquad;
+        _squads pushBack _defenseSquad;
+    };
 } forEach _sites;

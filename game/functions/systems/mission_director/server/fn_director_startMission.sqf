@@ -2,7 +2,7 @@
     File: fn_director_startMission.sqf
     Author: Savage Game Design
     Date: 2023-09-23
-    Last Update: 2025-10-22
+    Last Update: 2025-10-23
     Public: Yes
 
     Description:
@@ -65,6 +65,13 @@ _directorData set ["reinforcementRequestsRequired", 3];
 _directorData set ["reinforcementRequestsArea", 100];
 // How long before requests expire and are deleted.
 _directorData set ["reinforcementRequestsExpirySecs", 60];
+
+// ZOMBIE SETTINGS
+_directorData set ["zombieSiteTypeChances", createHashMapFromArray [
+    ["ALL_ZOMBIES", 1],
+    ["ALL_OPFOR", 1],
+    ["MIXED", 1]
+]];
 
 [_directorData] call vgm_s_fnc_director_setupEngagements;
 [_directorData] call vgm_s_fnc_director_setupReinforcementRequests;
