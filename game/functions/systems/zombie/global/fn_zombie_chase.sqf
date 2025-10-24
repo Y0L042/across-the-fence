@@ -2,7 +2,7 @@
     File: fn_zombie_chase.sqf
     Author:
     Date: 2025-10-20
-    Last Update: 2025-10-21
+    Last Update: 2025-10-24
     Public: No
 
     Description:
@@ -25,6 +25,8 @@ if (time < _zombie getVariable ["vgm_l_zombie_chaseNextTick", 0]) exitWith {};
 private _chaseTarget = _zombie getVariable ["vgm_l_zombie_chaseTarget", objNull];
 
 if !([_zombie, _chaseTarget] call vgm_g_fnc_zombie_isValidTarget) exitWith {};
+
+[_zombie, "aggressive", [8, 16]] call vgm_g_fnc_zombie_ambientNoise;
 
 private _distance = _zombie distance2D _chaseTarget;
 private _delay = linearConversion [10, 30, _distance , 0.2, 2, true];

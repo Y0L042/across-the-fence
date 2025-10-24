@@ -75,6 +75,10 @@ _zombie addEventHandler ["AnimDone", {
     [_unit] call vgm_g_fnc_zombie_onAttackEnd;
 }];
 
+// Sounds
+
+_zombie setVariable ["vgm_l_zombie_nextSoundPossible", createHashMap];
+_zombie setVariable ["vgm_l_zombie_sounds", vgm_g_zombie_defaultSounds];
 
 // Note: None of the code in this section will work with agents
 

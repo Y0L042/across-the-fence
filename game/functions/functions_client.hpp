@@ -388,6 +388,7 @@ class vgm_g
     class zombie {
         VGM_GLOBAL_PATH(\systems\zombie\global);
 
+        class zombie_ambientNoise {};
         class zombie_attack {};
         class zombie_canAttack {};
         class zombie_canAttackTarget {};

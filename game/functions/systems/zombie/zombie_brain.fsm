@@ -28,7 +28,7 @@ item23[] = {"",7,210,447.883179,563.789978,455.883179,571.789978,0.000000,""};
 item24[] = {"",7,210,-555.168884,757.872314,-547.168884,765.872314,0.000000,""};
 item25[] = {"Go_to_",4,218,160.170105,642.686096,250.170105,692.686096,20.000000,"Go to?"};
 item26[] = {"Go_to",2,250,161.488678,705.577759,251.488708,755.577759,0.000000,"Go to"};
-item27[] = {"At_destination_",4,4314,164.073029,816.295715,254.073029,866.295654,0.000000,"At destination?"};
+item27[] = {"At_destination_",4,218,164.073029,816.295715,254.073029,866.295654,0.000000,"At destination?"};
 item28[] = {"",7,210,372.041199,916.806213,380.041199,924.806152,0.000000,""};
 item29[] = {"",7,210,-165.498306,749.151367,-157.498306,757.151367,0.000000,""};
 link0[] = {0,1};
@@ -72,8 +72,8 @@ link37[] = {26,29};
 link38[] = {27,21};
 link39[] = {28,22};
 link40[] = {29,5};
-globals[] = {0.000000,0,0,0,0,640,480,1,66,6316128,1,-538.391296,371.793152,1103.437500,451.936707,1235,884,1};
-window[] = {2,-1,-1,-1,-1,785,26,1466,26,3,1253};
+globals[] = {0.000000,0,0,0,0,640,480,1,66,6316128,1,-779.173706,384.545166,1212.079834,379.101501,1235,884,1};
+window[] = {2,-1,-1,-1,-1,967,208,1648,208,3,1253};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -259,7 +259,7 @@ class FSM
                          "_zombie setVariable [""vgm_l_zombie_lastAlertEvent"", _alertEvent];" \n
                          "_zombie setVariable [""vgm_l_zombie_nextAlertEvent"", nil];" \n
                          "_zombie doMove (_alertEvent # 1);"/*%FSM</STATEINIT""">*/;
-                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/"[_zombie, ""moan"", [20, 45]] call vgm_g_fnc_zombie_ambientNoise;"/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
                                 /*%FSM<LINK "Has_nearby_target">*/
@@ -385,7 +385,7 @@ class FSM
                          "_zombie setVariable [""vgm_l_zombie_nextWander"", time + 10 + random 20];" \n
                          "" \n
                          "_zombie doMove (_zombie getPos [5 + random 10, random 360]);"/*%FSM</STATEINIT""">*/;
-                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/"[_zombie, ""moan"", [60, 90]] call vgm_g_fnc_zombie_ambientNoise;"/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
                                 /*%FSM<LINK "True">*/
@@ -415,7 +415,7 @@ class FSM
                          "_zombie setVariable [""vgm_l_zombie_currentGoToPos"", _goToPos];" \n
                          "_zombie setVariable [""vgm_l_zombie_goToPos"", nil];" \n
                          "_zombie doMove _goToPos;"/*%FSM</STATEINIT""">*/;
-                        precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
+                        precondition = /*%FSM<STATEPRECONDITION""">*/"[_zombie, ""moan"", [60, 90]] call vgm_g_fnc_zombie_ambientNoise;"/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
                                 /*%FSM<LINK "Has_nearby_target">*/

@@ -4,7 +4,7 @@
     File: fn_zombie_onAttackEnd.sqf
     Author:
     Date: 2025-10-21
-    Last Update: 2025-10-22
+    Last Update: 2025-10-24
     Public: No
 
     Description:
@@ -30,10 +30,8 @@ _zombie setVariable ["vgm_l_zombie_attackTarget", objNull];
 // Ensure zombie can still attack the target at the end of the animation.
 if !([_zombie, _target] call vgm_g_fnc_zombie_canAttackTarget) exitWith {};
 
-// TODO - Set up sounds properly
-//_hitSound = selectRandom ([_zombie,"hit"] call RZ_fnc_zombie_getZombieSoundArray);
-private _hitSound = selectRandom RZ_ZombieHitArray;
-playSound3D [_hitSound, _target, false, getPosASL _target, 1, pitch _zombie];
+private _hitSound = selectRandom (_zombie getVariable "vgm_l_zombie_sounds" get "hit");
+[_zombie, _hitSound, 1] call vgm_g_fnc_zombie_makeNoise;
 
 if (isPlayer _target) then {
     private _bodyPartHit = selectRandomWeighted [BODY_PART_HEAD, 1, BODY_PART_ARMS, 5, BODY_PART_TORSO, 2.5, BODY_PART_LEGS, 2.5];
