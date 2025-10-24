@@ -43,5 +43,4 @@ if (_tolerance < _dest distance _prevDest) then {
 };
 
 // TODO - Victim change
-// TODO - Sounds
 // TODO - Consider moving to last seen position

@@ -38,6 +38,25 @@ private _zombieTemplate = [[], [0,0,0], _missionPublic get "id"] call vgm_s_fnc_
 private _zombieSiteTypeChances = _mission get "director" get "zombieSiteTypeChances";
 [_missionPublic] call vgm_s_fnc_missions_getFullness params ["_playerCount", "_maxPlayers", "_missionFullness"];
 
+
+[_targetZone] call vgm_g_fnc_loc_getTargetBoxBounds params ["_targetBoxCenter", "_targetBoxApothems"];
+private _zombieSpacing = 200;
+private _xZombieCount = floor ((_targetBoxApothems # 0) * 2 / _zombieSpacing);
+private _yZombieCount = floor ((_targetBoxApothems # 1) * 2 / _zombieSpacing);
+private _startPos = _targetBoxCenter vectorAdd [-(_targetBoxApothems # 0), -(_targetBoxApothems # 1)];
+
+for "_xi" from 1 to _xZombieCount do {
+    for "_yi" from 1 to _yZombieCount do {
+        private _spawnPos = _startPos vectorAdd [_xi * _zombieSpacing, _yi * _zombieSpacing];
+
+        _zombieTemplate set ["pos", _spawnPos];
+        private _zombieClass = (selectRandom vgm_s_director_patrol_classes) + (selectRandomWeighted vgm_s_director_staticZombieWeightings);
+        _zombieTemplate set ["composition", [_zombieClass]];
+        private _zombieSquad = [_zombieTemplate] call vgm_s_fnc_virtsquad_create;
+        _squads pushBack _zombieSquad;
+    };
+};
+
 {
     private _sitePos = _x get "pos";
     private _siteRadius = vgm_s_sites_siteRadii get (_x get "type" get "size");
