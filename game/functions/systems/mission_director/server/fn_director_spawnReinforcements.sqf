@@ -2,7 +2,7 @@
     File: fn_director_spawnReinforcements.sqf
     Author: Savage Game Design
     Date: 2024-11-02
-    Last Update: 2025-10-24
+    Last Update: 2025-10-25
     Public: Yes
 
     Description:
@@ -11,6 +11,7 @@
     Parameter(s):
         _mission - Mission the player is on [HASHMAP]
         _players - Players to attack with the reinforcements [OBJECT]
+        _reinforcementType - Type of unit to spawn (OPFOR or ZOMBIES) [STRING]
 
     Returns:
         The squad created, or nil if a squad couldn't be spawned. [GROUP]
@@ -20,7 +21,7 @@
  */
 
 
-params ["_mission", "_players"];
+params ["_mission", "_players", ["_reinforcementType", "OPFOR"]];
 
 private _missionPublic = _mission get "public";
 private _missionId = _missionPublic get "id";
@@ -35,8 +36,6 @@ for "_i" from 1 to 3 do {
 if (_spawnPos isEqualTo []) exitWith { nil };
 
 private _director = _mission get "director";
-
-private _reinforcementType = keys (_director get "reinforcementTypeChances") selectRandomWeighted values (_director get "reinforcementTypeChances");
 
 // Based on player count and alertness
 private _missionPlayers = (_missionPublic get "players") call para_g_fnc_netmap_count;
