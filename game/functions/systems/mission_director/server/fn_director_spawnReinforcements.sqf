@@ -44,7 +44,7 @@ private _alertness = _director get "alertness";
 // Scale with mission player count, not target player count (_players).
 // This is to make it more punishing going solo in a group setting.
 private _baseUnits = if (_reinforcementType isEqualTo "ZOMBIES") then {
-    linearConversion [0, 90, _alertness, 5, 10, true]
+    linearConversion [0, 90, _alertness, 5, 8, true]
 } else {
     linearConversion [0, 90, _alertness, 2, 6, true]
 };
