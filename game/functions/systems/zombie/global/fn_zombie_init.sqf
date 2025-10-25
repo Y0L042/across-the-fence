@@ -147,6 +147,20 @@ private _handleDamageEH = _zombie addEventHandler ["HandleDamage", {
 
 _zombie setVariable ["vgm_l_zombie_handleDamageEH", _handleDamageEH];
 
+// Fixes the zombie uniforms crashing when looted by players.
+_zombie addEventHandler ["Killed", {
+    params ["_unit", "_killer", "_instigator", "_useEffects"];
+
+    private _newUniform = getText (configOf _unit >> "uniformClassHuman");
+    private _items = uniformItems _unit;
+
+    _unit forceAddUniform _newUniform;
+    private _container = uniformContainer _unit;
+    {
+    	_container addItemCargoGlobal [_x, 1];
+    } forEach _items;
+}];
+
 if (_runBrain) then {
     [_zombie] execFSM "functions\systems\zombie\zombie_brain.fsm";
 };
