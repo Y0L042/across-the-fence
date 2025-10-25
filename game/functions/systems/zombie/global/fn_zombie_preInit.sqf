@@ -2,7 +2,7 @@
     File: fn_zombie_preInit.sqf
     Author: Savage Game Design
     Date: 2025-10-22
-    Last Update: 2025-10-24
+    Last Update: 2025-10-25
     Public: No
 
     Description:
@@ -17,6 +17,8 @@
     Example(s):
         [parameter] call vgm_X_fnc_component_myFunction
  */
+
+vgm_g_zombie_glowingEyes = true;
 
 vgm_g_zombie_initialDamage = 0.45;
 

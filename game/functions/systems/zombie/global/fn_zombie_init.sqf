@@ -2,7 +2,7 @@
     File: fn_zombie_init.sqf
     Author:
     Date: 2025-10-19
-    Last Update: 2025-10-24
+    Last Update: 2025-10-25
     Public: No
 
     Description:
@@ -38,7 +38,12 @@ _zombie setUnitPos "UP";
 _zombie allowFleeing 0;
 _zombie setDamage vgm_g_zombie_initialDamage;
 
-[_zombie, selectRandom RZ_FaceArray] remoteExecCall ["setFace", 0];
+private _face = selectRandom RZ_FaceArray;
+if (vgm_g_zombie_glowingEyes) then {
+    _face = _face + "_glowing";
+};
+
+[_zombie, _face] remoteExecCall ["setFace", 0];
 [_zombie, "NoVoice"] remoteExecCall ["setSpeaker", 0];
 [_zombie, "safe"] remoteExecCall ["setMimic", 0];
 
