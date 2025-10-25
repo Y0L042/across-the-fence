@@ -8,7 +8,7 @@ item3[] = {"True",8,218,-242.498169,436.455841,-152.498169,486.455811,0.000000,"
 item4[] = {"Base_state",2,250,-225.356659,550.088501,-135.356659,600.088501,0.000000,"Base state"};
 item5[] = {"Has_nearby_target",4,218,-429.925995,718.406677,-306.460938,794.342346,100.000000,"Has nearby target?"};
 item6[] = {"Chase_target",2,250,-415.170288,835.275452,-325.170349,885.275452,0.000000,"Chase target"};
-item7[] = {"No_chase_target",4,218,-596.173279,839.355103,-506.173340,889.355042,0.000000,"No chase target"};
+item7[] = {"No_chase_target",4,4314,-596.173279,839.355103,-506.173340,889.355042,0.000000,"No chase target"};
 item8[] = {"New_investigation",4,218,-2.117004,642.685974,87.882996,692.685974,50.000000,"New investigation" \n "point?"};
 item9[] = {"Investigate_poin",2,250,-3.776093,743.543884,86.223923,793.543884,0.000000,"Investigate point"};
 item10[] = {"Can_attack_",4,218,-415.657654,1015.062988,-325.657776,1065.062988,20.000000,"Can attack?"};
@@ -72,8 +72,8 @@ link37[] = {26,29};
 link38[] = {27,21};
 link39[] = {28,22};
 link40[] = {29,5};
-globals[] = {0.000000,0,0,0,0,640,480,1,66,6316128,1,-779.173706,384.545166,1212.079834,379.101501,1235,884,1};
-window[] = {2,-1,-1,-1,-1,967,208,1648,208,3,1253};
+globals[] = {0.000000,0,0,0,0,640,480,1,66,6316128,1,-1030.761963,132.957397,1168.731201,335.750366,1235,884,1};
+window[] = {2,-1,-1,-32000,-32000,967,208,1648,208,3,1253};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -144,9 +144,9 @@ class FSM
                                         priority = 100.000000;
                                         to="Chase_target";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"private _nearestTargets = [_zombie] call vgm_g_fnc_zombie_nearestTargets;" \n
+                                        condition=/*%FSM<CONDITION""">*/"private _nearestTarget = [_zombie] call vgm_g_fnc_zombie_nearestTarget;" \n
                                          "" \n
-                                         "_nearestTargets findIf { [_zombie, _x, _zombie getVariable ""vgm_l_zombie_aggroRange""] call vgm_g_fnc_zombie_canSee } > -1"/*%FSM</CONDITION""">*/;
+                                         "!isNull _nearestTarget"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -190,7 +190,7 @@ class FSM
                                         priority = 0.000000;
                                         to="Wander_aimlessly";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"_zombie getVariable [""vgm_l_zombie_nextWander"", 0] < time "/*%FSM</CONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"_zombie getVariable [""vgm_l_zombie_nextWander"", 0] < time && (_zombie getVariable [""vgm_l_zombie_chaseLastTick"", 0]) < (time - 15)"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -202,9 +202,7 @@ class FSM
                 {
                         name = "Chase_target";
                         itemno = 6;
-                        init = /*%FSM<STATEINIT""">*/"private _nearestTarget = _nearestTargets # 0;" \n
-                         "" \n
-                         "if (!isNil ""_nearestTarget"") then {" \n
+                        init = /*%FSM<STATEINIT""">*/"if (!isNull _nearestTarget) then {" \n
                          "	private _isScreamer = _zombie getVariable [""vgm_l_zombie_isScreamer"", false];" \n
                          "	private _nextScream = _zombie getVariable [""vgm_l_zombie_nextScream"", 0];" \n
                          "	if (_isScreamer && _nextScream < time && isPlayer _nearestTarget) then {" \n
@@ -240,7 +238,8 @@ class FSM
                                         to="Base_state";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"!([_zombie] call vgm_g_fnc_zombie_hasChaseTarget)"/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/"[_zombie] call vgm_g_fnc_zombie_clearChaseTarget;"/*%FSM</ACTION""">*/;
+                                        action=/*%FSM<ACTION""">*/"[_zombie] call vgm_g_fnc_zombie_clearChaseTarget;" \n
+                                         "_zombie setVariable [""vgm_l_zombie_nextAlertEvent"", nil];"/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
                         };
@@ -269,9 +268,9 @@ class FSM
                                         priority = 100.000000;
                                         to="Chase_target";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"private _nearestTargets = [_zombie] call vgm_g_fnc_zombie_nearestTargets;" \n
+                                        condition=/*%FSM<CONDITION""">*/"private _nearestTarget = [_zombie] call vgm_g_fnc_zombie_nearestTarget;" \n
                                          "" \n
-                                         "_nearestTargets findIf { [_zombie, _x, _zombie getVariable ""vgm_l_zombie_aggroRange""] call vgm_g_fnc_zombie_canSee } > -1"/*%FSM</CONDITION""">*/;
+                                         "!isNull _nearestTarget"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
@@ -425,9 +424,9 @@ class FSM
                                         priority = 100.000000;
                                         to="Chase_target";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-                                        condition=/*%FSM<CONDITION""">*/"private _nearestTargets = [_zombie] call vgm_g_fnc_zombie_nearestTargets;" \n
+                                        condition=/*%FSM<CONDITION""">*/"private _nearestTarget = [_zombie] call vgm_g_fnc_zombie_nearestTarget;" \n
                                          "" \n
-                                         "_nearestTargets findIf { [_zombie, _x, _zombie getVariable ""vgm_l_zombie_aggroRange""] call vgm_g_fnc_zombie_canSee } > -1"/*%FSM</CONDITION""">*/;
+                                         "!isNull _nearestTarget"/*%FSM</CONDITION""">*/;
                                         action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/

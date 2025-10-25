@@ -47,7 +47,7 @@ if (vgm_g_zombie_glowingEyes) then {
 [_zombie, "NoVoice"] remoteExecCall ["setSpeaker", 0];
 [_zombie, "safe"] remoteExecCall ["setMimic", 0];
 
-_zombie setVariable ["vgm_l_zombie_aggroRange", 30];
+_zombie setVariable ["vgm_l_zombie_aggroRange", 50];
 _zombie setVariable ["vgm_l_zombie_idleSoundWait", time + 5 + random 20];
 _zombie setVariable ["vgm_l_zombie_loiterTimeout", time + 5 + random 15];
 _zombie setVariable ["vgm_l_zombie_attackDelay", 2];

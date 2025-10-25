@@ -1,8 +1,8 @@
 /*
-    File: fn_zombie_hasChaseTarget.sqf
+    File: fn_zombie_clearChaseTarget.sqf
     Author:
     Date: 2025-10-20
-    Last Update: 2025-10-20
+    Last Update: 2025-10-25
     Public: No
 
     Description:
