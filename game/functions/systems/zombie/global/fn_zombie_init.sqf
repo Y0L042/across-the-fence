@@ -159,8 +159,19 @@ _zombie addEventHandler ["Killed", {
     {
     	_container addItemCargoGlobal [_x, 1];
     } forEach _items;
+
 }];
 
 if (_runBrain) then {
-    [_zombie] execFSM "functions\systems\zombie\zombie_brain.fsm";
+    _zombie setVariable ["vgm_l_zombie_fsm", [_zombie] execFSM ["functions\systems\zombie\zombie_brain.fsm", true]];
+
+    _zombie addEventHandler ["Killed", {
+        params ["_unit"];
+        terminate (_unit getVariable ["vgm_l_zombie_fsm", -1]);
+    }];
+
+    _zombie addEventHandler ["Deleted", {
+        params ["_unit"];
+        terminate (_unit getVariable ["vgm_l_zombie_fsm", -1]);
+    }];
 };
