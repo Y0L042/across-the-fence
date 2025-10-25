@@ -3,7 +3,7 @@
     File: fn_director_preinit.sqf
     Author: Savage Game Design
     Date: 2023-09-23
-    Last Update: 2025-10-24
+    Last Update: 2025-10-25
     Public: No
 
     Description:
@@ -18,6 +18,13 @@
     Example(s):
         [] call vgm_s_fnc_director_preinit;
  */
+
+vgm_s_director_spawnAmbientZombies = true;
+vgm_s_director_zombieSiteTypeChances = createHashMapFromArray [
+    ["ALL_ZOMBIES", 4],
+    ["ALL_OPFOR", 1],
+    ["MIXED", 1]
+];
 
 vgm_s_director_max_alertness = 100;
 vgm_s_director_alertness_period_secs = 5;

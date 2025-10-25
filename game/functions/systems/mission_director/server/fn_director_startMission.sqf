@@ -2,7 +2,7 @@
     File: fn_director_startMission.sqf
     Author: Savage Game Design
     Date: 2023-09-23
-    Last Update: 2025-10-23
+    Last Update: 2025-10-25
     Public: Yes
 
     Description:
@@ -67,11 +67,8 @@ _directorData set ["reinforcementRequestsArea", 100];
 _directorData set ["reinforcementRequestsExpirySecs", 60];
 
 // ZOMBIE SETTINGS
-_directorData set ["zombieSiteTypeChances", createHashMapFromArray [
-    ["ALL_ZOMBIES", 4],
-    ["ALL_OPFOR", 1],
-    ["MIXED", 1]
-]];
+_directorData set ["spawnAmbientZombies", vgm_s_director_spawnAmbientZombies];
+_directorData set ["zombieSiteTypeChances", +vgm_s_director_zombieSiteTypeChances];
 
 [_directorData] call vgm_s_fnc_director_setupEngagements;
 [_directorData] call vgm_s_fnc_director_setupReinforcementRequests;

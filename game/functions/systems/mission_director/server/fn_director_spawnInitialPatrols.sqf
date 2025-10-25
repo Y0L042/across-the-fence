@@ -2,7 +2,7 @@
     File: fn_director_spawnInitialPatrols.sqf
     Author:
     Date: 2023-09-29
-    Last Update: 2025-10-24
+    Last Update: 2025-10-25
     Public: No
 
     Description:
@@ -23,6 +23,7 @@
 params ["_mission"];
 
 private _missionPublic = _mission get "public";
+private _director = _mission get "director";
 private _targetZone = _missionPublic get "targetZone";
 private _sites = [_targetZone] call vgm_s_fnc_missions_zones_getSites;
 private _sitePositions = _sites apply {_x get "pos"};
@@ -35,26 +36,11 @@ private _defenseTemplate = [[], [0,0,0], _missionPublic get "id"] call vgm_s_fnc
 
 private _zombieTemplate = [[], [0,0,0], _missionPublic get "id"] call vgm_s_fnc_director_getZombieSquadTemplate;
 
-private _zombieSiteTypeChances = _mission get "director" get "zombieSiteTypeChances";
+private _zombieSiteTypeChances = _director get "zombieSiteTypeChances";
 [_missionPublic] call vgm_s_fnc_missions_getFullness params ["_playerCount", "_maxPlayers", "_missionFullness"];
 
-
-[_targetZone] call vgm_g_fnc_loc_getTargetBoxBounds params ["_targetBoxCenter", "_targetBoxApothems"];
-private _zombieSpacing = 200;
-private _xZombieCount = floor ((_targetBoxApothems # 0) * 2 / _zombieSpacing);
-private _yZombieCount = floor ((_targetBoxApothems # 1) * 2 / _zombieSpacing);
-private _startPos = _targetBoxCenter vectorAdd [-(_targetBoxApothems # 0), -(_targetBoxApothems # 1)];
-
-for "_xi" from 1 to _xZombieCount do {
-    for "_yi" from 1 to _yZombieCount do {
-        private _spawnPos = _startPos vectorAdd [_xi * _zombieSpacing, _yi * _zombieSpacing];
-
-        _zombieTemplate set ["pos", _spawnPos];
-        private _zombieClass = (selectRandom vgm_s_director_patrol_classes) + (selectRandomWeighted vgm_s_director_staticZombieWeightings);
-        _zombieTemplate set ["composition", [_zombieClass]];
-        private _zombieSquad = [_zombieTemplate] call vgm_s_fnc_virtsquad_create;
-        _squads pushBack _zombieSquad;
-    };
+if (_director getOrDefault ["spawnAmbientZombies", false]) then {
+    _squads = _squads + ([_mission] call vgm_s_fnc_director_spawnAmbientZombies);
 };
 
 {
@@ -125,3 +111,5 @@ for "_xi" from 1 to _xZombieCount do {
         _squads pushBack _defenseSquad;
     };
 } forEach _sites;
+
+_squads

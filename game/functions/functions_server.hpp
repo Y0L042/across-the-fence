@@ -108,6 +108,7 @@ class vgm_s
         class director_getZombieSquadTemplate {};
         class director_onPlayerNoiseEvent {};
         class director_processMission {};
+        class director_spawnAmbientZombies {};
         class director_spawnInitialPatrols {};
         class director_spawnReinforcements {};
         class director_spawnTracker {};
