@@ -52,7 +52,7 @@ if (_director getOrDefault ["spawnAmbientZombies", false]) then {
 
     private _zombieSiteType = keys _zombieSiteTypeChances selectRandomWeighted values _zombieSiteTypeChances;
 
-    if (_zombieSiteType in ["ALL_ZOMBIES", "MIXED"]) then {
+    if (_zombieSiteType in ["ALL_ZOMBIES"]) then {
         private _quantity = linearConversion [0, 1, _missionFullness, 4, 8 + random 4];
         for "_i" from 1 to _quantity do {
             _zombieTemplate set ["pos", _spawnPos];
@@ -86,7 +86,7 @@ if (_director getOrDefault ["spawnAmbientZombies", false]) then {
         _squads pushBack _intersitePatrolSquad;
     };
 
-    if (_zombieSiteType isEqualto "ALL_ZOMBIES") then {
+    if (_zombieSiteType in ["ALL_ZOMBIES", "MIXED"]) then {
         private _quantity = linearConversion [0, 1, _missionFullness, 4, 8 + random 4];
         for "_i" from 1 to _quantity do {
             _zombieTemplate set ["pos", _x get "pos"];
