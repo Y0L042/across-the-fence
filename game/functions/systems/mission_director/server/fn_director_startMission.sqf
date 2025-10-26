@@ -2,7 +2,7 @@
     File: fn_director_startMission.sqf
     Author: Savage Game Design
     Date: 2023-09-23
-    Last Update: 2025-10-25
+    Last Update: 2025-10-26
     Public: Yes
 
     Description:
@@ -46,7 +46,7 @@ _directorData set ["lastTrackerSent", -9999];
 // Reinforcement type chances
 _directorData set ["reinforcementTypeChances", createHashMapFromArray [
     ["OPFOR", 1],
-    ["ZOMBIES", 3]
+    ["ZOMBIES", 5]
 ]];
 // Chance that a reinforcement check spawns reinforcements
 _directorData set ["reinforcementChance", 0.75];
