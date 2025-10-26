@@ -2,7 +2,7 @@
     File: fn_zombie_init.sqf
     Author:
     Date: 2025-10-19
-    Last Update: 2025-10-25
+    Last Update: 2025-10-26
     Public: No
 
     Description:
@@ -175,3 +175,37 @@ if (_runBrain) then {
         terminate (_unit getVariable ["vgm_l_zombie_fsm", -1]);
     }];
 };
+
+_zombie setVariable ["vgm_l_zombie_lastDamage", createHashMap];
+_zombie addEventHandler ["HandleDamage", {
+	params ["_unit", "_selection", "_damage", "_source", "_projectile", "_hitIndex", "_instigator", "_hitPoint", "_directHit", "_context"];
+
+	private _currentDamage = 0;
+	if (_hitPoint isEqualTo "") then {
+		_hitPoint = "#structural";
+		_currentDamage = damage _unit;
+	} else {
+		_currentDamage = _unit getHitIndex _hitIndex;
+	};
+
+	private _hitDamage = (_damage - _currentDamage) max 0;
+
+	private _type = "";
+	if (_projectile isNotEqualTo "" && !_directHit) then {
+		_hitDamage = _hitDamage * 0.25;
+		_type = "indirect";
+	};
+
+	if (_projectile isEqualTo "") then {
+		_hitDamage = _hitDamage max 0.01;
+		_type = "noproj";
+	};
+
+	private _lastDamage = zombo getVariable "vgm_l_zombie_lastDamage";
+	private _key = [_hitPoint, _currentDamage toFixed 2];
+	private _sum = _lastDamage getOrDefault [_key, 0];
+	_sum = _sum + _hitDamage;
+	_lastDamage set [_key, _sum];
+
+	_currentDamage + _sum
+}];
